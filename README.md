@@ -1,1 +1,1 @@
-# DSLs of Msthematics: BSc Proj 2018
+# DSLs of Mathematics: BSc Proj 2018

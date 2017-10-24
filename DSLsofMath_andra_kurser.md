@@ -4,13 +4,13 @@ Matematikens domänspecifika språk (DSLsofMath) för andra kurser
 
 ## Bakgrund:
 
-DSLsofMath [1,2] är namnet på ett pedagogiskt projekt som leder till
+DSLsofMath [1,2] är namnet på ett pedagogiskt projekt som lett till
 en ny valfri kurs i årskurs 2-3 riktad till datavetare och matematiker
 på Chalmers och GU. Kursen presenterar klassiska matematiska ämnen
 från ett datavetenskapligt perspektiv: genom att specificera de
 introducerade begreppen, vara uppmärksam på syntax och typer, och
 slutligen genom att bygga domänspecifika språk for vissa matematiska
-områden. (Exempelvis linjär algebra, Taylors formler, potensserier,
+områden. (Exempelvis linjär algebra, Laplace-transform, potensserier,
 derivator.)
 
 ## Projektbeskriving:
@@ -32,7 +32,7 @@ Att göra:
 * Specificera lagar som bör gälla
 * Testa de lagar som kan testas med QuickCheck
 * (Ev. bevisa någon eller några lagar.)
-* Rapportskrivning: i form av en "tutorial" eller föreläsningsanteckningar. Om vi lyckas bra med projektet kanske vi alla blir medförfattare till en bok om "DSLsofMath" som kan bli kursbok för en senare omgång av kursen!
+* Rapportskrivning: i form av en "tutorial" eller föreläsningsanteckningar. Om vi lyckas bra med projektet kanske vi alla blir medförfattare till ett nytt kapitel i boken om "DSLsofMath" som kan bli kursbok för en senare omgång av kursen!
 
 
 ## Litteraturförslag:

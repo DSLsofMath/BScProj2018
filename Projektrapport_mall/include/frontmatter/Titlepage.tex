@@ -1,0 +1,98 @@
+% CREATED BY DAVID FRISK, 2016
+
+% COVER PAGE
+\begin{titlepage}
+\newgeometry{top=3cm, bottom=3cm,
+			left=2.25 cm, right=2.25cm}	% Temporarily change margins		
+			
+% Cover page background 
+\AddToShipoutPicture*{\backgroundpic{-4}{56.7}{figure/auxiliary/frontpage_eng.pdf}}
+\addtolength{\voffset}{2cm}
+
+% Cover picture (replace with your own or delete)		
+\begin{figure}[H]
+\centering
+\vspace{2cm}	% Adjust vertical spacing here
+\includegraphics[width=0.9\linewidth]{figure/Wind.png}
+\end{figure}
+
+% Cover text
+\mbox{}
+\vfill
+\renewcommand{\familydefault}{\sfdefault} \normalfont % Set cover page font
+\textbf{{\Huge 	A Chalmers University of Technology 	\\[0.2cm] 
+				Master's thesis template for \LaTeX}} 	\\[0.5cm]
+{\Large A Subtitle that can be Very Much Longer if Necessary}\\[0.5cm]
+Master's thesis in Master Programme Name \setlength{\parskip}{1cm}
+
+{\Large DAVID FRISK} \setlength{\parskip}{2.9cm}
+
+Department of Some Subject or Technology \\
+\textsc{Chalmers University of Technology} \\
+Gothenburg, Sweden 2017
+
+\renewcommand{\familydefault}{\rmdefault} \normalfont % Reset standard font
+\end{titlepage}
+
+
+% BACK OF COVER PAGE (BLANK PAGE)
+\newpage
+\restoregeometry
+\thispagestyle{empty}
+\mbox{}
+
+
+% TITLE PAGE
+\newpage
+\thispagestyle{empty}
+\begin{center}
+	\textsc{\large Master's thesis 2017:NN}\\[4cm]		% Report number given by department 
+	\textbf{\Large An Informative Headline describing\\ the Content of the Report} \\[1cm]
+	{\large A Subtitle that can be Very Much Longer if Necessary}\\[1cm]
+	{\large NAME FAMILYNAME}
+	
+	\vfill	
+	% Logotype on titlepage	
+	\begin{figure}[H]
+	\centering
+	% Remove the following line to remove the titlepage logotype
+	\includegraphics[width=0.2\pdfpagewidth]{figure/auxiliary/logo_eng.pdf} \\	
+	\end{figure}	\vspace{5mm}	
+	
+	Department of Some Subject or Technology \\
+	\emph{Division of Division name}\\
+	Name of research group (if applicable)\\
+	\textsc{Chalmers University of Technology} \\
+	Gothenburg, Sweden 2017 \\
+\end{center}
+
+
+% IMPRINT PAGE (BACK OF TITLE PAGE)
+\newpage
+\thispagestyle{plain}
+\vspace*{4.5cm}
+An Informative Headline describing the Content of the Report\\
+A Subtitle that can be Very Much Longer if Necessary\\
+NAME FAMILYNAME \setlength{\parskip}{1cm}
+
+\copyright ~ NAME FAMILYNAME, 2017. \setlength{\parskip}{1cm}
+
+Supervisor: Name, Company or Department\\
+Examiner: Name, Department \setlength{\parskip}{1cm}
+
+Master's Thesis 2017:NN\\	% Report number given by department 
+Department of Some Subject or Technology\\
+Division of Division name\\
+Name of research group (if applicable)\\
+Chalmers University of Technology\\
+SE-412 96 Gothenburg\\
+Telephone +46 31 772 1000 \setlength{\parskip}{0.5cm}
+
+\vfill
+% Caption for cover page figure if used, possibly with reference to further information in the report
+Cover: Wind visualization constructed in Matlab showing a surface of constant wind speed along with streamlines of the flow. \setlength{\parskip}{0.5cm}
+
+Typeset in \LaTeX \\
+Printed by [Name of printing company]\\
+Gothenburg, Sweden 2017
+

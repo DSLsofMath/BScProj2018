@@ -4,11 +4,19 @@
 \documentclass[12pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
 
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{\baselineskip}
+\usepackage[a4paper, margin=1in]{geometry}
+
+\usepackage[noconfigs, swedish]{babel}
+
 \begin{document} 
+
+\pagenumbering{gobble}
 
 \title{Titel}
 \date{\today}
-\author{Någon någonsson}
+\author{Björn Werner\\ Erik Sjöström \\ Johan Johansson \\ Oskar Lundström}
 
 \maketitle
 
@@ -17,10 +25,10 @@
 \tableofcontents
 
 % START OF MAIN DOCUMENT
+\newpage
 \setcounter{page}{1}
 \pagenumbering{arabic}			% Arabic numbering starting from 1 (one)
 \setlength{\parskip}{0pt plus 1pt}
-\newpage
 
 \section{Inledning}
 

@@ -1,0 +1,213 @@
+%LaTeX-inställningar%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Kompliera med pdflatex
+\documentclass[a4paper, 10pt]{article}
+
+\usepackage[utf8x]{inputenc}
+\usepackage[swedish]{babel}
+\usepackage{graphicx}
+
+\usepackage{enumitem}
+
+\usepackage{geometry} 
+\geometry{a4paper} 
+\geometry{margin=1in}
+\setcounter{section}{1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Fyll i:
+\newcommand{\tid}{14:00}
+\newcommand{\plats}{4205}
+\newcommand{\lasvecka}{3}
+\newcommand{\datum}{2016-09-14}
+\newcommand{\present}{
+Algot\\
+Tarik\\
+Simon\\
+Lukas\\
+Björn\\
+Burkin\\
+Daniel\\
+Hawre\\
+Handledare  Christoffer
+}
+\newcommand{\justerare}{Tarik}
+\newcommand{\sekreterare}{Björn}
+%Snabbkommandon
+\newcommand{\sect}[1][]{\section*{\S \thesection. #1} \stepcounter{section}}
+\newcommand{\para}{\paragraph \noindent}
+\newcommand{\ssect}[1][]{\subsection*{#1}}
+
+\begin{document}
+
+
+%Rubrik etc
+\section*{\center Protokoll Projektmöte LV\lasvecka} 
+\vspace{1em}
+\textbf{Tid:} \tid , \datum \\
+\textbf{Plats:} \plats \\
+
+%Protokoll:
+%Observera att detta är ett exempel som speglar exemplet på kallelse. Protokollet skall utformas på så sätt att det varje vecka speglar den aktuella kallelsen. Paragrafer kan komma att läggas till eller justeras.
+\sect[Mötets öppnande]
+\ssect[Närvarande]
+\present %Fyll i listan som startar på rad 20
+
+\sect[Val av sekreterare och justerare]
+
+\sekreterare \ väljs som sekreterare.\\
+\\
+\justerare \ väljs som justerare.
+
+\sect[Godkännande av dagordning]
+
+Dagordning godkänd.
+
+\sect[Godkännande av föregående mötesprotokoll]
+Föregående mötesprotokoll (LV2) godkändes.
+
+\sect[Informationspunkter]
+Inga nya informationspunkter.
+
+\sect[Statusrapport]
+%Alla rapporterar individuellt status
+Projektplanen blev klar och inlämnad under Söndagen.
+Samtliga delar skrevs av respektive ansvarig person som beskrivs i LV2 mötesprotokoll.
+
+\ssect[Diskussion om DMA och USART:]
+DMA eller inte? för usart. Vi testar det! Ska va klar på söndag enligt planen. 
+Vi diskuterar på fredag hur det blir nästa vecka angående arbetsuppfiter.
+
+\sect[Uppföljning och eventuella förändringar]
+%Mötet diskuterar om milstolparna för denna veckan har nåtts. Om inte, hur ska de nås under kommande vecka?
+\ssect[Uppföljning av projektplanen]
+Algot åtog sig att föra in det vi kom fram under fredags arbetsmöte om tidsplan samt aktiviteter in i projektplanen. \\
+\\
+Samtliga delar av projektplanen som delades ut under föregående handledarmöte samt under Fredagens arbetsmöte (endast till Algot) skrevs och blev gjorda. 
+
+\ssect[Arbetsuppgifter som delades ut Fredag LV2]
+Under ett arbetsmöte i Fredags LV2 sattes arbetsuppgifter för varje person då projektplanen blev klar som de kunde sysselsätta sig med från måndag och frammåt. \\
+\\
+Fokus var att få igång grundsystemet:
+\begin{itemize}[noitemsep]
+    \item USART
+    \item D/A omvandlare
+    \item A/D omvandlare
+    \item Timer
+    \item DMA
+\end{itemize}
+Gruppmedlemmarna fick följande arbetsuppgifter:
+\begin{itemize}[noitemsep]
+    \item Lukas: Läser om digital signal processing.
+    \item Daniel: Jobbar med elektroniken (ingångselektroniken).
+    \item Algot: Jobbar med elektroniken med Daniel.
+    \item Tarik: Läser om A/D D/A omvandling.
+    \item Björn: Läser om DMA.
+    \item Simon: Läser Timer.
+    \item Burkin: Läser på om USART.
+    \item Hawre: Jobba med GUIn.
+\end{itemize}
+Hawre blev utnämd GUI ansvarig, för applikationen på PCn med grafiskt interface.
+
+\ssect[Uppföljning av de utdelade arbetsuppgifterna]
+\begin{itemize}[noitemsep]
+
+    \item Lukas och Tarik:
+    \begin{itemize}[noitemsep]
+    	\item DA omvandling, kollat på systemet.
+	    \item Seriell kommunikation: Kan printa saker.
+        \item Startat ADC. ADC fungerar. Inte kopplad till klockan.
+    \end{itemize}
+    
+    \item Daniel och Algot:
+    \begin{itemize}[noitemsep]
+    	\item Extern elektronik: Uppskattar de är klara i slutet av veckan.
+    \end{itemize}
+    
+    \item Björn:
+    \begin{itemize}[noitemsep]
+        \item Läst översiktligt om DMA. 
+        \item Labbar med USART.
+    \end{itemize}
+    
+    \item Simon: 
+    \begin{itemize}[noitemsep]
+        \item Granskat projektplanen.
+        \item Skaffat en översikikt över timern.
+        \item Labbar med USART.
+    \end{itemize}
+    
+    \item Burkin:
+    \begin{itemize}[noitemsep]
+        \item Läst om USART.
+        \item Labbar med USART.
+    \end{itemize}
+    
+    \item Hawre:
+    \begin{itemize}[noitemsep]
+    	\item Uppskattar att GUI blir klart idag. 
+    	\item Bytte Python till Java pga bra seriellt stöd i Java.
+    \end{itemize}
+\end{itemize}
+    
+
+\sect[Kommande uppgifter]
+
+\ssect[Angående USARTs kommunikation]
+Måste bli klart för att man ska kunna testa andra saker. Därav läggs mycket krut på det.
+
+%Vad är kommande uppgifter för varje individ?
+\ssect[Få klart USART innan Söndag]
+Björn, Burkin och Simon labbar med USART. 
+
+\ssect[Få klart den externa elektroniken]
+Algot, Daniel.
+
+\ssect[ADC med klocka]
+Lukas.
+
+\ssect[Verifiering av GUI och intergration med USART.]
+Hawre (Görs med hjälp av USART labb gruppen).
+
+\ssect[Fortsätta med AD/DA läsning]
+Tarik.
+
+\sect[Övriga frågor]
+%Här tas frågorna som kom upp i §3 upp
+\ssect[Loggboken:]
+Ett sätt för läralaget att följa projektet. Namn och aktivitet för varje individ.
+
+\ssect[Ideér om teknisk dokumentation]
+Hur noga ska man dokumentera vad man gör? Så att man kan motivera att labbningen är riktigt utformad och genomförd. Ej krav på att man ska dokumentera uträkningarna. "Vi bygger ingen EKG". \\
+\\
+Bockrutor för att verifiera saker.
+	
+\ssect[Svårighetsgraden av projektet]
+Är kursen "ovanligt" svår? Kursen är anpassad till våran "expertis" enligt handledaren.
+
+\sect[Nästa möte sker...]
+
+\ssect[Handledarmöte:]
+%14:00-15:00 Onsdag 14/9.
+Christoffer föreslår Torsdag 22/9 LV4 på förmiddagen. Kl: 8-9
+Tarik bokar.
+
+\sect[Mötets avslutande]
+
+\ \\
+\parbox[b]{250pt}{
+\parbox[b]{250pt}{
+Vid protokollet
+\ \\ \ \\ \ \\ 
+\sekreterare \\
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ \\
+}
+\\ \ \\
+\parbox[b]{250pt}{
+Justeras
+\ \\ \ \\ \ \\ 
+\justerare \\
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ \\
+}
+}
+
+\end{document}

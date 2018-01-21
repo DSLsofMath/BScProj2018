@@ -1,0 +1,70 @@
+%LaTeX-inställningar%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Kompliera med pdflatex
+\documentclass[a4paper, 10pt]{article}
+
+\usepackage[utf8x]{inputenc}
+\usepackage[swedish]{babel}
+\usepackage{graphicx}
+
+\usepackage{geometry} 
+\geometry{a4paper} 
+\geometry{margin=1in}
+\setcounter{section}{1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Fyll i vid varje möte:
+\newcommand{\tid}{14:00}
+\newcommand{\plats}{4205}
+\newcommand{\datum}{2016-09-14}
+
+\newcommand{\sammankallande}{\textit{
+Björn\\
+Erik\\
+Oskar\\
+Johan\\
+Handledare Patrik\\
+}}
+
+%Snabbkommandon
+\newcommand{\sect}[1][]{\section*{\S \thesection. #1} \stepcounter{section}}
+\newcommand{\para}{\paragraph \noindent}
+\newcommand{\ssect}[1][]{\subsection*{#1}}
+
+\begin{document}
+
+
+%Rubrik etc
+\section*{\center Dagordning - Grupp DSLsofMath LV1} 
+\vspace{1em}
+\textbf{Kl:} \tid , \datum \\
+\textbf{Plats:} \plats \\
+
+%Dagordning:
+%Detta är en mall. Lägg till paragrafer och underparagrafer om det behövs.
+
+\sect[Mötets öppnande]
+\ssect[Närvarande]
+
+\sect[Val av sekreterare och justerare]
+
+\sect[Godkännande av dagordning]
+
+\sect[Godkännande av föregående mötesprotokoll]
+
+\sect[Informationspunkter]
+
+\sect[Statusrapport]
+
+\sect[Uppföljning och eventuella förändringar]
+
+\sect[Kommande uppgifter]
+
+\sect[Övriga frågor]
+
+\sect[Nästa möte sker...]
+
+\sect[Mötets avslutande]
+
+
+\end{document}
+

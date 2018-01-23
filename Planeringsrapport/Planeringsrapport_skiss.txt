@@ -1,0 +1,286 @@
+
+
+Bakgrund:
+
+# Vad och varför
+
+Fysik och programmering har lärts ut väldigt separat/fristående. 
+
+Detta är ovant/inte optimalt.
+
+Visars sig på kuggstatistiken.
+
+Uppkommit för separata grejer.
+
+
+Vår hypotes är att de finns ett bättre sätt att lära ut fysik för D:are mha DSL. Lärs ut snittet mellan fysik och programmering.
+
+Fysik ska vara kul och genom att göra detta vill vi få andra att inse det.
+
+Kan man förklara för en dator förstår man koncepten
+
+Bilaga: möte med fysiker
+
+
+# Relevant
+
+Studenter som läromaterial är skrivti för, primärt D.
+
+Fysiker/mattenördar som gillar typer.
+
+Folk som på högre nivå som förespråkar DSL som område (t.ex.) Patrik.
+
+Föreläsare inom det aktuella området, fysik/data/programmering
+
+Programledning, skifta läroplan
+
+
+# Relaterat till 
+
+Arbeten som redan utförts
+- Implementation ...classical mechanics
+- Patriks repo o anteckningar
+- hackage hamilton + blogposts
+
+Generell diskussion om varför man har matte på data-
+- Vi har svaret
+
+
+
+Bakgrund I detta avsnitt beskrivs bakgrunden till frågeställningen,
+det vill säga en kort beskrivning av företagets situation och varför man vill
+ha uppdraget utfört. Observera att det inte är bakgrunden till att ni gör arbetet
+som ska beskrivas här.
+DSLs är nyttiga för att studenter ska förstå saker ur olika perspektiv.
+
+\begin{itemize}
+    \item Vad?
+    \item Varför?
+    \item Relevant för vem?
+    \item Kan det relateras till något område?
+\end{itemize}
+
+\section{Syfte}
+
+Skapa läromaterial i Fysik riktat till personer med grundläggande kunskaper i funktionell programmering.
+
+MHA DSL implementera fysik.
+
+
+
+
+
+
+
+
+
+Syftet är en kort beskrivning av uppdraget och vilket resultat som uppdraget
+ska leda till.
+Projektets syfte är att implementera ett antal DSLs i ett par olika discipliner, samt
+en dokumentation över användningen av dom.
+
+\begin{itemize}
+    \item 1-2 meningar
+    \item Vad ska resultatet vara?
+\end{itemize}
+
+\section{Problem/Uppgift}
+
+# Problem
+
+Kan man implementera fysik i DSL? Hypotesen vi har är att man akan
+
+Kan man använda ett DSL för att lära ut?
+
+Kan man utveckla ett läromaterial utifrån detta?
+
+Kan vi förstå fysiken bättre?
+
+Vad är bäst ur pedagogisk synvinkel, deep eller shallow embedding?
+
+
+# Uppgift
+
+Identifiera specifika problemområden i fysiken
+
+Implementera DSL:er i samband med utveckling av läromaterial
+
+Testa o leverera läromaterial
+
+
+
+
+
+
+
+Utifrån "Syfte" ska frågeställningen preciseras.
+Detta kan göras t ex genom att ställa upp ett antal frågor som ska besvaras. Ett
+annat sätt är att ange ett antal påstående (hypoteser) som sedan ska verifieras eller
+förkastas under arbetets gång.
+
+\begin{itemize}
+    \item Problemanalys
+    \item Bryt ner i mindre delar
+\end{itemize}
+
+\section{Avgränsningar}
+
+Fokus på problemområden (i mekanik), men ska ändå vara komplett med allt material. Arbeta oss fram mot problemområdena och bara göra det nödvändiga i de delar som kräsvs för att nå dit.
+
+Mekanik i andra hand
+
+Termo o optik i tredje hand
+
+
+
+
+
+
+Under avgränsningar talar man om vad man inte behandlar.
+Projekter avgränsar sig till exempelvis att implementera DSLs för samtliga områden
+inom kursen Fysik för ingengörer.
+
+\begin{itemize}
+    \item Vilka delar av det övergripande syftet som ej ska med
+\end{itemize}
+
+\section{Metod/Genomförande}
+
+Inläsning
+------------
+
+# Identifiera problemområden
+
+Genom att kontakta Åke och DNS. Kursutvärderingar
+
+Kolla vad vi själva haft för problemområden
+
+Se om Patrik har något kul att säga
+
+# Studerar existerande läromateial (både ren fysik och andra liknande vårt material)
+
+Läsa i fysikboken
+Kursboken i DSL
+Structural interpretation of classical mechanics
+Åkes egna material
+
+
+# Existerande implementationer
+
+Sätt att lära ut fysik med datorhjälp
+
+OpenTA
+Hamilton
+Fråga Patrik efter mer
+MasteringPhysics
+
+# Tidigare forskning
+
+Cezar o Patrik 2015 paper
+Tidigare kandidatarbete
+DSL for the uninitiated
+Communicatiing mathematics
+
+# DSL
+
+Böcker
+- Functional programming for DSL
+- Kursbok DSL
+
+Fråga Patrik
+
+
+Att göra saken
+------------------
+
+# Implementera DSL:er
+
+Hitta relevanta (grund)typer (sträcka ja, acceleration nej)
+
+Hitta skapa komposittyper
+
+Modellera Syntax i språket
+
+Monader
+
+Kombinerare/konstruerare
+
+Utförligt typsystem
+
+Dimensionskoll
+
+Pedagogiskta syntaxträd
+
+Typgeneriskt, polymorfiska
+
+Läromaterial
+--------------
+
+Gemensam vokabulär (som funkar när man pratar om både fysik och programmering)
+- generics kontra polymorfism
+
+Övningar
+- Bouncing balls
+- Vanliga fysikaliska problemet modellerat med DSL och lösa det
+- Modellera själva i DSL
+- Icke-kritiska typer lämnas som övning
+
+Gå igenom allmän teori tillsammans med utveckling av DSL. Vad/hur/varför?
+
+Learn you a physics! eller PDF
+
+Exponera vårt DSL så att kopplingen blir uppenbar.
+
+Roligt!
+
+
+Avslutning
+-------------
+
+Testa o verifiera <--------- Tillförlitligt resultat (genom att detta görs)
+- Försökskaniner
+- Visa för Patrik om programmering
+- Visa för Åke (om vi fått med teorin bra o.s.v)
+- Återkoppling med P o Å bör göras kontinuerligt. Kollar så att vi gör det på ett bra sätt
+
+Förfina o återkoppla
+
+Publicera? 
+
+
+
+
+
+Metodkapitlet ska beskriva hur man avser att lägga upp arbetet. Detta
+omfattar bland annat arbetsgång, design av experiment och användning av olika
+datainsamlingsmetoder. Ett metodkapitel ska, i idealfallet, vara så utförligt att
+vem som helst som har vissa baskunskaper inom området ska kunna utföra arbetet
+på det sättet som har beskrivits i rapporten och nå samma resultat. Att beskriva
+metoden är viktigt för att uppdragsgivaren ska kunna bedöma om man kan nå målet
+på det föreskrivna sättet. Det är därför också viktigt att man förklarar varför den
+valda metoden ger ett tillförlitligt resultat.
+
+\section{Samhälleliga och etiska aspekter}
+%\section{Hållbar utveckling}
+% Byte namn så att bilagan från kandidatriktlinjerna följs istället
+
+Gör det andra först. Fråga Patrik sedan
+
+\section{Tidsplan}
+
+
+
+
+
+
+
+
+
+Tidplanen presenteras lämpligen i form av ett Gantt-schema.
+
+\begin{itemize}
+    \item Vad är när saker ska göras
+    \item Var konkret och detaljerad
+\end{itemize}
+
+\end{document}

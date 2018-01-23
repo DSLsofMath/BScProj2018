@@ -1,7 +1,7 @@
 % CREATED BY DAVID FRISK, 2018
 
 % IMPORT SETTINGS
-\documentclass[12pt,a4paper]{article}
+\documentclass[12pt,a4paper]{scrartcl}
 \usepackage[utf8]{inputenc}
 
 \setlength{\parindent}{0pt}
@@ -14,7 +14,8 @@
 
 \pagenumbering{gobble}
 
-\title{Titel}
+\title{Learn You a Physics for Great Good}
+\subtitle{Using domain specific languages to teach physics}
 \date{\today}
 \author{Björn Werner\\ Erik Sjöström \\ Johan Johansson \\ Oskar Lundström}
 
@@ -28,81 +29,237 @@
 \newpage
 \setcounter{page}{1}
 \pagenumbering{arabic}			% Arabic numbering starting from 1 (one)
-\setlength{\parskip}{0pt plus 1pt}
-
-\section{Inledning}
-
-Bakgrund I detta avsnitt beskrivs bakgrunden till frågeställningen,
-det vill säga en kort beskrivning av företagets situation och varför man vill
-ha uppdraget utfört. Observera att det inte är bakgrunden till att ni gör arbetet
-som ska beskrivas här.
-DSLs är nyttiga för att studenter ska förstå saker ur olika perspektiv.
+%\setlength{\parskip}{0pt plus 1pt}
 
 \section{Bakgrund}
 
-\begin{itemize}
-    \item Vad?
-    \item Varför?
-    \item Relevant för vem?
-    \item Kan det relateras till något område?
-\end{itemize}
+\subsection{Varför}
+
+Det är allmänt känt att betygsstatestiken för datastudenter som läser fysik är ovanligt låg. Vi postulerar att detta beror på metoden som används för att lära ut fysik skiljer sig drastiskt från hur andra kurser lärs ut inom data. Och om det fanns ett sätt att kombinera det material som ska läras ut med de pedagogiska verktyg som används inom datakurser så kan vi underlätta lärandet. Vår hypotes är att om man kan ``lära" en dator fysik så har man själv förstått materialet.
+
+Se bilaga: Möte med Åke bråke
+
+\subsection{Vad?}
+Vi vill med detta projekt skapa ett pedagogiskt läromaterial som med hjälp av en eller flera DSL:er ska fungera som ett komplement till de kurser i fysik som riktar sig till studenter inom datateknik. 
+
+\subsection{Relevant för?}
+
+Detta läromaterial kommer främst att rikta sig till studenter inom data som tar en fysikkurs. Men det kan också ses som relevant läsning för en student inom fysik som är ute efter en inkörsport till funktionell programmering. Förhoppningsvis blir det också relevant för de som är intresserade av DSL:er i stort, pedagoger och föreläsare inom de berörda områdena och kanske till och med programledningen som ser vår rapport som ett skäl att skifta läroplanen.
+
+\subsection{Relaterat till?}
+
+Detta arbete kan relateras det arbete som redan utförts inom detta område t.ex. \textit{Structure and Implementation of Classical Mechanics}. Och även det arbete som Patrik Jansson utfört med att brygga gapet inom analys. Vi skulle också gärna se att vårt arbete kan relateras till den större diskussionen om varför matte och fysik lärs ut inom data.
+
 
 \section{Syfte}
 
-Syftet är en kort beskrivning av uppdraget och vilket resultat som uppdraget
-ska leda till.
-Projektets syfte är att implementera ett antal DSLs i ett par olika discipliner, samt
-en dokumentation över användningen av dom.
+Syftet med projektet är att skapa ett läromaterial i fysik riktat till personer med grundläggande kunskaper i funktionell programmering. Läromaterialet kommer baseras på av oss implementerade domänspecifika språk för fysik.
 
-\begin{itemize}
-    \item 1-2 meningar
-    \item Vad ska resultatet vara?
-\end{itemize}
+%Syftet är en kort beskrivning av uppdraget och vilket resultat som uppdraget
+%ska leda till.
+%Projektets syfte är att implementera ett antal DSLs i ett par olika discipliner, samt
+%en dokumentation över användningen av dom.
+%
+%\begin{itemize}
+%    \item 1-2 meningar
+%    \item Vad ska resultatet vara?
+%\end{itemize}
 
 \section{Problem/Uppgift}
 
-Precisering av frågeställningen Utifrån "Syfte" ska frågeställningen preciseras.
-Detta kan göras t ex genom att ställa upp ett antal frågor som ska besvaras. Ett
-annat sätt är att ange ett antal påstående (hypoteser) som sedan ska verifieras eller
-förkastas under arbetets gång.
+\textbf{Frågor som vi vill besvara:}
 
 \begin{itemize}
-    \item Problemanalys
-    \item Bryt ner i mindre delar
+    \item Kan man skapa ett DSL för fysik.
+    \item Hur brett/djupt kan vi komma med vår DSL.
+    \item Kan man använda vår DSL för att lära ut.
+    \item Kan vi skapa ett läromaterial utifrån vår DSL.
+    \item Kommer vårt läromedel främja lärandet.
+    \item Är deep eller shallow embedding bättre ur ett pedagogiskt syfte.
+\end{itemize}
+
+\textbf{Uppgifter som vi har givit oss själva:}
+
+\begin{itemize}
+    \item Identifiera problemområden för datastudenter inom fysiken.
+    \item Implementera DSL:er för fysik
+    \item Utveckla lärometerial inom fysik tätt bundna till våra DSL:er
+    \item Testa och leverera det utvecklade läromaterialet.
 \end{itemize}
 
 \section{Avgränsningar}
 
-Under avgränsningar talar man om vad man inte behandlar.
-Projekter avgränsar sig till exempelvis att implementera DSLs för samtliga områden
-inom kursen Fysik för ingengörer.
+Projektet kommer enbart behandla fysik som ingår i kursen \textit{Fysik för ingenjörer}. Dessutom kommer olika innehåll att prioriteras.
 
-\begin{itemize}
-    \item Vilka delar av det övergripande syftet som ej ska med
-\end{itemize}
+I första hand kommer de delar som identifierats som svåra att behandlas.
+
+I andra hand kommer mekanik behandlas.
+
+I tredje hand kommer termodynamik och våglära behandlas.
+
+Denna prioritering valdes så att de delar som studenter haft svårast för behandlas först. Sedan behandlas övriga delar i mån av tid. Avgränsningen att enbart behandla fysiken ifrån \textit{Fysik för ingenjörer} beror dels på att det är så mycket fysik gruppmedlemmerna kan, dels på att det är den kursen detta arbete kan bli mest relevant för.
+
+
+
+% Under avgränsningar talar man om vad man inte behandlar.
+% Projekter avgränsar sig till exempelvis att implementera DSLs för samtliga områden
+% inom kursen Fysik för ingengörer.
+
+% \begin{itemize}
+%     \item Vilka delar av det övergripande syftet som ej ska med
+% \end{itemize}
 
 \section{Metod/Genomförande}
 
-Metodkapitlet ska beskriva hur man avser att lägga upp arbetet. Detta
-omfattar bland annat arbetsgång, design av experiment och användning av olika
-datainsamlingsmetoder. Ett metodkapitel ska, i idealfallet, vara så utförligt att
-vem som helst som har vissa baskunskaper inom området ska kunna utföra arbetet
-på det sättet som har beskrivits i rapporten och nå samma resultat. Att beskriva
-metoden är viktigt för att uppdragsgivaren ska kunna bedöma om man kan nå målet
-på det föreskrivna sättet. Det är därför också viktigt att man förklarar varför den
-valda metoden ger ett tillförlitligt resultat.
+Som ett genomgående tema vill vi arbeta in återkoppling med FysikÅke och DSLPatrik så att vi vet att vi håller oss på banan och inte gör det för svårt för oss själva eller potentiella studenter.
+
+Den övergripande planen är att inledningsvis läsa in oss på ämnesområdet, både inom fysik och domänspecifika språk. Därefter kommer vi skriva ett läromaterial parallellt med att domänspecifka språk implementeras.
+
+\subsection{Inläsning}
+
+Inläsning och insamling av information om olika områden kommer behöva göras. Syftet med det är att identifiera problemområdena, att själva lära oss mer om fysik och domänspecifika språk samt få inspiration i hur man skulle kunna skapa ett sådant läromaterial vi ska göra. En stor del av inläsningen kommer ske under tidig del av projektet men vid behov kommer förstås mer att läsas efter hand. Punkterna som följer visar var vi i huvudsak kommer hämta information.
+
+\begin{itemize}
+    \item Identifikation av problemområden.
+        \begin{itemize}
+            \item Kontakt med Åke och DNS. Studera kursutvärderingar.
+            \item Reflektera över vad vi själva tyckt varit svåra områden då vi läst kursen.
+            \item Se om Patrik har något kul att säga...
+        \end{itemize}
+    \item Studerande av existerande läromaterial, både inom ren fysik och liknande vårt material.
+        \begin{itemize}
+            \item Fysikboken.
+            \item Åkes egna material.
+            \item Boken \href{http://case.edu/artsci/math/wells/pub/pdf/commath.pdf}{Structural Interpretaton of Classical Mechanics}.
+            \item Kursboken till kursen \textit{Matematikens domänspecifika språk}.
+        \end{itemize}
+    \item Existerande implementationer.
+        \begin{itemize}
+            \item OpenTA.
+            \item Hamilton.
+            \item MasteringPhysics.
+            \item Fråga om Patrik kan något mer...
+        \end{itemize}
+    \item Tidigare forskning.
+        \begin{itemize}
+            \item Cezar och Patriks 2015 paper.
+            \item 2016 års kandidatarbete.
+            \item Artikeln \textit{DSL for the Uninitiated}.
+            \item \textit{Communicating Mathematics: Useful Ideas from Computer Science}
+        \end{itemize}
+\end{itemize}
+
+\subsection{Implementation av domänspecifika språk}
+
+Vid implementationen av ett/flera domänspecika språk behöver nedanstående punkter genomföras.
+
+\begin{itemize}
+    \item Hitta relevanta grundtyper inom fysik, exempelvis sträcka och massa.
+    \item Hitta relevanta komposittyper, exempelvis hastighet och tryck.
+    \item Utförligt typsystem.
+    \item Dimensionskontroll.
+    \item Modellera fysikens syntax i språket.
+    \item Pedagogiska syntaxträd.
+    \item Kombinatorer och konstruktorer.
+    \item Hålla våra typer polymorfa.
+\end{itemize}
+
+\subsection{Skrivande av läromaterial}
+
+Vid skrivandet av läromaterialet kommer följande punkter ligga till grund.
+
+\begin{itemize}
+    \item Frågetecken: Gemensam vokabulär (som funkar när man pratar om både fysik och programmering, generics kontra polymorfism). Och som gör det möjligt att prata om dem i samma mening utan att byta språk och på så sätt brygga det semantiska gapet mellan områdena.
+    \item Övningar
+        \begin{itemize}
+            \item Modellera ett fysikaliskt problem med vårt domänspecifka språk.
+            \item Lös ett ''vanligt'' fysikaliskt problem med hjälp av vårt domänspecifka språk.
+            \item Simuleringar i stil med \textit{Bouncing Balls}.
+            \item Delar av fysiken vi inte behandlat lämnas som övning att själv implementera.
+        \end{itemize}
+    \item Gå igenom allmän teori (t.ex. Newtons lagar, krafter som verkar, etc) tillsammans med en parallell utveckling av ett domänspecifikt språk.
+    \item Materialet ska vara enkelt att ta till sig.
+    \item Verkligen exponera det DSL som vi gemensammt bygger för att påvisa kopplingen mellan fysik och programmering.
+\end{itemize}
+
+
+\subsection{Faktiskt utförande}
+
+Vårt mål är att utvecklingen av våra DSL:er sker pararellt med utvecklingen av läromaterialet. Så att läromaterialet utformas efter vår DSL och även att vår DSL utformas efter materialet som vi behandlar. 
+
+
+% Metodkapitlet ska beskriva hur man avser att lägga upp arbetet. Detta
+% omfattar bland annat arbetsgång, design av experiment och användning av olika
+% datainsamlingsmetoder. Ett metodkapitel ska, i idealfallet, vara så utförligt att
+% vem som helst som har vissa baskunskaper inom området ska kunna utföra arbetet
+% på det sättet som har beskrivits i rapporten och nå samma resultat. Att beskriva
+% metoden är viktigt för att uppdragsgivaren ska kunna bedöma om man kan nå målet
+% på det föreskrivna sättet. Det är därför också viktigt att man förklarar varför den
+% valda metoden ger ett tillförlitligt resultat.
+
+\subsection{Avslutning}
+
+För att avsluta vårt projekt så vill vi återkoppla med studenter inom data som både har läst fysikkursen och de som inte har läst den för att på så sätt få deras perspektiv på det hela. Detta skulle även ge en fingervisning om hurvida vårt resultat är tillförlitligt. Lämpliga frågor är då:
+
+\begin{itemize}
+    \item Tror du att detta \textbf{hade} hjälpt dig när du studerade fysik?
+    \item Tror du att detta \textbf{kommer} att hjlpa dig när du studerar fysik?
+    \item Har vi missat nåt?
+    \item Vad hade vi kunnat göra bättre?
+\end{itemize}
+
+I mån av tid så vill vi använda denna återkoppling för att förfina vårt läromaterial. Med den större förhoppningen att vi kan producera ett läromaterial som är bra nog för att publiceras.
 
 \section{Samhälleliga och etiska aspekter}
 %\section{Hållbar utveckling}
 % Byte namn så att bilagan från kandidatriktlinjerna följs istället
 
+Nedan föjer svar på de samhälleliga och etiska frågor som ställts i anvisningarna till projektplanen-
+
+1) Vilka etiska  aspekter (värden) är relevanta för projektet?
+\[
+\emptyset
+\]
+
+Vi tycker inte det finns några negativa eller positiva etiska konsekvenser av detta projekt. Vi ska konstruera ett läromaterial om grundläggande fysik och har svårt att se hur det kan påverka någon individ eller grupp negativt.
+
+2) Hur kan vi genomföra vårt projekt för att undvika etiska problem med vår metod? 
+
+Vi kommer att kommunicera med vår handledare, en föreläsare och studenter som testar vårt material. Givet att vi är allmänt trevliga ser vi inga etiska problem med denna metod.
+
+3) Vad kan det finnas för nytta eller etiska problem med det sannolika resultatet (utfallet) av projektet som man bör ta hänsyn till? 
+
+Främjandet av fysikinlärning för datastudenter kan möjligtvis leda till positiva aspekter för samhället i stort, om inte annat för att utbildning blir lättare att ta till sig. Förhoppnigsvis kan vi också göra smärre nytta för forskningen inom detta område (DSL för pedagogik?).
+
+De enda dilemman där de etiska apsekterna skulle kunna äventyras skulle antagligen vara om vårat läromedel utnyttjades för att lära ut kärnfysik till studenter i länder med kärnvapenprogram \url{http://sverigesradio.se/sida/artikel.aspx?programid=3182&artikel=2980763}.
+   Detta lär inte vara något vi behöver beakta i vårat läromedel, då kursen fysik för ingenjörer inte innefattar någon kärnfysik.
+
+4)  Vilka berörs av projektets genomförande eller av det sannolika resultatet (utfallet) av projektet? Hur berörs de? Finns det etiska problem kopplat till detta som man bör ta hänsyn till? 
+
+Se ovanstående svar.
+
 \section{Tidsplan}
 
 Tidplanen presenteras lämpligen i form av ett Gantt-schema.
+(Kommer läggas till då vi har uppskattat tidsomfattningen).
 
 \begin{itemize}
     \item Vad är när saker ska göras
     \item Var konkret och detaljerad
+\end{itemize}
+
+\textbf{Milstolpar}
+
+\begin{itemize}
+    \item Planeringsrapport
+    \item Identifiera problemområden
+    \item Avsluta inläsning
+    \item Göra DSL
+    \item Göra läromaterial
+    \item Testa på kaniner
+    \item Verifiera med  Åka och Patrik genom hela projektet
+    \item Första utkast ill rapport
+    \item + andra deadlines
 \end{itemize}
 
 \end{document}

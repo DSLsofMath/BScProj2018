@@ -4,3 +4,5 @@
 *.toc
 *.fdb_latexmk
 *.fls
+rapport.synctex.gz
+rapport.pdf

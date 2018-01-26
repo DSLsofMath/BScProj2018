@@ -1,7 +1,7 @@
 % CREATED BY DAVID FRISK, 2018
 
 % IMPORT SETTINGS
-\documentclass[12pt,a4paper]{scrartcl}
+\documentclass[12pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
 
 \setlength{\parindent}{0pt}
@@ -10,6 +10,14 @@
 
 \usepackage[noconfigs, swedish]{babel}
 \usepackage{hyperref}
+
+\usepackage{titling}
+\newcommand{\subtitle}[1]{%
+  \posttitle{%
+    \par\end{center}
+    \begin{center}\large#1\end{center}
+    \vskip0.5em}%
+}
 
 \begin{document}
 

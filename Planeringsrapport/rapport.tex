@@ -9,8 +9,9 @@
 \usepackage[a4paper, margin=1in]{geometry}
 
 \usepackage[noconfigs, swedish]{babel}
+\usepackage{hyperref}
 
-\begin{document} 
+\begin{document}
 
 \pagenumbering{gobble}
 
@@ -35,12 +36,12 @@
 
 \subsection{Varför}
 
-Det är allmänt känt att betygsstatestiken för datastudenter som läser fysik är ovanligt låg. Vi postulerar att detta beror på metoden som används för att lära ut fysik skiljer sig drastiskt från hur andra kurser lärs ut inom data. Och om det fanns ett sätt att kombinera det material som ska läras ut med de pedagogiska verktyg som används inom datakurser så kan vi underlätta lärandet. Vår hypotes är att om man kan ``lära" en dator fysik så har man själv förstått materialet.
+Det är allmänt känt att betygsstatistiken för datastudenter som läser fysik är ovanligt låg. Vi postulerar att detta beror på metoden som används för att lära ut fysik skiljer sig drastiskt från hur andra kurser lärs ut inom data. Och om det fanns ett sätt att kombinera det material som ska läras ut med de pedagogiska verktyg som används inom datakurser så kan vi underlätta lärandet. Vår hypotes är att om man kan ``lära" en dator fysik så har man själv förstått materialet.
 
 Se bilaga: Möte med Åke bråke
 
 \subsection{Vad?}
-Vi vill med detta projekt skapa ett pedagogiskt läromaterial som med hjälp av en eller flera DSL:er ska fungera som ett komplement till de kurser i fysik som riktar sig till studenter inom datateknik. 
+Vi vill med detta projekt skapa ett pedagogiskt läromaterial som med hjälp av en eller flera DSL:er ska fungera som ett komplement till de kurser i fysik som riktar sig till studenter inom datateknik.
 
 \subsection{Relevant för?}
 
@@ -172,20 +173,20 @@ Vid skrivandet av läromaterialet kommer följande punkter ligga till grund.
     \item Frågetecken: Gemensam vokabulär (som funkar när man pratar om både fysik och programmering, generics kontra polymorfism). Och som gör det möjligt att prata om dem i samma mening utan att byta språk och på så sätt brygga det semantiska gapet mellan områdena.
     \item Övningar
         \begin{itemize}
-            \item Modellera ett fysikaliskt problem med vårt domänspecifka språk.
-            \item Lös ett ''vanligt'' fysikaliskt problem med hjälp av vårt domänspecifka språk.
+            \item Modellera ett fysikaliskt problem med vårt domänspecifika språk.
+            \item Lös ett ''vanligt'' fysikaliskt problem med hjälp av vårt domänspecifika språk.
             \item Simuleringar i stil med \textit{Bouncing Balls}.
             \item Delar av fysiken vi inte behandlat lämnas som övning att själv implementera.
         \end{itemize}
     \item Gå igenom allmän teori (t.ex. Newtons lagar, krafter som verkar, etc) tillsammans med en parallell utveckling av ett domänspecifikt språk.
     \item Materialet ska vara enkelt att ta till sig.
-    \item Verkligen exponera det DSL som vi gemensammt bygger för att påvisa kopplingen mellan fysik och programmering.
+    \item Verkligen exponera det DSL som vi gemensamt bygger för att påvisa kopplingen mellan fysik och programmering.
 \end{itemize}
 
 
 \subsection{Faktiskt utförande}
 
-Vårt mål är att utvecklingen av våra DSL:er sker pararellt med utvecklingen av läromaterialet. Så att läromaterialet utformas efter vår DSL och även att vår DSL utformas efter materialet som vi behandlar. 
+Vårt mål är att utvecklingen av våra DSL:er sker parallellt med utvecklingen av läromaterialet. Så att läromaterialet utformas efter vår DSL och även att vår DSL utformas efter materialet som vi behandlar.
 
 
 % Metodkapitlet ska beskriva hur man avser att lägga upp arbetet. Detta
@@ -203,7 +204,7 @@ För att avsluta vårt projekt så vill vi återkoppla med studenter inom data s
 
 \begin{itemize}
     \item Tror du att detta \textbf{hade} hjälpt dig när du studerade fysik?
-    \item Tror du att detta \textbf{kommer} att hjlpa dig när du studerar fysik?
+    \item Tror du att detta \textbf{kommer} att hjälpa dig när du studerar fysik?
     \item Har vi missat nåt?
     \item Vad hade vi kunnat göra bättre?
 \end{itemize}
@@ -214,7 +215,7 @@ I mån av tid så vill vi använda denna återkoppling för att förfina vårt l
 %\section{Hållbar utveckling}
 % Byte namn så att bilagan från kandidatriktlinjerna följs istället
 
-Nedan föjer svar på de samhälleliga och etiska frågor som ställts i anvisningarna till projektplanen-
+Nedan följer svar på de samhälleliga och etiska frågor som ställts i anvisningarna till projektplanen-
 
 1) Vilka etiska  aspekter (värden) är relevanta för projektet?
 \[
@@ -223,18 +224,18 @@ Nedan föjer svar på de samhälleliga och etiska frågor som ställts i anvisni
 
 Vi tycker inte det finns några negativa eller positiva etiska konsekvenser av detta projekt. Vi ska konstruera ett läromaterial om grundläggande fysik och har svårt att se hur det kan påverka någon individ eller grupp negativt.
 
-2) Hur kan vi genomföra vårt projekt för att undvika etiska problem med vår metod? 
+2) Hur kan vi genomföra vårt projekt för att undvika etiska problem med vår metod?
 
 Vi kommer att kommunicera med vår handledare, en föreläsare och studenter som testar vårt material. Givet att vi är allmänt trevliga ser vi inga etiska problem med denna metod.
 
-3) Vad kan det finnas för nytta eller etiska problem med det sannolika resultatet (utfallet) av projektet som man bör ta hänsyn till? 
+3) Vad kan det finnas för nytta eller etiska problem med det sannolika resultatet (utfallet) av projektet som man bör ta hänsyn till?
 
-Främjandet av fysikinlärning för datastudenter kan möjligtvis leda till positiva aspekter för samhället i stort, om inte annat för att utbildning blir lättare att ta till sig. Förhoppnigsvis kan vi också göra smärre nytta för forskningen inom detta område (DSL för pedagogik?).
+Främjandet av fysikinlärning för datastudenter kan möjligtvis leda till positiva aspekter för samhället i stort, om inte annat för att utbildning blir lättare att ta till sig. Förhoppningsvis kan vi också göra smärre nytta för forskningen inom detta område (DSL för pedagogik?).
 
-De enda dilemman där de etiska apsekterna skulle kunna äventyras skulle antagligen vara om vårat läromedel utnyttjades för att lära ut kärnfysik till studenter i länder med kärnvapenprogram \url{http://sverigesradio.se/sida/artikel.aspx?programid=3182&artikel=2980763}.
-   Detta lär inte vara något vi behöver beakta i vårat läromedel, då kursen fysik för ingenjörer inte innefattar någon kärnfysik.
+De enda dilemman där de etiska aspekterna skulle kunna äventyras skulle antagligen vara om vårt läromedel utnyttjades för att lära ut kärnfysik till studenter i länder med kärnvapenprogram \url{http://sverigesradio.se/sida/artikel.aspx?programid=3182&artikel=2980763}.
+   Detta lär inte vara något vi behöver beakta i vårt läromedel, då kursen fysik för ingenjörer inte innefattar någon kärnfysik.
 
-4)  Vilka berörs av projektets genomförande eller av det sannolika resultatet (utfallet) av projektet? Hur berörs de? Finns det etiska problem kopplat till detta som man bör ta hänsyn till? 
+4)  Vilka berörs av projektets genomförande eller av det sannolika resultatet (utfallet) av projektet? Hur berörs de? Finns det etiska problem kopplat till detta som man bör ta hänsyn till?
 
 Se ovanstående svar.
 
@@ -258,7 +259,7 @@ Tidplanen presenteras lämpligen i form av ett Gantt-schema.
     \item Göra läromaterial
     \item Testa på kaniner
     \item Verifiera med  Åka och Patrik genom hela projektet
-    \item Första utkast ill rapport
+    \item Första utkast till rapport
     \item + andra deadlines
 \end{itemize}
 

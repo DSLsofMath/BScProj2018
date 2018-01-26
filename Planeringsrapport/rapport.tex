@@ -113,7 +113,7 @@ De uppgifter vi har framför oss är därmed:
 
 
 Några frågor uppträder och de vill vi kunna besvara när det här projektet är klart:
-%Oskar: Vissa frågor kanske ska tas bort eller omforumerlas nu när vi bytt fokus
+%TODO: Vissa frågor kanske ska tas bort eller omforumerlas nu när vi bytt fokus
 \begin{itemize}
     \item Kan man skapa domänspecifika språk för fysik?
     \item Hur brett/djupt kan vi komma med våra domänspecfika språk?
@@ -129,7 +129,7 @@ Projektet kommer enbart behandla den fysik som ingår i kursen \textit{Fysik fö
 
 \textit{Fysik för ingenjörer} behandlar grunderna inom de tre områdena mekanik (inklusive stelkroppsmekanik), termodynamik och vågrörelselära. Vi har valt att i första hand prioritera mekanik, för att senare i mån av tid även behandla termodynamik och vågrörelselära. Dessutom kommer de områden datateknologer haft svårt för prioriteras. Även om projekets direkta syfte inte är att förbättra statistiken, är vår förhoppning att genom att behandla de svåra delarna mer ingående, kommer vår alternativa presentation ändå indirekt kunna underlätta förståelsen inom dessa områden.
 
-% Koppla till etik!
+%TODO: Koppla till etik!
 
 
 % Under avgränsningar talar man om vad man inte behandlar.
@@ -142,82 +142,16 @@ Projektet kommer enbart behandla den fysik som ingår i kursen \textit{Fysik fö
 
 \section{Metod/Genomförande}
 
+%TODO: Gäller detta fortfarande?
 Som ett genomgående tema vill vi arbeta in återkoppling med FysikÅke och DSLPatrik så att vi vet att vi håller oss på banan och inte gör det för svårt för oss själva eller potentiella studenter.
 
-Den övergripande planen är att inledningsvis läsa in oss på ämnesområdet, både inom fysik och domänspecifika språk. Därefter kommer vi skriva ett läromaterial parallellt med att domänspecifka språk implementeras.
+Den övergripande planen är att börja med att läsa in oss på fysik, domänspecika språk och liknande projekt. Detta för att få en grundläggande uppfattning av hur projeket kan tänkas se ut. Därefter kommer handledningen att skrivas. Eftersom domänsepcika spårk kommer presenteras varvat i handledningen kommer därför också de domänspecika språken skapas parallellt med skrivandet. Vi vet ännu inte hur vi bra kan fördela arbetet mellan gruppmedlemmarna. En möjlighet, beroende på tidsbehovet, är att en/två skriver om mekanik och en/två om termodynamik eller våglära. Under skrivandets gång kommer en del inläsning behöva göras parallellt. Det kan handla både om fysik och domänspecika språk, till exempel att jämföra vår implementation med likaratade implementationer, för att se att vi håller oss på banan.
 
-\subsection{Inläsning}
+För att hitta de områden datateknologer har problem med i \textit{Fysik för ingenjörer} kommer vi prata med kursens föreläsare, med DNS (Datateknologsektionen på Chalmers) samt reflektera över de delar vi själva tyckte var svåra.
 
-Inläsning och insamling av information om olika områden kommer behöva göras. Syftet med det är att identifiera problemområdena, att själva lära oss mer om fysik och domänspecifika språk samt få inspiration i hur man skulle kunna skapa ett sådant läromaterial vi ska göra. En stor del av inläsningen kommer ske under tidig del av projektet men vid behov kommer förstås mer att läsas efter hand. Punkterna som följer visar var vi i huvudsak kommer hämta information.
+De primära källorna till inläsning av fysik kommer att vara kursboken samt föreläsarens egna material i form av anteckningar och övningsuppgifter. Till vår hjälp för att förstå hur man bra kan skapa domänspecika språk inom fysik har vi boken \href{http://case.edu/artsci/math/wells/pub/pdf/commath.pdf}{Structural Interpretaton of Classical Mechanics}.
 
-\begin{itemize}
-    \item Identifikation av problemområden.
-        \begin{itemize}
-            \item Kontakt med Åke och DNS. Studera kursutvärderingar.
-            \item Reflektera över vad vi själva tyckt varit svåra områden då vi läst kursen.
-            \item Se om Patrik har något kul att säga...
-        \end{itemize}
-    \item Studerande av existerande läromaterial, både inom ren fysik och liknande vårt material.
-        \begin{itemize}
-            \item Fysikboken.
-            \item Åkes egna material.
-            \item Boken \href{http://case.edu/artsci/math/wells/pub/pdf/commath.pdf}{Structural Interpretaton of Classical Mechanics}.
-            \item Kursboken till kursen \textit{Matematikens domänspecifika språk}.
-        \end{itemize}
-    \item Existerande implementationer.
-        \begin{itemize}
-            \item OpenTA.
-            \item Hamilton.
-            \item MasteringPhysics.
-            \item Fråga om Patrik kan något mer...
-        \end{itemize}
-    \item Tidigare forskning.
-        \begin{itemize}
-            \item Cezar och Patriks 2015 paper.
-            \item 2016 års kandidatarbete.
-            \item Artikeln \textit{DSL for the Uninitiated}.
-            \item \textit{Communicating Mathematics: Useful Ideas from Computer Science}
-        \end{itemize}
-\end{itemize}
-
-\subsection{Implementation av domänspecifika språk}
-
-Vid implementationen av ett/flera domänspecika språk behöver nedanstående punkter genomföras.
-
-\begin{itemize}
-    \item Hitta relevanta grundtyper inom fysik, exempelvis sträcka och massa.
-    \item Hitta relevanta komposittyper, exempelvis hastighet och tryck.
-    \item Utförligt typsystem.
-    \item Dimensionskontroll.
-    \item Modellera fysikens syntax i språket.
-    \item Pedagogiska syntaxträd.
-    \item Kombinatorer och konstruktorer.
-    \item Hålla våra typer polymorfa.
-\end{itemize}
-
-\subsection{Skrivande av läromaterial}
-
-Vid skrivandet av läromaterialet kommer följande punkter ligga till grund.
-
-\begin{itemize}
-    \item Frågetecken: Gemensam vokabulär (som funkar när man pratar om både fysik och programmering, generics kontra polymorfism). Och som gör det möjligt att prata om dem i samma mening utan att byta språk och på så sätt brygga det semantiska gapet mellan områdena.
-    \item Övningar
-        \begin{itemize}
-            \item Modellera ett fysikaliskt problem med vårt domänspecifika språk.
-            \item Lös ett ''vanligt'' fysikaliskt problem med hjälp av vårt domänspecifika språk.
-            \item Simuleringar i stil med \textit{Bouncing Balls}.
-            \item Delar av fysiken vi inte behandlat lämnas som övning att själv implementera.
-        \end{itemize}
-    \item Gå igenom allmän teori (t.ex. Newtons lagar, krafter som verkar, etc) tillsammans med en parallell utveckling av ett domänspecifikt språk.
-    \item Materialet ska vara enkelt att ta till sig.
-    \item Verkligen exponera det DSL som vi gemensamt bygger för att påvisa kopplingen mellan fysik och programmering.
-\end{itemize}
-
-
-\subsection{Faktiskt utförande}
-
-Vårt mål är att utvecklingen av våra DSL:er sker parallellt med utvecklingen av läromaterialet. Så att läromaterialet utformas efter vår DSL och även att vår DSL utformas efter materialet som vi behandlar.
-
+Se bilaga $\lambda$ för en mer detaljerad lista över hur vi tänkt lägga upp arbetet.
 
 % Metodkapitlet ska beskriva hur man avser att lägga upp arbetet. Detta
 % omfattar bland annat arbetsgång, design av experiment och användning av olika
@@ -293,4 +227,119 @@ Tidplanen presenteras lämpligen i form av ett Gantt-schema.
     \item + andra deadlines
 \end{itemize}
 
+
+\newpage
+\pagenumbering{gobble}
+
+\section*{Bilagor}
+\label{sec:bilaga}
+\addcontentsline{toc}{section}{\nameref{sec:bilaga}}
+
+\subsection*{Bilaga $\lambda$: Detaljerad lista över metod}
+
+\subsubsection*{Inläsning}
+
+\begin{itemize}
+    \item Identifikation av problemområden.
+        \begin{itemize}
+            \item Kontakt med Åke och DNS. Studera kursutvärderingar.
+            \item Reflektera över vad vi själva tyckt varit svåra områden då vi läst kursen.
+            \item Se om Patrik har något kul att säga...
+        \end{itemize}
+    \item Studerande av existerande läromaterial, både inom ren fysik och liknande vårt material.
+        \begin{itemize}
+            \item Fysikboken.
+            \item Åkes egna material.
+            \item Boken \href{http://case.edu/artsci/math/wells/pub/pdf/commath.pdf}{Structural Interpretaton of Classical Mechanics}.
+            \item Kursboken till kursen \textit{Matematikens domänspecifika språk}.
+        \end{itemize}
+    \item Existerande implementationer.
+        \begin{itemize}
+            \item OpenTA.
+            \item Hamilton.
+            \item MasteringPhysics.
+            \item Fråga om Patrik kan något mer...
+        \end{itemize}
+    \item Tidigare forskning.
+        \begin{itemize}
+            \item Cezar och Patriks 2015 paper.
+            \item 2016 års kandidatarbete.
+            \item Artikeln \textit{DSL for the Uninitiated}.
+            \item \textit{Communicating Mathematics: Useful Ideas from Computer Science}
+        \end{itemize}
+\end{itemize}
+
+\subsubsection*{Implementation av domänspecifika språk}
+
+Vid implementationen av ett/flera domänspecika språk behöver nedanstående punkter genomföras.
+
+\begin{itemize}
+    \item Hitta relevanta grundtyper inom fysik, exempelvis sträcka och massa.
+    \item Hitta relevanta komposittyper, exempelvis hastighet och tryck.
+    \item Utförligt typsystem.
+    \item Dimensionskontroll.
+    \item Modellera fysikens syntax i språket.
+    \item Pedagogiska syntaxträd.
+    \item Kombinatorer och konstruktorer.
+    \item Hålla våra typer polymorfa.
+\end{itemize}
+
+\subsubsection*{Skrivande av läromaterial}
+
+Vid skrivandet av läromaterialet kommer följande punkter ligga till grund.
+
+\begin{itemize}
+    \item Frågetecken: Gemensam vokabulär (som funkar när man pratar om både fysik och programmering, generics kontra polymorfism). Och som gör det möjligt att prata om dem i samma mening utan att byta språk och på så sätt brygga det semantiska gapet mellan områdena.
+    \item Övningar
+        \begin{itemize}
+            \item Modellera ett fysikaliskt problem med vårt domänspecifika språk.
+            \item Lös ett ''vanligt'' fysikaliskt problem med hjälp av vårt domänspecifika språk.
+            \item Simuleringar i stil med \textit{Bouncing Balls}.
+            \item Delar av fysiken vi inte behandlat lämnas som övning att själv implementera.
+        \end{itemize}
+    \item Gå igenom allmän teori (t.ex. Newtons lagar, krafter som verkar, etc) tillsammans med en parallell utveckling av ett domänspecifikt språk.
+    \item Materialet ska vara enkelt att ta till sig.
+    \item Verkligen exponera det DSL som vi gemensamt bygger för att påvisa kopplingen mellan fysik och programmering.
+\end{itemize}
+
 \end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

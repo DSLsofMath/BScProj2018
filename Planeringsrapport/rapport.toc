@@ -1,9 +1,0 @@
-\select@language {swedish}
-\contentsline {section}{\numberline {1}Inledning}{1}
-\contentsline {section}{\numberline {2}Bakgrund}{1}
-\contentsline {section}{\numberline {3}Syfte}{1}
-\contentsline {section}{\numberline {4}Problem/Uppgift}{1}
-\contentsline {section}{\numberline {5}Avgr\IeC {\"a}nsningar}{1}
-\contentsline {section}{\numberline {6}Metod/Genomf\IeC {\"o}rande}{2}
-\contentsline {section}{\numberline {7}Samh\IeC {\"a}lleliga och etiska aspekter}{2}
-\contentsline {section}{\numberline {8}Tidsplan}{2}

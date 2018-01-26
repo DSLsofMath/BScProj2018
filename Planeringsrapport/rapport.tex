@@ -36,25 +36,47 @@
 
 \subsection{Varför}
 
-Det är allmänt känt att betygsstatistiken för datastudenter som läser fysik är ovanligt låg. Vi postulerar att detta beror på metoden som används för att lära ut fysik skiljer sig drastiskt från hur andra kurser lärs ut inom data. Och om det fanns ett sätt att kombinera det material som ska läras ut med de pedagogiska verktyg som används inom datakurser så kan vi underlätta lärandet. Vår hypotes är att om man kan ``lära" en dator fysik så har man själv förstått materialet.
+%PaJa: formulera om "allmänt känt att betygsstatistiken": kanske något stil med "Många D-studenter har problem med ..."?
+Det är allmänt känt att betygsstatistiken för datastudenter som läser fysik är ovanligt låg.
+%PaJa: "postulerar" känns inte bra här. "tror"? Jag är också osäker på om "metoden" verkligen skiljer sig drastiskt. Tydliggör vad ni menar, och vilka andra kurser ni jämför med.
+Vi postulerar att detta beror på metoden som används för att lära ut fysik skiljer sig drastiskt från hur andra kurser lärs ut inom data.
+%PaJa: OK
+Och om det fanns ett sätt att kombinera det material som ska läras ut med de pedagogiska verktyg som används inom datakurser så kan vi underlätta lärandet.
+%PaJa: kan nog behöva förklaras mer.
+Vår hypotes är att om man kan ``lära'' en dator fysik så har man själv förstått materialet.
 
+%PaJa: var är bilagan? Olämpligt "namn".
 Se bilaga: Möte med Åke bråke
 
 \subsection{Vad?}
+
 Vi vill med detta projekt skapa ett pedagogiskt läromaterial som med hjälp av en eller flera DSL:er ska fungera som ett komplement till de kurser i fysik som riktar sig till studenter inom datateknik.
 
 \subsection{Relevant för?}
 
-Detta läromaterial kommer främst att rikta sig till studenter inom data som tar en fysikkurs. Men det kan också ses som relevant läsning för en student inom fysik som är ute efter en inkörsport till funktionell programmering. Förhoppningsvis blir det också relevant för de som är intresserade av DSL:er i stort, pedagoger och föreläsare inom de berörda områdena och kanske till och med programledningen som ser vår rapport som ett skäl att skifta läroplanen.
+Detta läromaterial kommer främst att rikta sig till studenter inom data som tar en fysikkurs. Men det kan också ses som relevant läsning för en student inom fysik som är ute efter en inkörsport till funktionell programmering.
+%
+Förhoppningsvis blir det också relevant för de som är intresserade av DSL:er i stort, pedagoger och föreläsare inom de berörda områdena
+%
+%PaJa: angående "skifta läroplanen" - det är oklart vad ni menar här. Formulera om med tanke på rubriken "relevant för" - programledning kanske vill utveckla / förbättra programmet, etc.
+och kanske till och med programledningen som ser vår rapport som ett skäl att skifta läroplanen.
 
 \subsection{Relaterat till?}
 
-Detta arbete kan relateras det arbete som redan utförts inom detta område t.ex. \textit{Structure and Implementation of Classical Mechanics}. Och även det arbete som Patrik Jansson utfört med att brygga gapet inom analys. Vi skulle också gärna se att vårt arbete kan relateras till den större diskussionen om varför matte och fysik lärs ut inom data.
+%PaJa: bra med referenser - men gör en .bib-fil och citera ordentligt.
+Detta arbete kan relateras det arbete som redan utförts inom detta område t.ex. \textit{Structure and Implementation of Classical Mechanics}.
+%PaJa: citera mer specifikt (kursen, artikeln, eller båda). [Det är heller inte specifikt bara "analys".]
+Och även det arbete som Patrik Jansson utfört med att brygga gapet inom analys.
+%PaJa: OK, men bör kanske formuleras om för att tydliggöra.
+Vi skulle också gärna se att vårt arbete kan relateras till den större diskussionen om varför matte och fysik lärs ut inom data.
 
 
 \section{Syfte}
 
-Syftet med projektet är att skapa ett läromaterial i fysik riktat till personer med grundläggande kunskaper i funktionell programmering. Läromaterialet kommer baseras på av oss implementerade domänspecifika språk för fysik.
+%PaJa: OK, men lite kort.
+Syftet med projektet är att skapa ett läromaterial i fysik riktat till personer med grundläggande kunskaper i funktionell programmering.
+%PaJa: kanske värt att överväga att även utnyttja andras implementationer, i den mån ni hittar sådana.
+Läromaterialet kommer baseras på av oss implementerade domänspecifika språk för fysik.
 
 %Syftet är en kort beskrivning av uppdraget och vilket resultat som uppdraget
 %ska leda till.
@@ -71,11 +93,15 @@ Syftet med projektet är att skapa ett läromaterial i fysik riktat till persone
 \textbf{Frågor som vi vill besvara:}
 
 \begin{itemize}
+%PaJa: "ett eller flera"?
     \item Kan man skapa ett DSL för fysik.
+%PaJa: "våra"?
     \item Hur brett/djupt kan vi komma med vår DSL.
     \item Kan man använda vår DSL för att lära ut.
     \item Kan vi skapa ett läromaterial utifrån vår DSL.
+%PaJa: vore bra med konsistent formuleringsval "läromedel" eller "läromaterial" eller ...
     \item Kommer vårt läromedel främja lärandet.
+%PaJa: vore bra att använda svenska termer
     \item Är deep eller shallow embedding bättre ur ett pedagogiskt syfte.
 \end{itemize}
 
@@ -84,13 +110,16 @@ Syftet med projektet är att skapa ett läromaterial i fysik riktat till persone
 \begin{itemize}
     \item Identifiera problemområden för datastudenter inom fysiken.
     \item Implementera DSL:er för fysik
+%PaJa: typo "lärometerial" (men se även formuleringsval ovan)
     \item Utveckla lärometerial inom fysik tätt bundna till våra DSL:er
     \item Testa och leverera det utvecklade läromaterialet.
 \end{itemize}
 
 \section{Avgränsningar}
 
-Projektet kommer enbart behandla fysik som ingår i kursen \textit{Fysik för ingenjörer}. Dessutom kommer olika innehåll att prioriteras.
+Projektet kommer enbart behandla fysik som ingår i kursen \textit{Fysik för ingenjörer}.
+%PaJa: den här meningen är lite svår att förstå:
+Dessutom kommer olika innehåll att prioriteras.
 
 I första hand kommer de delar som identifierats som svåra att behandlas.
 
@@ -98,7 +127,10 @@ I andra hand kommer mekanik behandlas.
 
 I tredje hand kommer termodynamik och våglära behandlas.
 
-Denna prioritering valdes så att de delar som studenter haft svårast för behandlas först. Sedan behandlas övriga delar i mån av tid. Avgränsningen att enbart behandla fysiken ifrån \textit{Fysik för ingenjörer} beror dels på att det är så mycket fysik gruppmedlemmerna kan, dels på att det är den kursen detta arbete kan bli mest relevant för.
+%PaJa: (notera angående etik senare, att ni aktivt försöker maximera nyttan (för en viss grupp), dvs. göra etiskt bra val)
+Denna prioritering valdes så att de delar som studenter haft svårast för behandlas först.
+%
+Sedan behandlas övriga delar i mån av tid. Avgränsningen att enbart behandla fysiken ifrån \textit{Fysik för ingenjörer} beror dels på att det är så mycket fysik gruppmedlemmerna kan, dels på att det är den kursen detta arbete kan bli mest relevant för.
 
 
 

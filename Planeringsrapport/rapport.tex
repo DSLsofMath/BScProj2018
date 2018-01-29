@@ -72,7 +72,7 @@ och kanske till och med programledningen som ser vår rapport som ett skäl att 
 \subsection{Relaterat till?}
 
 %PaJa: bra med referenser - men gör en .bib-fil och citera ordentligt.
-Detta arbete kan relateras det arbete som redan utförts inom detta område t.ex. \textit{Structure and Implementation of Classical Mechanics}.
+Detta arbete kan relateras det arbete som redan utförts inom detta område t.ex. \textit{Structure and Implementation of Classical Mechanics}\cite{SICM}.
 %PaJa: citera mer specifikt (kursen, artikeln, eller båda). [Det är heller inte specifikt bara "analys".]
 Och även det arbete som Patrik Jansson utfört med att brygga gapet inom analys.
 %PaJa: OK, men bör kanske formuleras om för att tydliggöra.
@@ -96,7 +96,7 @@ Syftet med projektet är att skapa domänspecifika språk för fysik samt ett ti
 \section{Problem/Uppgift}
 
 %Oskar: Detta är min bild. Rätta om jag fått något om bakfoten
-Slutprodudukten är tänkt att bli en handledning till fysik mixat med domänspecika språk för fysik. Handledningen ska vara en brödtext varvat med programkod och ska att ha en lättsam stil, i likhet med \textit{Learn You a Haskell} som är en handledning för Haskell. Vår tanke är att presentera fysik parallellt med att vi bygger upp domänspecika språk som används till fysik. Vi kommer även i texten presentera exempel på fysikaliska problem och sedan visa hur man kan modellera och lösa dem i de domänspecifika språk vi skapat.
+Slutprodudukten är tänkt att bli en handledning till fysik mixat med domänspecika språk för fysik. Handledningen ska vara en brödtext varvat med programkod och ska att ha en lättsam stil, i likhet med \textit{Learn You a Haskell}\cite{LYAH} som är en handledning för Haskell. Vår tanke är att presentera fysik parallellt med att vi bygger upp domänspecika språk som används till fysik. Vi kommer även i texten presentera exempel på fysikaliska problem och sedan visa hur man kan modellera och lösa dem i de domänspecifika språk vi skapat.
 
 De uppgifter vi har framför oss är därmed:
 
@@ -149,7 +149,7 @@ Den övergripande planen är att börja med att läsa in oss på fysik, domänsp
 
 För att hitta de områden datateknologer har problem med i \textit{Fysik för ingenjörer} kommer vi prata med kursens föreläsare, med DNS (Datateknologsektionen på Chalmers) samt reflektera över de delar vi själva tyckte var svåra.
 
-De primära källorna till inläsning av fysik kommer att vara kursboken samt föreläsarens egna material i form av anteckningar och övningsuppgifter. Till vår hjälp för att förstå hur man bra kan skapa domänspecika språk inom fysik har vi boken \href{http://case.edu/artsci/math/wells/pub/pdf/commath.pdf}{Structural Interpretaton of Classical Mechanics}.
+De primära källorna till inläsning av fysik kommer att vara kursboken samt föreläsarens egna material i form av anteckningar och övningsuppgifter. Till vår hjälp för att förstå hur man bra kan skapa domänspecika språk inom fysik har vi boken \textit{Structure and Interpretaton of Classical Mechanics}\cite{SICM}.
 
 Se bilaga $\lambda$ för en mer detaljerad lista över hur vi tänkt lägga upp arbetet.
 
@@ -240,6 +240,11 @@ Tidplanen presenteras lämpligen i form av ett Gantt-schema.
 \newpage
 \pagenumbering{gobble}
 
+\bibliography{referenser} 
+\addcontentsline{toc}{section}{Referenser}
+\bibliographystyle{ieeetr}
+
+\newpage
 \section*{Bilagor}
 \label{sec:bilaga}
 \addcontentsline{toc}{section}{\nameref{sec:bilaga}}
@@ -259,7 +264,7 @@ Tidplanen presenteras lämpligen i form av ett Gantt-schema.
         \begin{itemize}
             \item Fysikboken.
             \item Åkes egna material.
-            \item Boken \href{http://case.edu/artsci/math/wells/pub/pdf/commath.pdf}{Structural Interpretaton of Classical Mechanics}.
+            \item Boken \textit{Structure Interpretaton of Classical Mechanics}\cite{SICM}.
             \item Kursboken till kursen \textit{Matematikens domänspecifika språk}.
         \end{itemize}
     \item Existerande implementationer.

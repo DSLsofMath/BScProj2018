@@ -43,56 +43,96 @@
 \section{Bakgrund}
 
 % Varför
-På civilingenjörsprogrammet Datateknik på Chalmers ingår fysikkursen \textit{Fysik för ingenjörer}. Många Datateknik-studenter (''datateknologer'') tycker att fysikkursen är ointressant, svår och irrelevant för programmet.  Vår tanke med detta projekt är att göra kursen både intressant och relevant, och därmed förhoppningvis enklare också.
+På civilingenjörsprogrammet Datateknik på Chalmers ingår fysikkursen
+\textit{Fysik för ingenjörer}. Tentastatistiken för denna kurs är inte
+jättebra\cite{tentastatistik}. Vi
+tror att många studenter på datateknik, (``datateknologer''), finner denna kurs
+svår eller ointressant, och att detta leder till att ungefär en
+tredjedel av kursdeltagare får underkänt på tentamen.
 
-% Vad
-Vår idé är att presentera fysik på ett sätt som skiljer sig från hur det vanligtvis presenteras. Vi tänker använda domänspecifika språk i Haskell för att modellera fysik och på så sätt göra kopplingen till programmet tydligare.
+Examinatorn för kursen ``Fysik för ingenjörer, TIF085 (2016)'', tror
+att svårigheter med kursen kan bero mycket på
+%% ÅKES TANKAR OM VARFÖR DATATEKNOLOGER HAR SVÅRT FÖR FYSIKKURSER ETC
+%% HÄR
 
-% Relaterat till
-Detta sätt att behandla områden är inget nytt. Faktum är att detta kandidatarbete i sig är en avgrening från det likartade projektet \textit{Matematikens domänspecika språk} som presenterar matematik så som derivator, komplexa tal och matriser ur ett funktionellt programmeringsperspektiv. Detta projeket kan också kopplas till den större diskussionen om varför matematik och fysik lärs på Datateknik och likartade program, en fråga många datateknologer ställt sig.
-% TODO: Ni som kan något om den hära "strcuture and implementtion..." får gärna skriva något om den här.
+Sedan våren 2016 har kursen ``Domain Specific Languages of
+Mathematics'' (``DSL'') eller ``Matematikens domänspecifika språk'' givits på
+kandidatnivå för studenter på Chalmers och Göteborgs Universitet. År
+2016 med Cezan Ionescu som huvudföreläsare, och 2017 med Patrik
+Jansson som huvudföreläsare. Det direkta målet är att förbättra den
+matematiska utbildningen för
+datavetare och den datavetenskapliga utbildningen för
+matematiker, och den grundläggande idéen bakom kursen är att ``uppmuntra studenterna
+att närma sig matematiska domäner från ett funktionellt
+programmeringsperspektiv: att ge beräkningsbevis (calculational
+proofs); att visa uppmärksamhet mot syntaxen för matematiska uttryck;
+och, slutligen, att organisera de resulterande funktionerna och
+typerna i domänspecifika
+språk.''.\cite{lecture-notes}\cite{tfpie2015}
+Konkret så presenterar kursen matematik så som derivator, komplexa
+tal och matriser ur ett funktionellt programmeringsperspektiv i
+Haskell. Dessa för studenterna bekanta verktyg används för att lösa
+matematiska problem så som modellering av syntax, evaluering till
+semantiska värden, och datorassisterad bevisföring.
+
+På MIT har en kurs tidigare givits som berör både fysik
+och DSL. ``Classical Mechanics: A Computational Approach'' gavs av
+Prof Geral Sussman och Prof. Jack Wisdom bl.a. år
+2008.\cite{classical-mechanics-course-mit-2008}
+Denna kurs på avancerad nivå studerar de fundamentala principerna av klassisk mekanik
+med hjälp av beräkningsidéer för att precist formulera principerna av
+mekanik, med början i Lagranges ekvationer och avslut i
+perturbationsteori. I kursen används boken ``Structure and
+Interpretation of Classical Mechanics'' av Sussman, Wisdom, och Mayer,
+vilken förklarar fysiska fenomen genoma att visa datorprogram för att
+simulera dem, skrivna i språket Scheme.\cite{SICM}
+
+Vår tanke med detta kandidatarbete är att, likt premissen bakom DSL
+kursen, med hjälp av ett bekant verktyg som Haskell angripa
+fysik på ett sådant sätt att ämnet blir både intressant och relevant
+för datateknologer, och därmed förhoppningvis enklare också.
+Med hjälp av domänspecifika språk i Haskell för att modellera fysik,
+i.e. samma pedagogiska verktyg som används inom datakurser,
+tror vi att kopplingen mellan fysikkursen och datateknikprogrammet kan
+göras tydligare och lärandet kan underlättas.
 
 % Relevant för
-Projektet är relevant för datateknologer som läser en fysikkurs. Men det kan också bli relevant för en fysikstudent som är ute efter en inkörsport till funktionell programmering. Förhoppningsvis blir det också relevant för de som är intresserade av domänspecifika språk i stort, pedagoger och föreläsare inom de berörda områdena och kanske till och med programledningen som ser vår rapport som ett skäl att introducera innehåll av denna karaktär i till exempel fysikkursen.
+Projektet är relevant för datateknologer som läser en fysikkurs. Men
+det kan också bli relevant för en fysikstudent som är ute efter en
+inkörsport till funktionell programmering. Förhoppningsvis blir det
+också relevant för de som är intresserade av domänspecifika språk i
+stort, pedagoger och föreläsare inom de berörda områdena och kanske
+till och med programledningen som ser vår rapport som ett skäl att
+introducera innehåll av denna karaktär i till exempel fysikkursen.
 
-För läsaren som inte är insatt i domänspecifika språk, kan det förklaras som ett språk konstruerat för ett specifikt område, en domän. Språket kan användas för att enklare uttrycka saker inom domänen, till exempel Newtons andra lag $F=m \cdot a$ än vad som är möjligt inom generella (programmerings)språk. För vidare läsning rekommenderas \textit{DSL for the Uninitiated}.\cite{DSLU}
+För läsaren som inte är insatt i domänspecifika språk, kan det
+förklaras som ett språk konstruerat för ett specifikt område, en
+domän. Språket kan användas för att enklare uttrycka saker inom
+domänen, till exempel Newtons andra lag $F=m \cdot a$ än vad som är
+möjligt inom generella (programmerings)språk. För vidare läsning
+rekommenderas \textit{DSL for the Uninitiated}.\cite{DSLU}
 
 
-% \subsection{Varför}
-% 
-% 
-% %PaJa: formulera om "allmänt känt att betygsstatistiken": kanske något stil med "Många D-studenter har problem med ..."?
-% Det är allmänt känt att betygsstatistiken för datastudenter som läser fysik är ovanligt låg.
-% %PaJa: "postulerar" känns inte bra här. "tror"? Jag är också osäker på om "metoden" verkligen skiljer sig drastiskt. Tydliggör vad ni menar, och vilka andra kurser ni jämför med.
-% Vi postulerar att detta beror på metoden som används för att lära ut fysik skiljer sig drastiskt från hur andra kurser lärs ut inom data.
-% %PaJa: OK
-% Och om det fanns ett sätt att kombinera det material som ska läras ut med de pedagogiska verktyg som används inom datakurser så kan vi underlätta lärandet.
-% %PaJa: kan nog behöva förklaras mer.
-% Vår hypotes är att om man kan ``lära'' en dator fysik så har man själv förstått materialet.
-% 
-% 
 % \subsection{Vad?}
-% 
+%
 % Vi vill med detta projekt skapa ett pedagogiskt läromaterial som med hjälp av en eller flera DSL:er ska fungera som ett komplement till de kurser i fysik som riktar sig till studenter inom datateknik.
-% 
+%
 % \subsection{Relevant för?}
-% 
-% Detta läromaterial kommer främst att rikta sig till studenter inom data som tar en fysikkurs. Men det kan också ses som relevant läsning för en student inom fysik som är ute efter en inkörsport till funktionell programmering.
-% %
+%
 % Förhoppningsvis blir det också relevant för de som är intresserade av DSL:er i stort, pedagoger och föreläsare inom de berörda områdena
 % %
 % %PaJa: angående "skifta läroplanen" - det är oklart vad ni menar här. Formulera om med tanke på rubriken "relevant för" - programledning kanske vill utveckla / förbättra programmet, etc.
 % och kanske till och med programledningen som ser vår rapport som ett skäl att skifta läroplanen.
-% 
+%
 % \subsection{Relaterat till?}
-% 
+%
 % %PaJa: bra med referenser - men gör en .bib-fil och citera ordentligt.
 % Detta arbete kan relateras det arbete som redan utförts inom detta område t.ex. \textit{Structure and Implementation of Classical Mechanics}\cite{SICM}.
 % %PaJa: citera mer specifikt (kursen, artikeln, eller båda). [Det är heller inte specifikt bara "analys".]
 % Och även det arbete som Patrik Jansson utfört med att brygga gapet inom analys.
 % %PaJa: OK, men bör kanske formuleras om för att tydliggöra.
 % Vi skulle också gärna se att vårt arbete kan relateras till den större diskussionen om varför matte och fysik lärs ut inom data.
-% 
+%
 
 \section{Syfte}
 
@@ -346,43 +386,3 @@ Vid skrivandet av läromaterialet kommer följande punkter ligga till grund.
 \end{itemize}
 
 \end{document}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,6 +1,6 @@
 
 |                     | Björn | Erik | Johan | Oskar |
 |---------------------|-------|------|-------|-------|
-| Halvtidsredovisning |       |      |       |       |
-| Slutredovisning     |       |      |       |       |
-| Opposition          |       |      |       |       |
+| Halvtidsredovisning |   x   |      |       |   x   |
+| Slutredovisning     |       |  x   |   x   |       |
+| Opposition          |   x   |      |       |   x   |

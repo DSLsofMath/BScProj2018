@@ -56,8 +56,8 @@ att svårigheter med kursen kan bero mycket på
 %% HÄR
 
 Sedan våren 2016 har kursen ``Domain Specific Languages of
-Mathematics'' (``DSL'') eller ``Matematikens domänspecifika språk'' givits på
-kandidatnivå för studenter på Chalmers och Göteborgs Universitet. År
+Mathematics'' (``DSL'') eller ``Matematikens domänspecifika språk'' givits som en
+valbar kurs på kandidatnivå för studenter på Chalmers och Göteborgs Universitet. År
 2016 med Cezan Ionescu som huvudföreläsare, och 2017 med Patrik
 Jansson som huvudföreläsare. Det direkta målet är att förbättra den
 matematiska utbildningen för
@@ -87,7 +87,7 @@ Interpretation of Classical Mechanics'' av Sussman, Wisdom, och Mayer,
 vilken förklarar fysiska fenomen genoma att visa datorprogram för att
 simulera dem, skrivna i språket Scheme.\cite{SICM}
 
-Utöver DSL kursen har även tidigare gjorts ett kandidatarbete om DSL
+Utöver DSL-kursen har det även tidigare gjorts ett kandidatarbete om DSL
 här på Chalmers. År 2016 på vårterminen utfördes kandidatarbetet
 ``Programmering som undervisningsverktyg för Transformer, signaler och
 system. Utvecklingen av läromaterialet TSS med DSL'' av fem studenter
@@ -96,8 +96,8 @@ utveckling av läromaterial med tillhörande programmeringskod,
 uppgifter, och lösningar, som komplement till existerande kurser i
 signallära.\cite{kandidat2016}
 
-Vår tanke med detta kandidatarbete är att, likt premissen bakom DSL
-kursen och kandidatarbetet från 2016, med hjälp av ett bekant verktyg
+Vår tanke med detta kandidatarbete är att, likt premissen bakom DSL-kursen 
+och kandidatarbetet från 2016, med hjälp av ett bekant verktyg
 som Haskell angripa fysik på ett sådant sätt att ämnet blir både
 intressant och relevant för datateknologer, och därmed förhoppningvis
 enklare också. Med hjälp av domänspecifika språk skrivna i Haskell för att
@@ -160,23 +160,24 @@ Syftet med projektet är att skapa domänspecifika språk för fysik samt tillh�
 \section{Problem/Uppgift}
 
 %Oskar: Detta är min bild. Rätta om jag fått något om bakfoten
-Slutprodudukten är tänkt att bli en handledning till fysik mixat med domänspecika språk för fysik. Handledningen ska vara en brödtext varvat med programkod och ska att ha en lättsam stil, i likhet med \textit{Learn You a Haskell}\cite{LYAH} som är en handledning för Haskell. Vår tanke är att presentera fysik parallellt med att vi bygger upp domänspecika språk som används till fysik. Vi kommer även i texten presentera exempel på fysikaliska problem och sedan visa hur man kan modellera och lösa dem i de domänspecifika språk vi skapat.
+Slutprodudukten är tänkt att bli ett läromaterial som med hjälp av domänspecfika språk förklarar koncept inom fysiken. Läromaterialet ska vara en brödtext varvat med programkod och exempel skrivet på en lättsam stil, i likhet med \textit{Learn You a Haskell}\cite{LYAH} som är ett läromaterial för Haskell. Vår tanke är att presentera fysik parallellt med att vi bygger upp domänspecika språk för fysik. Vi kommer även i texten presentera fysikaliska problem och visa hur man kan modellera och lösa dem i de domänspecifika språk vi skapat tillsammans.
+
 
 De uppgifter vi har framför oss är därmed:
 
 \begin{itemize}
 	\item Hitta de områden inom \textit{Fysik för ingenjörer} som datateknologer har svårt för.
-	\item Inläsning av...
+	\item Inläsning av \dots
 	\begin{itemize}
-		\item ...fysik.
-		\item ...domänspecifika språk.
-		\item ...liknande projekt för att få inspiration.
+		\item \dots fysik.
+		\item \dots domänspecifika språk.
+		\item \dots liknande projekt för att få inspiration.
 	\end{itemize}
-	\item Skriva handledning och parallellt implementera egna domänspecifika språk.
+	\item Skriva läromaterial och parallellt implementera egna domänspecifika språk.
 \end{itemize}
 
 
-Några frågor uppträder och de vill vi kunna besvara när det här projektet är klart:
+Frågor som vi vill besvara när projektet är klart:
 %TODO: Vissa frågor kanske ska tas bort eller omforumerlas nu när vi bytt fokus
 \begin{itemize}
     \item Kan man skapa domänspecifika språk för fysik?
@@ -191,7 +192,7 @@ Några frågor uppträder och de vill vi kunna besvara när det här projektet �
 
 Projektet kommer enbart behandla den fysik som ingår i kursen \textit{Fysik för ingenjörer}. Denna avgränsningen valdes dels för att det är så mycket fysik gruppmedlemmarna kan, dels för att det är den kursen detta projekt kan blir mest relevant för.
 
-\textit{Fysik för ingenjörer} behandlar grunderna inom de tre områdena mekanik (inklusive stelkroppsmekanik), termodynamik och vågrörelselära. Vi har valt att i första hand prioritera mekanik, för att senare i mån av tid även behandla termodynamik och vågrörelselära. Dessutom kommer de områden datateknologer haft svårt för prioriteras. Även om projekets direkta syfte inte är att förbättra statistiken, är vår förhoppning att genom att behandla de svåra delarna mer ingående, kommer vår alternativa presentation ändå indirekt kunna underlätta förståelsen inom dessa områden.
+\textit{Fysik för ingenjörer} behandlar grunderna inom de tre områdena mekanik (inklusive stelkroppsmekanik), termodynamik och vågrörelselära. Vi har valt att i första hand prioritera mekanik, för att senare i mån av tid även behandla termodynamik och vågrörelselära. Dessutom kommer de områden datateknologer haft svårt för prioriteras. Även om projekets direkta syfte inte är att förbättra betygsstatistiken, är vår förhoppning att genom att behandla de svåra delarna mer ingående, kommer vår alternativa presentation ändå indirekt kunna underlätta förståelsen inom dessa områden.
 
 % Åkes svar angående svårigheter för studenter: Den korta versionen är att jag tycker att studenter i allmänhet har svårt att sätta upp egna modeller. Man tar genvägar (som ofta är fel) och bygger inte från det som man är säker på gäller.Dessutom: infinitesimalkalkyl är ju en av hörnpelarna i fysiken och studenterna har trots att de har läst ganska mycket matematik jättesvårt att använda detta på verkliga system.
 
@@ -212,11 +213,11 @@ Projektet kommer enbart behandla den fysik som ingår i kursen \textit{Fysik fö
 %TODO: Gäller detta fortfarande?
 Som ett genomgående tema vill vi arbeta in återkoppling med FysikÅke och DSLPatrik så att vi vet att vi håller oss på banan och inte gör det för svårt för oss själva eller potentiella studenter.
 
-Den övergripande planen är att börja med att läsa in oss på fysik, domänspecika språk och liknande projekt. Detta för att få en grundläggande uppfattning av hur projeket kan tänkas se ut. Därefter kommer handledningen att skrivas. Eftersom domänsepcika spårk kommer presenteras varvat i handledningen kommer därför också de domänspecika språken skapas parallellt med skrivandet. Vi vet ännu inte hur vi bra kan fördela arbetet mellan gruppmedlemmarna. En möjlighet, beroende på tidsbehovet, är att en/två skriver om mekanik och en/två om termodynamik eller våglära. Under skrivandets gång kommer en del inläsning behöva göras parallellt. Det kan handla både om fysik och domänspecika språk, till exempel att jämföra vår implementation med likaratade implementationer, för att se att vi håller oss på banan.
+Den övergripande planen är att börja med att läsa in oss på fysik, domänspecika språk och liknande projekt. Detta för att få en grundläggande uppfattning av hur projeket kan tänkas se ut. Därefter kommer handledningen att skrivas. Eftersom domänspecifika spårk kommer presenteras varvat i läromaterialet kommer därför också de domänspecika språken skapas parallellt med skrivandet. Vi vet ännu inte hur vi bra kan fördela arbetet mellan gruppmedlemmarna. En möjlighet, beroende på tidsbehovet, är att en/två skriver om mekanik och en/två om termodynamik eller våglära. Under skrivandets gång kommer en del inläsning behöva göras parallellt. Det kan handla både om fysik och domänspecika språk, till exempel att jämföra vår implementation med likaratade implementationer, för att se att vi håller oss på banan.
 
 För att hitta de områden datateknologer har problem med i \textit{Fysik för ingenjörer} kommer vi prata med kursens föreläsare, med DNS (Datateknologsektionen på Chalmers) samt reflektera över de delar vi själva tyckte var svåra.
 
-De primära källorna till inläsning av fysik kommer att vara kursboken samt föreläsarens egna material i form av anteckningar och övningsuppgifter. Till vår hjälp för att förstå hur man bra kan skapa domänspecika språk inom fysik har vi boken \textit{Structure and Interpretaton of Classical Mechanics}\cite{SICM}.
+De primära källorna till inläsning av fysik kommer att vara kursboken \textit{University Physics}\cite{UP} samt föreläsarens egna material i form av anteckningar och övningsuppgifter. Till vår hjälp för att förstå hur man på ett bra sätt kan skapa domänspecika språk inom fysik har vi boken \textit{Structure and Interpretaton of Classical Mechanics}\cite{SICM}.
 
 Se bilaga $\lambda$ för en mer detaljerad lista över hur vi tänkt lägga upp arbetet.
 
@@ -252,7 +253,9 @@ En positiv etisk aspekt på projektet är att vi valt att prioritera de områden
 
 En negativ etisk aspekt är att nyttovärdet enbart gynnar de som är bra på Haskell och funktionell programmering. För att kunna tillgodogöra sig den eventuella kunskapsvinning från detta projeket krävs det att man är bra på Haskell eftersom allting uttrycks i det programmeringsspråket.
 
-I likhet med de flesta kunskapsinsamlande projeket, även om något så ''oskyldigt'' som matematik och grundläggande mekanik, uppkommer frågan om i vilka syften kunskapen kan användas till. Den kunskap vi hittar är i sig inte farlig eller missgynnande för någon. Däremot kan den användas av andra till illvilliga syften. Det skulle vara möjligt att spinna vidare på detta projeket och skapa till exempel bomber av olika slag. Detta är en aspekt som är viktig att ha i åtanke.
+I likhet med de flesta kunskapsinsamlande projeket, även om något så ''oskyldigt'' som matematik och grundläggande mekanik, uppkommer frågan om i vilka syften kunskapen kan användas till. Den kunskap vi hittar är i sig inte farlig eller missgynnande för någon. Däremot kan den användas av andra till illvilliga syften. 
+%Det skulle vara möjligt att spinna vidare på detta projeket och skapa till exempel bomber av olika slag. 
+Detta är en aspekt som man kan ha i åtanke.
 
 
 

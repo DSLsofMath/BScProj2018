@@ -5,48 +5,55 @@ module K2
 where
 
 -- s, v, t
-data Dis
-data Vel
-data Tim
+data Dis = Dis
+data Vel = Vel
+data Tim = Tim
 
--- ds, dt (infinitesimala)         
-data DisI
-data TimI
+data Mul a b
+data Div a b
 
-data Equ lhs rhs
+axiom = undefined
 
-axi = undefined -- axiom
+mulIntro :: a -> b -> Mul a b
+mulIntro = axiom
 
+divIntro :: a -> b -> Div a b
+divIntro = axiom
 
+mulCom :: Mul a b -> Mul b a
+mulCom = axiom
 
-integDis :: DisI -> Dis
-integTim :: TimI -> Tim
+mulDivElim1 :: Mul a (Div b a) -> b
+mulDivElim1 = axiom
 
-
-
--- likhet är som ekvivalens
--- 
-
--- s = v * t
-velMtimEdis :: Vel -> Tim -> Dis
-velMtimEdis = axi
-
-
--- v = s / t
-disDvelEtim :: Dis -> Vel -> Tim
-disDvelEtim s v = 
+mulDivElim2 :: Mul (Div b a) a -> b
+mulDivElim2 bDaMa = let aMbDa = mulCom bDaMa
+                    in  mulDivElim1 aMbDa
 
 
+data Equ lhs rhs = Equ lhs rhs
+
+mult :: (Equ lhs rhs) -> f -> Equ (Mul lhs f) (Mul rhs f)
+mult = axiom
 
 
+op :: (Equ a a) -> (a -> t) -> (Equ t t)
+op = axiom
 
 
+eqIntro :: a -> b -> Equ a b
+eqIntro = axiom
 
-u = undefined
-velMtim = u
-disDvel = u
-disDtim = u
+eqElim :: Equ a b -> (a, b)
+eqElim = axiom
 
-integDis = u
-integTim = u
-momentousV = u
+
+sEvMt :: Equ Dis (Mul Vel Tim)
+sEvMt = let vMtE'sDt'Mt = mult vEsDt Tim
+            (vMt, sDtMt) = eqElim vMtE'sDt'Mt
+            s = mulDivElim2 sDtMt
+        in eqIntro s vMt
+
+vEsDt :: Equ Vel (Div Dis Tim)
+vEsDt = axiom
+

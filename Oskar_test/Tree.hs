@@ -37,7 +37,8 @@ integ (Polynomial as) = Polynomial (integ' as)
         integ'' (a:as) n = (a / n):(integ'' as (n+1))
 integ exp = exp
 
-data Position r = Position (Function r)
+data Distance r = Distance (Function r)
+                | 
                 deriving (Eq, Show)
 
 data Velocity r = Velocity (Function r)
@@ -50,4 +51,6 @@ data Time r     = Time (Function r)
 -- Funkar bara om v konstant, dvs v är *en konstant*
 
 v :: (Fractional r) => Velocity r
-v = Velocity (Function 
+v = Velocity (Polynomial [7]) -- v=7
+
+s :: (Fractional r) => Velocity r -> Time r -> Distance r

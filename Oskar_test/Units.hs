@@ -54,12 +54,11 @@ mul (Quantity v1 u1) (Quantity v2 u2) = Quantity (v1*v2) (mult u1 u2)
 -- Nackelden är att då kan inte kompilatorn kolla att rätt
 
 newtype Unit = Unit [(BaseUnit, Int)]
-             deriving (Show)
 
 data BaseUnit = Length
               | Time
               | Mass
-              deriving (Eq, Ord, Show)
+              deriving (Eq, Ord)
 
               
 length :: Unit
@@ -79,6 +78,10 @@ acceleration = Unit [(Length, 1), (Time, -2)]
 
 weird :: Unit
 weird = Unit [(Length, 2), (Length, 1), (Time, -3), (Length, -3), (Mass, 2)]
+
+weird' = canonify weird
+
+weird2 = canonify $ Unit [(Length, 2), (Time, -4), (Mass, -2)]
 
 
 canonify :: Unit -> Unit
@@ -130,3 +133,45 @@ instance Floating Unit where
   asinh = id
   acosh = id
   atanh = id
+
+
+instance Show BaseUnit where
+  show Length = "m"
+  show Time   = "s"
+  show Mass   = "kg"
+
+instance Show Unit where
+  show = showUnit
+
+showUnitTuple :: (BaseUnit, Int) -> String
+showUnitTuple (u, 1) = show u
+showUnitTuple (u, n) = show u ++ "^" ++ show n
+
+showUnit :: Unit -> String
+showUnit (Unit []) = ""
+showUnit (Unit us)
+  | null negStrs = posStr
+  | otherwise    = posStr ++ "/" ++ negStr'
+  where
+    pos = filter (\(_, n) -> n > 0) us
+    neg = filter (\(_, n) -> n < 0) us
+    neg' = map (\(u, n) -> (u, -n)) neg
+    
+    posStrs = map showUnitTuple pos
+    negStrs = map showUnitTuple neg'
+    
+    posStr = if null posStrs
+             then ""
+             else foldl (\strs str -> str ++ "*" ++ strs) 
+                        (head posStrs) 
+                        (tail posStrs)
+    (left, right) = if Data.List.length negStrs > 1
+                    then ("(", ")")
+                    else ("", "")
+    negStr = if null negStrs
+             then ""
+             else foldl (\strs str -> str ++ "*" ++ strs) 
+                        (head negStrs) 
+                        (tail negStrs)
+    negStr' = left ++ negStr ++ right
+

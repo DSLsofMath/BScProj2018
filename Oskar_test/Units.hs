@@ -1,4 +1,6 @@
 
+{-# LANGUAGE InstanceSigs #-}
+
 module Units
 (
 )
@@ -51,8 +53,8 @@ mul (Quantity v1 u1) (Quantity v2 u2) = Quantity (v1*v2) (mult u1 u2)
 -- En variant där storheter/typer är värden och inte Haskell-typer
 -- Nackelden är att då kan inte kompilatorn kolla att rätt
 
-data Unit = Unit [(BaseUnit, Int)]
-          deriving (Show)
+newtype Unit = Unit [(BaseUnit, Int)]
+             deriving (Show)
 
 data BaseUnit = Length
               | Time
@@ -80,6 +82,7 @@ weird = Unit [(Length, 2), (Length, 1), (Time, -3), (Length, -3), (Mass, 2)]
 
 
 canonify :: Unit -> Unit
+canonify (Unit []) = Unit []
 canonify (Unit us) = Unit . reverse $ sorted'
   where
     sorted  = sort us
@@ -92,5 +95,38 @@ canonify (Unit us) = Unit . reverse $ sorted'
                nTot   = sum $ map (\(_, n) -> n) us
            in (u, nTot)
 
+instance Eq Unit where
+  (==) :: Unit -> Unit -> Bool
+  u1 == u2 = u1' == u2'
+    where
+      (Unit u1') = canonify u1
+      (Unit u2') = canonify u2
 
-res = canonify weird
+instance Num Unit where
+  u1 + u2
+    | u1 == u2 = u1
+    | otherwise = error "Units that are added must be the same"
+  (Unit u1) * (Unit u2) = canonify . Unit $ u1 ++ u2      
+  negate = id
+  abs = id
+  signum = id
+  fromInteger _ = Unit []
+
+instance Fractional Unit where
+  recip (Unit u) = canonify . Unit $ map (\(u', n) -> (u', -n)) u
+  fromRational _ = Unit []
+
+instance Floating Unit where
+  pi = Unit []
+  exp = id
+  log = id
+  sin = id
+  cos = id
+  asin = id
+  acos = id
+  atan = id
+  sinh = id
+  cosh = id
+  asinh = id
+  acosh = id
+  atanh = id

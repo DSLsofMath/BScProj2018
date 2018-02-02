@@ -1,0 +1,27 @@
+- Koordinater
+- _Vektorer. skillnad mot skalär. pilsyntax. Vektor ops. Enhetsvektorer_ __ERIK__
+	- Vektorer kan importeras till andra DSL:er
+- Standardenheter = SI-enheter, härledda enheter
+- _Strukturen av ett tal_
+  - mätetal, prefix, enhet
+	- Dimensioner, koordindater
+	- Dimensionskoll __OSKAR__
+- _Differentialkalkyl. Enhet på {d,dx, delta, d², dx², lim}. exp-notation_ __JOHAN__
+- Momentan och genomsnitt. Samma för v,a, ...
+- _Krafter. Newtons lager_
+	- Frame of reference (åker tåg, kaster en boll...). Relativ hastighet
+	- Normalkraft, friktionskraft, dragkraft, spännkraft, tyngd. Summering. Tänka på typer
+- Acceleration, momentan, genomsnitt. Gravitation. Integraler för att få tvärtom mot derivata
+-	ax = dvx/dt = d/dt*(dx/dt) = d²x/dt²
+- Solve for "x". Partially applied function
+- Ekvationslösning i samband med jämvikts och icke-jämviktsproblem. Nettokraft eller noll nettokraft.
+- Pretty-printer och syntax-träd i allmänhet
+- Djup/ytlig. Dimensionskoll. Enklare och mer pedagogiskt om gör det själv
+- Problemlösning svår att DSLa, men just sånt DSL kan vara bra för
+- Effekt, arbete är en skalär
+  - Work-energy-theorem
+  - Konservativa och dissipativa krafter
+- Rörelsemängd, rörelseenergi bevarande
+- Syntax-träd att köra dimensionskoll på. Deep embedding
+- Börja med representera allt, förminska uttryck
+

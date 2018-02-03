@@ -1,13 +1,13 @@
 - Koordinater
 - _Vektorer. skillnad mot skalär. pilsyntax. Vektor ops. Enhetsvektorer_ __ERIK__
 	- Vektorer kan importeras till andra DSL:er
-- Standardenheter = SI-enheter, härledda enheter
+- Standardenheter = SI-enheter, härledda enheter (B: samma som strukturen av ett tal?)
 - _Strukturen av ett tal_ __OSKAR__
   - mätetal, prefix, enhet
 	- Dimensioner, koordindater
 	- Dimensionskoll 
 - _Differentialkalkyl. Enhet på {d,dx, delta, d², dx², lim}. exp-notation_ __JOHAN__
-- Momentan och genomsnitt. Samma för v,a, ...
+- Momentan och genomsnitt. Samma för v,a, ... **Björn**
 - _Krafter. Newtons lager_
 	- Frame of reference (åker tåg, kaster en boll...). Relativ hastighet
 	- Normalkraft, friktionskraft, dragkraft, spännkraft, tyngd. Summering. Tänka på typer

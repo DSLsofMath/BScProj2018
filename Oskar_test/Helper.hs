@@ -1,12 +1,8 @@
 
 module Helper
-( nStycken
-, len
+( len
 )
 where
-
-nStycken :: (Integral n) => n -> a -> [a]
-nStycken n = take (fromIntegral n) . repeat
 
 len :: (Integral n) => [a] -> n
 len [] = 0

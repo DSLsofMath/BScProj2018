@@ -6,7 +6,8 @@ module Units
 )
 where
 
-import Data.List
+import Prelude hiding (length)
+import Data.List hiding (length)
 
 {-
 data Quantity v u = Quantity v u
@@ -49,6 +50,10 @@ mul :: (Num v, Unit u1, Unit u2, Unit u3) => Quantity v u1 -> Quantity v u2 -> Q
 mul (Quantity v1 u1) (Quantity v2 u2) = Quantity (v1*v2) (mult u1 u2)
 
 -}
+
+len :: (Integral n) => [a] -> n
+len [] = 0
+len (a:as) = 1 + len as
 
 -- En variant där storheter/typer är värden och inte Haskell-typer
 -- Nackelden är att då kan inte kompilatorn kolla att rätt
@@ -165,7 +170,7 @@ showUnit (Unit us)
              else foldl (\strs str -> str ++ "*" ++ strs) 
                         (head posStrs) 
                         (tail posStrs)
-    (left, right) = if Data.List.length negStrs > 1
+    (left, right) = if len negStrs > 1
                     then ("(", ")")
                     else ("", "")
     negStr = if null negStrs
@@ -174,4 +179,49 @@ showUnit (Unit us)
                         (head negStrs) 
                         (tail negStrs)
     negStr' = left ++ negStr ++ right
+
+{-
+data Extra = Kg Double
+           | G Double
+           deriving Show
+           
+hej x u = u x
+
+(#) x u = u x
+-- Skriva in uttyrck så nära papperssyntax som möjligt
+
+x :+: u = u x
+
+-}
+
+data Prefix = P'  -- piko
+            | N'  -- nano
+            | U'  -- mikro
+            | M'  -- milli
+            | One -- "enhets-prefixet"
+            | K   -- Kilo
+            | M   -- Mega
+            | G   -- Giga
+            | T   -- Tera
+            | P   -- Peta
+            deriving (Eq, Ord)
+
+-- Idé: evaluerare för SI, evaluerare för något annat ...
+
+instance Show Prefix where
+  show P' = "p"
+  show N' = "n"
+  show U' = "u"
+  show M' = "m"
+  show One = ""
+  show K = "K"
+  show M = "M"
+  show G = "G"
+  show T = "T"
+  show P = "P"
+
+
+--              Storhet Mätetal prefix enhet
+data Quantity = Quantity Double Prefix Unit
+
 

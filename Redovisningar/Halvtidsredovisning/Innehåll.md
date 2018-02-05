@@ -30,24 +30,7 @@
       - Uppmärksammar syntax och typer hos matematik.
       - Använder Haskell för att skapa domänspecfika språk
         - Ett domänspecifikt språk, är ett språk gjort för en specifk domän. Så att saker i domänen kan uttryckas enklare än i ett generellt språk.
-      - Ex: derivata i Haskell...
-```
--- Syntax-träd. Ett DSL för funktionsuttryck
-data Fun = Fun + Fun
-         | Fun * Fun
-         | Konst Double
-         | X
---
--- Matte-op "derviera" går att se som en funktion
--- som tar en funktion som indata och ger en
--- ny funktion som utdata
-derivera :: Fun -> Fun
-derivera (f1 * f2) = (f1' * f2) + (f1 * f2')
-  where
-    f1' = derivera f1
-    f2' = derivera f2
-```
-                
+      - Ex: derivata i Haskell... i slutet   
     - Orsaken till detta är att TSS och regler har dålig tentastatistik, och examinatorerna tror detta orsakas av ovana vid den matematik som används.
   - Ett tidigare kandidatarbete år 2016
     - Läromaterial för TSS
@@ -92,3 +75,20 @@ derivera (f1 * f2) = (f1' * f2) + (f1 * f2')
   - Sammanfattningsvis så ska det bli en handledning för fysik mixat med DSL:er. Väcka intresse för fysik hos datateknologer
   - Vi tror det kan bli en skoj grej, för vi gillar Haskell och vi gillar fysik
   - Frågor från publiken
+  
+# Enkelt Haskell exempel
+  
+    -- Syntax-träd. Ett DSL för funktionsuttryck
+    data Fun = Fun + Fun
+             | Fun * Fun
+             | Konst Double
+             | X
+    --
+    -- Matte-op "derviera" går att se som en funktion
+    -- som tar en funktion som indata och ger en
+    -- ny funktion som utdata
+    derivera :: Fun -> Fun
+    derivera (f1 * f2) = (f1' * f2) + (f1 * f2')
+      where
+        f1' = derivera f1
+        f2' = derivera f2

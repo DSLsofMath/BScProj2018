@@ -3,6 +3,7 @@
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.7\baselineskip}
 
+\usepackage{amsmath}
 \usepackage{fontspec}
 
 %%% Standard definitions from the lhs2TeX installation
@@ -144,6 +145,31 @@ $$ v_x = \frac{dx}{dt} = lim_{\Delta t \to 0} \frac{\Delta x}{\Delta t} $$
 We add the infinitesimal syntax to the \textit{Expr} syntax tree.
 
 <           | D Expr             -- Differential, like "dx"
+
+Leibniz's notation definition. Used to be defined as ``the quotient of an infinitesimal increment of y by an infinitesimal increment of x'':
+
+$$ D(f) = \frac{dy}{dx} = \frac{lim_{\Delta y \to 0} \Delta y}{lim_{\Delta x \to 0} \Delta x} $$
+
+``In its modern interpretation, the expression dy/dx should not be read as the division of two quantities dx and dy (as Leibniz had envisioned it); rather, the whole expression should be seen as a single symbol that is shorthand for''
+
+$$ D(x) = lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x} $$
+
+which, when $ y : \mathbb{R} \to \mathbb{R} \text{ and } x \text{ is a real interval}
+\leftrightarrow x \text{ is the \texttt{id} function for real numbers} $, is:
+
+\begin{align*}
+D(x) &= lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x} \\
+     &= a \mapsto lim_{\Delta x \to 0} \frac{(\Delta y)(a, a + \Delta x)}{\Delta x} \\
+     &= a \mapsto lim_{h \to 0} \frac{y(a + (\Delta x)(a, a + h)) - y(a)}{(\Delta x)(a, a + h)} \\
+     &= a \mapsto lim_{h \to 0} \frac{y(a + ((a + h) - a)) - y(a)}{(a + h) - a} \\
+     &= a \mapsto lim_{h \to 0} \frac{y(a + h) - y(a)}{h}
+\end{align*}
+
+\subsection{Verification/proof/test}
+
+???
+
+\subsection{Examples}
 
 \section{Integrals}
 

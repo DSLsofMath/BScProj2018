@@ -2,18 +2,21 @@
 
 % IMPORT SETTINGS
 \documentclass[12pt,a4paper]{article}
+
 \usepackage[utf8]{inputenc}
 \usepackage{float}
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage[noconfigs, swedish]{babel}
+\usepackage{hyperref}
+\usepackage{titling}
+\usepackage{graphicx}
+\usepackage[super]{natbib}
 
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{\baselineskip}
-\usepackage[a4paper, margin=1in]{geometry}
 
-\usepackage[noconfigs, swedish]{babel}
-\usepackage{hyperref}
 \hypersetup{breaklinks=true}
 
-\usepackage{titling}
 \newcommand{\subtitle}[1]{
   \posttitle{
     \par
@@ -21,8 +24,6 @@
       \vspace{0.5em}
     }
 }
-
-\usepackage{graphicx}
 
 \begin{document}
 
@@ -63,14 +64,13 @@ bevisade satser som man är säker på gäller. Detta leder till att de
 tar genvägar som ofta är fel.
 
 Sedan våren 2016 har kursen ``Domain Specific Languages of
-Mathematics'' (``DSLsofMath'') eller ``Matematikens domänspecifika språk'' givits som en
-valbar kurs på kandidatnivå för studenter på Chalmers och Göteborgs Universitet. År
-2016 var Cezar Ionescu huvudföreläsare, och från 2017 är Patrik
-Jansson huvudföreläsare. Det direkta målet är att förbättra den
-matematiska utbildningen för
-datavetare och den datavetenskapliga utbildningen för
-matematiker, och den grundläggande idéen bakom kursen är att ``uppmuntra studenterna
-att närma sig matematiska domäner från ett funktionellt
+Mathematics'' (``DSLsofMath'') eller ``Matematikens domänspecifika språk''
+givits som en valbar kurs på kandidatnivå för studenter på Chalmers och
+Göteborgs Universitet. År 2016 var Cezar Ionescu huvudföreläsare, och från 2017
+är Patrik Jansson huvudföreläsare. Det direkta målet är att förbättra den
+matematiska utbildningen för datavetare och den datavetenskapliga utbildningen
+för matematiker, och den grundläggande idéen bakom kursen är att ``uppmuntra
+studenterna att närma sig matematiska domäner från ett funktionellt
 programmeringsperspektiv: att ge beräkningsbevis (calculational
 proofs); att vara uppmärksamma på syntaxen för matematiska uttryck;
 och, slutligen, att organisera de resulterande funktionerna och
@@ -82,19 +82,18 @@ Haskell. Dessa för studenterna bekanta verktyg används för att lösa
 matematiska problem så som modellering av syntax, evaluering till
 semantiska värden och datorassisterad bevisföring.
 
-Även på MIT har en kurs inte helt olik DSLsofMath tidigare givits som berör både fysik
-och DSL.\ ``Classical Mechanics: A Computational Approach'' gavs av
+Även på MIT har en kurs inte helt olik DSLsofMath tidigare givits som berör både
+fysik och DSL.\ ``Classical Mechanics: A Computational Approach'' gavs av
 Prof.\ Geral Sussman och Prof.\ Jack Wisdom bl.a. år
 2008.\cite{classical-mechanics-course-mit-2008}
-Denna kurs på avancerad nivå studerar de fundamentala principerna av klassisk mekanik
-med hjälp av beräkningsidéer för att precist formulera principerna av
+Denna kurs på avancerad nivå studerar de fundamentala principerna av klassisk
+mekanik med hjälp av beräkningsidéer för att precist formulera principerna av
 mekanik, med början i Lagranges ekvationer och avslut i
 perturbationsteori. I kursen används boken ``Structure and
 Interpretation of Classical Mechanics'' av Sussman, Wisdom och Mayer,
 vilken förklarar fysikaliska fenomen genoma att visa datorprogram för att
 simulera dem, skrivna i språket Scheme.\cite{SICM}
 
-% TODO: Omformulera "kandidatarbete om DSL"
 Utöver DSLsofMath-kursen har det även tidigare gjorts ett kandidatarbete om DSL 
 här på Chalmers. Vårterminen 2016 utfördes kandidatarbetet
 ``Programmering som undervisningsverktyg för Transformer, signaler och
@@ -156,7 +155,11 @@ rekommenderas \textit{DSL for the Uninitiated}.\cite{DSLU}
 
 \section{Syfte}
 
-Syftet med projektet är att skapa domänspecifika språk för fysik samt ett tillhörande läromaterial. Läromaterialet ska både förklara fysik och parallellerna med de domänspecifika språken. Förhoppningen är att väcka intresse för fysik hos datateknologer genom att presentera fysik från ett annat perspektiv.
+Syftet med projektet är att skapa domänspecifika språk för fysik samt ett
+tillhörande läromaterial. Läromaterialet ska både förklara fysik och
+parallellerna med de domänspecifika språken. Förhoppningen är att väcka intresse
+för fysik hos datateknologer genom att presentera fysik från ett annat
+perspektiv.
 
 %Syftet är en kort beskrivning av uppdraget och vilket resultat som uppdraget
 %ska leda till.
@@ -171,43 +174,54 @@ Syftet med projektet är att skapa domänspecifika språk för fysik samt ett ti
 \section{Problem/Uppgift}
 
 %Oskar: Detta är min bild. Rätta om jag fått något om bakfoten
-Slutprodudukten är tänkt att bli ett läromaterial som med hjälp av domänspecfika språk förklarar koncept inom fysiken. Läromaterialet ska vara en brödtext varvat med programkod och exempel skrivet med en lättsam stil, i likhet med \textit{Learn You a Haskell}\cite{LYAH} som är ett läromaterial för Haskell. Vår tanke är att presentera fysik parallellt med att vi bygger upp domänspecika språk för fysik. Vi kommer även i texten presentera fysikaliska problem och visa hur man kan modellera och lösa dem i de domänspecifika språk vi skapat tillsammans.
+Slutprodudukten är tänkt att bli ett läromaterial som med hjälp av domänspecfika
+språk förklarar koncept inom fysiken. Läromaterialet ska vara en brödtext varvat
+med programkod och exempel skrivet med en lättsam stil, i likhet med
+\textit{Learn You a Haskell}\cite{LYAH} som är ett läromaterial för Haskell. Vår
+tanke är att presentera fysik parallellt med att vi bygger upp domänspecika
+språk för fysik. Vi kommer även i texten presentera fysikaliska problem och visa
+hur man kan modellera och lösa dem i de domänspecifika språk vi skapat
+tillsammans.
 
 
 De uppgifter vi har framför oss är därmed:
 
 \begin{itemize}
-	\item Hitta de områden inom \textit{Fysik för ingenjörer} som datateknologer har svårt för.
-	\item Inläsning av \dots
+        \item Hitta de områden inom \textit{Fysik för ingenjörer} som
+          datateknologer har svårt för.  \item Inläsning av \dots
 	\begin{itemize}
 		\item \dots fysik.
 		\item \dots domänspecifika språk.
 		\item \dots liknande projekt för att få inspiration.
 	\end{itemize}
-	\item Skriva läromaterial och parallellt implementera egna domänspecifika språk.
+        \item Skriva läromaterial och parallellt implementera egna
+      domänspecifika språk.  
 \end{itemize}
 
 
 Frågor som vi vill besvara när projektet är klart:
-%TODO: Vissa frågor kanske ska tas bort eller omforumerlas nu när vi bytt fokus
 \begin{itemize}
     \item Kan man skapa domänspecifika språk för fysik?
     \item Hur brett/djupt kan vi komma med våra domänspecfika språk?
     \item Kan man använda våra domänspecika språk för att lära ut?
     \item Kan vi skapa ett läromaterial utifrån våra domänspecifika språk?
-    %TODO: PaJa: notera att de två sista frågorna kräver en mer empirisk insats för att besvara. Kan kvarstå, men kanske bör synas mer i planen i så fall.
-    \item Kommer vår läromaterial främja lärandet?
-    \item Är djup eller ytlig inbäddning bäst ur ett pedagogiskt syfte?
 \end{itemize}
 
 \section{Avgränsningar}
 
-Projektet kommer enbart behandla den fysik som ingår i kursen \textit{Fysik för ingenjörer}. Denna avgränsningen valdes dels för att det är så mycket fysik gruppmedlemmarna kan, dels för att det är den kursen detta projekt kan bli mest relevant för.
+Projektet kommer enbart behandla den fysik som ingår i kursen \textit{Fysik för
+ingenjörer}. Denna avgränsningen valdes dels för att det är så mycket fysik
+gruppmedlemmarna kan, dels för att det är den kursen detta projekt kan bli mest
+relevant för.
 
 %TODO: PaJa: Jag tror att det i praktiken är en hel del tillämpad matematik inbäddat i kursen också, och det kan vara värt att nämna.
-\textit{Fysik för ingenjörer} behandlar grunderna inom de tre områdena mekanik (inklusive stelkroppsmekanik), termodynamik och vågrörelselära. Vi har valt att i första hand prioritera mekanik, för att senare i mån av tid även behandla termodynamik och vågrörelselära. Dessutom kommer de områden datateknologer haft svårt för prioriteras. Även om projekets direkta syfte inte är att förbättra tentastatistiken på \textit{Fysik för ingenjörer}, är vår förhoppning att förståelsen för de svåra delarna ska bli bättre.
-
-%TODO: Koppla till etik!
+\textit{Fysik för ingenjörer} behandlar grunderna inom de tre områdena mekanik
+(inklusive stelkroppsmekanik), termodynamik och vågrörelselära. Vi har valt att
+i första hand prioritera mekanik, för att senare i mån av tid även behandla
+termodynamik och vågrörelselära. Dessutom kommer de områden datateknologer haft
+svårt för prioriteras. Även om projekets direkta syfte inte är att förbättra
+tentastatistiken på \textit{Fysik för ingenjörer}, är vår förhoppning att
+förståelsen för de svåra delarna ska bli bättre.
 
 
 % Under avgränsningar talar man om vad man inte behandlar.
@@ -220,14 +234,31 @@ Projektet kommer enbart behandla den fysik som ingår i kursen \textit{Fysik fö
 
 \section{Metod/Genomförande}
 
-%TODO: Gäller detta fortfarande?
-Som ett genomgående tema vill vi arbeta in återkoppling med Åke Fäldt och Patrik Jansson så att vi vet att vi håller oss på banan och inte gör det för svårt för oss själva eller potentiella studenter.
+Som ett genomgående tema vill vi arbeta in återkoppling med Åke Fäldt och Patrik
+Jansson så att vi vet att vi håller oss på banan och inte gör det för svårt för
+oss själva eller potentiella studenter.
 
-Den övergripande planen är att börja med att läsa in oss på fysik, domänspecika språk och liknande projekt. Detta för att få en grundläggande uppfattning av hur projeket kan tänkas se ut. Därefter kommer läromaterialet att skrivas. Eftersom domänspecifika språk kommer presenteras invävt i läromaterialet kommer därför också de domänspecika språken skapas parallellt med skrivandet. Vi vet ännu inte hur vi bra kan fördela arbetet mellan gruppmedlemmarna. En möjlighet, beroende på tidsbehovet, är att en/två skriver om mekanik och en/två om termodynamik eller våglära. Under skrivandets gång kommer en del inläsning behöva göras parallellt. Det kan handla både om fysik och domänspecika språk, till exempel att jämföra vår implementation med likaratade implementationer.
+Den övergripande planen är att börja med att läsa in oss på fysik, domänspecika
+språk och liknande projekt. Detta för att få en grundläggande uppfattning av hur
+projeket kan tänkas se ut. Därefter kommer läromaterialet att skrivas. Eftersom
+domänspecifika språk kommer presenteras invävt i läromaterialet kommer därför
+också de domänspecika språken skapas parallellt med skrivandet. Vi vet ännu inte
+hur vi bra kan fördela arbetet mellan gruppmedlemmarna. En möjlighet, beroende
+på tidsbehovet, är att en/två skriver om mekanik och en/två om termodynamik
+eller våglära. Under skrivandets gång kommer en del inläsning behöva göras
+parallellt. Det kan handla både om fysik och domänspecika språk, till exempel
+att jämföra vår implementation med likaratade implementationer.
 
-För att hitta de områden datateknologer har problem med i \textit{Fysik för ingenjörer} kommer vi prata med kursens föreläsare, med DNS (Datateknologsektionen på Chalmers) samt reflektera över de delar vi själva tyckte var svåra.
+För att hitta de områden datateknologer har problem med i \textit{Fysik för
+ingenjörer} kommer vi prata med kursens föreläsare, med DNS
+(Datateknologsektionen på Chalmers) samt reflektera över de delar vi själva
+tyckte var svåra.
 
-De primära källorna till inläsning av fysik kommer att vara kursboken \textit{University Physics}\cite{UP} samt föreläsarens egna material i form av anteckningar och övningsuppgifter. Till vår hjälp för att förstå hur man på ett bra sätt kan skapa domänspecika språk inom fysik har vi boken \textit{Structure and Interpretaton of Classical Mechanics}\cite{SICM}.
+De primära källorna till inläsning av fysik kommer att vara kursboken
+\textit{University Physics}\cite{UP} samt föreläsarens egna material i form av
+anteckningar och övningsuppgifter. Till vår hjälp för att förstå hur man på ett
+bra sätt kan skapa domänspecika språk inom fysik har vi boken \textit{Structure
+and Interpretaton of Classical Mechanics}\cite{SICM}.
 
 Se bilaga $\lambda$ för en mer detaljerad lista över hur vi tänkt lägga upp arbetet.
 
@@ -242,11 +273,12 @@ Se bilaga $\lambda$ för en mer detaljerad lista över hur vi tänkt lägga upp 
 
 \section{Avslutning}
 
-För att avsluta vårt projekt vill vi återkoppla med studenter inom data som både har läst fysikkursen och de som inte har läst den för att på så sätt få deras perspektiv. Detta kan även ge en fingervisning om hurvida vårt resultat är tillförlitligt. Lämpliga frågor är då:
+För att avsluta vårt projekt vill vi återkoppla med studenter inom data som både
+har läst fysikkursen och de som inte har läst den för att på så sätt få deras
+perspektiv. Detta kan även ge en fingervisning om hurvida vårt resultat är
+tillförlitligt. Lämpliga frågor är då:
 
 \begin{itemize}
-    %\item Tror du att detta \textbf{hade} hjälpt dig när du studerade fysik?
-    %\item Tror du att detta \textbf{kommer} att hjälpa dig när du studerar fysik?
     \item Tror du att detta hade gett dig ett annat perspektiv när du studerade fysik?
     \item Tror du att detta kommer att underlätta för dig när du studerar fysik?
     \item Hade det här hjälpt till att väcka intresset hos dig när du studerade fysik?
@@ -255,46 +287,36 @@ För att avsluta vårt projekt vill vi återkoppla med studenter inom data som b
     \item Vad hade vi kunnat göra bättre?
 \end{itemize}
 
-I mån av tid så vill vi använda denna återkoppling för att förfina vårt läromaterial, med den större förhoppningen att vi kan producera ett läromaterial som är bra nog för att publiceras.
+I mån av tid så vill vi använda denna återkoppling för att förfina vårt
+läromaterial, med den större förhoppningen att vi kan producera ett läromaterial
+som är bra nog för att publiceras.
 
 \section{Samhälleliga och etiska aspekter}
 
-En positiv etisk aspekt på projektet är att vi valt att prioritera de områden som varit svåra för datateknologer. Det ger med andra ord ett potentiellt nyttovärde för datateknologer som läser \textit{Fysik för ingenjörer}.
+En positiv etisk aspekt på projektet är att vi valt att prioritera de områden
+som varit svåra för datateknologer. Det ger med andra ord ett potentiellt
+nyttovärde för datateknologer som läser \textit{Fysik för ingenjörer}.
 
-En negativ etisk aspekt är att nyttovärdet enbart gynnar de som är bra på Haskell och funktionell programmering. För att kunna tillgodogöra sig den eventuella kunskapsvinning från detta projeket krävs det att man är bra på Haskell eftersom allting uttrycks i det programmeringsspråket.
+En negativ etisk aspekt är att nyttovärdet enbart gynnar de som är bra på
+Haskell och funktionell programmering. För att kunna tillgodogöra sig den
+eventuella kunskapsvinning från detta projeket krävs det att man är bra på
+Haskell eftersom allting uttrycks i det programmeringsspråket.
 
-I likhet med de flesta kunskapsinsamlande projeket, även något så ''oskyldigt'' som matematik och grundläggande fysik, uppkommer frågan om i vilka syften kunskapen kan användas. Det läromaterial vi skriver är i sig inte farligt eller missgynnande för någon. Däremot kan det användas av andra i illvilliga syften. Detta är något man behöver vara medveten om, även om det inte är något som påverkar det dagliga arbetet.
+I likhet med de flesta kunskapsinsamlande projeket, även något så ''oskyldigt''
+som matematik och grundläggande fysik, uppkommer frågan om i vilka syften
+kunskapen kan användas. Det läromaterial vi skriver är i sig inte farligt eller
+missgynnande för någon. Däremot kan det användas av andra i illvilliga syften.
+Detta är något man behöver vara medveten om, även om det inte är något som
+påverkar det dagliga arbetet.
 
-%TODO: PaJa: lite tunt. Kanske värt att skriva något om öppen källkod, öppen dokumentation? Eller något om hur korrekt förståelse av fysik kan rädda liv (genom att undvika olyckor)?
-
-
-
-
-% ----------gamla nedan
-%
-% Nedan följer svar på de samhälleliga och etiska frågor som ställts i anvisningarna till projektplanen-
-%
-% 1) Vilka etiska  aspekter (värden) är relevanta för projektet?
-% \[
-% \emptyset
-% \]
-%
-% Vi tycker inte det finns några negativa eller positiva etiska konsekvenser av detta projekt. Vi ska konstruera ett läromaterial om grundläggande fysik och har svårt att se hur det kan påverka någon individ eller grupp negativt.
-%
-% 2) Hur kan vi genomföra vårt projekt för att undvika etiska problem med vår metod?
-%
-% Vi kommer att kommunicera med vår handledare, en föreläsare och studenter som testar vårt material. Givet att vi är allmänt trevliga ser vi inga etiska problem med denna metod.
-%
-% 3) Vad kan det finnas för nytta eller etiska problem med det sannolika resultatet (utfallet) av projektet som man bör ta hänsyn till?
-%
-% Främjandet av fysikinlärning för datastudenter kan möjligtvis leda till positiva aspekter för samhället i stort, om inte annat för att utbildning blir lättare att ta till sig. Förhoppningsvis kan vi också göra smärre nytta för forskningen inom detta område (DSL för pedagogik?).
-%
-% De enda dilemman där de etiska aspekterna skulle kunna äventyras skulle antagligen vara om vårt läromedel utnyttjades för att lära ut kärnfysik till studenter i länder med kärnvapenprogram \url{http://sverigesradio.se/sida/artikel.aspx?programid=3182&artikel=2980763}.
-   % Detta lär inte vara något vi behöver beakta i vårt läromedel, då kursen fysik för ingenjörer inte innefattar någon kärnfysik.
-%
-% 4)  Vilka berörs av projektets genomförande eller av det sannolika resultatet (utfallet) av projektet? Hur berörs de? Finns det etiska problem kopplat till detta som man bör ta hänsyn till?
-%
-% Se ovanstående svar.
+Projektet kommer även publiceras som öppen källkod under GPL\cite{GPL}.  Detta
+kommer ge möjlighet för externa partner att inspektera, använda och bygga vidare
+på både vår kod, men också det tillhörande läromaterialet. Detta som en del i
+vår förhoppning att skapa ett läromaterial som är öppet för alla, oavsett
+bakgrund, ålder eller universitetstillhörighet. Dock blir denna öppenhet
+lidadande av det faktum att vårt material kommer att släppas som en digital
+produkt och därmed kan den ej tas tillvara av individer utan tillgång till
+dator. 
 
 \section{Tidsplan}
 
@@ -310,8 +332,7 @@ Projekets milstolpar finns nedan. Datumet anger då milstolpen bör vara avklara
     \item 2018-02-19 - Identifierat områden/moment som vi ska behandla
     \item 2018-02-23 - Genrepat halvtidsredovisning
     \item 2018-02-27 - \textbf{Halvtidsredovisning}
-%TODO: PaJa: typo? 2018-02-03 är före alla andra milstolpar
-    \item 2018-02-03 - \textbf{Egen utvärdering på blankett till handledaren}
+    \item 2018-03-02 - \textbf{Egen utvärdering på blankett till handledaren}
     \item 2018-03-23 - \textbf{Bestämma rapportspråk (sv/en)}
     \item 2018-04-17 - Skrivit klart läromaterialet
     \item 2018-05-01 - Första utkast till rapport
@@ -340,7 +361,6 @@ Datumet anger deadline för aktiviteten.
 \newpage
 \pagenumbering{gobble}
 
-%TODO: PaJa: titta igenom referenser.bib och se till att "ord" som bör ha stora bokstäver skyddas med klamrar: TSS := {TSS}, DSL := {DSL}, Haskell := {Haskell}, etc.
 \bibliography{referenser}
 \addcontentsline{toc}{section}{Referenser}
 \bibliographystyle{ieeetr}
@@ -358,10 +378,8 @@ Datumet anger deadline för aktiviteten.
     \item Identifikation av problemområden.
         \begin{itemize}
             \item Kontakt med Åke Fäldt och DNS. Studera kursutvärderingar.
-            \item Reflektera över vad vi själva tyckt varit svåra områden då vi läst kursen.
-            %TODO: PaJa: formulera om
-            %\item Se om Patrik har något kul att säga...
-        \end{itemize}
+            \item Reflektera över vad vi själva tyckt varit svåra områden då vi
+          läst kursen.  \end{itemize}
     \item Studerande av existerande läromaterial, både inom ren fysik och liknande vårt material.
         \begin{itemize}
             \item Fysikboken.
@@ -374,8 +392,6 @@ Datumet anger deadline för aktiviteten.
             \item OpenTA.
             \item Hamilton.
             \item MasteringPhysics.
-            %TODO: PaJa: formulera om
-           % \item Fråga om Patrik kan något mer...
         \end{itemize}
     \item Tidigare forskning.
         \begin{itemize}
@@ -406,8 +422,10 @@ Vid implementationen av ett/flera domänspecika språk behöver nedanstående pu
 Vid skrivandet av läromaterialet kommer följande punkter ligga till grund.
 
 \begin{itemize}
-    %TODO: Frågetecken ???????
-    \item Frågetecken: Gemensam vokabulär som fungerar när man skriver om både fysik och programmering (generics kontra polymorfism), och som gör det möjligt att prata om dem i samma mening utan att byta språk och på så sätt brygga det semantiska gapet mellan områdena.
+    \item En gemensam vokabulär som fungerar när man skriver om både
+      fysik och programmering (generics kontra polymorfism), och som gör det
+      möjligt att prata om dem i samma mening utan att byta språk och på så sätt
+      brygga det semantiska gapet mellan områdena.  
     \item Övningar
         \begin{itemize}
             \item Modellera ett fysikaliskt problem med vårt domänspecifika språk.

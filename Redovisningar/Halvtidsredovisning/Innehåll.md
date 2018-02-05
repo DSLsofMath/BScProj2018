@@ -83,7 +83,10 @@
              | Fun * Fun
              | Konst Double
              | X
-    --
+    
+    -- 2x+7 skrivs
+    exempel = (Konst 2 * X) + (Konst 7)
+    
     -- Matte-op "derviera" går att se som en funktion
     -- som tar en funktion som indata och ger en
     -- ny funktion som utdata

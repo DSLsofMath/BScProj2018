@@ -5,6 +5,8 @@ data Coordinate a = Coord a a
 
 -- | Är vektorer definierade från origo, eller fritt i rummet?
 
+-- | Vektorer som vet sin "vinkel" och "storlek"?
+
 -- | Could also only have V3 and leave the the third
 -- | argument blank for V2
 --

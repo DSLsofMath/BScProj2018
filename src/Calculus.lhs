@@ -1,10 +1,13 @@
 \documentclass[12pt,a4paper]{article}
 
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.7\baselineskip}
+
 \usepackage{fontspec}
 
 %%% Standard definitions from the lhs2TeX installation
 %include polycode.fmt
-
+%% Custom definitions
 %include Calculus.format
 
 \begin{document}
@@ -18,11 +21,7 @@ Calculus is cool
 
 Differences, derivatives, and integrals
 
-\section{Differences}
-
-Differences are used for stuff like average velocity.
-
-$$ v_{avg} = \frac{x_2 - x_1}{t_2 - t_1} =\frac{\Delta x}{\Delta t} $$
+\subsection{Data type definitions and general lambda calculus stuff}
 
 > import Data.Maybe
 > import Data.List
@@ -40,8 +39,9 @@ The syntax tree of an expression
 >           | Expr :/ Expr       -- Divided by (Division)
 >           | Var String         -- Variable
 >           | Lambda String Expr -- Lambda function
->           | Delta Expr         -- Difference
->           | Expr :$ Expr      -- Function application
+>           | Delta Expr         -- Difference, like "Δx"
+>           | D Expr             -- Differential, like "dx"
+>           | Expr :$ Expr       -- Function application
 >   deriving (Show, Eq)
 
 > avg (y1, x1) (y2, x2) = (y2 :- y1) :/ (x2 :- x1)
@@ -63,16 +63,22 @@ which is equivalent to
 > eval env (a :- b) = evalBinop env a b (:-) (-)
 > eval env (a :* b) = evalBinop env a b (:*) (*)
 > eval env (a :/ b) = evalBinop env a b (:/) (/)
-> eval env (Var s) = fromMaybe (error ("Variable " ++ s ++ " is not in environment: " ++ show env)) (lookup s env)
+> eval env (Var s) =
+>     fromMaybe (error ("Variable " ++
+>                       s ++
+>                       " is not in environment: " ++
+>                       show env))
+>               (lookup s env)
 > eval env (Lambda p b) = LambdaVal env p b
-
-$ \Delta x = f $ where $ f(t1, t2) = x(t2) - x(t1)
-
-> eval env (Delta x) = LambdaVal env "_t1" (Lambda "_t2" ((x :$ (Var "_t2")) :- (x :$ (Var "_t1"))))
 > eval env (((Var "sin") :$ arg)) = RealVal (sin (evalReal env arg))
 > eval env ((f :$ arg)) = case (eval env f) of
 >     LambdaVal lenv p b -> eval ((p, eval env arg) : lenv) b
->     _ -> error "Not a function"
+>     _                  -> error "Not a function"
+> eval env (Delta x) =
+>     LambdaVal env
+>               "_t1"
+>               (Lambda "_t2"
+>                       ((x :$ (Var "_t2")) :- (x :$ (Var "_t1"))))
 
 > evalBinop env a b cons op = case (eval env a, eval env b) of
 
@@ -80,16 +86,41 @@ Arithmetic on real numbers is just as normal
 
 >     (RealVal a', RealVal b') -> RealVal (a' `op` b')
 
-A nice definition for function (addition/subtraction/...) that works for differentials
-$ f + g = h $ where $ h(x) = f(x) + g(x) $
+A nice definition for function (addition/subtraction/...) that works for
+differentials: $ f + g = h $ where $ h(x) = f(x) + g(x) $
 
 >     (LambdaVal lenv1 p1 b1, LambdaVal lenv2 p2 b2) ->
->         LambdaVal (lenv1 `union` lenv2) "_x" (((Lambda p1 b1) :$ (Var "_x")) `cons` ((Lambda p2 b2) :$ (Var "_x")))
+>         LambdaVal (lenv1 `union` lenv2)
+>                   "_x"
+>                   ((cons ((Lambda p1 b1) :$ (Var "_x"))
+>                          ((Lambda p2 b2) :$ (Var "_x"))))
 
 > evalReal :: [(String, Val)] -> Expr -> RealNum
 > evalReal env e = case (eval env e) of
 >     RealVal x -> x
 >     _         -> error "Wrong type of value. Expected RealVal"
+
+\section{Differences}
+
+Differences are used for stuff like average velocity.
+
+$$ v_{avg} = \frac{x_2 - x_1}{t_2 - t_1} =\frac{\Delta x}{\Delta t} $$
+
+This is the delta syntax to the \textit{Expr} syntax tree.
+
+<           | Delta Expr         -- Difference, like "Δx"
+
+Definition of delta function:
+
+$$ \Delta x = f $$ where $$ f(t1, t2) = x(t2) - x(t1) $$
+
+This is the delta case of the eval function
+
+< eval env (Delta x) =
+<     LambdaVal env
+<               "_t1"
+<               (Lambda "_t2"
+<                       ((x :$ (Var "_t2")) :- (x :$ (Var "_t1"))))
 
 \subsection{Verification/proof/test}
 
@@ -109,6 +140,10 @@ $ f + g = h $ where $ h(x) = f(x) + g(x) $
 Derivatives are used for stuff like instantaneous velocity.
 
 $$ v_x = \frac{dx}{dt} = lim_{\Delta t \to 0} \frac{\Delta x}{\Delta t} $$
+
+We add the infinitesimal syntax to the \textit{Expr} syntax tree.
+
+<           | D Expr             -- Differential, like "dx"
 
 \section{Integrals}
 

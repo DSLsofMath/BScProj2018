@@ -1,12 +1,13 @@
 
 {-# LANGUAGE InstanceSigs #-}
 
-module Unit 
+module UnitSem
 ( Unit(..)
 , BaseUnit(..)
 , length
 , time
 , mass
+, one
 , velocity
 , acceleration
 )
@@ -18,7 +19,7 @@ import Helper
 
 
 ------------------------------------------------------------
--- Datatyper
+-- Grund
 
 newtype Unit = Unit [(BaseUnit, Int)]
 
@@ -41,6 +42,9 @@ velocity = Unit [(Length, 1), (Time, -1)]
 
 acceleration :: Unit
 acceleration = Unit [(Length, 1), (Time, -2)]
+
+one :: Unit
+one = Unit []
 
 weird :: Unit
 weird = Unit [(Length, 2), (Length, 1), (Time, -3), (Length, -3), (Mass, 2)]
@@ -71,7 +75,9 @@ weird2 = canonify $ Unit [(Length, 2), (Time, -4), (Mass, -2)]
 
 
 ------------------------------------------------------------
--- Typklass-instanser
+-- Instansiering
+
+-- Så att de vanliga räknesätten kan användas
 
 instance Eq Unit where
   (==) :: Unit -> Unit -> Bool
@@ -88,23 +94,23 @@ instance Num Unit where
   negate = id
   abs = id
   signum = id
-  fromInteger _ = Unit []
+  fromInteger _ = one
 
 instance Fractional Unit where
   recip (Unit u) = canonify . Unit $ map (\(u', n) -> (u', -n)) u
-  fromRational _ = Unit []
+  fromRational _ = one
 
 instance Floating Unit where
-  pi = Unit []
-  exp = id
-  log = id
-  sin = id
-  cos = id
-  asin = id
-  acos = id
-  atan = id
-  sinh = id
-  cosh = id
+  pi    = one
+  exp   = id
+  log   = id
+  sin   = id
+  cos   = id
+  asin  = id
+  acos  = id
+  atan  = id
+  sinh  = id
+  cosh  = id
   asinh = id
   acosh = id
   atanh = id
@@ -162,4 +168,4 @@ acc2 = length / (time * time)
 acc3 = vel / time
 
 -- Grejen är dock att hur det händer sker i "bakom kulisserna"
--- och då kanske poängen med ett DSL försvinner
+-- och då kanske poängen med ett DSL för pedagogik försvinner

@@ -1,7 +1,7 @@
 
 {-# LANGUAGE InstanceSigs #-}
 
-module Unit 
+module UnitSem
 ( Unit(..)
 , BaseUnit(..)
 , length

@@ -9,29 +9,30 @@ data Coordinate a = Coord a a
 
 -- | Could also only have V3 and leave the the third
 -- | argument blank for V2
---
+
+-- | Vectors are only used in reference to the the object
+
+
 -- Stupid name
 data Vector numb =
       Scalar numb
-    | V2 (numb, numb) (numb, numb)
-    | V3 (numb, numb, numb) (numb, numb, numb)
+    | V2 (numb, numb)
+    | V3 (numb, numb, numb)
     -- General vector type, with unlimited dimensions. And for each dimension
-    -- a start and end point.
-    | V [(numb, numb)] -- Int for specifying dimension (maybe)
+    | V [numb]
+    deriving Show
 
 data VectorOP numb =
     Magnitude (Vector numb)
-  | Addition (Vector numb) (Vector numb)
+  | Addition  (Vector numb) (Vector numb)
   | ScalarMult numb (Vector numb)
-  | DotProd (Vector numb) (Vector numb)
+  | DotProd   (Vector numb) (Vector numb)
   | CrossProd (Vector numb) (Vector numb)
--- | Transpose?
 
 -- Floating type constraints because of my use of sqrt below.
 
 addition :: (Floating t) => Vector t -> Vector t -> VectorOP t
 addition = Addition
-
 
 scalarMult :: (Floating t) => t -> Vector t -> VectorOP t
 scalarMult = ScalarMult
@@ -41,6 +42,9 @@ dotProd = DotProd
 
 magnitude :: (Floating t) => Vector t -> VectorOP t
 magnitude = Magnitude
+
+instance Vector Num where
+  (Scalar i1) (+) (Scalar i2) = Scalar (i1 + i2)
 
 -- Är monader OK?
 -- Matriser?
@@ -56,17 +60,36 @@ magnitude = Magnitude
 
 -- Check dimensions?
 
+lift :: (Floating t) => Vector t -> Vector t
+lift (V2 (x, y)) = V3 (x, y, 0)
+
+xUnit :: (Floating t) => Vector t
+xUnit = V2 (1, 0)
+
 eval :: (Floating t) => VectorOP t -> IO (Vector t)
-eval (Magnitude (V2 (x1, y1) (x2, y2))) =
-  let xDiff = (x2 - x1)
-      yDiff = (y2 - y1)
-   in return $ Scalar $ sqrt $ xDiff ** 2 + yDiff ** 2
--- Kanske mer pedagogiskt med separata funktioner
-eval (Magnitude (V coords)) = return $ Scalar $ sqrt . sum $
-  map (\(fst, snd) -> (snd - fst) ** 2) coords
-eval (Addition (V c1) (V c2))           =
-  let list = map (\(fst, snd) -> snd - fst) c2
-   in return $ V  [(x + t, y) | (x, y) <- c1, t <- list]
+eval (Magnitude (V3 (x, y, z))) =
+  return $ Scalar $ sqrt $ x** 2 + y ** 2 + z ** 2
+eval (Addition (V3 (x1, y1, z1)) (V3 (x2, y2, z2))) =
+  return $ V3 (x1 + x2, y1 + y2, z1 + z2)
+eval (ScalarMult s (V3 (x, y, z))) =
+  return $ V3 (x * s, y * s, z * s)
+eval (DotProd (V3 (x1, y1, z1)) (V3 (x2, y2, z2))) =
+  return $ Scalar $ (x1 + x2) * (y1 + y2) * (z1 + z2)
+eval (CrossProd (V3 (x1, y1, z1)) (V3 (x2, y2, z2))) =
+  return $ V3 (y1 * z2 - z1 * y2,
+               z1 * x2 - x1 * z2,
+               x1 * y2 - y1 * x2)
+
+{-
+eval (Magnitude (V coords)) =
+  return $ Scalar $ sqrt . sum $ map (**2) coords
+
+-- Can add general vectors of different dimensions
+eval (Addition (V []) (V (y:ys)))  = return $ V ys
+eval (Addition (V (x:xs)) (V []))  = return $ V xs
+eval (Addition (V (x:xs)) (V (y:ys)))  = do
+  (V test) <- eval $ Addition (V xs) (V ys)
+  return $ V $ (x + y) : test
 
 eval (ScalarMult s (V coords)) = return $ V [(x * s, y) | (x,y) <- coords]
 
@@ -83,5 +106,5 @@ eval (CrossProd v1@(V c1) v2@(V c2)) = case length c1 of
                                               return $ V []
                                          _ -> error "Wrong dimensions"
 
-eval _                                  = error "Not defined"
-
+-}
+eval _                       = error "Not defined"

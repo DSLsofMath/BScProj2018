@@ -24,8 +24,17 @@ Differences, derivatives, and integrals
 
 \subsection{Data type definitions and general lambda calculus stuff}
 
+This extension will be used later to allow string literals to be implicitly
+typed as Expr.
+
+> {-# LANGUAGE OverloadedStrings #-}
+
+Fun imports
+
 > import Data.Maybe
 > import Data.List
+> import Data.String
+> import Control.Exception
 
 A real number. Double is mostly an adequate representation
 
@@ -38,21 +47,39 @@ The syntax tree of an expression
 >           | Expr :- Expr       -- Minus (Subtraction)
 >           | Expr :* Expr       -- Times (Multiplication)
 >           | Expr :/ Expr       -- Divided by (Division)
+>           | Expr :. Expr       -- Composition (After, o)
 >           | Var String         -- Variable
 >           | Func Func          -- Builtin function
 >           | Lambda String Expr -- Lambda function
 >           | Delta Expr         -- Difference, like "Δx"
->           | D Expr             -- Differential, like "dx"
+>           | D Expr             -- Derivative, like "f'"
 >           | Expr :$ Expr       -- Function application
 >   deriving (Show, Eq)
 
 > type Func = String
 
-> funcs = [("sin", RealVal . sin . fromRealVal),
+> funcs = [("negate", RealVal . negate . fromRealVal),
 >          ("abs", RealVal . abs . fromRealVal),
->          ("signum", RealVal . signum . fromRealVal)]
+>          ("signum", RealVal . signum . fromRealVal),
+>          ("log", RealVal . log . fromRealVal),
+>          ("exp", RealVal . exp . fromRealVal),
+>          ("cos", RealVal . cos . fromRealVal),
+>          ("sin", RealVal . sin . fromRealVal),
+>          ("asin", RealVal . asin . fromRealVal),
+>          ("acos", RealVal . acos . fromRealVal),
+>          ("atan", RealVal . atan . fromRealVal),
+>          ("sinh", RealVal . sinh . fromRealVal),
+>          ("cosh", RealVal . cosh . fromRealVal),
+>          ("asinh", RealVal . asinh . fromRealVal),
+>          ("acosh", RealVal . acosh . fromRealVal),
+>          ("atanh", RealVal . atanh . fromRealVal),
+>          ("**", \e -> LambdaVal []
+>                                 "_y"
+>                                 (Func "exp" :$
+>                                      ((Func "log" :$ Const (fromRealVal e)) :*
+>                                       Var "_y")))]
 
-We implement Num for Expr to make it nicer to usepackage
+We implement Num, Fractal, Floating, and IsString for Expr to make it nicer to use
 
 > instance Num Expr where
 >       a + b = a :+ b
@@ -62,15 +89,37 @@ We implement Num for Expr to make it nicer to usepackage
 >       signum e = Func "signum" :$ e
 >       fromInteger = Const . fromInteger
 
-> avg (y1, x1) (y2, x2) = (y2 :- y1) :/ (x2 :- x1)
+> instance Fractional Expr where
+>       a / b = a :/ b
+>       fromRational = Const . fromRational
+
+> instance Floating Expr where
+>     pi = Const pi
+>     exp e = Func "exp" :$ e
+>     log e = Func "log" :$ e
+>     sin e = Func "sin" :$ e
+>     cos e = Func "cos" :$ e
+>     asin e = Func "asin" :$ e
+>     acos e = Func "acos" :$ e
+>     atan e = Func "atan" :$ e
+>     sinh e = Func "sinh" :$ e
+>     cosh e = Func "cosh" :$ e
+>     asinh e = Func "asinh" :$ e
+>     acosh e = Func "acosh" :$ e
+>     atanh e = Func "atanh" :$ e
+
+> instance IsString Expr where
+>     fromString = Var
+
+> avg (y1, x1) (y2, x2) = (y2 - y1) / (x2 - x1)
 
 is equivalent to
 
-> avg' y x t1 t2 = ((y :$ t2) :- (x :$ t1)) :/ ((x :$ t2) :- (x :$ t1))
+> avg' y x t1 t2 = ((y :$ t2) - (x :$ t1)) / ((x :$ t2) - (x :$ t1))
 
 which is equivalent to
 
-> avg'' y x = Delta y :/ Delta x
+> avg'' y x = Delta y / Delta x
 
 > data Val = RealVal RealNum | LambdaVal [(String, Val)] String Expr | FuncVal Func
 >   deriving (Show, Eq)
@@ -83,6 +132,7 @@ which is equivalent to
 > eval env (a :- b) = evalBinop env a b (:-) (-)
 > eval env (a :* b) = evalBinop env a b (:*) (*)
 > eval env (a :/ b) = evalBinop env a b (:/) (/)
+> eval env (f :. g) = eval env (Lambda "_x" (f :$ (g :$ ("_x"))))
 > eval env (Var s) =
 >     fromMaybe (error ("Variable " ++
 >                       s ++
@@ -99,7 +149,8 @@ which is equivalent to
 >     LambdaVal env
 >               "_a"
 >               (Lambda "_b"
->                       ((x :$ (Var "_b")) :- (x :$ (Var "_a"))))
+>                       ((x :$ ("_b")) - (x :$ ("_a"))))
+> eval env (D f) = eval env (simplify (deriveFn env f))
 
 > evalBinop env a b cons op = case (eval env a, eval env b) of
 
@@ -113,8 +164,8 @@ differentials: $ f + g = h $ where $ h(x) = f(x) + g(x) $
 >     (LambdaVal lenv1 p1 b1, LambdaVal lenv2 p2 b2) ->
 >         LambdaVal (lenv1 `union` lenv2)
 >                   "_x"
->                   ((cons ((Lambda p1 b1) :$ (Var "_x"))
->                          ((Lambda p2 b2) :$ (Var "_x"))))
+>                   ((cons ((Lambda p1 b1) :$ ("_x"))
+>                          ((Lambda p2 b2) :$ ("_x"))))
 
 > evalReal :: [(String, Val)] -> Expr -> RealNum
 > evalReal env e = fromRealVal (eval env e)
@@ -159,7 +210,7 @@ $$ (\Delta x)(h)(a) = x(a + h) - x(a) $$
 This is almost identical to the definition we arrived at earlier, with the
 exception of expressing $b$ as $a + h$. We'll use our own definition hereinafter.
 
-We express our definition of \Delta in Haskell:
+We express our definition of $\Delta$ in Haskell:
 
 < delta :: (RealNum -> RealNum) -> RealNum -> RealNum -> RealNum
 < delta x a b = x(b) - x(a)
@@ -182,7 +233,7 @@ We implement the delta case of the eval function according to the definition
 <     LambdaVal env
 <               "_a"
 <               (Lambda "_b"
-<                       ((x :$ (Var "_b")) :- (x :$ (Var "_a"))))
+<                       ((x :$ ("_b")) :- (x :$ ("_a"))))
 
 \subsection{Verification/proof/test}
 
@@ -190,10 +241,10 @@ We implement the delta case of the eval function according to the definition
 
 \subsection{Examples}
 
-> x = Lambda "t" ((Var "t") :* (Const 5))
-> id' = Lambda "x" (Var "x")
+> x = Lambda "t" (("t") :* (Const 5))
+> id' = Lambda "x" ("x")
 > t = id'
-> vAvg = Lambda "x" (Delta (Var "x") :/ Delta t)
+> vAvg = Lambda "x" (Delta ("x") :/ Delta t)
 > vAvgX = vAvg :$ x
 > v = eval [] (vAvgX :$ (Const 0) :$ (Const 10))
 
@@ -203,13 +254,35 @@ Derivatives are used for stuff like instantaneous velocity.
 
 $$ v_x = \frac{dx}{dt} = lim_{\Delta t \to 0} \frac{\Delta x}{\Delta t} $$
 
-We add the infinitesimal syntax to the \textit{Expr} syntax tree.
+% https://en.wikipedia.org/wiki/Leibniz%27s_notation
+``In calculus, Leibniz's notation, named in honor of the 17th-century German philosopher and mathematician Gottfried Wilhelm Leibniz, uses the symbols dx and dy to represent infinitely small (or infinitesimal) increments of x and y, respectively, just as Δx and Δy represent finite increments of x and y, respectively.''
 
-<           | D Expr             -- Differential, like "dx"
+We interpret this in mathematical terms:
+
+$$ df = lim_{\Delta f \to 0} \Delta f $$
+
+such that
+
+$$ \forall y(x), D(y) = \frac{dy}{dx} = \frac{lim_{\Delta y \to 0} \Delta y}
+                                             {lim_{\Delta x \to 0} \Delta x} $$
+
+This definition of derivatives is very appealing, as it suggests a very
+simple and intuitive transition from finite differences to infinitesimal
+differentials.
+
+This concept of infinitesimals is very intuitive, and the ability to manipulate
+differentials algebraically is very useful. However, this concept is generally
+considered too imprecise to be used as the foundation of calculus.
+
+% https://en.wikipedia.org/wiki/Leibniz%27s_notation
+``Leibniz's concept of infinitesimals, long considered to be too imprecise to be used as a foundation of calculus, was eventually replaced by rigorous concepts developed by Weierstrass and others. Consequently, Leibniz's quotient notation was re-interpreted to stand for the limit of the modern definition. However, in many instances, the symbol did seem to act as an actual quotient would and its usefulness kept it popular even in the face of several competing notations. In the modern rigorous treatment of non-standard calculus, justification can be found to again consider the notation as representing an actual quotient.''
 
 Leibniz's notation definition. Used to be defined as ``the quotient of an infinitesimal increment of y by an infinitesimal increment of x'':
 
 $$ D(f) = \frac{dy}{dx} = \frac{lim_{\Delta y \to 0} \Delta y}{lim_{\Delta x \to 0} \Delta x} $$
+
+% https://en.wikipedia.org/wiki/Derivative
+``The most common approach to turn this intuitive idea into a precise definition is to define the derivative as a limit of difference quotients of real numbers.''
 
 ``In its modern interpretation, the expression dy/dx should not be read as the division of two quantities dx and dy (as Leibniz had envisioned it); rather, the whole expression should be seen as a single symbol that is shorthand for''
 
@@ -226,20 +299,107 @@ D(x) &= lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x} \\
      &= a \mapsto lim_{h \to 0} \frac{y(a + h) - y(a)}{h}
 \end{align*}
 
+We add the derivative syntax to the \textit{Expr} syntax tree.
+
+<           | D Expr             -- Derivative, like "D(f)" or "f'"
+
+Here are some derivatives. Proving these is left as an excercise to the reader:
+
+%% TODO: Higher order functions are discrete. Typecheck to prevent differentiation
+%%       of these.
+
+> deriveFn :: [(String, Val)] -> Expr -> Expr
+> deriveFn env (f :+ g) = deriveFn env f + deriveFn env g
+> deriveFn env (f :- g) = deriveFn env f - deriveFn env g
+> deriveFn env (f :* g) = deriveFn env f * g + f * deriveFn env g
+> deriveFn env (f :/ g) = (deriveFn env f * g - f * deriveFn env g) / (g * g)
+> deriveFn env (f :. g) = Lambda "_x" ((*) (deriveFn env (g :$ ("_x")))
+>                                          (deriveFn env (f :$ (g :$ ("_x")))))
+> deriveFn env (Var v) = case (fromJust (lookup v env)) of
+>     RealVal _          -> error "not a function"
+>     LambdaVal lenv p b -> deriveFn (lenv ++ env) (Lambda p b)
+>     FuncVal f          -> deriveFn env (Func f)
+> deriveFn env (Lambda p b) = Lambda p (deriveEx env p b)
+> deriveFn env (Func "log") = Lambda "_x" (1 / ("x"))
+> deriveFn env (Func "exp") = Func "exp"
+> deriveFn env (Func "sin") = Func "cos"
+> deriveFn env (Func "cos") = Func "negate" :. Func "sin"
+> deriveFn env (Func "asin") = 1 / sqrt (1 - ("x" * "x"))
+> deriveFn env (Func "acos") = (-1) / sqrt (1 - ("x" * "x"))
+> deriveFn env (Func "sinh") = Func "cosh"
+> deriveFn env (Func "cosh") = Func "sinh"
+> deriveFn env (Func "asinh") = 1 / sqrt (("x" * "x") + 1)
+> deriveFn env (Func "acosh") = 1 / sqrt (("x" * "x") - 1)
+> deriveFn env (Func "atanh") = 1 / (1 - ("x" * "x"))
+> deriveFn _ _ = undefined
+
+> deriveEx :: [(String, Val)] -> String -> Expr -> Expr
+> deriveEx env v (Const _) = 0
+> deriveEx env v (a :+ b) = deriveEx env v a + deriveEx env v b
+> deriveEx env v (a :- b) = deriveEx env v a - deriveEx env v b
+> deriveEx env v (a :* b) = deriveEx env v a * b + a * deriveEx env v b
+> deriveEx env v (a :/ b) = (deriveEx env v a * b - a * deriveEx env v b) / (b * b)
+> deriveEx env v (Var u) | u == v = 1
+>                        | otherwise = 0
+> deriveEx env v (f :$ e) = deriveEx env v e * (deriveFn env f :$ e)
+> deriveEx _ _ _ = undefined
+
+Difficult to read some of these derivatives. Let's simplify
+
+> simplify :: Expr -> Expr
+> simplify (Const 0 :* b) = 0
+> simplify (Const 1 :* b) = simplify b
+> simplify (Const a :* Const b) = Const (a * b)
+> simplify ((Const a :* b) :+ c) | b' == c'  = Const (a + 1) :* b'
+>                                | otherwise = (Const a :* b') :+ c'
+>   where b' = simplify b
+>         c' = simplify c
+> simplify (c :+ (Const a :* b)) = simplify ((Const a :* b) :+ c)
+> simplify (Const a :* b) = Const a :* simplify b
+> simplify (a :* Const b) = simplify (Const b :* a)
+> simplify (a :* b) = simplify a :* simplify b
+> simplify (Const 0 :+ b) = simplify b
+> simplify (Const a :+ Const b) = Const (a + b)
+> simplify (Const a :+ b) = Const a :+ simplify b
+> simplify (a :+ Const b) = simplify (Const b :+ a)
+> simplify (a :+ b) | a' == b'             = simplify (2 * a')
+>                   | (a + b) == (a' + b') = a + b
+>                   | otherwise            = simplify (a' + b')
+>   where a' = simplify a
+>         b' = simplify b
+> simplify (Const 0 :- b) = simplify (negate (simplify b))
+> simplify (Const a :- Const b) = Const (a - b)
+> simplify (Const a :- b) = Const a :- simplify b
+> simplify (a :- Const b) = simplify (Const (0-b) :+ a)
+> simplify e = e
+
 \subsection{Verification/proof/test}
 
 ???
 
 \subsection{Examples}
 
+> idE = Lambda "_x" "_x"
+> constFn n = Lambda "_x" (Const n)
+
+> dF = simplify . deriveFn []
+> dE = simplify . deriveEx [] "x"
+
+> test_simplify1 = (==) (simplify ("x" + "x"))
+>                       (2 * "x")
+> test_simplify2 = (==) (simplify (((1 + 1) * "x") + ("x" * 1)))
+>                       (3 * "x")
+> test_derive1   = (==) (dF (Func "sin" + idE))
+>                       (Func "cos" + constFn 1)
+> test_derive2   = (==) (dE (sin (sin "x")))
+>                       (cos "x" * cos (sin "x"))
+
+We could make a simple graphing calculator here?
+
 \section{Integrals}
 
 Integrals are used in the reversed way as derivatives.
 
 $$ x_{traveled} = \int_{t_0}^{t_1} v(t) dt $$
-
-Debug:
-
-> env = []
 
 \end{document}

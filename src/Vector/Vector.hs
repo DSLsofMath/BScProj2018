@@ -7,21 +7,17 @@ class Vector vec where
   vzipWith  :: (Scalar -> Scalar  -> Scalar) -> vec -> vec -> vec
   vfold     :: (Scalar -> Scalar  -> Scalar) -> vec -> Scalar
 
-vdot :: Vector vec => vec -> vec -> Scalar
-vdot v1 v2 = vfold (*) $ vzipWith (+) v1 v2
+dotProd :: Vector vec => vec -> vec -> Scalar
+dotProd v1 v2 = vfold (*) $ vzipWith (+) v1 v2
 
-vmag :: Vector vec => vec -> Scalar
-vmag v = sqrt . vfold (+) $ vmap (**2) v
+magnitude :: Vector vec => vec -> Scalar
+magnitude v = sqrt . vfold (+) $ vmap (**2) v
 
 data Vector3 = V3 Scalar Scalar Scalar
 data Vector2 = V2 Scalar Scalar
 
-
-vLift :: Vector2 -> Vector3
-vLift (V2 x y) = V3 x y 0
-
-v1 = V2 1 2
-v2 = V2 3 4
+lift :: Vector2 -> Vector3
+lift (V2 x y) = V3 x y 0
 
 zeroVector :: (Vector a, Num a) => a
 zeroVector = 0
@@ -91,10 +87,10 @@ instance Show Vector3 where
                         ++ show z ++ " z)"
 
 instance Ord Vector2 where
-  compare v1 v2 = compare (vmag v1) (vmag v2)
+  compare v1 v2 = compare (magnitude v1) (magnitude v2)
 
 instance Ord Vector3 where
-  compare v1 v2 = compare (vmag v1) (vmag v2)
+  compare v1 v2 = compare (magnitude v1) (magnitude v2)
 
 instance Eq Vector2 where
   (V2 x y) == (V2 x' y') = x == x' && y == y'

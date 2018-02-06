@@ -39,11 +39,28 @@ The syntax tree of an expression
 >           | Expr :* Expr       -- Times (Multiplication)
 >           | Expr :/ Expr       -- Divided by (Division)
 >           | Var String         -- Variable
+>           | Func Func          -- Builtin function
 >           | Lambda String Expr -- Lambda function
 >           | Delta Expr         -- Difference, like "Δx"
 >           | D Expr             -- Differential, like "dx"
 >           | Expr :$ Expr       -- Function application
 >   deriving (Show, Eq)
+
+> type Func = String
+
+> funcs = [("sin", RealVal . sin . fromRealVal),
+>          ("abs", RealVal . abs . fromRealVal),
+>          ("signum", RealVal . signum . fromRealVal)]
+
+We implement Num for Expr to make it nicer to usepackage
+
+> instance Num Expr where
+>       a + b = a :+ b
+>       a - b = a :- b
+>       a * b = a :* b
+>       abs e = Func "abs" :$ e
+>       signum e = Func "signum" :$ e
+>       fromInteger = Const . fromInteger
 
 > avg (y1, x1) (y2, x2) = (y2 :- y1) :/ (x2 :- x1)
 
@@ -55,8 +72,10 @@ which is equivalent to
 
 > avg'' y x = Delta y :/ Delta x
 
-> data Val = RealVal RealNum | LambdaVal [(String, Val)] String Expr
+> data Val = RealVal RealNum | LambdaVal [(String, Val)] String Expr | FuncVal Func
 >   deriving (Show, Eq)
+
+> fromRealVal (RealVal x) = x
 
 > eval :: [(String, Val)] -> Expr -> Val
 > eval env (Const x) = RealVal x
@@ -71,9 +90,10 @@ which is equivalent to
 >                       show env))
 >               (lookup s env)
 > eval env (Lambda p b) = LambdaVal env p b
-> eval env (((Var "sin") :$ arg)) = RealVal (sin (evalReal env arg))
+> eval env (Func f) = FuncVal f
 > eval env ((f :$ arg)) = case (eval env f) of
 >     LambdaVal lenv p b -> eval ((p, eval env arg) : lenv) b
+>     FuncVal f          -> (fromJust (lookup f funcs)) (eval env arg)
 >     _                  -> error "Not a function"
 > eval env (Delta x) =
 >     LambdaVal env
@@ -97,9 +117,7 @@ differentials: $ f + g = h $ where $ h(x) = f(x) + g(x) $
 >                          ((Lambda p2 b2) :$ (Var "_x"))))
 
 > evalReal :: [(String, Val)] -> Expr -> RealNum
-> evalReal env e = case (eval env e) of
->     RealVal x -> x
->     _         -> error "Wrong type of value. Expected RealVal"
+> evalReal env e = fromRealVal (eval env e)
 
 \section{Differences}
 

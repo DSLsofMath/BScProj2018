@@ -15,7 +15,7 @@
 
 ## Nuvarande status
 
-- ???
+- Lite text från metod & genomförande, + bild på gantt schemat. 
 
 ## Egna erfarenheter
 

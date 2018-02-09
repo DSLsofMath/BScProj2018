@@ -1,6 +1,7 @@
 module Vector where
 
 type Scalar = Double
+type Angle  = Double
 
 class Vector vec where
   vmap      :: (Scalar -> Scalar) -> vec -> vec
@@ -22,10 +23,31 @@ lift (V2 x y) = V3 x y 0
 zeroVector :: (Vector a, Num a) => a
 zeroVector = 0
 
+
 crossProd :: Vector3 -> Vector3 -> Vector3
 crossProd (V3 x y z) (V3 x' y' z') = V3 (y*z' - z*y') -- X
                                         (z*x' - x*z') -- Y
                                         (x*y' - y*x') -- Z
+
+prop_crossProd :: Vector3 -> Bool
+prop_crossProd v = (crossProd v v) == 0
+
+-- The angle 
+angle :: Vector2 -> Scalar
+angle (V2 x y) = atan y/x
+
+-- Angle between two vectors
+angleG :: Vector vec => vec -> vec -> Scalar
+angleG v1 v2 = (dotProd v1 v2) / ((magnitude v1) * (magnitude v2))
+
+mkVector :: Scalar -> Angle -> Vector2
+mkVector mag angle = V2 x y
+  where
+    x = mag * cos angle
+    y = mag * sin angle
+
+v1 = V2 1 2
+v2 = V2 3 4
 
 -- | TODO
 -- | ~Laws~

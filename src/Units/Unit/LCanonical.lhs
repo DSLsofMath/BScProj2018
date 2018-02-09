@@ -26,6 +26,9 @@
 
 \section{Start på ett DSL för enheter}
 
+< hadada
+< ifoas ufhaidh
+
 Det här avsnittet handlar om ett domänspecifikt språk för enheter. Först lite Haskell-teknikaliteter.
 
 > {-# LANGUAGE InstanceSigs #-}

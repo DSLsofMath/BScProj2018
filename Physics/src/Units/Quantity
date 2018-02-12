@@ -1,14 +1,14 @@
 
-module Quantity
+module Units.Quantity
 (
 )
 where
 
 import Prelude hiding (length)
-import Helper
+import Units.Helper
 
-import Unit
-import Prefix
+import Units.Unit
+import Units.Prefix
 
 
 ------------------------------------------------------------

@@ -1,7 +1,7 @@
 
 {-# LANGUAGE InstanceSigs #-}
 
-module UnitSem
+module Units.Unit.CanonicalGrund
 ( Unit(..)
 , BaseUnit(..)
 , length
@@ -15,7 +15,7 @@ where
 
 import Prelude hiding (length)
 import Data.List hiding (length)
-import Helper
+import Units.Helper
 
 
 ------------------------------------------------------------

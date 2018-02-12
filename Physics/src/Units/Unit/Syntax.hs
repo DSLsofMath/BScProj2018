@@ -1,5 +1,5 @@
 
-module Unit.Syntax
+module Units.Unit.Syntax
 ( Unit(..)
 , length
 , time
@@ -12,7 +12,7 @@ where
 import Prelude hiding (length)
 import Data.List hiding (length)
 
-import Helper
+import Units.Helper
 
 
 ------------------------------------------------------------

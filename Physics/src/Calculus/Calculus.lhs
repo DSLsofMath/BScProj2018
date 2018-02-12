@@ -24,6 +24,7 @@ Differences, derivatives, and integrals
 
 \subsection{Data type definitions and general lambda calculus stuff}
 
+> module Calculus.Calculus where
 > import Data.Maybe
 > import Data.List
 

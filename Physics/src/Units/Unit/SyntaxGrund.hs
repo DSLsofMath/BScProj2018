@@ -1,10 +1,10 @@
 
-module Unit.Syntax where
+module Units.Unit.SyntaxGrund where
 
 import Prelude hiding (length)
 import Data.List hiding (length)
 
-import Helper
+import Units.Helper
 
 data Unit = One
           | Length Int
@@ -25,10 +25,10 @@ mass = Mass 1
 
 area :: Unit
 area = Length 2
-area' = Length 1 :*: Length 1
+--area' = Length 1 :*: Length 1
 
-multiUnit u 1 = u
-multiUnit u n = u :*: (multiUnit (n-1) u)
+--multiUnit u 1 = u
+--multiUnit u n = u :*: (multiUnit (n-1) u)
 
 area' :: Unit
 area' = length :*: length

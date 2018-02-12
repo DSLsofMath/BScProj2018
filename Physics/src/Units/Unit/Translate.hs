@@ -1,5 +1,5 @@
 
-module Unit.Translate
+module Units.Unit.Translate
 (
 )
 where
@@ -7,9 +7,9 @@ where
 import Prelude hiding (length)
 import Data.List hiding (length)
 
-import Helper
-import Unit.Syntax as S
-import Unit.Canonical as C
+import Units.Helper
+import Units.Unit.Syntax as S
+import Units.Unit.Canonical as C
 
 ------------------------------------------------------------
 -- Snack

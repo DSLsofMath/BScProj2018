@@ -1,4 +1,4 @@
-module Vector where
+module Vector.Vector where
 
 type Scalar = Double
 

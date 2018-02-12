@@ -20,8 +20,6 @@ resolver: lts-10.5
 # User packages to be built.
 # Various formats can be used as shown in the example below.
 #
-packages:
-  - src/Units/Unit
 # - https://example.com/foo/bar/baz-0.0.2.tar.gz
 # - location:
 #    git: https://github.com/commercialhaskell/stack.git

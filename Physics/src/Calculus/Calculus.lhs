@@ -37,6 +37,10 @@ Fun imports
 > import Data.String
 > import Control.Exception
 
+Simple graph plotting library
+
+> import Hatlab.Plot
+
 A real number. Double is mostly an adequate representation
 
 > type RealNum = Double
@@ -94,8 +98,8 @@ We implement Num, Fractal, Floating, and IsString for Expr to make it nicer to u
 >     show (f :. g) = "(" ++ show f ++ " ∘ " ++ show g ++ ")"
 >     show (Var v) = v
 >     show (Func f) = f
->     show (Lambda p b) = "(λ" ++ p ++ "." ++ show b ++ ")"
->     show (Delta x) = "(Δ" ++ show x ++ ")"
+>     show (Lambda p b) = "(lamda " ++ p ++ " . " ++ show b ++ ")"
+>     show (Delta x) = "(delta " ++ show x ++ ")"
 >     show (D e) = "(D " ++ show e ++ ")"
 >     show (f :$ e) = "(" ++ show f ++ " " ++ show e ++ ")"
 
@@ -162,6 +166,9 @@ differentials: $ f + g = h $ where $ h(x) = f(x) + g(x) $
 
 > evalReal :: [(String, Expr)] -> Expr -> RealNum
 > evalReal env e = valToReal (eval env e)
+>
+> evalF :: [(String, Expr)] -> Expr -> (RealNum -> RealNum)
+> evalF env e = valToFunc (eval env e)
 
 Substitution function to instantiate expression for environment
 
@@ -373,6 +380,7 @@ Difficult to read some of these derivatives. Let's simplify
 > simplify (Const a :- Const b) = Const (a - b)
 > simplify (Const a :- b) = Const a :- simplify b
 > simplify (a :- Const b) = simplify (Const (0-b) :+ a)
+> simplify (Lambda p b) = (Lambda p (simplify b))
 > simplify e = e
 
 \subsection{Verification/proof/test}
@@ -396,7 +404,16 @@ Difficult to read some of these derivatives. Let's simplify
 > test_derive2   = (==) (dE (sin (sin "x")))
 >                       (cos "x" * cos (sin "x"))
 
-We could make a simple graphing calculator here?
+Let's plot graphs!
+
+> test_plot1 = let fe = Lambda "x" ("x" * "x")
+>                  fe' = dF fe
+>                  f = evalF [] fe
+>                  f' = evalF [] fe'
+>              in plot [Fun f
+>                           (show fe),
+>                       Fun f'
+>                           ("(D " ++ show fe ++ ") = " ++ show fe')]
 
 \section{Integrals}
 

@@ -1,7 +1,8 @@
 
- ## Kvanitiet
+Storheter
+=========
 
-Vi ska nu skapa en datatyp för kvantitet och kombinera enheter på typnivå och värdesnivå.
+Vi ska nu skapa en datatyp för storheter och kombinera enheter på typnivå och värdesnivå. Precis som tidigare krävs en drös GHC-extensions.
 
 > {-# LANGUAGE DataKinds #-}
 > {-# LANGUAGE GADTs #-}
@@ -19,7 +20,7 @@ Vi ska nu skapa en datatyp för kvantitet och kombinera enheter på typnivå och
 > import Units.TypeLevel as T
 > import Prelude hiding (length, div)
 
-Först skapas datatypen.
+Först skapar vi själva datatypen.
 
 > data Quantity (u :: T.Unit) (r :: *) where
 >   Quantity :: r -> V.Unit -> Quantity u r
@@ -30,10 +31,10 @@ Först skapas datatypen.
 - `Quantity` på raden nedanför är en datakonstruktor.
 - Datakonstruktorn har två *värde*-parametrar.
   - `r` är en typ som representerar ett tal (t.ex. `Double` eller `Int`).
-  - `V.Unit` är kvantitetens enhet på värdesnivå.
+  - `V.Unit` är storhetens enhet på värdesnivå.
 - `Quantity` på övre raden är namnet på en typ (snarare typkonstruktor eftersom den har de två parametrarna `u` och `r`) medan `Quantity` på den nedre raden är namnet på ett värde (värdekonstruktor). Samma namn men olika saker. Det är möjligt att göra så här, precis som definitionen nedan är möjlig med samma namn på olika saker av de två sidorna av lika-med-tecknet.
 
-Motsvarande datatyp utan enheter på typnivå skulle se som
+Motsvarande datatyp utan enheter på typnivå skulle se ut som
 
 < data Quantity r = Quantity V.Unit r
 
@@ -41,10 +42,14 @@ Motsvarande datatyp utan enheter på typnivå skulle se som
 
 Vi ska implementera alla räknesätt för `Quantity`, men för att få ett smakprov visar vi här addition och multiplikation samt några exempelvärden på värden av typ `Quantity`.
 
-> quantityAdd :: (Num v) => Quantity u v -> Quantity u v -> Quantity u v
+> quantityAdd :: (Num v) => Quantity u v -> 
+>                           Quantity u v ->
+>                           Quantity u v
 > quantityAdd (Quantity v1 u) (Quantity v2 _) = Quantity (v1+v2) u
 
 Typen tolkas så här: som indata tas två värden av typen `Quantity u v` där `u` är enheten som typ. Utdata blir en `Quantity u v` också.
+
+Typerna på funktionen tvingar indata att ha samma enheter. Därför kollar spelar typen på värdenivå på ett av argumenten ingen roll, för de kommer vara samma. (Man kan skapa värden där enheterna på värdenivån inte är samma som på typnivån. Detta återkommer vi till.)
 
 Multiplikation blir:
 
@@ -63,7 +68,7 @@ Några exempelvärden nu.
 > 
 > type Area = Mul T.Length T.Length
 
-Nedanstående visar att vid en multiplikation så åverkas typerna, som sig bör. Det är inte bara något på värdesnivån som ändras utan även typerna.
+Nedanstående visar att vid en multiplikation så påverkas typerna, som sig bör. Det är inte bara något på värdesnivån som ändras utan även typerna.
 
 > area :: Quantity Area Double
 > area = quantityMult width height
@@ -75,12 +80,21 @@ Att typerna motsvarar enheter användas nedan för att vid kompileringstid avgö
 
 Om man haft enheterna enbart på värdesnivå hade man  upptäckt felet först vid körning.
 
+Färdiga storheter
+-----------------
+
+Vill man skapa en variabel som representerar en viss sträcka (till exempel 5 meter) gör man som nedanstående:
+
+< distance :: Quantity T.Length Double
+< distance = Quantity 5 V.length
+
+> langd :: (Num v) => Quantity T.Length v
+> langd = Quantity 0 V.length
 
 
+> (~~) :: (Num v) => v -> Quantity u v -> Quantity u v
+> v ~~ (Quantity _ u) = Quantity v u
 
-
-
-
-
+Syntaktiskt socker!
 
 

@@ -35,6 +35,10 @@ resolver: lts-10.5
 # will not be run. This is useful for tweaking upstream packages.
 packages:
 - .
+- location:
+    git: git@github.com:DSLsofMath/Hatlab.git
+    commit: cc3f92034010e20ef248c57c3b86df730cb7d420
+  extra-dep: true
 # Dependency packages to be pulled from upstream that are not in the resolver
 # (e.g., acme-missiles-0.3)
 # extra-deps: []

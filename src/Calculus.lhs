@@ -49,35 +49,12 @@ The syntax tree of an expression
 >           | Expr :/ Expr       -- Divided by (Division)
 >           | Expr :. Expr       -- Composition (After, o)
 >           | Var String         -- Variable
->           | Func Func          -- Builtin function
+>           | Func String        -- Builtin function
 >           | Lambda String Expr -- Lambda function
 >           | Delta Expr         -- Difference, like "Δx"
 >           | D Expr             -- Derivative, like "f'"
 >           | Expr :$ Expr       -- Function application
->   deriving (Show, Eq)
-
-> type Func = String
-
-> funcs = [("negate", RealVal . negate . fromRealVal),
->          ("abs", RealVal . abs . fromRealVal),
->          ("signum", RealVal . signum . fromRealVal),
->          ("log", RealVal . log . fromRealVal),
->          ("exp", RealVal . exp . fromRealVal),
->          ("cos", RealVal . cos . fromRealVal),
->          ("sin", RealVal . sin . fromRealVal),
->          ("asin", RealVal . asin . fromRealVal),
->          ("acos", RealVal . acos . fromRealVal),
->          ("atan", RealVal . atan . fromRealVal),
->          ("sinh", RealVal . sinh . fromRealVal),
->          ("cosh", RealVal . cosh . fromRealVal),
->          ("asinh", RealVal . asinh . fromRealVal),
->          ("acosh", RealVal . acosh . fromRealVal),
->          ("atanh", RealVal . atanh . fromRealVal),
->          ("**", \e -> LambdaVal []
->                                 "_y"
->                                 (Func "exp" :$
->                                      ((Func "log" :$ Const (fromRealVal e)) :*
->                                       Var "_y")))]
+>   deriving Eq
 
 We implement Num, Fractal, Floating, and IsString for Expr to make it nicer to use
 
@@ -102,31 +79,45 @@ We implement Num, Fractal, Floating, and IsString for Expr to make it nicer to u
 >     asin e = Func "asin" :$ e
 >     acos e = Func "acos" :$ e
 >     atan e = Func "atan" :$ e
->     sinh e = Func "sinh" :$ e
->     cosh e = Func "cosh" :$ e
->     asinh e = Func "asinh" :$ e
->     acosh e = Func "acosh" :$ e
->     atanh e = Func "atanh" :$ e
+>     sinh = undefined; cosh = undefined; asinh = undefined; acosh = undefined; atanh = undefined;
 
 > instance IsString Expr where
 >     fromString = Var
+>
+> instance Show Expr where
+>     show (Const x) = show x
+>     show (a :+ b) = "(" ++ show a ++ " + " ++ show b ++ ")"
+>     show (a :- b) = "(" ++ show a ++ " - " ++ show b ++ ")"
+>     show (a :* b) = "(" ++ show a ++ " * " ++ show b ++ ")"
+>     show (a :/ b) = "(" ++ show a ++ " / " ++ show b ++ ")"
+>     show (f :. g) = "(" ++ show f ++ " ∘ " ++ show g ++ ")"
+>     show (Var v) = v
+>     show (Func f) = f
+>     show (Lambda p b) = "(λ" ++ p ++ "." ++ show b ++ ")"
+>     show (Delta x) = "(Δ" ++ show x ++ ")"
+>     show (D e) = "(D " ++ show e ++ ")"
+>     show (f :$ e) = "(" ++ show f ++ " " ++ show e ++ ")"
 
 > avg (y1, x1) (y2, x2) = (y2 - y1) / (x2 - x1)
 
 is equivalent to
 
-> avg' y x t1 t2 = ((y :$ t2) - (x :$ t1)) / ((x :$ t2) - (x :$ t1))
+> avg' y x t1 t2 = ((y :$ t2) - (y :$ t1)) / ((x :$ t2) - (x :$ t1))
 
 which is equivalent to
 
 > avg'' y x = Delta y / Delta x
 
-> data Val = RealVal RealNum | LambdaVal [(String, Val)] String Expr | FuncVal Func
->   deriving (Show, Eq)
+> data Val = RealVal RealNum
+>          | LambdaVal String Expr
+>          | FuncVal (RealNum -> RealNum)
 
-> fromRealVal (RealVal x) = x
+> valToReal (RealVal x) = x
+>
+> valToFunc (FuncVal f) = f
+> valToFunc (LambdaVal p b) = \x -> valToReal (eval [(p, Const x)] b)
 
-> eval :: [(String, Val)] -> Expr -> Val
+> eval :: [(String, Expr)] -> Expr -> Val
 > eval env (Const x) = RealVal x
 > eval env (a :+ b) = evalBinop env a b (:+) (+)
 > eval env (a :- b) = evalBinop env a b (:-) (-)
@@ -134,22 +125,25 @@ which is equivalent to
 > eval env (a :/ b) = evalBinop env a b (:/) (/)
 > eval env (f :. g) = eval env (Lambda "_x" (f :$ (g :$ ("_x"))))
 > eval env (Var s) =
->     fromMaybe (error ("Variable " ++
->                       s ++
->                       " is not in environment: " ++
->                       show env))
->               (lookup s env)
-> eval env (Lambda p b) = LambdaVal env p b
-> eval env (Func f) = FuncVal f
-> eval env ((f :$ arg)) = case (eval env f) of
->     LambdaVal lenv p b -> eval ((p, eval env arg) : lenv) b
->     FuncVal f          -> (fromJust (lookup f funcs)) (eval env arg)
->     _                  -> error "Not a function"
-> eval env (Delta x) =
->     LambdaVal env
->               "_a"
->               (Lambda "_b"
->                       ((x :$ ("_b")) - (x :$ ("_a"))))
+>     eval env (fromMaybe (error ("Variable "++s++" is not in environment: "++show env))
+>                         (lookup s env))
+> eval env (Lambda p b) = LambdaVal p (subst env b)
+> eval env (Func "negate") = FuncVal negate
+> eval env (Func "abs") = FuncVal abs
+> eval env (Func "signum") = FuncVal signum
+> eval env (Func "log") = FuncVal log
+> eval env (Func "exp") = FuncVal exp
+> eval env (Func "cos") = FuncVal cos
+> eval env (Func "sin") = FuncVal sin
+> eval env (Func "asin") = FuncVal asin
+> eval env (Func "acos") = FuncVal acos
+> eval env (Func "atan") = FuncVal atan
+> eval env (f :$ arg) = case (eval env f) of
+>     LambdaVal p b -> eval [(p, subst env arg)] b
+>     FuncVal f     -> RealVal (f (valToReal (eval env arg)))
+>     _             -> error "Not a function"
+> eval env (Delta x) = LambdaVal "_a" (Lambda "_b" ((x' :$ ("_b")) - (x' :$ ("_a"))))
+>   where x' = subst env x
 > eval env (D f) = eval env (simplify (deriveFn env f))
 
 > evalBinop env a b cons op = case (eval env a, eval env b) of
@@ -161,14 +155,29 @@ Arithmetic on real numbers is just as normal
 A nice definition for function (addition/subtraction/...) that works for
 differentials: $ f + g = h $ where $ h(x) = f(x) + g(x) $
 
->     (LambdaVal lenv1 p1 b1, LambdaVal lenv2 p2 b2) ->
->         LambdaVal (lenv1 `union` lenv2)
->                   "_x"
->                   ((cons ((Lambda p1 b1) :$ ("_x"))
->                          ((Lambda p2 b2) :$ ("_x"))))
+>     (LambdaVal p1 b1, LambdaVal p2 b2) ->
+>         LambdaVal "_x" ((cons ((Lambda p1 b1) :$ ("_x"))
+>                               ((Lambda p2 b2) :$ ("_x"))))
 
-> evalReal :: [(String, Val)] -> Expr -> RealNum
-> evalReal env e = fromRealVal (eval env e)
+> evalReal :: [(String, Expr)] -> Expr -> RealNum
+> evalReal env e = valToReal (eval env e)
+
+Substitution function to instantiate expression for environment
+
+> subst :: [(String, Expr)] -> Expr -> Expr
+> subst env (a :+ b) = subst env a :+ subst env b
+> subst env (a :- b) = subst env a :- subst env b
+> subst env (a :* b) = subst env a :* subst env b
+> subst env (a :/ b) = subst env a :/ subst env b
+> subst env (a :. b) = subst env a :. subst env b
+> subst env (Var s) = case (lookup s env) of
+>     Just e  -> e
+>     Nothing -> (Var s)
+> subst env (Lambda p b) = Lambda p (subst env b)
+> subst env (f :$ arg) = subst env f :$ subst env arg
+> subst env (Delta x) = Delta (subst env x)
+> subst env (D f) = D (subst env f)
+> subst _ e = e
 
 \section{Differences}
 
@@ -241,10 +250,10 @@ We implement the delta case of the eval function according to the definition
 
 \subsection{Examples}
 
-> x = Lambda "t" (("t") :* (Const 5))
-> id' = Lambda "x" ("x")
+> x = Lambda "t" ("t" :* (Const 5))
+> id' = Lambda "x" "x"
 > t = id'
-> vAvg = Lambda "x" (Delta ("x") :/ Delta t)
+> vAvg = Lambda "x" (Delta "x" :/ Delta t)
 > vAvgX = vAvg :$ x
 > v = eval [] (vAvgX :$ (Const 0) :$ (Const 10))
 
@@ -308,32 +317,24 @@ Here are some derivatives. Proving these is left as an excercise to the reader:
 %% TODO: Higher order functions are discrete. Typecheck to prevent differentiation
 %%       of these.
 
-> deriveFn :: [(String, Val)] -> Expr -> Expr
+> deriveFn :: [(String, Expr)] -> Expr -> Expr
 > deriveFn env (f :+ g) = deriveFn env f + deriveFn env g
 > deriveFn env (f :- g) = deriveFn env f - deriveFn env g
 > deriveFn env (f :* g) = deriveFn env f * g + f * deriveFn env g
 > deriveFn env (f :/ g) = (deriveFn env f * g - f * deriveFn env g) / (g * g)
-> deriveFn env (f :. g) = Lambda "_x" ((*) (deriveFn env (g :$ ("_x")))
->                                          (deriveFn env (f :$ (g :$ ("_x")))))
-> deriveFn env (Var v) = case (fromJust (lookup v env)) of
->     RealVal _          -> error "not a function"
->     LambdaVal lenv p b -> deriveFn (lenv ++ env) (Lambda p b)
->     FuncVal f          -> deriveFn env (Func f)
+> deriveFn env (f :. g) = Lambda "_x" ((*) (deriveFn env (g :$ "_x"))
+>                                          (deriveFn env (f :$ (g :$ "_x"))))
+> deriveFn env (Var v) = deriveFn env (fromJust (lookup v env))
 > deriveFn env (Lambda p b) = Lambda p (deriveEx env p b)
-> deriveFn env (Func "log") = Lambda "_x" (1 / ("x"))
+> deriveFn env (Func "log") = Lambda "_x" (1 / "x")
 > deriveFn env (Func "exp") = Func "exp"
 > deriveFn env (Func "sin") = Func "cos"
 > deriveFn env (Func "cos") = Func "negate" :. Func "sin"
 > deriveFn env (Func "asin") = 1 / sqrt (1 - ("x" * "x"))
 > deriveFn env (Func "acos") = (-1) / sqrt (1 - ("x" * "x"))
-> deriveFn env (Func "sinh") = Func "cosh"
-> deriveFn env (Func "cosh") = Func "sinh"
-> deriveFn env (Func "asinh") = 1 / sqrt (("x" * "x") + 1)
-> deriveFn env (Func "acosh") = 1 / sqrt (("x" * "x") - 1)
-> deriveFn env (Func "atanh") = 1 / (1 - ("x" * "x"))
 > deriveFn _ _ = undefined
 
-> deriveEx :: [(String, Val)] -> String -> Expr -> Expr
+> deriveEx :: [(String, Expr)] -> String -> Expr -> Expr
 > deriveEx env v (Const _) = 0
 > deriveEx env v (a :+ b) = deriveEx env v a + deriveEx env v b
 > deriveEx env v (a :- b) = deriveEx env v a - deriveEx env v b

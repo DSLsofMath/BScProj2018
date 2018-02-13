@@ -1,0 +1,17 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css">
+    <script>
+      $(function(){
+        $('[id$="-include"]').each(function (e){
+          $(this).load("includes\\" + $(this).attr("id").replace("-include", "") +  ".html");
+        });
+      });
+    </script>
+  </head>
+  <body>
+    asdasd
+  <div id="type-include">
+  </body>
+</html>

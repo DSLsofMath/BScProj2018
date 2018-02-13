@@ -1,24 +1,28 @@
 
 {-# LANGUAGE InstanceSigs #-}
 
-module Unit 
+module Unit.Canonical
 ( Unit(..)
 , BaseUnit(..)
 , length
 , time
 , mass
-, velocity
-, acceleration
+, one
 )
 where
 
+
 import Prelude hiding (length)
 import Data.List hiding (length)
+
 import Helper
 
 
 ------------------------------------------------------------
--- Datatyper
+-- Datatypen
+
+-- Modellerar det "kanoniska" sättet enheter kan representeras
+-- men som inte är det "naturliga" sättet att skriva dem
 
 newtype Unit = Unit [(BaseUnit, Int)]
 
@@ -42,6 +46,9 @@ velocity = Unit [(Length, 1), (Time, -1)]
 acceleration :: Unit
 acceleration = Unit [(Length, 1), (Time, -2)]
 
+one :: Unit
+one = Unit []
+
 weird :: Unit
 weird = Unit [(Length, 2), (Length, 1), (Time, -3), (Length, -3), (Mass, 2)]
 
@@ -51,14 +58,14 @@ weird = Unit [(Length, 2), (Length, 1), (Time, -3), (Length, -3), (Mass, 2)]
 
 canonify :: Unit -> Unit
 canonify (Unit []) = Unit []
-canonify (Unit us) = Unit . reverse $ sorted'
+canonify (Unit us) = Unit sorted'
   where
     sorted  = sort us
     grouped = groupBy (\(u1, _) (u2, _) -> u1 == u2) sorted
     summed  = map f grouped
     nonZero = filter (\g@(_, n) -> n /= 0) summed
     sorted' = sortBy (\(_, n1) (_, n2) -> compare n1 n2) nonZero
-    
+
     f us = let (u, _) = head us
                nTot   = sum $ map (\(_, n) -> n) us
            in (u, nTot)
@@ -71,40 +78,48 @@ weird2 = canonify $ Unit [(Length, 2), (Time, -4), (Mass, -2)]
 
 
 ------------------------------------------------------------
--- Typklass-instanser
+-- Instansiering
+
+-- Så att de vanliga räknesätten kan användas
 
 instance Eq Unit where
-  (==) :: Unit -> Unit -> Bool
-  u1 == u2 = u1' == u2'
-    where
+  (==) = eqUnit
+
+eqUnit :: Unit -> Unit -> Bool
+eqUnit u1 u2 = u1' == u2'
+  where
       (Unit u1') = canonify u1
       (Unit u2') = canonify u2
+
+-- General advice: keep instance declarations "trivial" (method = name)
+-- and define the actual function |name| elsewhere, like I now did with
+-- |eqUnit|.
 
 instance Num Unit where
   u1 + u2
     | u1 == u2 = u1
     | otherwise = error "Units that are added must be the same"
-  (Unit u1) * (Unit u2) = canonify . Unit $ u1 ++ u2      
+  (Unit u1) * (Unit u2) = canonify . Unit $ u1 ++ u2
   negate = id
   abs = id
   signum = id
-  fromInteger _ = Unit []
+  fromInteger _ = one
 
 instance Fractional Unit where
   recip (Unit u) = canonify . Unit $ map (\(u', n) -> (u', -n)) u
-  fromRational _ = Unit []
+  fromRational _ = one
 
 instance Floating Unit where
-  pi = Unit []
-  exp = id
-  log = id
-  sin = id
-  cos = id
-  asin = id
-  acos = id
-  atan = id
-  sinh = id
-  cosh = id
+  pi    = one
+  exp   = id
+  log   = id
+  sin   = id
+  cos   = id
+  asin  = id
+  acos  = id
+  atan  = id
+  sinh  = id
+  cosh  = id
   asinh = id
   acosh = id
   atanh = id
@@ -130,22 +145,22 @@ showUnit (Unit us)
     pos = filter (\(_, n) -> n > 0) us
     neg = filter (\(_, n) -> n < 0) us
     neg' = map (\(u, n) -> (u, -n)) neg
-    
+
     posStrs = map showUnitTuple pos
     negStrs = map showUnitTuple neg'
-    
+
     posStr = if null posStrs
              then ""
-             else foldl (\strs str -> str ++ "*" ++ strs) 
-                        (head posStrs) 
+             else foldl (\strs str -> str ++ "*" ++ strs)
+                        (head posStrs)
                         (tail posStrs)
     (left, right) = if len negStrs > 1
                     then ("(", ")")
                     else ("", "")
     negStr = if null negStrs
              then ""
-             else foldl (\strs str -> str ++ "*" ++ strs) 
-                        (head negStrs) 
+             else foldl (\strs str -> str ++ "*" ++ strs)
+                        (head negStrs)
                         (tail negStrs)
     negStr' = left ++ negStr ++ right
 
@@ -162,4 +177,4 @@ acc2 = length / (time * time)
 acc3 = vel / time
 
 -- Grejen är dock att hur det händer sker i "bakom kulisserna"
--- och då kanske poängen med ett DSL försvinner
+-- och då kanske poängen med ett DSL för pedagogik försvinner

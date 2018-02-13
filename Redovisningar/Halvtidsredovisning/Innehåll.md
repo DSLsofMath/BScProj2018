@@ -15,7 +15,7 @@
 
 ## Nuvarande status
 
-- ???
+- Lite text från metod & genomförande, + bild på gantt schemat. 
 
 ## Egna erfarenheter
 
@@ -30,12 +30,8 @@
       - Uppmärksammar syntax och typer hos matematik.
       - Använder Haskell för att skapa domänspecfika språk
         - Ett domänspecifikt språk, är ett språk gjort för en specifk domän. Så att saker i domänen kan uttryckas enklare än i ett generellt språk.
-      - Ex: derivata i Haskell... i slutet   
+      - Ex: derivata i Haskell... i slutet
     - Orsaken till detta är att TSS och regler har dålig tentastatistik, och examinatorerna tror detta orsakas av ovana vid den matematik som används.
-  - Ett tidigare kandidatarbete år 2016
-    - Läromaterial för TSS
-    - Komplement till TSS-kursen. 
-    - Brödtext och programmeringsövningar om olika koncept i TSS
 - **Projektets mål**
   - Göra fysik intressantare (=> enklare) för datateknologer
     - Genom att presentera fysik i samband med domänspecika språk och funktionell programmering i Haskell
@@ -43,10 +39,7 @@
   - Fokuserar på kursen "Fysik för ingenjörer", som läses av data i 2:an. 
     - Börja med problemområden
     - Sedan mekanik, sedan termodynamik och vågrörelselära i mån av tid
-  - Genom att göra ett läromaterial för fysik i stil med LYAH
-    - Tutorial för Haskell
-    - Lättsam stil, exempel i brödtext
-  - Handledningen ska vara brödtext om fysik varvat med skapandet av domänspecika språk till fysik
+  - Mer konkret ska vi göra ett läromaterial som ska vara brödtext om fysik varvat med skapandet av domänspecika språk till fysik
   - Presentera fysikaliska problem och modellera dem i våra DSL
     - Kommer visa senare hur detta ser ut just nu
 - **Projektplanering**
@@ -61,7 +54,7 @@
     - Liknande arbeten
       - SICM
   - Sedan skriva brödtext och parallellt implementera DSLs
-    - Resultat ihopvävt, så när ska göra också ihopvävt
+    - Resultatet ska vara dessa två ihopvävt, så skapande av dem sker också samtidigt.
     - Detta är den stora delen, även om vi inte sagt så mycket om den. Kan dela upp efter olika områden vid behov
 - **Nuvarande status**
   - Vilka områden som är avklarade
@@ -72,7 +65,7 @@
     - Det svåra har varit att tillämpa matematik, inte själva fysikaliska koncepten
     - T.ex. Differentialkalkyl
 - **Avslutning**
-  - Sammanfattningsvis så ska det bli en handledning för fysik mixat med DSL:er. Väcka intresse för fysik hos datateknologer
+  - Sammanfattningsvis så ska det bli ett läromaterial med brödtext för fysik mixat med DSL:er. Väcka intresse för fysik hos datateknologer
   - Vi tror det kan bli en skoj grej, för vi gillar Haskell och vi gillar fysik
   - Frågor från publiken
   
@@ -95,3 +88,5 @@
       where
         f1' = derivera f1
         f2' = derivera f2
+
+TODO: Här ska vara en tillhörande bild på syntax-trädet

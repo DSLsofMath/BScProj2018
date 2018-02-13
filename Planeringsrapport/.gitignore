@@ -6,3 +6,5 @@
 *.fls
 rapport.synctex.gz
 rapport.pdf
+*.bbl
+*.blg

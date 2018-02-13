@@ -9,6 +9,8 @@ Värdenivå
 > , length
 > , time
 > , mass
+> , temperature
+> , substance
 > )
 > where
 > 
@@ -34,7 +36,7 @@ Vardera fält anger exponenten för respektive grundenhet. Är exponenten `0` s�
 > velocity     = Unit 1 (-1) 0 0 0
 > acceleration = Unit 1 (-2) 0 0 0
 
-Hastighet är `m/s` eller `m^1*s^-1*. Det motiverar varför exponenterna blev som de blev.
+Hastighet är `m/s` eller `m^1*s^-1`. Det motiverar varför exponenterna blev som de blev.
 
 Enheter kan multipliceras och divideras. Hastighet är som vi precis såg en division mellan längd och tid. Multiplikation och division av enheter följer potensreglerna för de vanliga talen, det vill säga, vid multiplikation av två enheter adderas exponenterna och vid division subtraheras de.
 
@@ -48,10 +50,10 @@ Enheter kan multipliceras och divideras. Hastighet är som vi precis såg en div
 
 Några exempel på enheter vi nu kan konstruera.
 
-> velocity' = div length time
-> area      = mul length length
-> force     = mul mass acceleration
-> impulse   = mul force time
+> velocity' = length `div` time
+> area      = length `mul` length
+> force     = mass `mul` acceleration
+> impulse   = force `mul` time
 
 Pretty-printer
 --------------
@@ -95,4 +97,4 @@ Nu visas enheter prydligt när man skriver dem i GHCi.
 < ghci> impulse
 < kg*m/s
 
-
+Så nu kan enheter skrivas ut snyggt och de kan multipliceras och divideras. Man hade gärna velat skapa någon slags datatyp för storheter nu. Men först måste enheter på typnivå implementeras.

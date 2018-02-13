@@ -25,9 +25,11 @@ För att ge ett smakprov på vad resultatet blivit av vårt arbete tänkte jag v
 
 Trädet för ett uttryck består av konstruktorer för addition av två uttryck, multiplikation av två uttryck, en variabel med namn x samt en konsant.
 
-Till exempel skrivs sju + x som "Const 7 + var x".
+Till exempel skrivs sju plus (x gånger dx) som Const 7 :+: (VarX :*: Diff).
 
 För att evaluera ett sådant träd delar man upp i olika fall, ett för varje konstruktor. Till exempel är addition de två delträden evaluderas, och deras resultat adderat.
+
+Att göra ett sånt här träd kallas deep embedding, eftersom man fångar upp mycket detaljrikedom från det man modellerar och kan därför manipulera datan bra.
 
 # Egna erfarenheter
 

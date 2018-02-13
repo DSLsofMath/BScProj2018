@@ -1,5 +1,6 @@
 
- # Enheter
+Enheter
+=======
 
 *Enheter* och *storheter* är grundläggande inom fysiken. En *storhet* har en *enhet* och ett *mätetal* (och även ett prefix). Bara storheter med samma enhet går att addera. Att lägga ihop exempelvis volym och sträcka skulle inte gå - vad skulle det vara för beräkning?
 

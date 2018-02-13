@@ -82,3 +82,5 @@ Om man haft enheterna enbart på värdesnivå hade man  upptäckt felet först v
 
 
 
+
+

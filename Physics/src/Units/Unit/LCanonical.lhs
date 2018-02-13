@@ -33,7 +33,7 @@ Det här avsnittet handlar om ett domänspecifikt språk för enheter. Först li
 
 > {-# LANGUAGE InstanceSigs #-}
 > 
-> module Unit.LCanonical
+> module Units.Unit.LCanonical
 > ( Unit(..)
 > , BaseUnit(..)
 > , length
@@ -46,7 +46,7 @@ Det här avsnittet handlar om ett domänspecifikt språk för enheter. Först li
 > import Prelude hiding (length)
 > import Data.List hiding (length)
 > 
-> import Helper
+> import Units.Helper
 
 Inom fysik finns enbart 7 så kallade grundenheter. Men bara 3 av dessa är relevanta för \textit{Fysik för ingenjörer}.
 

@@ -1,5 +1,5 @@
 
-module Prefix 
+module Units.Prefix 
 ( Prefix(..)
 )
 where

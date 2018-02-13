@@ -31,6 +31,7 @@ typed as Expr.
 
 Fun imports
 
+> module Calculus.Calculus where
 > import Data.Maybe
 > import Data.List
 > import Data.String

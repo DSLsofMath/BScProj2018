@@ -4,7 +4,7 @@ Typnivå
 
 Vi ska nu behandla enheter på *typnivå*. Vad är typnivå? När man brukar programmera (i Haskell) gör man operationer (till exempel `+`) på värden (till exempel `1` och `2`). Detta är på *värdenivå*. Nu ska vi göra samma sak fast på typnivå, det vill säga, göra operationer på typer.
 
-Varför ha enheter på typnivå? För då går det att se redan vid kompileringstid om det man skriver är riktigt.
+Varför ha enheter på typnivå? För då går det att se redan vid kompileringstillfället om det man skriver är riktigt.
 
 Som tidigare nämnt kommer implementationen här vara snarlik den på värdenivå.
 
@@ -26,6 +26,7 @@ För att klara av det vi ska göra nu krävs en drös GHC-extensions. TODO: För
 > , Mass
 > , Temperature
 > , Substance
+> , One
 > )
 > where
 
@@ -55,6 +56,8 @@ Detta kan låta förvirrande, men poängen med detta kommer klarna allt efter ha
 > 
 > type Velocity     = 'Unit Pos1 Neg1 Zero Zero Zero
 > type Acceleration = 'Unit Pos1 Neg2 Zero Zero Zero
+> 
+> type One = 'Unit Zero Zero Zero Zero Zero
 
 `'Unit` används för att skilja mellan *typen* `Unit` och *typkonstruktorn* `Unit`. `'Unit` syftar på typkonstruktorn. Båda skapas parallellt i Haskell.
 

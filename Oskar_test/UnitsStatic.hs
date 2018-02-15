@@ -30,8 +30,6 @@ data Unit = Single BaseUnit
           | Cons BaseUnit Unit
           deriving (Eq, Show)
 
-
-
 type family Mul (n :: Unit) (m :: Unit) where
   Mul (Single bu1) (Single bu2) = Cons bu1 (Single bu2)
   Mul (Single bu)  u            = Cons bu  u

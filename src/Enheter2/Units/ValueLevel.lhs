@@ -11,6 +11,7 @@ Värdenivå
 > , mass
 > , temperature
 > , substance
+> , one
 > )
 > where
 > 
@@ -52,8 +53,13 @@ Några exempel på enheter vi nu kan konstruera.
 
 > velocity' = length `div` time
 > area      = length `mul` length
-> force     = mass `mul` acceleration
-> impulse   = force `mul` time
+> force     = mass   `mul` acceleration
+> impulse   = force  `mul` time
+
+En "enhet" vi inte tagit upp ännu är *skalären*, som är aktuell vid till exempel friktionskoefficienter. Den är enhetslös eftersom den uppkommer vid division av två lika enheter. `f = u * N <-> u = f / N`.
+
+> one  = force `div` force
+> one' = Unit 0 0 0 0 0
 
 Pretty-printer
 --------------

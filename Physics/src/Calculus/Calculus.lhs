@@ -18,6 +18,12 @@
 \maketitle
 
 \section{Introduction}
+
+%% TODO: Move relevant stuff out of the general structures/eval to their
+%%       respective sections? (differences, derivatives, integrals)
+%%       Or maybe, first introduce differences et al. separately, and then
+%%       tie them together in a common section of evaluation?
+
 Calculus is cool
 
 Differences, derivatives, and integrals
@@ -469,5 +475,37 @@ test_plot1 = let fe = Lambda "x" ("x" * "x")
 Integrals are used in the reversed way as derivatives.
 
 $$ x_{traveled} = \int_{t_0}^{t_1} v(t) dt $$
+
+TODO: Describe relationship between between ``Definite integrals'', ``Indefinite integrals'', and ``Antiderivatives''.
+
+%% https://en.wikipedia.org/wiki/Fundamental_theorem_of_calculus
+``The fundamental theorem of calculus is a theorem that links the concept of differentiating a function with the concept of integrating a function.
+
+The first part of the theorem, sometimes called the first fundamental theorem of calculus, states that one of the antiderivatives (also called indefinite integral), say F, of some function f may be obtained as the integral of f with a variable bound of integration. This implies the existence of antiderivatives for continuous functions.[1]
+
+Conversely, the second part of the theorem, sometimes called the second fundamental theorem of calculus, states that the integral of a function f over some interval can be computed by using any one, say F, of its infinitely many antiderivatives. This part of the theorem has key practical applications, because explicitly finding the antiderivative of a function by symbolic integration allows for avoiding numerical integration to compute integrals.''
+
+``Newton and Leibniz
+
+The major advance in integration came in the 17th century with the independent discovery of the fundamental theorem of calculus by Newton and Leibniz. The theorem demonstrates a connection between integration and differentiation. This connection, combined with the comparative ease of differentiation, can be exploited to calculate integrals. In particular, the fundamental theorem of calculus allows one to solve a much broader class of problems. Equal in importance is the comprehensive mathematical framework that both Newton and Leibniz developed. Given the name infinitesimal calculus, it allowed for precise analysis of functions within continuous domains. This framework eventually became modern calculus, whose notation for integrals is drawn directly from the work of Leibniz.
+Formalization
+While Newton and Leibniz provided a systematic approach to integration, their work lacked a degree of rigour. Bishop Berkeley memorably attacked the vanishing increments used by Newton, calling them "ghosts of departed quantities". Calculus acquired a firmer footing with the development of limits. Integration was first rigorously formalized, using limits, by Riemann. Although all bounded piecewise continuous functions are Riemann-integrable on a bounded interval, subsequently more general functions were considered—particularly in the context of Fourier analysis—to which Riemann's definition does not apply, and Lebesgue formulated a different definition of integral, founded in measure theory (a subfield of real analysis). Other definitions of integral, extending Riemann's and Lebesgue's approaches, were proposed. These approaches based on the real number system are the ones most common today, but alternative approaches exist, such as a definition of integral as the standard part of an infinite Riemann sum, based on the hyperreal number system.''
+
+Newton and Leibniz independently discovered the fundemental theorem of calculus.
+They based their definitions on infinitesimals which, as described above was considered too imprecise.
+Later, Riemann rigorously formalized integration using limits.
+
+``There are many ways of formally defining an integral, not all of which are equivalent. The differences exist mostly to deal with differing special cases which may not be integrable under other definitions, but also occasionally for pedagogical reasons. The most commonly used definitions of integral are Riemann integrals and Lebesgue integrals.''
+
+We only look at Reimann integrals for now, since they will likely be more familiar to most students (They are to me!).
+
+``In the branch of mathematics known as real analysis, the Riemann integral, created by Bernhard Riemann, was the first rigorous definition of the integral of a function on an interval. It was presented to the faculty at the University of Göttingen in 1854, but not published in a journal until 1868.[1] For many functions and practical applications, the Riemann integral can be evaluated by the fundamental theorem of calculus or approximated by numerical integration.
+
+The Riemann integral is unsuitable for many theoretical purposes. Some of the technical deficiencies in Riemann integration can be remedied with the Riemann–Stieltjes integral, and most disappear with the Lebesgue integral.''
+
+See: \href{https://mathoverflow.net/questions/52708/why-should-one-still-teach-riemann-integration}
+
+So there are some problems, but Reimann integrals will do for now.(?)
+%% Because we won't do rigorous proofs requiring Lebesgue integrals in this course?
 
 \end{document}

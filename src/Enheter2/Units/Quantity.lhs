@@ -107,6 +107,16 @@ Vi kan göra `Quantity` en `Eq`-instans.
 > instance (Eq v) => Eq (Quantity u v) where
 >   (==) = quantityEq
 
+Vi implementerar också `Ord`.
+
+> quantityCompare :: (Ord v) => Quantity u v -> 
+>                               Quantity u v -> Ordering
+> quantityCompare (Quantity v1 _) (Quantity v2 _) =
+>   compare v1 v2
+> 
+> instance (Ord v) => Ord (Quantity u v) where
+>   compare = quantityCompare
+
 Färdiga storheter
 -----------------
 

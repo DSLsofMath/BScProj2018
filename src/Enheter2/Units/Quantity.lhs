@@ -273,8 +273,7 @@ Anknytning till fysik
 
 För att avsluta detta kapitel visar vi ett exemel på hur man kan koda en uppgift och lösning i detta domänspecifika språk vi skapat för storheter.
 
-
-
+Tillfälligt dold av upphovsrättsskäl
 
 
 

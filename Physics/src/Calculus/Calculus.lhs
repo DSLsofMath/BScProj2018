@@ -31,161 +31,200 @@ typed as Expr.
 
 Fun imports
 
-> module Calculus.Calculus where
-> import Data.Maybe
-> import Data.List
-> import Data.String
-> import Control.Exception
+\begin{code}
+module Calculus.Calculus where
+import Data.Maybe
+import Data.List
+import Data.String
+import Control.Exception
+\end{code}
 
 Simple graph plotting library
 
-> import Hatlab.Plot
+\begin{code}
+import Hatlab.Plot
+\end{code}
 
 A real number. Double is mostly an adequate representation
 
-> type RealNum = Double
+\begin{code}
+type RealNum = Double
+\end{code}
 
 The syntax tree of an expression
 
-> data Expr = Const RealNum      -- Real constant
->           | Expr :+ Expr       -- Plus (Addition)
->           | Expr :- Expr       -- Minus (Subtraction)
->           | Expr :* Expr       -- Times (Multiplication)
->           | Expr :/ Expr       -- Divided by (Division)
->           | Expr :. Expr       -- Composition (After, o)
->           | Var String         -- Variable
->           | Func String        -- Builtin function
->           | Lambda String Expr -- Lambda function
->           | Delta Expr         -- Difference, like "Δx"
->           | D Expr             -- Derivative, like "f'"
->           | Expr :$ Expr       -- Function application
->   deriving Eq
+\begin{code}
+data Expr = Const RealNum      -- Real constant
+          | Expr :+ Expr       -- Plus (Addition)
+          | Expr :- Expr       -- Minus (Subtraction)
+          | Expr :* Expr       -- Times (Multiplication)
+          | Expr :/ Expr       -- Divided by (Division)
+          | Expr :. Expr       -- Composition (After, o)
+          | Var String         -- Variable
+          | Func String        -- Builtin function
+          | Lambda String Expr -- Lambda function
+          | Delta Expr         -- Difference, like "Δx"
+          | D Expr             -- Derivative, like "f'"
+          | Expr :$ Expr       -- Function application
+  deriving Eq
+\end{code}
 
 We implement Num, Fractal, Floating, and IsString for Expr to make it nicer to use
 
-> instance Num Expr where
->       a + b = a :+ b
->       a - b = a :- b
->       a * b = a :* b
->       abs e = Func "abs" :$ e
->       signum e = Func "signum" :$ e
->       fromInteger = Const . fromInteger
+\begin{code}
+instance Num Expr where
+      a + b = a :+ b
+      a - b = a :- b
+      a * b = a :* b
+      abs e = Func "abs" :$ e
+      signum e = Func "signum" :$ e
+      fromInteger = Const . fromInteger
 
-> instance Fractional Expr where
->       a / b = a :/ b
->       fromRational = Const . fromRational
+instance Fractional Expr where
+      a / b = a :/ b
+      fromRational = Const . fromRational
 
-> instance Floating Expr where
->     pi = Const pi
->     exp e = Func "exp" :$ e
->     log e = Func "log" :$ e
->     sin e = Func "sin" :$ e
->     cos e = Func "cos" :$ e
->     asin e = Func "asin" :$ e
->     acos e = Func "acos" :$ e
->     atan e = Func "atan" :$ e
->     sinh = undefined; cosh = undefined; asinh = undefined; acosh = undefined; atanh = undefined;
+instance Floating Expr where
+    pi = Const pi
+    exp e = Func "exp" :$ e
+    log e = Func "log" :$ e
+    sin e = Func "sin" :$ e
+    cos e = Func "cos" :$ e
+    asin e = Func "asin" :$ e
+    acos e = Func "acos" :$ e
+    atan e = Func "atan" :$ e
+    sinh = undefined; cosh = undefined; asinh = undefined; acosh = undefined; atanh = undefined;
 
-> instance IsString Expr where
->     fromString = Var
->
-> instance Show Expr where
->     show (Const x) = show x
->     show (a :+ b) = "(" ++ show a ++ " + " ++ show b ++ ")"
->     show (a :- b) = "(" ++ show a ++ " - " ++ show b ++ ")"
->     show (a :* b) = "(" ++ show a ++ " * " ++ show b ++ ")"
->     show (a :/ b) = "(" ++ show a ++ " / " ++ show b ++ ")"
->     show (f :. g) = "(" ++ show f ++ " ∘ " ++ show g ++ ")"
->     show (Var v) = v
->     show (Func f) = f
->     show (Lambda p b) = "(lamda " ++ p ++ " . " ++ show b ++ ")"
->     show (Delta x) = "(delta " ++ show x ++ ")"
->     show (D e) = "(D " ++ show e ++ ")"
->     show (f :$ e) = "(" ++ show f ++ " " ++ show e ++ ")"
+instance IsString Expr where
+    fromString = Var
+\end{code}
 
-> avg (y1, x1) (y2, x2) = (y2 - y1) / (x2 - x1)
+We want to be able to print our expressions in a human-readable format
+
+\begin{code}
+instance Show Expr where
+    show (Const x) = show x
+    show (a :+ b) = "(" ++ show a ++ " + " ++ show b ++ ")"
+    show (a :- b) = "(" ++ show a ++ " - " ++ show b ++ ")"
+    show (a :* b) = "(" ++ show a ++ " * " ++ show b ++ ")"
+    show (a :/ b) = "(" ++ show a ++ " / " ++ show b ++ ")"
+    show (f :. g) = "(" ++ show f ++ " ∘ " ++ show g ++ ")"
+    show (Var v) = v
+    show (Func f) = f
+    show (Lambda p b) = "(lamda " ++ p ++ " . " ++ show b ++ ")"
+    show (Delta x) = "(delta " ++ show x ++ ")"
+    show (D e) = "(D " ++ show e ++ ")"
+    show (f :$ e) = "(" ++ show f ++ " " ++ show e ++ ")"
+\end{code}
+
+\begin{code}
+avg (y1, x1) (y2, x2) = (y2 - y1) / (x2 - x1)
+\end{code}
 
 is equivalent to
 
-> avg' y x t1 t2 = ((y :$ t2) - (y :$ t1)) / ((x :$ t2) - (x :$ t1))
+\begin{code}
+avg' y x t1 t2 = ((y :$ t2) - (y :$ t1)) / ((x :$ t2) - (x :$ t1))
+\end{code}
 
 which is equivalent to
 
-> avg'' y x = Delta y / Delta x
+\begin{code}
+avg'' y x = Delta y / Delta x
+\end{code}
 
-> data Val = RealVal RealNum
->          | LambdaVal String Expr
->          | FuncVal (RealNum -> RealNum)
+\texttt{eval} evaluates an expression. Converts from syntactic domain to semantic domain.
 
-> valToReal (RealVal x) = x
->
-> valToFunc (FuncVal f) = f
-> valToFunc (LambdaVal p b) = \x -> valToReal (eval [(p, Const x)] b)
+\begin{code}
+eval :: [(String, Expr)] -> Expr -> Val
+eval env (Const x) = RealVal x
+eval env (a :+ b) = evalBinop env a b (:+) (+)
+eval env (a :- b) = evalBinop env a b (:-) (-)
+eval env (a :* b) = evalBinop env a b (:*) (*)
+eval env (a :/ b) = evalBinop env a b (:/) (/)
+eval env (f :. g) = eval env (Lambda "_x" (f :$ (g :$ ("_x"))))
+eval env (Var s) =
+    eval env (fromMaybe (error ("Variable "++s++" is not in environment: "++show env))
+                        (lookup s env))
+eval env (Lambda p b) = LambdaVal p (subst env b)
+eval env (Func "negate") = FuncVal negate
+eval env (Func "abs") = FuncVal abs
+eval env (Func "signum") = FuncVal signum
+eval env (Func "log") = FuncVal log
+eval env (Func "exp") = FuncVal exp
+eval env (Func "cos") = FuncVal cos
+eval env (Func "sin") = FuncVal sin
+eval env (Func "asin") = FuncVal asin
+eval env (Func "acos") = FuncVal acos
+eval env (Func "atan") = FuncVal atan
+eval env (f :$ arg) = case (eval env f) of
+    LambdaVal p b -> eval [(p, subst env arg)] b
+    FuncVal f     -> RealVal (f (valToReal (eval env arg)))
+    _             -> error "Not a function"
+eval env (Delta x) = LambdaVal "_a" (Lambda "_b" ((x' :$ ("_b")) - (x' :$ ("_a"))))
+  where x' = subst env x
+eval env (D f) = eval env (simplify (deriveFn env f))
 
-> eval :: [(String, Expr)] -> Expr -> Val
-> eval env (Const x) = RealVal x
-> eval env (a :+ b) = evalBinop env a b (:+) (+)
-> eval env (a :- b) = evalBinop env a b (:-) (-)
-> eval env (a :* b) = evalBinop env a b (:*) (*)
-> eval env (a :/ b) = evalBinop env a b (:/) (/)
-> eval env (f :. g) = eval env (Lambda "_x" (f :$ (g :$ ("_x"))))
-> eval env (Var s) =
->     eval env (fromMaybe (error ("Variable "++s++" is not in environment: "++show env))
->                         (lookup s env))
-> eval env (Lambda p b) = LambdaVal p (subst env b)
-> eval env (Func "negate") = FuncVal negate
-> eval env (Func "abs") = FuncVal abs
-> eval env (Func "signum") = FuncVal signum
-> eval env (Func "log") = FuncVal log
-> eval env (Func "exp") = FuncVal exp
-> eval env (Func "cos") = FuncVal cos
-> eval env (Func "sin") = FuncVal sin
-> eval env (Func "asin") = FuncVal asin
-> eval env (Func "acos") = FuncVal acos
-> eval env (Func "atan") = FuncVal atan
-> eval env (f :$ arg) = case (eval env f) of
->     LambdaVal p b -> eval [(p, subst env arg)] b
->     FuncVal f     -> RealVal (f (valToReal (eval env arg)))
->     _             -> error "Not a function"
-> eval env (Delta x) = LambdaVal "_a" (Lambda "_b" ((x' :$ ("_b")) - (x' :$ ("_a"))))
->   where x' = subst env x
-> eval env (D f) = eval env (simplify (deriveFn env f))
-
-> evalBinop env a b cons op = case (eval env a, eval env b) of
+evalBinop env a b cons op = case (eval env a, eval env b) of
+\end{code}
 
 Arithmetic on real numbers is just as normal
 
->     (RealVal a', RealVal b') -> RealVal (a' `op` b')
+\begin{code}
+    (RealVal a', RealVal b') -> RealVal (a' `op` b')
+\end{code}
 
 A nice definition for function (addition/subtraction/...) that works for
 differentials: $ f + g = h $ where $ h(x) = f(x) + g(x) $
 
->     (LambdaVal p1 b1, LambdaVal p2 b2) ->
->         LambdaVal "_x" ((cons ((Lambda p1 b1) :$ ("_x"))
->                               ((Lambda p2 b2) :$ ("_x"))))
+\begin{code}
+    (LambdaVal p1 b1, LambdaVal p2 b2) ->
+        LambdaVal "_x" ((cons ((Lambda p1 b1) :$ ("_x"))
+                              ((Lambda p2 b2) :$ ("_x"))))
+\end{code}
 
-> evalReal :: [(String, Expr)] -> Expr -> RealNum
-> evalReal env e = valToReal (eval env e)
->
-> evalF :: [(String, Expr)] -> Expr -> (RealNum -> RealNum)
-> evalF env e = valToFunc (eval env e)
+The semantic value of an evaluation. Can either be a real number, a haskell function, or a lambda(?)
+TODO: Should a lambda really be returnable here? Kinda makes sense, kinda doesn't...
+
+\begin{code}
+data Val = RealVal RealNum
+         | LambdaVal String Expr
+         | FuncVal (RealNum -> RealNum)
+\end{code}
+
+Helper functions to improve ergonomics of evaluation
+
+\begin{code}
+valToReal (RealVal x) = x
+
+valToFunc (FuncVal f) = f
+valToFunc (LambdaVal p b) = \x -> valToReal (eval [(p, Const x)] b)
+
+evalReal :: [(String, Expr)] -> Expr -> RealNum
+evalReal env e = valToReal (eval env e)
+
+evalF :: [(String, Expr)] -> Expr -> (RealNum -> RealNum)
+evalF env e = valToFunc (eval env e)
+\end{code}
 
 Substitution function to instantiate expression for environment
 
-> subst :: [(String, Expr)] -> Expr -> Expr
-> subst env (a :+ b) = subst env a :+ subst env b
-> subst env (a :- b) = subst env a :- subst env b
-> subst env (a :* b) = subst env a :* subst env b
-> subst env (a :/ b) = subst env a :/ subst env b
-> subst env (a :. b) = subst env a :. subst env b
-> subst env (Var s) = case (lookup s env) of
->     Just e  -> e
->     Nothing -> (Var s)
-> subst env (Lambda p b) = Lambda p (subst env b)
-> subst env (f :$ arg) = subst env f :$ subst env arg
-> subst env (Delta x) = Delta (subst env x)
-> subst env (D f) = D (subst env f)
-> subst _ e = e
+\begin{code}
+subst :: [(String, Expr)] -> Expr -> Expr
+subst env (a :+ b) = subst env a :+ subst env b
+subst env (a :- b) = subst env a :- subst env b
+subst env (a :* b) = subst env a :* subst env b
+subst env (a :/ b) = subst env a :/ subst env b
+subst env (a :. b) = subst env a :. subst env b
+subst env (Var s) = case (lookup s env) of
+    Just e  -> e
+    Nothing -> (Var s)
+subst env (Lambda p b) = Lambda p (subst env b)
+subst env (f :$ arg) = subst env f :$ subst env arg
+subst env (Delta x) = Delta (subst env x)
+subst env (D f) = D (subst env f)
+subst _ e = e
+\end{code}
 
 \section{Differences}
 
@@ -258,12 +297,14 @@ We implement the delta case of the eval function according to the definition
 
 \subsection{Examples}
 
-> x = Lambda "t" ("t" :* (Const 5))
-> id' = Lambda "x" "x"
-> t = id'
-> vAvg = Lambda "x" (Delta "x" :/ Delta t)
-> vAvgX = vAvg :$ x
-> v = eval [] (vAvgX :$ (Const 0) :$ (Const 10))
+\begin{code}
+x = Lambda "t" ("t" :* (Const 5))
+id' = Lambda "x" "x"
+t = id'
+vAvg = Lambda "x" (Delta "x" :/ Delta t)
+vAvgX = vAvg :$ x
+v = eval [] (vAvgX :$ (Const 0) :$ (Const 10))
+\end{code}
 
 \section{Derivatives}
 
@@ -325,63 +366,67 @@ Here are some derivatives. Proving these is left as an excercise to the reader:
 %% TODO: Higher order functions are discrete. Typecheck to prevent differentiation
 %%       of these.
 
-> deriveFn :: [(String, Expr)] -> Expr -> Expr
-> deriveFn env (f :+ g) = deriveFn env f + deriveFn env g
-> deriveFn env (f :- g) = deriveFn env f - deriveFn env g
-> deriveFn env (f :* g) = deriveFn env f * g + f * deriveFn env g
-> deriveFn env (f :/ g) = (deriveFn env f * g - f * deriveFn env g) / (g * g)
-> deriveFn env (f :. g) = Lambda "_x" ((*) (deriveFn env (g :$ "_x"))
->                                          (deriveFn env (f :$ (g :$ "_x"))))
-> deriveFn env (Var v) = deriveFn env (fromJust (lookup v env))
-> deriveFn env (Lambda p b) = Lambda p (deriveEx env p b)
-> deriveFn env (Func "log") = Lambda "_x" (1 / "x")
-> deriveFn env (Func "exp") = Func "exp"
-> deriveFn env (Func "sin") = Func "cos"
-> deriveFn env (Func "cos") = Func "negate" :. Func "sin"
-> deriveFn env (Func "asin") = 1 / sqrt (1 - ("x" * "x"))
-> deriveFn env (Func "acos") = (-1) / sqrt (1 - ("x" * "x"))
-> deriveFn _ _ = undefined
+\begin{code}
+deriveFn :: [(String, Expr)] -> Expr -> Expr
+deriveFn env (f :+ g) = deriveFn env f + deriveFn env g
+deriveFn env (f :- g) = deriveFn env f - deriveFn env g
+deriveFn env (f :* g) = deriveFn env f * g + f * deriveFn env g
+deriveFn env (f :/ g) = (deriveFn env f * g - f * deriveFn env g) / (g * g)
+deriveFn env (f :. g) = Lambda "_x" ((*) (deriveFn env (g :$ "_x"))
+                                         (deriveFn env (f :$ (g :$ "_x"))))
+deriveFn env (Var v) = deriveFn env (fromJust (lookup v env))
+deriveFn env (Lambda p b) = Lambda p (deriveEx env p b)
+deriveFn env (Func "log") = Lambda "_x" (1 / "x")
+deriveFn env (Func "exp") = Func "exp"
+deriveFn env (Func "sin") = Func "cos"
+deriveFn env (Func "cos") = Func "negate" :. Func "sin"
+deriveFn env (Func "asin") = 1 / sqrt (1 - ("x" * "x"))
+deriveFn env (Func "acos") = (-1) / sqrt (1 - ("x" * "x"))
+deriveFn _ _ = undefined
 
-> deriveEx :: [(String, Expr)] -> String -> Expr -> Expr
-> deriveEx env v (Const _) = 0
-> deriveEx env v (a :+ b) = deriveEx env v a + deriveEx env v b
-> deriveEx env v (a :- b) = deriveEx env v a - deriveEx env v b
-> deriveEx env v (a :* b) = deriveEx env v a * b + a * deriveEx env v b
-> deriveEx env v (a :/ b) = (deriveEx env v a * b - a * deriveEx env v b) / (b * b)
-> deriveEx env v (Var u) | u == v = 1
->                        | otherwise = 0
-> deriveEx env v (f :$ e) = deriveEx env v e * (deriveFn env f :$ e)
-> deriveEx _ _ _ = undefined
+deriveEx :: [(String, Expr)] -> String -> Expr -> Expr
+deriveEx env v (Const _) = 0
+deriveEx env v (a :+ b) = deriveEx env v a + deriveEx env v b
+deriveEx env v (a :- b) = deriveEx env v a - deriveEx env v b
+deriveEx env v (a :* b) = deriveEx env v a * b + a * deriveEx env v b
+deriveEx env v (a :/ b) = (deriveEx env v a * b - a * deriveEx env v b) / (b * b)
+deriveEx env v (Var u) | u == v = 1
+                       | otherwise = 0
+deriveEx env v (f :$ e) = deriveEx env v e * (deriveFn env f :$ e)
+deriveEx _ _ _ = undefined
+\end{code}
 
 Difficult to read some of these derivatives. Let's simplify
 
-> simplify :: Expr -> Expr
-> simplify (Const 0 :* b) = 0
-> simplify (Const 1 :* b) = simplify b
-> simplify (Const a :* Const b) = Const (a * b)
-> simplify ((Const a :* b) :+ c) | b' == c'  = Const (a + 1) :* b'
->                                | otherwise = (Const a :* b') :+ c'
->   where b' = simplify b
->         c' = simplify c
-> simplify (c :+ (Const a :* b)) = simplify ((Const a :* b) :+ c)
-> simplify (Const a :* b) = Const a :* simplify b
-> simplify (a :* Const b) = simplify (Const b :* a)
-> simplify (a :* b) = simplify a :* simplify b
-> simplify (Const 0 :+ b) = simplify b
-> simplify (Const a :+ Const b) = Const (a + b)
-> simplify (Const a :+ b) = Const a :+ simplify b
-> simplify (a :+ Const b) = simplify (Const b :+ a)
-> simplify (a :+ b) | a' == b'             = simplify (2 * a')
->                   | (a + b) == (a' + b') = a + b
->                   | otherwise            = simplify (a' + b')
->   where a' = simplify a
->         b' = simplify b
-> simplify (Const 0 :- b) = simplify (negate (simplify b))
-> simplify (Const a :- Const b) = Const (a - b)
-> simplify (Const a :- b) = Const a :- simplify b
-> simplify (a :- Const b) = simplify (Const (0-b) :+ a)
-> simplify (Lambda p b) = (Lambda p (simplify b))
-> simplify e = e
+\begin{code}
+simplify :: Expr -> Expr
+simplify (Const 0 :* b) = 0
+simplify (Const 1 :* b) = simplify b
+simplify (Const a :* Const b) = Const (a * b)
+simplify ((Const a :* b) :+ c) | b' == c'  = Const (a + 1) :* b'
+                               | otherwise = (Const a :* b') :+ c'
+  where b' = simplify b
+        c' = simplify c
+simplify (c :+ (Const a :* b)) = simplify ((Const a :* b) :+ c)
+simplify (Const a :* b) = Const a :* simplify b
+simplify (a :* Const b) = simplify (Const b :* a)
+simplify (a :* b) = simplify a :* simplify b
+simplify (Const 0 :+ b) = simplify b
+simplify (Const a :+ Const b) = Const (a + b)
+simplify (Const a :+ b) = Const a :+ simplify b
+simplify (a :+ Const b) = simplify (Const b :+ a)
+simplify (a :+ b) | a' == b'             = simplify (2 * a')
+                  | (a + b) == (a' + b') = a + b
+                  | otherwise            = simplify (a' + b')
+  where a' = simplify a
+        b' = simplify b
+simplify (Const 0 :- b) = simplify (negate (simplify b))
+simplify (Const a :- Const b) = Const (a - b)
+simplify (Const a :- b) = Const a :- simplify b
+simplify (a :- Const b) = simplify (Const (0-b) :+ a)
+simplify (Lambda p b) = (Lambda p (simplify b))
+simplify e = e
+\end{code}
 
 \subsection{Verification/proof/test}
 
@@ -389,31 +434,35 @@ Difficult to read some of these derivatives. Let's simplify
 
 \subsection{Examples}
 
-> idE = Lambda "_x" "_x"
-> constFn n = Lambda "_x" (Const n)
+\begin{code}
+idE = Lambda "_x" "_x"
+constFn n = Lambda "_x" (Const n)
 
-> dF = simplify . deriveFn []
-> dE = simplify . deriveEx [] "x"
+dF = simplify . deriveFn []
+dE = simplify . deriveEx [] "x"
 
-> test_simplify1 = (==) (simplify ("x" + "x"))
->                       (2 * "x")
-> test_simplify2 = (==) (simplify (((1 + 1) * "x") + ("x" * 1)))
->                       (3 * "x")
-> test_derive1   = (==) (dF (Func "sin" + idE))
->                       (Func "cos" + constFn 1)
-> test_derive2   = (==) (dE (sin (sin "x")))
->                       (cos "x" * cos (sin "x"))
+test_simplify1 = (==) (simplify ("x" + "x"))
+                      (2 * "x")
+test_simplify2 = (==) (simplify (((1 + 1) * "x") + ("x" * 1)))
+                      (3 * "x")
+test_derive1   = (==) (dF (Func "sin" + idE))
+                      (Func "cos" + constFn 1)
+test_derive2   = (==) (dE (sin (sin "x")))
+                      (cos "x" * cos (sin "x"))
+\end{code}
 
 Let's plot graphs!
 
-> test_plot1 = let fe = Lambda "x" ("x" * "x")
->                  fe' = dF fe
->                  f = evalF [] fe
->                  f' = evalF [] fe'
->              in plot [Fun f
->                           (show fe),
->                       Fun f'
->                           ("(D " ++ show fe ++ ") = " ++ show fe')]
+\begin{code}
+test_plot1 = let fe = Lambda "x" ("x" * "x")
+                 fe' = dF fe
+                 f = evalF [] fe
+                 f' = evalF [] fe'
+             in plot [Fun f
+                          (show fe),
+                      Fun f'
+                          ("(D " ++ show fe ++ ") = " ++ show fe')]
+\end{code}
 
 \section{Integrals}
 

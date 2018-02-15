@@ -22,21 +22,21 @@ Vi ska nu skapa en datatyp för storheter och kombinera enheter på typnivå och
 
 Först skapar vi själva datatypen.
 
-> data Quantity (u :: T.Unit) (r :: *) where
->   Quantity :: r -> V.Unit -> Quantity u r
+> data Quantity (u :: T.Unit) (v :: *) where
+>   Quantity :: v -> V.Unit -> Quantity u v
 
 - `data Quantity` skapar en *typ*.
 - `u` en *typ* och `T.Unit` en *sort*. I slutändan kommer vår datatyp ha en typparameter där typen måste ha sorten `T.Unit`.
-- `r :: *` betyder att `r`, som i **r**eellt, har sorten `*` som är sorten av typer som kan ha värden.
+- `v :: *` betyder att `v`, som i **v**ärde, har sorten `*` som är sorten av typer som kan ha värden. `v` kan till exempel vara `Double` eller `Integer`.
 - `Quantity` på raden nedanför är en värdekonstruktor.
 - Värdekonstruktorn har två *värde*-parametrar som ska ha vissa *typer*.
-  - `r` är en typ som representerar ett tal (t.ex. `Double` eller `Int`).
+  - `v` är en typ som representerar ett tal.
   - `V.Unit` är storhetens enhet på värdesnivå.
 - `Quantity` på övre raden är namnet på en typ (snarare typkonstruktor eftersom den har de två parametrarna `u` och `r`) medan `Quantity` på den nedre raden är namnet på ett värde (värdekonstruktor). Samma namn men olika saker. Det är möjligt att göra så här, precis som definitionen nedan är möjlig med samma namn på olika saker av de två sidorna av lika-med-tecknet.
 
 Motsvarande datatyp utan enheter på typnivå skulle se ut som
 
-< data Quantity r = Quantity V.Unit r
+< data Quantity v = Quantity V.Unit v
 
 `u` i den tidigare definitionen ska inte förväxlas med `V.Unit` i den senare. `u` är namnet på en obunden typ, som ska ha sorten `T.Unit` medan `V.Unit` anger att här ska ett värde vara av typen `V.Unit`. Det står `u` istället för `T.Unit` av syntaktiska skäl, men man kan tänka att det ska stå `T.Unit` istället för att enklare förstå.
 
@@ -107,7 +107,7 @@ Vi kan göra `Quantity` en `Eq`-instans.
 > instance (Eq v) => Eq (Quantity u v) where
 >   (==) = quantityEq
 
-Vi implementerar också `Ord`.
+Vi gör `Quantity` en `Ord`-instans också.
 
 > quantityCompare :: (Ord v) => Quantity u v -> 
 >                               Quantity u v -> Ordering
@@ -162,6 +162,8 @@ Den funktion är tänkt att användas som följande:
 < ghci> let myDistance = 5 # length
 < ghci> :t myDistance
 < t :: Num v => Quantity Length v
+< ghci> myDistance
+< 5 m
 
 För att skapa en storhet med ett mätetal, i detta fallet `5`, skriver man som ovan, så får man en storhet-variabel direkt med rätt enhet på både värdenivå och typnivå.
 
@@ -171,6 +173,8 @@ För att skapa en storhet med ett mätetal, i detta fallet `5`, skriver man som 
 < ghci> let myDistance = 5 # otherPersonsDistance
 < ghci> :t myDistance
 < t :: Num v => Quantity Length v
+< ghci> myDistance
+< 5 m
 
 Precis samma sak.
 
@@ -216,15 +220,15 @@ Vi inser snabbt ett mönster, så låt oss generalisera lite.
 > 
 > sinq, cosq, asinq, acosq, atanq, expq, logq :: (Floating v) =>
 >   BinaryScalar v
-> sinq  = qmap (sin)
-> cosq = qmap (cos)
-> asinq = qmap (asin)
-> acosq = qmap (acos)
-> atanq = qmap (atan)
-> expq  = qmap (exp)
-> logq  = qmap (log)
+> sinq  = qmap sin
+> cosq  = qmap cos
+> asinq = qmap asin
+> acosq = qmap acos
+> atanq = qmap atan
+> expq  = qmap exp
+> logq  = qmap log
 
-En fråga man kan ställa sig efter detta är "Varför inte göra Quantity en instans av `Num`, `Fractional`, `Floating` och `Functor`?" Svaret ligger i att dessa typklasser har funktioner av nedanstående typ
+En fråga man kan ställa sig efter detta är "Varför inte göra `Quantity` en instans av `Num`, `Fractional`, `Floating` och `Functor`?" Svaret ligger i att dessa typklasser har funktioner av nedanstående typ
 
 < (*) :: (Num a) => a -> a -> a
 
@@ -240,7 +244,7 @@ Operationerna när enbart skalärer är inblandade har däremot typer förenliga
 Tillbaka till färdiga storheter
 -------------------------------
 
-Som antyddes fanns det ett tvåfaldigt syfte till att skapa "färdiga storheter". Det ena skälet var att göra det enklare att skapa sina egna storhets-variabler. Det andra skälet är att vi vill ha som invariant att enheten på värdenivå och typnivå är samma. Genom att bara tillåta "användaren" använda dessa färdiga storheter kan vi tvinga fram denna invarient.
+Som antyddes fanns det ett tvåfaldigt syfte till att skapa "färdiga storheter". Det ena skälet var att göra det enklare att skapa sina egna storhets-variabler. Det andra skälet är att vi vill ha som invariant att enheten på värdenivå och typnivå är samma. Genom att inte låta användaren skapa storheter direkt, utan bara kombinera färdiga på olika sätt, kan vi tvinga fram denna invariant.
 
 Låt oss skapa resterande färdiga storheter.
 
@@ -254,7 +258,7 @@ TODO: Dessa har alla Double som värdetyp. Hur förhindra det? Explicita typsign
 
 Är detta alla tänkabara storheter inom *Fysik för ingenjörer*? Självklart inte. Precis som vi skapade dessa storheter, kan man skapa sina egna vid behov.
 
-< specificHeatCapacity = energy /# (mass *# temperature)
+< ghci> let specificHeatCapacity = energy /# (mass *# temperature)
 
 Dessutom "uppstår" enheter vid behov.
 
@@ -263,3 +267,15 @@ Dessutom "uppstår" enheter vid behov.
 < ghci> let temperatureDifference = 25 # temperature
 < ghci> heatConsumed /# (massOfLiquid *# temperatureDifference)
 < 21.50537634408602 m^2/(K*s^2)
+
+Anknytning till fysik
+---------------------
+
+För att avsluta detta kapitel visar vi ett exemel på hur man kan koda en uppgift och lösning i detta domänspecifika språk vi skapat för storheter.
+
+
+
+
+
+
+

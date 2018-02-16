@@ -16,7 +16,10 @@ Värdenivå
 > where
 > 
 > import Prelude hiding (length, div)
-> import Helper
+> 
+> len :: (Integral n) => [a] -> n
+> len [] = 0
+> len (a:as) = 1 + len as
 
 En enhet kan ses som en multiplikation av grundenheterna med en exponent. Eftersom det bara finns 5 grundenheter bestämt från början utnyttjar vi det i vår datatyp för enheter.
 

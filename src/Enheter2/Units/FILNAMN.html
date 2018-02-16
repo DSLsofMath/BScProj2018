@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Quantity</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="storheter">Storheter</h1>
+<p>Vi ska nu skapa en datatyp för storheter och kombinera enheter på typnivå och värdesnivå. Precis som tidigare krävs en drös GHC-extensions.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="ot">{-# LANGUAGE DataKinds #-}</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="ot">{-# LANGUAGE GADTs #-}</span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="ot">{-# LANGUAGE KindSignatures #-}</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="ot">{-# LANGUAGE TypeFamilies #-}</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="ot">{-# LANGUAGE UndecidableInstances #-}</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="ot">{-# LANGUAGE TypeOperators #-}</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="kw">module</span> <span class="dt">Units.Quantity</span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">(</a>
+<a class="sourceLine" id="cb1-10" data-line-number="10">)</a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="kw">where</span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="kw">import</span> <span class="kw">qualified</span> <span class="dt">Units.ValueLevel</span> <span class="kw">as</span> <span class="dt">V</span></a>
+<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="kw">import</span>           <span class="dt">Units.TypeLevel</span>  <span class="kw">as</span> <span class="dt">T</span></a>
+<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="kw">import</span>           <span class="dt">Prelude</span>          <span class="kw">as</span> <span class="dt">P</span> <span class="kw">hiding</span> (length, div)</a></code></pre></div>
+<p>Först skapar vi själva datatypen.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">data</span> <span class="dt">Quantity</span> (<span class="ot">u ::</span> <span class="dt">T.Unit</span>) (<span class="ot">r ::</span> <span class="fu">*</span>) <span class="kw">where</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">  <span class="dt">Quantity</span><span class="ot"> ::</span> r <span class="ot">-&gt;</span> <span class="dt">V.Unit</span> <span class="ot">-&gt;</span> <span class="dt">Quantity</span> u r</a></code></pre></div>
+<ul>
+<li><code>data Quantity</code> skapar en <em>typ</em>.</li>
+<li><code>u</code> en <em>typ</em> och <code>T.Unit</code> en <em>sort</em>. I slutändan kommer vår datatyp ha en typparameter där typen måste ha sorten <code>T.Unit</code>.</li>
+<li><code>r :: *</code> betyder att <code>r</code>, som i <strong>r</strong>eellt, har sorten <code>*</code> som är sorten av typer som kan ha värden.</li>
+<li><code>Quantity</code> på raden nedanför är en värdekonstruktor.</li>
+<li>Värdekonstruktorn har två <em>värde</em>-parametrar som ska ha vissa <em>typer</em>.
+<ul>
+<li><code>r</code> är en typ som representerar ett tal (t.ex. <code>Double</code> eller <code>Int</code>).</li>
+<li><code>V.Unit</code> är storhetens enhet på värdesnivå.</li>
+</ul></li>
+<li><code>Quantity</code> på övre raden är namnet på en typ (snarare typkonstruktor eftersom den har de två parametrarna <code>u</code> och <code>r</code>) medan <code>Quantity</code> på den nedre raden är namnet på ett värde (värdekonstruktor). Samma namn men olika saker. Det är möjligt att göra så här, precis som definitionen nedan är möjlig med samma namn på olika saker av de två sidorna av lika-med-tecknet.</li>
+</ul>
+<p>Motsvarande datatyp utan enheter på typnivå skulle se ut som</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">data</span> <span class="dt">Quantity</span> r <span class="fu">=</span> <span class="dt">Quantity</span> <span class="dt">V.Unit</span> r</a></code></pre></div>
+<p><code>u</code> i den tidigare definitionen ska inte förväxlas med <code>V.Unit</code> i den senare. <code>u</code> är namnet på en obunden typ, som ska ha sorten <code>T.Unit</code> medan <code>V.Unit</code> anger att här ska ett värde vara av typen <code>V.Unit</code>. Det står <code>u</code> istället för <code>T.Unit</code> av syntaktiska skäl, men man kan tänka att det ska stå <code>T.Unit</code> istället för att enklare förstå.</p>
+<p>Vi ska implementera alla räknesätt för <code>Quantity</code>, men för att få ett smakprov visar vi här addition och multiplikation samt några exempel på värden av typ <code>Quantity</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="ot">quantityAdd ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> u v <span class="ot">-&gt;</span> </a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">                          <span class="dt">Quantity</span> u v <span class="ot">-&gt;</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">                          <span class="dt">Quantity</span> u v</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">quantityAdd (<span class="dt">Quantity</span> v1 u) (<span class="dt">Quantity</span> v2 _) <span class="fu">=</span> <span class="dt">Quantity</span> (v1<span class="fu">+</span>v2) u</a></code></pre></div>
+<p>Typen tolkas så här: som indata tas två värden av typen <code>Quantity u v</code> där <code>u</code> är enheten som typ. Utdata blir en <code>Quantity u v</code> också.</p>
+<p>Typerna på funktionen tvingar indata att ha samma enheter. Därför kollar spelar typen på värdenivå på ett av argumenten ingen roll, för de kommer vara samma. (Man kan skapa värden där enheterna på värdenivån inte är samma som på typnivån. Detta återkommer vi till.)</p>
+<p>Multiplikation blir:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="ot">quantityMul ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> u1 v <span class="ot">-&gt;</span> </a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">                          <span class="dt">Quantity</span> u2 v <span class="ot">-&gt;</span>             </a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">                          <span class="dt">Quantity</span> (<span class="dt">Mul</span> u1 u2) v</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">quantityMul (<span class="dt">Quantity</span> v1 u1) (<span class="dt">Quantity</span> v2 u2) <span class="fu">=</span> </a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">  <span class="dt">Quantity</span> (v1<span class="fu">*</span>v2) (V.mul u1 u2)</a></code></pre></div>
+<p>Typen tolkas så här: som indata tas två värden av typen <code>Quantity ux v</code> där <code>ux</code> är två typer som representerar enheter. Som utdata får man en <code>Quantity</code> med enheten av typen som är produkten av de två enhterna in. Högst naturligt alltså!</p>
+<p>Några exempelvärden nu.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="ot">width ::</span> <span class="dt">Quantity</span> <span class="dt">T.Length</span> <span class="dt">Double</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">width <span class="fu">=</span> <span class="dt">Quantity</span> <span class="fl">0.5</span> V.length</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="ot">height ::</span> <span class="dt">Quantity</span> <span class="dt">T.Length</span> <span class="dt">Double</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">height <span class="fu">=</span> <span class="dt">Quantity</span> <span class="fl">0.3</span> V.length</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="kw">type</span> <span class="dt">Area</span> <span class="fu">=</span> <span class="dt">Mul</span> <span class="dt">T.Length</span> <span class="dt">T.Length</span></a></code></pre></div>
+<p>Nedanstående visar att vid en multiplikation så påverkas typerna, som sig bör. Det är inte bara något på värdesnivån som ändras utan även typerna.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="ot">area ::</span> <span class="dt">Quantity</span> <span class="dt">Area</span> <span class="dt">Double</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">area <span class="fu">=</span> quantityMul width height</a></code></pre></div>
+<p>Att typerna motsvarar enheter användas nedan för att vid kompileringstid avgöra om en operation får göras.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co">-- Komilerar inte ens</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">skum <span class="fu">=</span> quantityAdd width area</a></code></pre></div>
+<p>Om man haft enheterna enbart på värdesnivå hade man upptäckt felet först vid körning.</p>
+<h2 id="pretty-printer">Pretty-printer</h2>
+<p>Nu ska vi göra en pretty-printer för en storhet. Det stora jobbet är redan avklarat i enheter på värdenivå.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="ot">showQuantity ::</span> (<span class="dt">Show</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> u v <span class="ot">-&gt;</span> <span class="dt">String</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">showQuantity (<span class="dt">Quantity</span> v u) <span class="fu">=</span> show v <span class="fu">++</span> <span class="st">&quot; &quot;</span> <span class="fu">++</span> show u</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="kw">instance</span> (<span class="dt">Show</span> v) <span class="ot">=&gt;</span> <span class="dt">Show</span> (<span class="dt">Quantity</span> u v) <span class="kw">where</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">  show <span class="fu">=</span> showQuantity</a></code></pre></div>
+<h2 id="jämförelser">Jämförelser</h2>
+<p>Det är användbart att jämföra storheter. Man vill kanske veta vilken av två energimängder som är störst. Men vad är störst av <code>1 J</code> och <code>1 m</code>? Det är ingen meningsfull jämförelse eftersom enheterna inte är samma. För att skydda oss frånt sådant har vi enheterna på typnivå.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="ot">quantityEq ::</span> (<span class="dt">Eq</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> u v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> u v <span class="ot">-&gt;</span> <span class="dt">Bool</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">quantityEq (<span class="dt">Quantity</span> v1 _) (<span class="dt">Quantity</span> v2 _) <span class="fu">=</span> v1 <span class="fu">==</span> v2</a></code></pre></div>
+<p>Vi kan göra <code>Quantity</code> en <code>Eq</code>-instans.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">instance</span> (<span class="dt">Eq</span> v) <span class="ot">=&gt;</span> <span class="dt">Eq</span> (<span class="dt">Quantity</span> u v) <span class="kw">where</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">  (<span class="fu">==</span>) <span class="fu">=</span> quantityEq</a></code></pre></div>
+<p>Vi implementerar också <code>Ord</code>.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="ot">quantityCompare ::</span> (<span class="dt">Ord</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> u v <span class="ot">-&gt;</span> </a>
+<a class="sourceLine" id="cb12-2" data-line-number="2">                              <span class="dt">Quantity</span> u v <span class="ot">-&gt;</span> <span class="dt">Ordering</span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3">quantityCompare (<span class="dt">Quantity</span> v1 _) (<span class="dt">Quantity</span> v2 _) <span class="fu">=</span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4">  compare v1 v2</a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="kw">instance</span> (<span class="dt">Ord</span> v) <span class="ot">=&gt;</span> <span class="dt">Ord</span> (<span class="dt">Quantity</span> u v) <span class="kw">where</span></a>
+<a class="sourceLine" id="cb12-7" data-line-number="7">  compare <span class="fu">=</span> quantityCompare</a></code></pre></div>
+<h2 id="färdiga-storheter">Färdiga storheter</h2>
+<p>Vill man skapa en variabel som representerar en viss sträcka (till exempel 5 meter) gör man som nedanstående:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="ot">distance ::</span> <span class="dt">Quantity</span> <span class="dt">T.Length</span> <span class="dt">Double</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">distance <span class="fu">=</span> <span class="dt">Quantity</span> <span class="dv">5</span> V.length</a></code></pre></div>
+<p>Att skriva så varje gång blir klumpigt. Dessutom kan man göra “dumma” saker som</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="ot">distance ::</span> <span class="dt">Quantity</span> <span class="dt">T.Length</span> <span class="dt">Double</span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2">distance <span class="fu">=</span> <span class="dt">Quantity</span> <span class="dv">5</span> V.time</a></code></pre></div>
+<p>Här har man olika enheter på värdenivå och typnivå.</p>
+<p>För att lösa dessa problem kommer vi introducera lite syntaktiskt socker. Först funktioner som skapar de 5 grundläggande storheterna samt skalären (vi ska göra samma sak för sammansatta storheter senare).</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb15-1" data-line-number="1">length<span class="ot"> ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Length</span> v</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">length <span class="fu">=</span> <span class="dt">Quantity</span> <span class="dv">0</span> V.length</a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="ot">time ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Time</span> v</a>
+<a class="sourceLine" id="cb15-5" data-line-number="5">time <span class="fu">=</span> <span class="dt">Quantity</span> <span class="dv">0</span> V.time</a>
+<a class="sourceLine" id="cb15-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb15-7" data-line-number="7"><span class="ot">mass ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Mass</span> v</a>
+<a class="sourceLine" id="cb15-8" data-line-number="8">mass <span class="fu">=</span> <span class="dt">Quantity</span> <span class="dv">0</span> V.mass</a>
+<a class="sourceLine" id="cb15-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb15-10" data-line-number="10"><span class="ot">temperature ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Temperature</span> v</a>
+<a class="sourceLine" id="cb15-11" data-line-number="11">temperature <span class="fu">=</span> <span class="dt">Quantity</span> <span class="dv">0</span> V.temperature</a>
+<a class="sourceLine" id="cb15-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb15-13" data-line-number="13"><span class="ot">substance ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Substance</span> v</a>
+<a class="sourceLine" id="cb15-14" data-line-number="14">substance <span class="fu">=</span> <span class="dt">Quantity</span> <span class="dv">0</span> V.substance</a>
+<a class="sourceLine" id="cb15-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb15-16" data-line-number="16"><span class="ot">one ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">One</span> v</a>
+<a class="sourceLine" id="cb15-17" data-line-number="17">one <span class="fu">=</span> <span class="dt">Quantity</span> <span class="dv">0</span> V.one</a></code></pre></div>
+<p>Och nu sockret.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="ot">(#) ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> u v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> u v</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">v <span class="fu">#</span> (<span class="dt">Quantity</span> _ u) <span class="fu">=</span> <span class="dt">Quantity</span> v u</a></code></pre></div>
+<p>Den funktion är tänkt att användas som följande:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb17-1" data-line-number="1">ghci<span class="fu">&gt;</span> <span class="kw">let</span> myDistance <span class="fu">=</span> <span class="dv">5</span> <span class="fu">#</span> length</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2">ghci<span class="fu">&gt;</span> <span class="fu">:</span>t myDistance</a>
+<a class="sourceLine" id="cb17-3" data-line-number="3"><span class="ot">t ::</span> <span class="dt">Num</span> v <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Length</span> v</a></code></pre></div>
+<p>För att skapa en storhet med ett mätetal, i detta fallet <code>5</code>, skriver man som ovan, så får man en storhet-variabel direkt med rätt enhet på både värdenivå och typnivå.</p>
+<p><code>length</code>, <code>time</code> med mera är bara dummy-variabler med rätt enhet (på både värdenivå och typnivå) för att kunna skapa storhets-variabler enklare. Vilket värde som helst med rätt enhet på bägge nivåerna kan användas som högersidans argument.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb18-1" data-line-number="1">ghci<span class="fu">&gt;</span> <span class="kw">let</span> otherPersonsDistance <span class="fu">=</span> <span class="dv">10</span> <span class="fu">#</span> length</a>
+<a class="sourceLine" id="cb18-2" data-line-number="2">ghci<span class="fu">&gt;</span> <span class="kw">let</span> myDistance <span class="fu">=</span> <span class="dv">5</span> <span class="fu">#</span> otherPersonsDistance</a>
+<a class="sourceLine" id="cb18-3" data-line-number="3">ghci<span class="fu">&gt;</span> <span class="fu">:</span>t myDistance</a>
+<a class="sourceLine" id="cb18-4" data-line-number="4"><span class="ot">t ::</span> <span class="dt">Num</span> v <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Length</span> v</a></code></pre></div>
+<p>Precis samma sak.</p>
+<h2 id="räkneoperationer-på-kvantiteter">Räkneoperationer på kvantiteter</h2>
+<p>Nu ska vi implementera räkneoperationer för storheter. I stora drag handlar det om att skapa funktioner med rätt enheter på typnivå.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="ot">(+#) ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> u v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> u v <span class="ot">-&gt;</span> </a>
+<a class="sourceLine" id="cb19-2" data-line-number="2">                   <span class="dt">Quantity</span> u v</a>
+<a class="sourceLine" id="cb19-3" data-line-number="3">(<span class="fu">+#</span>) <span class="fu">=</span> quantityAdd</a>
+<a class="sourceLine" id="cb19-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb19-5" data-line-number="5"><span class="ot">(-#) ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> u v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> u v <span class="ot">-&gt;</span> </a>
+<a class="sourceLine" id="cb19-6" data-line-number="6">                   <span class="dt">Quantity</span> u v</a>
+<a class="sourceLine" id="cb19-7" data-line-number="7">(<span class="dt">Quantity</span> v1 u) <span class="fu">-#</span> (<span class="dt">Quantity</span> v2 _) <span class="fu">=</span> <span class="dt">Quantity</span> (v1<span class="fu">-</span>v2) u</a>
+<a class="sourceLine" id="cb19-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb19-9" data-line-number="9"><span class="ot">(*#) ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> u1 v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> u2 v <span class="ot">-&gt;</span></a>
+<a class="sourceLine" id="cb19-10" data-line-number="10">                   <span class="dt">Quantity</span> (u1 <span class="ot">`Mul`</span> u2) v</a>
+<a class="sourceLine" id="cb19-11" data-line-number="11">(<span class="fu">*#</span>) <span class="fu">=</span> quantityMul</a>
+<a class="sourceLine" id="cb19-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb19-13" data-line-number="13"><span class="ot">(/#) ::</span> (<span class="dt">Fractional</span>  v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> u1 v <span class="ot">-&gt;</span> </a>
+<a class="sourceLine" id="cb19-14" data-line-number="14">                           <span class="dt">Quantity</span> u2 v <span class="ot">-&gt;</span></a>
+<a class="sourceLine" id="cb19-15" data-line-number="15">                           <span class="dt">Quantity</span> (u1 <span class="ot">`Div`</span> u2) v</a>
+<a class="sourceLine" id="cb19-16" data-line-number="16">(<span class="dt">Quantity</span> v1 u1) <span class="fu">/#</span> (<span class="dt">Quantity</span> v2 u2) <span class="fu">=</span></a>
+<a class="sourceLine" id="cb19-17" data-line-number="17">  <span class="dt">Quantity</span> (v1 <span class="fu">/</span> v2) (u1 <span class="ot">`V.div`</span> u2)</a></code></pre></div>
+<p>Vid alla fyra räknesätt på storheter gör man räknesättet på mätetalet och, vid fallet multiplikation och divsion, på enheten för sig. Addition och subtraktion däremot kräver att de två in-enheterna är samma.</p>
+<p>Hur går det till att göra operationer som <code>sin</code> på en storhet med en <em>eventuell</em> enhet? Svaret är att storheten måste vara enhetslös för att det ska fungera, och med enheten händer då ingenting. Vi kräver därför att storheterna in är enhetslösa för nedanstående funktioner.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="ot">sinq ::</span> (<span class="dt">Floating</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">One</span> v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> <span class="dt">One</span> v</a>
+<a class="sourceLine" id="cb20-2" data-line-number="2">sinq (<span class="dt">Quantity</span> v ul) <span class="fu">=</span> <span class="dt">Quantity</span> (sin v) ul</a>
+<a class="sourceLine" id="cb20-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb20-4" data-line-number="4"><span class="ot">cosq ::</span> (<span class="dt">Floating</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">One</span> v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> <span class="dt">One</span> v</a>
+<a class="sourceLine" id="cb20-5" data-line-number="5">cosq (<span class="dt">Quantity</span> v ul) <span class="fu">=</span> <span class="dt">Quantity</span> (cos v) ul</a></code></pre></div>
+<p>Vi inser snabbt ett mönster, så låt oss generalisera lite.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="ot">qmap ::</span> (a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> <span class="dt">Quantity</span> <span class="dt">One</span> a <span class="ot">-&gt;</span> <span class="dt">Quantity</span> <span class="dt">One</span> b</a>
+<a class="sourceLine" id="cb21-2" data-line-number="2">qmap f (<span class="dt">Quantity</span> v ul) <span class="fu">=</span> <span class="dt">Quantity</span> (f v) ul</a>
+<a class="sourceLine" id="cb21-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb21-4" data-line-number="4"><span class="kw">type</span> <span class="dt">BinaryScalar</span> v <span class="fu">=</span> <span class="dt">Quantity</span> <span class="dt">One</span> v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> <span class="dt">One</span> v</a>
+<a class="sourceLine" id="cb21-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb21-6" data-line-number="6">sinq, cosq, asinq, acosq, atanq, expq,<span class="ot"> logq ::</span> (<span class="dt">Floating</span> v) <span class="ot">=&gt;</span></a>
+<a class="sourceLine" id="cb21-7" data-line-number="7">  <span class="dt">BinaryScalar</span> v</a>
+<a class="sourceLine" id="cb21-8" data-line-number="8">sinq  <span class="fu">=</span> qmap (sin)</a>
+<a class="sourceLine" id="cb21-9" data-line-number="9">cosq <span class="fu">=</span> qmap (cos)</a>
+<a class="sourceLine" id="cb21-10" data-line-number="10">asinq <span class="fu">=</span> qmap (asin)</a>
+<a class="sourceLine" id="cb21-11" data-line-number="11">acosq <span class="fu">=</span> qmap (acos)</a>
+<a class="sourceLine" id="cb21-12" data-line-number="12">atanq <span class="fu">=</span> qmap (atan)</a>
+<a class="sourceLine" id="cb21-13" data-line-number="13">expq  <span class="fu">=</span> qmap (exp)</a>
+<a class="sourceLine" id="cb21-14" data-line-number="14">logq  <span class="fu">=</span> qmap (log)</a></code></pre></div>
+<p>En fråga man kan ställa sig efter detta är “Varför inte göra Quantity en instans av <code>Num</code>, <code>Fractional</code>, <code>Floating</code> och <code>Functor</code>?” Svaret ligger i att dessa typklasser har funktioner av nedanstående typ</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="ot">(*) ::</span> (<span class="dt">Num</span> a) <span class="ot">=&gt;</span> a <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> a</a></code></pre></div>
+<p>och det är inte förenligt med <code>Quantity</code> eftersom multiplikation med <code>Quantity</code> har följande typ</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="ot">(*#) ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> u1 v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> u2 v <span class="ot">-&gt;</span></a>
+<a class="sourceLine" id="cb23-2" data-line-number="2">                  <span class="dt">Quantity</span> (u1 <span class="ot">`Mul`</span> u2) v</a></code></pre></div>
+<p>Indatan får här faktiskt vara av <em>olika</em> typer, och utdatan blir en typ som beror på indatans typer. Däremot är <em>sorterna</em> på de tre argumentens typer samma, nämligen <code>Quantity</code>. Vi får helt enkelt leva med att inte kunna göra <code>Quantity</code> en <code>Num</code>-instans.</p>
+<p>Operationerna när enbart skalärer är inblandade har däremot typer förenliga med <code>Num</code>. Därför hade det varit möjligt att göra <code>Quantity One</code> en <code>Num</code>-instans.</p>
+<h2 id="tillbaka-till-färdiga-storheter">Tillbaka till färdiga storheter</h2>
+<p>Som antyddes fanns det ett tvåfaldigt syfte till att skapa “färdiga storheter”. Det ena skälet var att göra det enklare att skapa sina egna storhets-variabler. Det andra skälet är att vi vill ha som invariant att enheten på värdenivå och typnivå är samma. Genom att bara tillåta “användaren” använda dessa färdiga storheter kan vi tvinga fram denna invarient.</p>
+<p>Låt oss skapa resterande färdiga storheter.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb24-1" data-line-number="1">velocity <span class="fu">=</span> length <span class="fu">/#</span> time</a>
+<a class="sourceLine" id="cb24-2" data-line-number="2">acceleration <span class="fu">=</span> velocity <span class="fu">/#</span> time</a>
+<a class="sourceLine" id="cb24-3" data-line-number="3">force <span class="fu">=</span> mass <span class="fu">*#</span> acceleration</a>
+<a class="sourceLine" id="cb24-4" data-line-number="4">impulse <span class="fu">=</span> force <span class="fu">*#</span> time</a>
+<a class="sourceLine" id="cb24-5" data-line-number="5">energy <span class="fu">=</span> force <span class="fu">*#</span> length</a></code></pre></div>
+<p>TODO: Dessa har alla Double som värdetyp. Hur förhindra det? Explicita typsignaturer löser det, men man vill inte att “användaren” ska behöva och få göra det för att behålla den tidigare nämnda invarianten.</p>
+<p>Är detta alla tänkabara storheter inom <em>Fysik för ingenjörer</em>? Självklart inte. Precis som vi skapade dessa storheter, kan man skapa sina egna vid behov.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb25-1" data-line-number="1">specificHeatCapacity <span class="fu">=</span> energy <span class="fu">/#</span> (mass <span class="fu">*#</span> temperature)</a></code></pre></div>
+<p>Dessutom “uppstår” enheter vid behov.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb26-1" data-line-number="1">ghci<span class="fu">&gt;</span> <span class="kw">let</span> heatConsumed <span class="fu">=</span> <span class="dv">5000</span> <span class="fu">#</span> energy</a>
+<a class="sourceLine" id="cb26-2" data-line-number="2">ghci<span class="fu">&gt;</span> <span class="kw">let</span> massOfLiquid <span class="fu">=</span> <span class="fl">9.3</span> <span class="fu">#</span> mass</a>
+<a class="sourceLine" id="cb26-3" data-line-number="3">ghci<span class="fu">&gt;</span> <span class="kw">let</span> temperatureDifference <span class="fu">=</span> <span class="dv">25</span> <span class="fu">#</span> temperature</a>
+<a class="sourceLine" id="cb26-4" data-line-number="4">ghci<span class="fu">&gt;</span> heatConsumed <span class="fu">/#</span> (massOfLiquid <span class="fu">*#</span> temperatureDifference)</a>
+<a class="sourceLine" id="cb26-5" data-line-number="5"><span class="fl">21.50537634408602</span> m<span class="fu">^</span><span class="dv">2</span><span class="fu">/</span>(<span class="dt">K</span><span class="fu">*</span>s<span class="fu">^</span><span class="dv">2</span>)</a></code></pre></div>
+</body>
+</html>

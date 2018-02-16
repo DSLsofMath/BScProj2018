@@ -1,5 +1,5 @@
 
-module Units.Helper
+module Helper
 ( len
 )
 where

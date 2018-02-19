@@ -54,8 +54,8 @@ Units can be multiplied and divided. Velocity is, as we just saw, a division bet
 > mul (Unit l1 m1 t1 c1 k1 s1 d1) (Unit l2 m2 t2 c2 k2 s2 d2) =
 >   Unit (l1+l2) (m1+m2) (t1+t2) (c1+c2) (k1+k2) (s1+s2) (d1+d2)
 
-> mul :: Unit -> Unit -> Unit
-> mul (Unit l1 m1 t1 c1 k1 s1 d1) (Unit l2 m2 t2 c2 k2 s2 d2) =
+> div :: Unit -> Unit -> Unit
+> div (Unit l1 m1 t1 c1 k1 s1 d1) (Unit l2 m2 t2 c2 k2 s2 d2) =
 >   Unit (l1-l2) (m1-m2) (t1-t2) (c1-c2) (k1-k2) (s1-s2) (d1-d2)
 
 Some examples of units now possible to construct.

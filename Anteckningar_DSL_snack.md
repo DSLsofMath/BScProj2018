@@ -12,7 +12,7 @@
 	- Frame of reference (åker tåg, kaster en boll...). Relativ hastighet
 	- Normalkraft, friktionskraft, dragkraft, spännkraft, tyngd. Summering. Tänka på typer
 - Acceleration, momentan, genomsnitt. Gravitation. Integraler för att få tvärtom mot derivata
--	ax = dvx/dt = d/dt*(dx/dt) = d²x/dt²
+-	ax = dvx/dt = d/dt*(dx/dt) = d²x/dt²       *
 - Solve for "x". Partially applied function
 - Ekvationslösning i samband med jämvikts och icke-jämviktsproblem. Nettokraft eller noll nettokraft.
 - Pretty-printer och syntax-träd i allmänhet

@@ -1,12 +1,14 @@
-- 
+
 Oskars kompileringsinsturktioner
 
 Skriv `.lhs`-filer med bird-style `> ` för kod och `< ` för "kod" som inte ska kompileras.
 
 Kompilera med kommandot `pandoc FILNAMN.lhs -f markdown+lhs -t html -o FILNAMN.html -s`
 
-Quantity
-========
+Units
+=====
+
+This chapter, called "Units", covers units and quantities.
 
 A *quantity* is fundamental to physics. A *quantity* has a *unit* and a *numerical value* (and a prefix, but we will skip prefixes). Only quantities of the same unit are possible to add. Summing, for instance, a volume and a distance, wouldn't make sense.
 

@@ -1,6 +1,6 @@
 
-Value-level
-===========
+Value-level units
+=================
 
 > module Units.ValueLevel
 > ( Unit(..)
@@ -54,7 +54,7 @@ Units can be multiplied and divided. Velocity is, as we just saw, a division bet
 > (Unit le1 ma1 ti1 cu1 te1 su1 lu1) `mul` (Unit le2 ma2 ti2 cu2 te2 su2 lu2) =
 >   Unit (le1+le2) (ma1+ma2) (ti1+ti2) (cu1+cu2) (te1+te2) (su1+su2) (lu1+lu2)
 
-> duv :: Unit -> Unit -> Unit
+> div :: Unit -> Unit -> Unit
 > (Unit le1 ma1 ti1 cu1 te1 su1 lu1) `div` (Unit le2 ma2 ti2 cu2 te2 su2 lu2) =
 >   Unit (le1-le2) (ma1-ma2) (ti1-ti2) (cu1-cu2) (te1-te2) (su1-su2) (lu1-lu2)
 

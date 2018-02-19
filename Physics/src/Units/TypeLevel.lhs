@@ -1,6 +1,6 @@
 
-Type-level
-==========
+Type-level units
+================
 
 We will now implement *type-level* units. What is type-level? When one usually programs (in Haskell), one operatates (e.g. adds) on values (e.g. `1` and `2`). This is on *value-level*. Now we will do the same thing but on *type-level*, that is, perform operations on types.
 

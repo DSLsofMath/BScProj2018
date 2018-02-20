@@ -10,17 +10,19 @@ Vi ska nu skapa en datatyp för storheter och kombinera enheter på typnivå och
 > {-# LANGUAGE TypeFamilies #-}
 > {-# LANGUAGE UndecidableInstances #-}
 > {-# LANGUAGE TypeOperators #-}
-> 
+
 > module Units.Quantity
 > (
 > )
 > where
-> 
+
 > import qualified Units.ValueLevel as V
 > import           Units.TypeLevel  as T
 > import           Prelude          as P hiding (length, div)
 
 Först skapar vi själva datatypen.
+
+[PaJa: förklara gärna varför typ-arg. inte är i samma ordning som värde-arg.]
 
 > data Quantity (u :: T.Unit) (v :: *) where
 >   Quantity :: v -> V.Unit -> Quantity u v
@@ -36,13 +38,15 @@ Först skapar vi själva datatypen.
 
 Motsvarande datatyp utan enheter på typnivå skulle se ut som
 
+[PaJa: jag föreslår att ni använder GADT-syntax även här för att underlätta jämförelsen.]
+
 < data Quantity v = Quantity V.Unit v
 
 `u` i den tidigare definitionen ska inte förväxlas med `V.Unit` i den senare. `u` är namnet på en obunden typ, som ska ha sorten `T.Unit` medan `V.Unit` anger att här ska ett värde vara av typen `V.Unit`. Det står `u` istället för `T.Unit` av syntaktiska skäl, men man kan tänka att det ska stå `T.Unit` istället för att enklare förstå.
 
 Vi ska implementera alla räknesätt för `Quantity`, men för att få ett smakprov visar vi här addition och multiplikation samt några exempel på värden av typ `Quantity`.
 
-> quantityAdd :: (Num v) => Quantity u v -> 
+> quantityAdd :: (Num v) => Quantity u v ->
 >                           Quantity u v ->
 >                           Quantity u v
 > quantityAdd (Quantity v1 u) (Quantity v2 _) = Quantity (v1+v2) u
@@ -53,10 +57,10 @@ Typerna på funktionen tvingar indata att ha samma enheter. Därför kollar spel
 
 Multiplikation blir:
 
-> quantityMul :: (Num v) => Quantity u1 v -> 
->                           Quantity u2 v ->             
+> quantityMul :: (Num v) => Quantity u1 v ->
+>                           Quantity u2 v ->
 >                           Quantity (Mul u1 u2) v
-> quantityMul (Quantity v1 u1) (Quantity v2 u2) = 
+> quantityMul (Quantity v1 u1) (Quantity v2 u2) =
 >   Quantity (v1*v2) (V.mul u1 u2)
 
 Typen tolkas så här: som indata tas två värden av typen `Quantity ux v` där `ux` är två typer som representerar enheter. Som utdata får man en `Quantity` med enheten av typen som är produkten av de två enhterna in. Högst naturligt alltså!
@@ -65,10 +69,10 @@ Några exempelvärden nu.
 
 > width :: Quantity T.Length Double
 > width = Quantity 0.5 V.length
-> 
+
 > height :: Quantity T.Length Double
 > height = Quantity 0.3 V.length
-> 
+
 > type Area = Mul T.Length T.Length
 
 Nedanstående visar att vid en multiplikation så påverkas typerna, som sig bör. Det är inte bara något på värdesnivån som ändras utan även typerna.
@@ -81,7 +85,7 @@ Att typerna motsvarar enheter användas nedan för att vid kompileringstid avgö
 < -- Komilerar inte ens
 < skum = quantityAdd width area
 
-Om man haft enheterna enbart på värdesnivå hade man  upptäckt felet först vid körning.
+Om man haft enheterna enbart på värdesnivå hade man upptäckt felet först vid körning.
 
 Pretty-printer
 --------------
@@ -90,14 +94,14 @@ Nu ska vi göra en pretty-printer för en storhet. Det stora jobbet är redan av
 
 > showQuantity :: (Show v) => Quantity u v -> String
 > showQuantity (Quantity v u) = show v ++ " " ++ show u
-> 
+
 > instance (Show v) => Show (Quantity u v) where
 >   show = showQuantity
 
 Jämförelser
 -----------
 
-Det är användbart att jämföra storheter. Man vill kanske veta vilken av två energimängder som är störst. Men vad är störst av `1 J` och `1 m`? Det är ingen meningsfull jämförelse eftersom enheterna inte är samma. För att skydda oss frånt sådant har vi enheterna på typnivå.
+Det är användbart att jämföra storheter. Man vill kanske veta vilken av två energimängder som är störst. Men vad är störst av `1 J` och `1 m`? Det är ingen meningsfull jämförelse eftersom enheterna inte är samma. För att skydda oss från sådant har vi enheterna på typnivå.
 
 > quantityEq :: (Eq v) => Quantity u v -> Quantity u v -> Bool
 > quantityEq (Quantity v1 _) (Quantity v2 _) = v1 == v2
@@ -109,11 +113,11 @@ Vi kan göra `Quantity` en `Eq`-instans.
 
 Vi gör `Quantity` en `Ord`-instans också.
 
-> quantityCompare :: (Ord v) => Quantity u v -> 
+> quantityCompare :: (Ord v) => Quantity u v ->
 >                               Quantity u v -> Ordering
 > quantityCompare (Quantity v1 _) (Quantity v2 _) =
 >   compare v1 v2
-> 
+
 > instance (Ord v) => Ord (Quantity u v) where
 >   compare = quantityCompare
 
@@ -136,23 +140,25 @@ För att lösa dessa problem kommer vi introducera lite syntaktiskt socker. För
 
 > length :: (Num v) => Quantity Length v
 > length = Quantity 0 V.length
-> 
+
 > time :: (Num v) => Quantity Time v
 > time = Quantity 0 V.time
-> 
+
 > mass :: (Num v) => Quantity Mass v
 > mass = Quantity 0 V.mass
-> 
+
 > temperature :: (Num v) => Quantity Temperature v
 > temperature = Quantity 0 V.temperature
-> 
+
 > substance :: (Num v) => Quantity Substance v
 > substance = Quantity 0 V.substance
-> 
+
 > one :: (Num v) => Quantity One v
 > one = Quantity 0 V.one
 
 Och nu sockret.
+
+[PaJa: här skulle man kunna använda multiplikation, ifall enheterna hade 1 som värde. Kommentera eller implementera.]
 
 > (#) :: (Num v) => v -> Quantity u v -> Quantity u v
 > v # (Quantity _ u) = Quantity v u
@@ -183,19 +189,19 @@ Räkneoperationer på kvantiteter
 
 Nu ska vi implementera räkneoperationer för storheter. I stora drag handlar det om att skapa funktioner med rätt enheter på typnivå.
 
-> (+#) :: (Num v) => Quantity u v -> Quantity u v -> 
+> (+#) :: (Num v) => Quantity u v -> Quantity u v ->
 >                    Quantity u v
 > (+#) = quantityAdd
-> 
-> (-#) :: (Num v) => Quantity u v -> Quantity u v -> 
+
+> (-#) :: (Num v) => Quantity u v -> Quantity u v ->
 >                    Quantity u v
 > (Quantity v1 u) -# (Quantity v2 _) = Quantity (v1-v2) u
-> 
+
 > (*#) :: (Num v) => Quantity u1 v -> Quantity u2 v ->
 >                    Quantity (u1 `Mul` u2) v
 > (*#) = quantityMul
-> 
-> (/#) :: (Fractional  v) => Quantity u1 v -> 
+
+> (/#) :: (Fractional  v) => Quantity u1 v ->
 >                            Quantity u2 v ->
 >                            Quantity (u1 `Div` u2) v
 > (Quantity v1 u1) /# (Quantity v2 u2) =
@@ -207,7 +213,7 @@ Hur går det till att göra operationer som `sin` på en storhet med en *eventue
 
 < sinq :: (Floating v) => Quantity One v -> Quantity One v
 < sinq (Quantity v ul) = Quantity (sin v) ul
-< 
+<
 < cosq :: (Floating v) => Quantity One v -> Quantity One v
 < cosq (Quantity v ul) = Quantity (cos v) ul
 
@@ -215,9 +221,9 @@ Vi inser snabbt ett mönster, så låt oss generalisera lite.
 
 > qmap :: (a -> b) -> Quantity One a -> Quantity One b
 > qmap f (Quantity v ul) = Quantity (f v) ul
-> 
+
 > type BinaryScalar v = Quantity One v -> Quantity One v
-> 
+
 > sinq, cosq, asinq, acosq, atanq, expq, logq :: (Floating v) =>
 >   BinaryScalar v
 > sinq  = qmap sin
@@ -274,7 +280,3 @@ Anknytning till fysik
 För att avsluta detta kapitel visar vi ett exemel på hur man kan koda en uppgift och lösning i detta domänspecifika språk vi skapat för storheter.
 
 Tillfälligt dold av upphovsrättsskäl
-
-
-
-

@@ -29,3 +29,8 @@ Det domänspecifika språket för enheter kommer behandla enheter på både *typ
 Implementationerna på typnivå och värdeninvå blir snarlika. Man hade kunna nöja sig med en implementation och använda sig av `Data.Proxy`, men det blir krånligt. Detta sätt är längre men lättare.
 
 Låt oss börja med enheter på värdesnivå.
+
+----
+
+
+> module Units.Units where

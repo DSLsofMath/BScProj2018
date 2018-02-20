@@ -131,6 +131,7 @@ Comparsions
 -----------
 
 It's useful to be able to compare quantities. Perhaps one wants to know which of two amounts of energy is the largest. But what's the largest of `1 J` and `1 m`? That's no meaningful comparsion since the units don't match. This behaviour is prevented by having type-level units.
+
 > quantityEq :: (Eq v) => Quantity u v -> Quantity u v -> Bool
 > quantityEq (Quantity v1 _) (Quantity v2 _) = v1 == v2
 > 

@@ -274,12 +274,16 @@ exception of expressing $b$ as $a + h$. We'll use our own definition hereinafter
 
 We express our definition of $\Delta$ in Haskell:
 
-< delta :: (RealNum -> RealNum) -> RealNum -> RealNum -> RealNum
-< delta x a b = x(b) - x(a)
+\begin{spec}
+delta :: (RealNum -> RealNum) -> RealNum -> RealNum -> RealNum
+delta x a b = x(b) - x(a)
+\end{spec}
 
 or
 
-< delta x = \a -> \b -> x(b) - x(a)
+\begin{spec}
+delta x = \a -> \b -> x(b) - x(a)
+\end{spec}
 
 This is a shallow embedding. Let's look at how it's expressed in our
 deep embedding:
@@ -287,15 +291,19 @@ deep embedding:
 This is the representation of the delta operator in the syntax tree.
 The argument will need to be type-checked to ensure that it's a function.
 
-<           | Delta Expr         -- Difference, like "Δx"
+\begin{spec}
+          | Delta Expr         -- Difference, like "Δx"
+\end{spec}
 
 We implement the delta case of the eval function according to the definition
 
-< eval env (Delta x) =
-<     LambdaVal env
-<               "_a"
-<               (Lambda "_b"
-<                       ((x :$ ("_b")) :- (x :$ ("_a"))))
+\begin{spec}
+eval env (Delta x) =
+    LambdaVal env
+              "_a"
+              (Lambda "_b"
+                      ((x :$ ("_b")) :- (x :$ ("_a"))))
+\end{spec}
 
 \subsection{Verification/proof/test}
 
@@ -353,7 +361,7 @@ $$ D(f) = \frac{dy}{dx} = \frac{lim_{\Delta y \to 0} \Delta y}{lim_{\Delta x \to
 $$ D(x) = lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x} $$
 
 which, when $ y : \mathbb{R} \to \mathbb{R} \text{ and } x \text{ is a real interval}
-\leftrightarrow x \text{ is the \texttt{id} function for real numbers} $, is:
+\leftrightarrow x \text{ is the } id \text{function for real numbers} $, is:
 
 \begin{align*}
 D(x) &= lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x} \\
@@ -365,7 +373,9 @@ D(x) &= lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x} \\
 
 We add the derivative syntax to the \textit{Expr} syntax tree.
 
-<           | D Expr             -- Derivative, like "D(f)" or "f'"
+\begin{spec}
+             | D Expr             -- Derivative, like "D(f)" or "f'"
+\end{spec}
 
 Here are some derivatives. Proving these is left as an excercise to the reader:
 

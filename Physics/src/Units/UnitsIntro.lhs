@@ -24,8 +24,8 @@ There are 7 types of quantities, each with a corresponding SI-unit:
 
 We will only use the SI-units. Therefore, for instance, "meters" will be exchangable with "length". For this reason we have chosen to name all "units" with the corresponding name of the quantity.
 
-The domain specific language for units will cover units on both *value-level* and *type-level*. Value-level in order to print units nicely. Type-level in order to, already at the time of compilation, make sure no unallowed operations are performed.
+The domain specific language for units, at the completion of this chater, covers units on both *value-level* and *type-level*. Value-level in order to print units nicely. Type-level in order to ensure at compile-time no unallowed operations are performed.
 
-The implementation at both levels are very similar. One could choose to only do one implementation, and use `Data.Proxy`, but this is tricky. Using two implementations is lengthier but easier.
+The implementation on both levels are very similar. One could choose only to do one implementation, and use `Data.Proxy`, but this is tricky. Using two implementations is lengthier but easier.
 
 Let's start with units on value-level.

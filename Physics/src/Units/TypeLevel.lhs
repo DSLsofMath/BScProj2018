@@ -4,11 +4,11 @@ Type-level units
 
 We will now implement *type-level* units. What is type-level? When one usually programs (in Haskell), one operatates (e.g. adds) on values (e.g. `1` and `2`). This is on *value-level*. Now we will do the same thing but on *type-level*, that is, perform operations on types.
 
-What's the purpose of type-level units? It's so that we will see already at the time of compilation that what we've written is correct.
+What's the purpose of type-level units? It's so that we'll notice as early as compile-time if we've written something incorrect.
 
 As previously mentioned, this implementation will be very similar to that on value-level.
 
-To be able to do type-level programming, we'll need a big bunch of GHC-extensions. TODO: förklara vad de gör.
+To be able to do type-level programming, we'll need a nice stash of GHC-extensions. TODO: förklara vad de gör.
 
 > {-# LANGUAGE DataKinds #-}
 > {-# LANGUAGE GADTs #-}
@@ -32,11 +32,11 @@ To be able to do type-level programming, we'll need a big bunch of GHC-extension
 > )
 > where
 
-We will need to be able to operate on integers on type-level. Instead of implementing it ourselves, we will just import the machinery so that we can focus on the physics-part.
+We'll need to be able to operate on integers on type-level. Instead of implementing it ourselves, we will just import the machinery so we can focus on the physics-part.
 
 > import Numeric.NumType.DK.Integers
 
-We make a *sort* for units, just like we in the previous section made *type* for units. On value-level we made a *type* with *values*. Now we make a *sort* with *types*. The meaning is exactly the same, except we have moved "one step up".
+We make a *kind* for units, just like we in the previous section made *type* for units. On value-level we made a *type* with *values*. Now we make a *kind* with *types*. The meaning is exactly the same, except we have moved "one step up".
 
 > data Unit = Unit TypeInt -- Length
 >                  TypeInt -- Mass
@@ -46,11 +46,11 @@ We make a *sort* for units, just like we in the previous section made *type* for
 >                  TypeInt -- Substance
 >                  TypeInt -- Luminosity
 
-But `data Unit = ...` looks awfully similar to a regular data type! That's correct. But with the GHC-extension `DataKinds` this will, apart from creating a regular data type, **also** create a *sort*. Perhaps a less confusing syntax would've been `kind Unit = ...`.
+But `data Unit = ...` looks awfully similar to a regular data type! That's correct. But with the GHC-extension `DataKinds` this will, apart from creating a regular data type, **also** create a *kind*. Perhaps a less confusing syntax would've been `kind Unit = ...`.
 
-Thanks to the `Unit`-osrt we can force certain types in functions to be of this sort.
+Thanks to the `Unit`-kind we can force certain types in functions to be of this kind.
 
-This may sound confusing, but point of this will become clearer over time. Let's show some example *types* of the `Unit`-sort.
+This may sound confusing, but point of this will become clear over time. Let's show some example *types* of the `Unit`-kind.
 
 > type Length      = 'Unit Pos1 Zero Zero Zero Zero Zero Zero
 > type Mass        = 'Unit Zero Pos1 Zero Zero Zero Zero Zero
@@ -65,11 +65,11 @@ This may sound confusing, but point of this will become clearer over time. Let's
 > 
 > type One = 'Unit Zero Zero Zero Zero Zero Zero Zero
 
-`'Unit` is used to distinguish between the *type* `Unit` and the *type constructor* `Unit`. `'Unit` refers to the type constructor. Both are created when using `DataKinds`.
+`'Unit` is used to distinguish between the *type* `Unit` (left-hand-side of the `data Unit` definition) and the *type constructor* `Unit` (right-hand-side of the `data Unit` definition, with `DataKinds`-perspective). `'Unit` refers to the type constructor. Both are created when using `DataKinds`.
 
 `Pos1`, `Neg1` and so on corresponds to `1` and `-1` in the imported package, which operates on integers on type-level.
 
-Let's implement multiplication and division on type-level. After such an operation a new unit is created. And what that new unit should look like we already know from the previous section. To translate to the Haskell-language: "after such an operation a new *type* is created". How does one implement that? With `type family`! `type family` can easiest be thought of as a function on type-level.
+Let's implement multiplication and division on type-level. After such an operation a new unit is created. And from the previous section we already know what the unit should look like. To translate to the Haskell-language: "after such an operation a new *type* is created". How does one implement that? With `type family`! `type family` can easiest be thought of as a function on the type-level.
 
 > type family Mul (u1 :: Unit) (u2 :: Unit) where
 >   Mul ('Unit le1 ma1 ti1 cu1 te1 su1 lu1) 
@@ -96,4 +96,4 @@ Let's create some example *types* for units with multiplication and division.
 > type Force     = Mass   `Mul` Length
 > type Impulse   = Force  `Mul` Time
 
-Perhaps not very exiting so far. But just wait until we create a data type for quantities. Then the strenghts of units on type-level will be clearer.
+Perhaps not very exiting so far. But just wait 'til we create a data type for quantities. Then the strenghts of type-level units will be clearer.

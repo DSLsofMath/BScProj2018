@@ -2,7 +2,7 @@
 Quantities
 ==========
 
-We will now create a data type for quantities and combine units on value-level and type-level. Just as before, a bunch of GHC-extensions is necessary.
+We will now create a data type for quantities and combine units on value-level and type-level. Just as before, a bunch of GHC-extensions are necessary.
 
 > {-# LANGUAGE DataKinds #-}
 > {-# LANGUAGE GADTs #-}
@@ -12,7 +12,30 @@ We will now create a data type for quantities and combine units on value-level a
 > {-# LANGUAGE TypeOperators #-}
 > 
 > module Units.Quantity
-> (
+> ( length
+> , mass
+> , time
+> , current
+> , temperature
+> , substance
+> , luminosity
+> , one
+> , velocity
+> , acceleration
+> , force
+> , momentum
+> , (#)
+> , (+#)
+> , (-#)
+> , (*#)
+> , (/#)
+> , sinq
+> , cosq
+> , asinq
+> , acosq
+> , atanq
+> , expq
+> , logq
 > )
 > where
 > 
@@ -30,7 +53,7 @@ First we create the data type for quantities.
 
 - `data Quantity` creates a *type*.
 - `u` is a *type* and `T.Unit` is a *kind*. This makes our data type have a type parameter where the type must have the kind `T.Unit`.
-- `v :: *` means that `v`, as in **v**alue, hs the kind `*`, which is the kind of types that can have values. `v` could for instance be `Double` or `Integer`.
+- `v :: *` means that `v`, as in **v**alue, has the kind `*`, which is the kind of types that can have values. `v` could for instance be `Double` or `Integer`.
 - `Quantity` on the row below is a value constructor.
 - The value constructor has two *value*-parameters which should have certain *types*.
   - `v` is a type which represents a number.
@@ -53,9 +76,9 @@ We will implement all arithmetic operations on `Quantity`, but for now, to get a
 >                           Quantity u v
 > quantityAdd (Quantity v1 u) (Quantity v2 _) = Quantity (v1+v2) u
 
-The type is interpreted as follows: two values of type `Quantity u v` is the input, where `u` is the unit as type. The output is also a value of `Quantity u v`.
+The type is interpreted as follows: two values of type `Quantity u v` is the input, where `u` is the type-level unit. The output is also a value of `Quantity u v`.
 
-The type of the function forces the inputs to have the same units. For this reason, the unit on value-level doesn't matter on one of the arguments, because they will be the same. (It's possible to create values where the units on value-level and type-level don't match. We will come back to this later.)
+The type of the function forces the inputs to have the same units. For this reason, the unit on value-level doesn't matter on one of the arguments, because they will be the same. (It's possible to create values where the units on value-level and type-level don't match. We'll come back to this later.)
 
 Multiplication is
 
@@ -82,12 +105,12 @@ The following example shows that during a multiplication, the types will change,
 > area :: Quantity Area Double
 > area = quantityMul width height
 
-Having units on the type-level is used below, to enforce at the time of compilation that only allowed operations are performed.
+Having type-level units is used below, to enforce at compile-time that only allowed operations are performed.
 
 < -- Doesn't even compile
 < weird = quantityAdd width area
 
-If the units only were value-level, this error would be noticed only at the time of running.
+If the units only were value-level, this error would be noticed only at run-time.
 
 Pretty-printer
 --------------
@@ -103,7 +126,7 @@ Let's do a pretty-printer for quantities. Most of the work is already done by th
 Comparsions
 -----------
 
-It's useful to be able to compare quantities. Perhaps one wants to know which of two amounts of energy is the largest. But what's the largest of `1 J` and `1 m`? That's no meaningful comparsion since the units don't match. This behaviour is prevented by having the units on type-level.
+It's useful to be able to compare quantities. Perhaps one wants to know which of two amounts of energy is the largest. But what's the largest of `1 J` and `1 m`? That's no meaningful comparsion since the units don't match. This behaviour is prevented by having type-level units.
 
 > quantityEq :: (Eq v) => Quantity u v -> Quantity u v -> Bool
 > quantityEq (Quantity v1 _) (Quantity v2 _) = v1 == v2
@@ -146,7 +169,7 @@ Let's implement the arithmetic operations on `Quantity`. Basically it's all abou
 > (Quantity v1 u1) /# (Quantity v2 u2) =
 >   Quantity (v1 / v2) (u1 `V.div` u2)
 
-For all operations on quantities, one does the operation on the value and, in the case of multiplication and division, on the unit separetly. For addition and subtraction the in-units must be the same. Nothing then happens with the unit.
+For all operations on quantities, one does the operation on the value and, in the case of multiplication and division, on the units separetly. For addition and subtraction the in-units must be the same. Nothing then happens with the unit.
 
 How does one perform operations such as `sin` on a quantity with a *potential* unit? The answer is that the quantity must be unitless, and with the unit nothing happens. For the follwing functions, the quantites must be unitless.
 
@@ -156,15 +179,15 @@ How does one perform operations such as `sin` on a quantity with a *potential* u
 < cosq :: (Floating v) => Quantity One v -> Quantity One v
 < cosq (Quantity v ul) = Quantity (cos v) ul
 
-We quickly realize the pattern, so let's generalize.
+We quickly realize a pattern, so let's generalize a bit.
 
 > qmap :: (a -> b) -> Quantity One a -> Quantity One b
 > qmap f (Quantity v ul) = Quantity (f v) ul
 > 
-> type BinaryScalar v = Quantity One v -> Quantity One v
+> type UnaryScalar v = Quantity One v -> Quantity One v
 > 
 > sinq, cosq, asinq, acosq, atanq, expq, logq :: (Floating v) =>
->   BinaryScalar v
+>   UnaryScalar v
 > sinq  = qmap sin
 > cosq  = qmap cos
 > asinq = qmap asin
@@ -173,23 +196,23 @@ We quickly realize the pattern, so let's generalize.
 > expq  = qmap exp
 > logq  = qmap log
 
-Why not make `Quantity` and instance of `Num`, `Fractional`, `Floating` och `Functor`? The reason is that the functions of those type classes have the following type
+Why not make `Quantity` an instance of `Num`, `Fractional`, `Floating` och `Functor`? The reason is that the functions of those type classes have the following type
 
 < (*) :: (Num a) => a -> a -> a
 
 which isn't compatible with `Quantity` since multiplication with `Quantity` has the following type
 
 < (*#) :: (Num v) => Quantity u1 v -> Quantity u2 v ->
-<                   Quantity (u1 `Mul` u2) v
+<                    Quantity (u1 `Mul` u2) v
 
 The input here may actually be of *different* types, and the output has a type depending on the types of the input. However, the *kind* of the inputs and output are the same, namely `Quantity`. We'll just have to live with not being able to make `Quantity` a `Num`-instance.
 
-However, operations with only scalars (type `One`) has types compatible with `Num`. Therefore a possibility would have been to make `Quantity One` a `Num`-instance.
+However, operations with only scalars (type `One`) has types compatible with `Num`. Therefore a possibility would've been to make `Quantity One` a `Num`-instance.
 
 Syntactic sugar
 ---------------
 
-In order to create a value representing a certain distance (5 meters, for example) you do the following
+In order to create a value representing a certain distance (5 meters, for example) one does the following
 
 < distance :: Quantity T.Length Double
 < distance = Quantity 5 V.length
@@ -258,7 +281,7 @@ We want to maintain the invariant that the unit on value-level and type-level al
 If the user needs other units than the base units (which it probably will), the follwing example shows how it's done.
 
 < ghci> let myLength = 5 # length
-< ghci> let myTime = 2 # time<
+< ghci> let myTime = 2 # time
 < ghci> let myVelocity = myLength /# myTime
 < ghci> myVelocity
 < 2.5 m/s
@@ -274,10 +297,10 @@ TODO: Dessa har alla Double som värdetyp. Hur förhindra det? Explicita typsign
 
 Just for convenience sake we'll define a bunch of common composite units.
 
-> velocity = length /# time
+> velocity     = length   /# time
 > acceleration = velocity /# time
-> force = mass *# acceleration
-> impulse = force *# time
+> force        = mass     *# acceleration
+> momentum     = force    *# time
 
 A physics example
 -----------------
@@ -286,7 +309,7 @@ To conclude this chapter, we show an example on how to code an exercise and its 
 
 The code comments show what GHCi prints for that row.
 
-"A dog runs, jumps and lands sliding on a carriage. The dog weighs `40 kg` and runs in `8 m/s`. The carriage weighs `190 kg`. The coefficient of friction between the dog's paws and the carriage is `0.7`.
+The exercise is "A dog runs, jumps and lands sliding on a carriage. The dog weighs `40 kg` and runs in `8 m/s`. The carriage weighs `190 kg`. The coefficient of friction between the dog's paws and the carriage is `0.7`."
 
 a) Calculate the (shared) final velocity of the dog and the carriage.
 
@@ -325,7 +348,3 @@ Whoops! That's not a good operation. Luckily the compiler caught it.
 
 > vDelta = viDog -# vfSystem -- 6.60 m/s
 > tSlide = vDelta /# aDog    -- 0.96 s
-
-
-
-

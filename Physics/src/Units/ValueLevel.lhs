@@ -23,7 +23,7 @@ Value-level units
 > len [] = 0
 > len (a:as) = 1 + len as
 
-A unit can be seen as a multiplication of the base units, with an individual exponent on each base unit. Since there are only 7 base units, we can use that to our advantage in our data type.
+A unit can be seen as a product of the base units, with an individual exponent on each base unit. Since the 7 base units are known in advance, we can design our data type after this fact.
 
 > data Unit = Unit Integer -- Length
 >                  Integer -- Mass
@@ -33,7 +33,7 @@ A unit can be seen as a multiplication of the base units, with an individual exp
 >                  Integer -- Substance
 >                  Integer -- Luminosity
 
-Each field denotes the exponent for the respective base unit. If the exponent is `0`, the base unit is not part of the unit. Some examples to clarify.
+Each field denotes the exponent for the corresponding base unit. If the exponent is `0`, the base unit is not part of the unit. Some examples should clarify.
 
 > length      = Unit 1 0 0 0 0 0 0
 > mass        = Unit 0 1 0 0 0 0 0
@@ -46,9 +46,9 @@ Each field denotes the exponent for the respective base unit. If the exponent is
 > velocity     = Unit 1 0 (-1) 0 0 0 0
 > acceleration = Unit 1 0 (-2) 0 0 0 0
 
-Velocity is `m/s` or equivalently `m^1*s^-1`. That explains why the exponents are as above.
+Velocity is `m/s` or equivalently `m^1*s^-1`. This explains why the exponents are as above.
 
-Units can be multiplied and divided. Velocity is, as we just saw, a division between length and time. Multiplication and division of units follow the power laws, that is, to multiply the exponents of the two numbers are added, and to divide the exponents are subtracted.
+Units can be multiplied and divided. Velocity is, as we just saw, a division between length and time. Multiplication and division of units are performed as if they were regular numbers, or variables holding numbers, and hence they follow the power laws. That is, to multiply, the exponents of the two numbers are added, and to divide, the exponents are subtracted.
 
 > mul :: Unit -> Unit -> Unit
 > (Unit le1 ma1 ti1 cu1 te1 su1 lu1) `mul` (Unit le2 ma2 ti2 cu2 te2 su2 lu2) =
@@ -58,12 +58,12 @@ Units can be multiplied and divided. Velocity is, as we just saw, a division bet
 > (Unit le1 ma1 ti1 cu1 te1 su1 lu1) `div` (Unit le2 ma2 ti2 cu2 te2 su2 lu2) =
 >   Unit (le1-le2) (ma1-ma2) (ti1-ti2) (cu1-cu2) (te1-te2) (su1-su2) (lu1-lu2)
 
-Some examples of units now possible to construct.
+It's now possible to construct units in the following way.
 
 > velocity' = length `div` time
 > area      = length `mul` length
 > force     = mass   `mul` acceleration
-> impulse   = force  `mul` time
+> momentum  = force  `mul` time
 
 A "unit" we so far haven't mentioned is the *scalar*, which shows up when working with, for example, coefficients of friction. It's unitless since it arises from division of two equal units. `f = u * N <-> u = f / N`.
 
@@ -73,7 +73,7 @@ A "unit" we so far haven't mentioned is the *scalar*, which shows up when workin
 Pretty-printer
 --------------
 
-The purpose of units on value-level was to be able to print 'em nicely. So let's create a pretty-printer.
+The purpose of units on value-level is to be able to print 'em nicely. So let's create a pretty-printer.
 
 > showUnit :: Unit -> String
 > showUnit (Unit le ma ti cu te su lu)
@@ -109,7 +109,7 @@ The purpose of units on value-level was to be able to print 'em nicely. So let's
 
 Now units are printed quite pretty in GHCi.
 
-< ghci> impulse
+< ghci> momentum
 < kg*m/s
 
 The result from this section has been the ability to multiply, divide and print units prettily. The next natural step would be to create a data type for quantities. However, we will first implement units on type-level.

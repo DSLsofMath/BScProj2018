@@ -16,7 +16,7 @@ För att klara av det vi ska göra nu krävs en drös GHC-extensions. TODO: För
 > {-# LANGUAGE TypeFamilies #-}
 > {-# LANGUAGE UndecidableInstances #-}
 > {-# LANGUAGE TypeOperators #-}
-> 
+
 > module Units.TypeLevel
 > ( Unit(..)
 > , Mul
@@ -53,17 +53,17 @@ Detta kan låta förvirrande, men poängen med detta kommer klarna allt efter ha
 > type Mass        = 'Unit Zero Zero Pos1 Zero Zero
 > type Temperature = 'Unit Zero Zero Zero Pos1 Zero
 > type Substance   = 'Unit Zero Zero Zero Zero Pos1
-> 
+
 > type Velocity     = 'Unit Pos1 Neg1 Zero Zero Zero
 > type Acceleration = 'Unit Pos1 Neg2 Zero Zero Zero
-> 
+
 > type One = 'Unit Zero Zero Zero Zero Zero
 
 `'Unit` används för att skilja mellan *typen* `Unit` och *typkonstruktorn* `Unit`. `'Unit` syftar på typkonstruktorn. Båda skapas parallellt i Haskell.
 
 `Pos1`, `Neg1` och så vidare motsvarar `1` och `-1` i det importerade paketet, som behandlar tal på typnivå.
 
-Vi gör nu multiplikation och division på typnivå. Efter en sådan operation bildas en ny enhet. Och hur detta går till vet vi sedan tidigare. För att översätta till Haskell-språk: "efter en sådan operation bildas en ny *typ*". Hur implementerar man det? Med hjälp av `type family`, som enklast kan ses som en funtion fast på typnivå.
+Vi gör nu multiplikation och division på typnivå. Efter en sådan operation bildas en ny enhet. Och hur detta går till vet vi sedan tidigare. För att översätta till Haskell-språk: "efter en sådan operation bildas en ny *typ*". Hur implementerar man det? Med hjälp av `type family`, som enklast kan ses som en funktion fast på typnivå.
 
 > type family Mul (u1 :: Unit) (u2 :: Unit) where
 >   Mul ('Unit l1 t1 m1 k1 s1) ('Unit l2 t2 m2 k2 s2) =

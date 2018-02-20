@@ -14,9 +14,9 @@ Värdenivå
 > , one
 > )
 > where
-> 
+
 > import Prelude hiding (length, div)
-> 
+
 > len :: (Integral n) => [a] -> n
 > len [] = 0
 > len (a:as) = 1 + len as
@@ -36,7 +36,7 @@ Vardera fält anger exponenten för respektive grundenhet. Är exponenten `0` s�
 > mass        = Unit 0 0 1 0 0
 > temperature = Unit 0 0 0 1 0
 > substance   = Unit 0 0 0 0 1
-> 
+
 > velocity     = Unit 1 (-1) 0 0 0
 > acceleration = Unit 1 (-2) 0 0 0
 
@@ -79,10 +79,10 @@ Själva syftet med att ha enheter på värdesnivå var att ha en pretty-printer.
 >     pos     = filter (\(_, exp) -> exp >  0) paired
 >     neg     = filter (\(_, exp) -> exp <  0) paired
 >     neg'    = map (\(u, exp) -> (u, -exp)) neg
-> 
+
 >     f (u,1) = u
 >     f (u,n) = u ++ "^" ++ show n
-> 
+
 >     posStrs = map f pos
 >     negStrs = map f neg'
 >     posStr  = if null pos
@@ -94,10 +94,9 @@ Själva syftet med att ha enheter på värdesnivå var att ha en pretty-printer.
 >                     else ("", "")
 >     negStr = if null negStrs
 >              then ""
->              else foldl (\strs str -> str ++ "*" ++ 
->                   strs) (head negStrs) (tail negStrs)
+>              else foldl1 (\strs str -> str ++ "*" ++ strs) negStrs
 >     negStr' = left ++ negStr ++ right
-> 
+
 > instance Show Unit where
 >   show = showUnit
 

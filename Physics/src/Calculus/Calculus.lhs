@@ -5,6 +5,7 @@
 
 \usepackage{amsmath}
 \usepackage{fontspec}
+\usepackage{hyperref}
 
 %%% Standard definitions from the lhs2TeX installation
 %include polycode.fmt
@@ -513,9 +514,174 @@ We only look at Reimann integrals for now, since they will likely be more famili
 
 The Riemann integral is unsuitable for many theoretical purposes. Some of the technical deficiencies in Riemann integration can be remedied with the Riemann–Stieltjes integral, and most disappear with the Lebesgue integral.''
 
-See: \href{https://mathoverflow.net/questions/52708/why-should-one-still-teach-riemann-integration}
+See: \url{https://mathoverflow.net/questions/52708/why-should-one-still-teach-riemann-integration}
 
 So there are some problems, but Reimann integrals will do for now.(?)
 %% Because we won't do rigorous proofs requiring Lebesgue integrals in this course?
+
+We will also only study definite integrals here, as indefinite integrals are not required to be used in this course anyway.
+
+Geometrically (in 2D), the integral of a function over an interval is equivalent to the area under the graph of that function
+over the same interval.
+
+% Wikipedia: https://en.wikipedia.org/wiki/Integral
+``
+The definite integral is defined informally as the signed area of the region in the xy-plane that is bounded by the graph of f, the x-axis and the vertical lines x = a and x = b. The area above the x-axis adds to the total and that below the x-axis subtracts from the total.
+''
+
+This is the syntax for definite integrals
+
+$$ \int_a^b f(x) dx $$
+
+This would be read as ``The signed area under the graph of $f(x)$ from $x=a$ to $x=b$''.
+
+Clearly, the integral symbol binds $a$ and $b$ which are then the limits of the integral, and constitute
+the interval over which to integrate/take the area, and $f$ is the function which we integrate/take the area under.
+The less obvious part of the syntax is the $(x)$ part in $f(x)$ and the $dx$. Is $x$ an argument to be passed to the
+integral that is bound here? No. What this syntax actually implies is that, in english, ``For every infinitesimal interval of $x$,
+starting at $a$ and ending at $b$, take the value of $f$ at that x (equiv. to taking the value at any point in the infinitesimal
+interval), and calculate the area of the rectangle with width $dx$ and height $f(x)$, then sum all of these parts together.''
+
+If we assume that $f$ is a unary function, which is the only kind of function we will be dealing with here, the syntax is redundant.
+$dx$ is completely internal to the behaviour of the function, and is not an argument bound by it, we could easily omitt it from the syntax.
+Further, if we see the integral as a function that integrates a function over an interval, $\int_a^b f(x)$ doesn't really make any sense, and
+should just be $\int_a^b f$.
+
+This syntax is much simpler and leaves less room for confusion.
+
+\texttt{integrate f a b =} $ \int_a^b f $
+
+Now for the definition.
+
+We look again at the informal definition above. $\int_a^b f$ is the sum of all rectangles with height $f(x)$
+and width $dx$ for all infinitesimal intervals $dx$ between $a$ and $b$.
+
+So we're dealing with an infinite sum of infinitesimal parts: a limit must be involved. $a$ and $b$ must be
+the lower and upper limits of the sum. Our iteration variable should increase with infinitesimal $dx$ each step.
+Each step we add the area of the rectangle with height $f(x')$, where $x'$ is any point in $[x$, $x + dx]$.
+As $x + dx$ approaches $x$ when $dx$ approaches zero, $x' = lim_{dx \to 0} x + dx = x$.
+
+$$ \int_a^b f = lim_{dx \to 0} \sum_{x = a, a + dx, a + 2dx, ...}^b A(x, dx) \text{ where } A(x, dx) = f(x) * dx $$
+
+Based on this definition, we could implement a function in haskell to compute the numerical approximation of the integral
+by letting $dx$ be a very small, but finite, number instead of being infinitesimal. The smaller our $dx$, the better the
+approximation
+
+Here's a pic that shows that smaller $dx$ results in better approximations:
+\url{https://en.wikipedia.org/wiki/File:Riemann_sum_convergence.png}
+
+\begin{code}
+integrateApprox f a b dx = sum (fmap area xs)
+  where xs     = takeWhile (<b) [a + 0*dx, a + 1*dx ..]
+        area x = f x * dx
+\end{code}
+
+For example, let's calculate the area of the right-angled triangle under $y = x$
+between $x=0$ and $x=10$. As the area of a right-angled triangle is calculated as
+$A = \frac{b * h}{2}$, we expect the result of \texttt{integrateApprox} to approach
+$A = \frac{b * h}{2} = \frac{10 * 10}{2} = 50$ as $dx$ gets smaller
+
+\begin{spec}
+λ integrateApprox (\textbackslash x -> x) 0 10 5
+25
+λ integrateApprox (\textbackslash x -> x) 0 10 1
+45
+λ integrateApprox (\textbackslash x -> x) 0 10 0.5
+47.5
+λ integrateApprox (\textbackslash x -> x) 0 10 0.1
+49.50000000000013
+λ integrateApprox (\textbackslash x -> x) 0 10 0.01
+50.04999999999996
+\end{spec}
+
+Great, it works for numeric approximations! This can be useful at times,
+but not so much in our case. We want closed expressions to use when solving
+physics problems, regardless of whether there are computations or not!
+
+Luckily, the Fundemental Theorem of Calculus tells us that there IS a way to
+express integrals in closed form!
+
+% Wikipedia: https://en.wikipedia.org/wiki/Fundamental_theorem_of_calculus
+
+``
+First part
+
+This part is sometimes referred to as the first fundamental theorem of calculus.
+
+Let $f$ be a continuous real-valued function defined on a closed
+interval $[a, b]$. Let $F$ be the function defined, for all $x \in [a, b]$, by
+
+$$ F(x) = \int_a^x f(t) dt $$
+
+Then, $F$ is uniformly continuous on $[a,b]$, differentiable on the
+open interval $(a, b)$ and
+
+$$ F'(x) = f(x) $$
+
+for all $x \in (a,b)$.
+
+Alternatively, if $f$ is merely Riemann integrable, then $F$ is
+continuous on $[a,b]$ (but not necessarily differentiable).
+
+Corollary
+
+The fundamental theorem is often employed to compute the definite
+integral of a function $f$ for which an antiderivative $F$ is
+known. Specifically, if $f$ is a real-valued continuous function on
+$[a,b]$ and $F$ is an antiderivative of $f$ in $[a,b]$ then
+
+$$ \int_a^b f(t) dt = F(b) - F(a) $$
+
+The corollary assumes continuity on the whole interval. This result is
+strengthened slightly in the following part of the theorem.
+
+Second part
+
+This part is sometimes referred to as the second fundamental theorem
+of calculus or the Newton–Leibniz axiom.
+
+Let $f$ and $f$ be real-valued functions defined on a closed interval
+$[a,b]$ such that $f$ is continuous on all $[a,b]$ and the derivative
+of $F$ is $f$ for almost all points in $[a,b]$. That is, $f$ and $F$
+are functions such that for all $x \in (a,b)$ except for perhaps a set
+of measure zero in the interval:
+
+$$ F'(x)=f(x) $$
+
+If $f$ is Riemann integrable on $[a,b]$ then
+
+$$ \int_a^b f(x) dx = F(b) - F(a) $$
+
+The second part is somewhat stronger than the corollary because it
+does not assume that $f$ is continuous.
+
+When an antiderivative $f$ exists, then there are infinitely many
+antiderivatives for $f$, obtained by adding an arbitrary constant to
+$f$. Also, by the first part of the theorem, antiderivatives of $f$
+always exist when $f$ is continuous.  ''
+
+And here's the proof. We won't delve into this, but it's quite simple.
+
+``
+Bevis
+
+Satsen kan bevisas enligt följande:
+
+\begin{align*}
+F'(x) &= \lim_{h \to 0} \frac{F(x + h) - F(x)}{h} \\
+      &= \lim_{h \to 0} \frac{1}{h} \left( \int_a^{x + h} f(t) dt - \int_a^x f(t) dt \right) \\
+      &= \lim_{h \to 0} \frac{1}{h} \int_x^{x + h} f(t) dt \\
+      &= \lim_{h \to 0} f(c) \\
+      &= \lim_{c \to x} f(c) \\
+      &= f(x)
+\end{align*}
+
+I första steget utnyttjas derivatans definition och i det andra
+definitionen av $f$. I det tredje steget används räknelagar för
+integraler. I fjärde steget används medelvärdessatsen för
+integraler. I femte steget utnyttjas det faktum att $c$ ligger mellan
+$x$ och $x + h$, så då $h \to 0$ gäller att $c \to x$. Sista steget
+ges av att $f$ är kontinuerlig.
+''
 
 \end{document}

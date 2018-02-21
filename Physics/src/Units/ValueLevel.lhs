@@ -16,7 +16,7 @@ Value-level units
 > , one
 > )
 > where
-> 
+
 > import Prelude hiding (length, div)
 
 > len :: (Integral n) => [a] -> n
@@ -42,7 +42,7 @@ Each field denotes the exponent for the corresponding base unit. If the exponent
 > temperature = Unit 0 0 0 0 1 0 0
 > substance   = Unit 0 0 0 0 0 1 0
 > luminosity  = Unit 0 0 0 0 0 0 1
-> 
+
 > velocity     = Unit 1 0 (-1) 0 0 0 0
 > acceleration = Unit 1 0 (-2) 0 0 0 0
 
@@ -85,10 +85,10 @@ The purpose of units on value-level is to be able to print 'em nicely. So let's 
 >     pos     = filter (\(_, exp) -> exp >  0) paired
 >     neg     = filter (\(_, exp) -> exp <  0) paired
 >     neg'    = map (\(u, exp) -> (u, -exp)) neg
-> 
+
 >     f (u,1) = u
 >     f (u,n) = u ++ "^" ++ show n
-> 
+
 >     posStrs = map f pos
 >     negStrs = map f neg'
 >     posStr  = if null pos

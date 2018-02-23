@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Learn You a Physics for Great Good!</title>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  </head>
+
+  <body>
+    <header>
+      <a href="../index.html"><h1>Learn You a <span class="physics">Physics</span> for Great Good!</h1></a>
+      <nav>
+        <span>Previous: <a href="../Vectors/Vector.html">Vector</a></span>
+        <a href="../index.html">Table of contents</a>
+        <span>Next: <a href="../index.html">Table of contents</a></span>
+      </nav>
+    </header>
+
+    <main>
+      <h1 id="introduction">Introduction</h1>
+<p>% TODO: Move relevant stuff out of the general structures/eval to their % respective sections? (differences, derivatives, integrals) % Or maybe, first introduce differences et al. separately, and then % tie them together in a common section of evaluation?</p>
+<p>Calculus is cool</p>
+<p>Differences, derivatives, and integrals</p>
+<h2 id="data-type-definitions-and-general-lambda-calculus-stuff">Data type definitions and general lambda calculus stuff</h2>
+<p>This extension will be used later to allow string literals to be implicitly typed as Expr.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="ot">{-# LANGUAGE OverloadedStrings #-}</span></a></code></pre></div>
+<p>Fun imports</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">module</span> <span class="dt">Calculus.Calculus</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">import</span> <span class="dt">Data.Maybe</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">import</span> <span class="dt">Data.List</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="kw">import</span> <span class="dt">Data.String</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="kw">import</span> <span class="dt">Control.Exception</span></a></code></pre></div>
+<p>Simple graph plotting library</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">import</span> <span class="dt">Hatlab.Plot</span></a></code></pre></div>
+<p>A real number. Double is mostly an adequate representation</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">type</span> <span class="dt">RealNum</span> <span class="fu">=</span> <span class="dt">Double</span></a></code></pre></div>
+<p>The syntax tree of an expression</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">data</span> <span class="dt">Expr</span> <span class="fu">=</span> <span class="dt">Const</span> <span class="dt">RealNum</span>      <span class="co">-- Real constant</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">          <span class="fu">|</span> <span class="dt">Expr</span> <span class="fu">:+</span> <span class="dt">Expr</span>       <span class="co">-- Plus (Addition)</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">          <span class="fu">|</span> <span class="dt">Expr</span> <span class="fu">:-</span> <span class="dt">Expr</span>       <span class="co">-- Minus (Subtraction)</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">          <span class="fu">|</span> <span class="dt">Expr</span> <span class="fu">:*</span> <span class="dt">Expr</span>       <span class="co">-- Times (Multiplication)</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">          <span class="fu">|</span> <span class="dt">Expr</span> <span class="fu">:/</span> <span class="dt">Expr</span>       <span class="co">-- Divided by (Division)</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">          <span class="fu">|</span> <span class="dt">Expr</span> <span class="fu">:.</span> <span class="dt">Expr</span>       <span class="co">-- Composition (After, o)</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">          <span class="fu">|</span> <span class="dt">Var</span> <span class="dt">String</span>         <span class="co">-- Variable</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8">          <span class="fu">|</span> <span class="dt">Func</span> <span class="dt">String</span>        <span class="co">-- Builtin function</span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9">          <span class="fu">|</span> <span class="dt">Lambda</span> <span class="dt">String</span> <span class="dt">Expr</span> <span class="co">-- Lambda function</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10">          <span class="fu">|</span> <span class="dt">Delta</span> <span class="dt">Expr</span>         <span class="co">-- Difference, like &quot;Δx&quot;</span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11">          <span class="fu">|</span> <span class="dt">D</span> <span class="dt">Expr</span>             <span class="co">-- Derivative, like &quot;f&#39;&quot;</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12">          <span class="fu">|</span> <span class="dt">Expr</span> <span class="fu">:$</span> <span class="dt">Expr</span>       <span class="co">-- Function application</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13">  <span class="kw">deriving</span> <span class="dt">Eq</span></a></code></pre></div>
+<p>We implement Num, Fractal, Floating, and IsString for Expr to make it nicer to use</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">instance</span> <span class="dt">Num</span> <span class="dt">Expr</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">      a <span class="fu">+</span> b <span class="fu">=</span> a <span class="fu">:+</span> b</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">      a <span class="fu">-</span> b <span class="fu">=</span> a <span class="fu">:-</span> b</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">      a <span class="fu">*</span> b <span class="fu">=</span> a <span class="fu">:*</span> b</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">      abs e <span class="fu">=</span> <span class="dt">Func</span> <span class="st">&quot;abs&quot;</span> <span class="fu">:$</span> e</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">      signum e <span class="fu">=</span> <span class="dt">Func</span> <span class="st">&quot;signum&quot;</span> <span class="fu">:$</span> e</a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">      fromInteger <span class="fu">=</span> <span class="dt">Const</span> <span class="fu">.</span> fromInteger</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">instance</span> <span class="dt">Fractional</span> <span class="dt">Expr</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">      a <span class="fu">/</span> b <span class="fu">=</span> a <span class="fu">:/</span> b</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">      fromRational <span class="fu">=</span> <span class="dt">Const</span> <span class="fu">.</span> fromRational</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">instance</span> <span class="dt">Floating</span> <span class="dt">Expr</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">    pi <span class="fu">=</span> <span class="dt">Const</span> pi</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">    exp e <span class="fu">=</span> <span class="dt">Func</span> <span class="st">&quot;exp&quot;</span> <span class="fu">:$</span> e</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">    log e <span class="fu">=</span> <span class="dt">Func</span> <span class="st">&quot;log&quot;</span> <span class="fu">:$</span> e</a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">    sin e <span class="fu">=</span> <span class="dt">Func</span> <span class="st">&quot;sin&quot;</span> <span class="fu">:$</span> e</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">    cos e <span class="fu">=</span> <span class="dt">Func</span> <span class="st">&quot;cos&quot;</span> <span class="fu">:$</span> e</a>
+<a class="sourceLine" id="cb8-7" data-line-number="7">    asin e <span class="fu">=</span> <span class="dt">Func</span> <span class="st">&quot;asin&quot;</span> <span class="fu">:$</span> e</a>
+<a class="sourceLine" id="cb8-8" data-line-number="8">    acos e <span class="fu">=</span> <span class="dt">Func</span> <span class="st">&quot;acos&quot;</span> <span class="fu">:$</span> e</a>
+<a class="sourceLine" id="cb8-9" data-line-number="9">    atan e <span class="fu">=</span> <span class="dt">Func</span> <span class="st">&quot;atan&quot;</span> <span class="fu">:$</span> e</a>
+<a class="sourceLine" id="cb8-10" data-line-number="10">    sinh <span class="fu">=</span> undefined; cosh <span class="fu">=</span> undefined; asinh <span class="fu">=</span> undefined; acosh <span class="fu">=</span> undefined; atanh <span class="fu">=</span> undefined;</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">instance</span> <span class="dt">IsString</span> <span class="dt">Expr</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">    fromString <span class="fu">=</span> <span class="dt">Var</span></a></code></pre></div>
+<p>We want to be able to print our expressions in a human-readable format</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">instance</span> <span class="dt">Show</span> <span class="dt">Expr</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">    show (<span class="dt">Const</span> x) <span class="fu">=</span> show x</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">    show (a <span class="fu">:+</span> b) <span class="fu">=</span> <span class="st">&quot;(&quot;</span> <span class="fu">++</span> show a <span class="fu">++</span> <span class="st">&quot; + &quot;</span> <span class="fu">++</span> show b <span class="fu">++</span> <span class="st">&quot;)&quot;</span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4">    show (a <span class="fu">:-</span> b) <span class="fu">=</span> <span class="st">&quot;(&quot;</span> <span class="fu">++</span> show a <span class="fu">++</span> <span class="st">&quot; - &quot;</span> <span class="fu">++</span> show b <span class="fu">++</span> <span class="st">&quot;)&quot;</span></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5">    show (a <span class="fu">:*</span> b) <span class="fu">=</span> <span class="st">&quot;(&quot;</span> <span class="fu">++</span> show a <span class="fu">++</span> <span class="st">&quot; * &quot;</span> <span class="fu">++</span> show b <span class="fu">++</span> <span class="st">&quot;)&quot;</span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6">    show (a <span class="fu">:/</span> b) <span class="fu">=</span> <span class="st">&quot;(&quot;</span> <span class="fu">++</span> show a <span class="fu">++</span> <span class="st">&quot; / &quot;</span> <span class="fu">++</span> show b <span class="fu">++</span> <span class="st">&quot;)&quot;</span></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7">    show (f <span class="fu">:.</span> g) <span class="fu">=</span> <span class="st">&quot;(&quot;</span> <span class="fu">++</span> show f <span class="fu">++</span> <span class="st">&quot; ∘ &quot;</span> <span class="fu">++</span> show g <span class="fu">++</span> <span class="st">&quot;)&quot;</span></a>
+<a class="sourceLine" id="cb10-8" data-line-number="8">    show (<span class="dt">Var</span> v) <span class="fu">=</span> v</a>
+<a class="sourceLine" id="cb10-9" data-line-number="9">    show (<span class="dt">Func</span> f) <span class="fu">=</span> f</a>
+<a class="sourceLine" id="cb10-10" data-line-number="10">    show (<span class="dt">Lambda</span> p b) <span class="fu">=</span> <span class="st">&quot;(lamda &quot;</span> <span class="fu">++</span> p <span class="fu">++</span> <span class="st">&quot; . &quot;</span> <span class="fu">++</span> show b <span class="fu">++</span> <span class="st">&quot;)&quot;</span></a>
+<a class="sourceLine" id="cb10-11" data-line-number="11">    show (<span class="dt">Delta</span> x) <span class="fu">=</span> <span class="st">&quot;(delta &quot;</span> <span class="fu">++</span> show x <span class="fu">++</span> <span class="st">&quot;)&quot;</span></a>
+<a class="sourceLine" id="cb10-12" data-line-number="12">    show (<span class="dt">D</span> e) <span class="fu">=</span> <span class="st">&quot;(D &quot;</span> <span class="fu">++</span> show e <span class="fu">++</span> <span class="st">&quot;)&quot;</span></a>
+<a class="sourceLine" id="cb10-13" data-line-number="13">    show (f <span class="fu">:$</span> e) <span class="fu">=</span> <span class="st">&quot;(&quot;</span> <span class="fu">++</span> show f <span class="fu">++</span> <span class="st">&quot; &quot;</span> <span class="fu">++</span> show e <span class="fu">++</span> <span class="st">&quot;)&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb11-1" data-line-number="1">avg (y1, x1) (y2, x2) <span class="fu">=</span> (y2 <span class="fu">-</span> y1) <span class="fu">/</span> (x2 <span class="fu">-</span> x1)</a></code></pre></div>
+<p>is equivalent to</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb12-1" data-line-number="1">avg&#39; y x t1 t2 <span class="fu">=</span> ((y <span class="fu">:$</span> t2) <span class="fu">-</span> (y <span class="fu">:$</span> t1)) <span class="fu">/</span> ((x <span class="fu">:$</span> t2) <span class="fu">-</span> (x <span class="fu">:$</span> t1))</a></code></pre></div>
+<p>which is equivalent to</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb13-1" data-line-number="1">avg&#39;&#39; y x <span class="fu">=</span> <span class="dt">Delta</span> y <span class="fu">/</span> <span class="dt">Delta</span> x</a></code></pre></div>
+<p><code>eval</code> evaluates an expression. Converts from syntactic domain to semantic domain.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="ot">eval ::</span> [(<span class="dt">String</span>, <span class="dt">Expr</span>)] <span class="ot">-&gt;</span> <span class="dt">Expr</span> <span class="ot">-&gt;</span> <span class="dt">Val</span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2">eval env (<span class="dt">Const</span> x) <span class="fu">=</span> <span class="dt">RealVal</span> x</a>
+<a class="sourceLine" id="cb14-3" data-line-number="3">eval env (a <span class="fu">:+</span> b) <span class="fu">=</span> evalBinop env a b (<span class="fu">:+</span>) (<span class="fu">+</span>)</a>
+<a class="sourceLine" id="cb14-4" data-line-number="4">eval env (a <span class="fu">:-</span> b) <span class="fu">=</span> evalBinop env a b (<span class="fu">:-</span>) (<span class="fu">-</span>)</a>
+<a class="sourceLine" id="cb14-5" data-line-number="5">eval env (a <span class="fu">:*</span> b) <span class="fu">=</span> evalBinop env a b (<span class="fu">:*</span>) (<span class="fu">*</span>)</a>
+<a class="sourceLine" id="cb14-6" data-line-number="6">eval env (a <span class="fu">:/</span> b) <span class="fu">=</span> evalBinop env a b (<span class="fu">:/</span>) (<span class="fu">/</span>)</a>
+<a class="sourceLine" id="cb14-7" data-line-number="7">eval env (f <span class="fu">:.</span> g) <span class="fu">=</span> eval env (<span class="dt">Lambda</span> <span class="st">&quot;_x&quot;</span> (f <span class="fu">:$</span> (g <span class="fu">:$</span> (<span class="st">&quot;_x&quot;</span>))))</a>
+<a class="sourceLine" id="cb14-8" data-line-number="8">eval env (<span class="dt">Var</span> s) <span class="fu">=</span></a>
+<a class="sourceLine" id="cb14-9" data-line-number="9">    eval env (fromMaybe (error (<span class="st">&quot;Variable &quot;</span><span class="fu">++</span>s<span class="fu">++</span><span class="st">&quot; is not in environment: &quot;</span><span class="fu">++</span>show env))</a>
+<a class="sourceLine" id="cb14-10" data-line-number="10">                        (lookup s env))</a>
+<a class="sourceLine" id="cb14-11" data-line-number="11">eval env (<span class="dt">Lambda</span> p b) <span class="fu">=</span> <span class="dt">LambdaVal</span> p (subst env b)</a>
+<a class="sourceLine" id="cb14-12" data-line-number="12">eval env (<span class="dt">Func</span> <span class="st">&quot;negate&quot;</span>) <span class="fu">=</span> <span class="dt">FuncVal</span> negate</a>
+<a class="sourceLine" id="cb14-13" data-line-number="13">eval env (<span class="dt">Func</span> <span class="st">&quot;abs&quot;</span>) <span class="fu">=</span> <span class="dt">FuncVal</span> abs</a>
+<a class="sourceLine" id="cb14-14" data-line-number="14">eval env (<span class="dt">Func</span> <span class="st">&quot;signum&quot;</span>) <span class="fu">=</span> <span class="dt">FuncVal</span> signum</a>
+<a class="sourceLine" id="cb14-15" data-line-number="15">eval env (<span class="dt">Func</span> <span class="st">&quot;log&quot;</span>) <span class="fu">=</span> <span class="dt">FuncVal</span> log</a>
+<a class="sourceLine" id="cb14-16" data-line-number="16">eval env (<span class="dt">Func</span> <span class="st">&quot;exp&quot;</span>) <span class="fu">=</span> <span class="dt">FuncVal</span> exp</a>
+<a class="sourceLine" id="cb14-17" data-line-number="17">eval env (<span class="dt">Func</span> <span class="st">&quot;cos&quot;</span>) <span class="fu">=</span> <span class="dt">FuncVal</span> cos</a>
+<a class="sourceLine" id="cb14-18" data-line-number="18">eval env (<span class="dt">Func</span> <span class="st">&quot;sin&quot;</span>) <span class="fu">=</span> <span class="dt">FuncVal</span> sin</a>
+<a class="sourceLine" id="cb14-19" data-line-number="19">eval env (<span class="dt">Func</span> <span class="st">&quot;asin&quot;</span>) <span class="fu">=</span> <span class="dt">FuncVal</span> asin</a>
+<a class="sourceLine" id="cb14-20" data-line-number="20">eval env (<span class="dt">Func</span> <span class="st">&quot;acos&quot;</span>) <span class="fu">=</span> <span class="dt">FuncVal</span> acos</a>
+<a class="sourceLine" id="cb14-21" data-line-number="21">eval env (<span class="dt">Func</span> <span class="st">&quot;atan&quot;</span>) <span class="fu">=</span> <span class="dt">FuncVal</span> atan</a>
+<a class="sourceLine" id="cb14-22" data-line-number="22">eval env (f <span class="fu">:$</span> arg) <span class="fu">=</span> <span class="kw">case</span> (eval env f) <span class="kw">of</span></a>
+<a class="sourceLine" id="cb14-23" data-line-number="23">    <span class="dt">LambdaVal</span> p b <span class="ot">-&gt;</span> eval [(p, subst env arg)] b</a>
+<a class="sourceLine" id="cb14-24" data-line-number="24">    <span class="dt">FuncVal</span> f     <span class="ot">-&gt;</span> <span class="dt">RealVal</span> (f (valToReal (eval env arg)))</a>
+<a class="sourceLine" id="cb14-25" data-line-number="25">    _             <span class="ot">-&gt;</span> error <span class="st">&quot;Not a function&quot;</span></a>
+<a class="sourceLine" id="cb14-26" data-line-number="26">eval env (<span class="dt">Delta</span> x) <span class="fu">=</span> <span class="dt">LambdaVal</span> <span class="st">&quot;_a&quot;</span> (<span class="dt">Lambda</span> <span class="st">&quot;_b&quot;</span> ((x&#39; <span class="fu">:$</span> (<span class="st">&quot;_b&quot;</span>)) <span class="fu">-</span> (x&#39; <span class="fu">:$</span> (<span class="st">&quot;_a&quot;</span>))))</a>
+<a class="sourceLine" id="cb14-27" data-line-number="27">  <span class="kw">where</span> x&#39; <span class="fu">=</span> subst env x</a>
+<a class="sourceLine" id="cb14-28" data-line-number="28">eval env (<span class="dt">D</span> f) <span class="fu">=</span> eval env (simplify (deriveFn env f))</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb15-1" data-line-number="1">evalBinop env a b cons op <span class="fu">=</span> <span class="kw">case</span> (eval env a, eval env b) <span class="kw">of</span></a></code></pre></div>
+<p>Arithmetic on real numbers is just as normal</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb16-1" data-line-number="1">    (<span class="dt">RealVal</span> a&#39;, <span class="dt">RealVal</span> b&#39;) <span class="ot">-&gt;</span> <span class="dt">RealVal</span> (a&#39; <span class="ot">`op`</span> b&#39;)</a></code></pre></div>
+<p>A nice definition for function (addition/subtraction/…) that works for differentials: <span class="math inline">\(f + g = h\)</span> where <span class="math inline">\(h(x) = f(x) + g(x)\)</span></p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb17-1" data-line-number="1">    (<span class="dt">LambdaVal</span> p1 b1, <span class="dt">LambdaVal</span> p2 b2) <span class="ot">-&gt;</span></a>
+<a class="sourceLine" id="cb17-2" data-line-number="2">        <span class="dt">LambdaVal</span> <span class="st">&quot;_x&quot;</span> ((cons ((<span class="dt">Lambda</span> p1 b1) <span class="fu">:$</span> (<span class="st">&quot;_x&quot;</span>))</a>
+<a class="sourceLine" id="cb17-3" data-line-number="3">                              ((<span class="dt">Lambda</span> p2 b2) <span class="fu">:$</span> (<span class="st">&quot;_x&quot;</span>))))</a></code></pre></div>
+<p>The semantic value of an evaluation. Can either be a real number, a haskell function, or a lambda(?) TODO: Should a lambda really be returnable here? Kinda makes sense, kinda doesn’t…</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw">data</span> <span class="dt">Val</span> <span class="fu">=</span> <span class="dt">RealVal</span> <span class="dt">RealNum</span></a>
+<a class="sourceLine" id="cb18-2" data-line-number="2">         <span class="fu">|</span> <span class="dt">LambdaVal</span> <span class="dt">String</span> <span class="dt">Expr</span></a>
+<a class="sourceLine" id="cb18-3" data-line-number="3">         <span class="fu">|</span> <span class="dt">FuncVal</span> (<span class="dt">RealNum</span> <span class="ot">-&gt;</span> <span class="dt">RealNum</span>)</a></code></pre></div>
+<p>Helper functions to improve ergonomics of evaluation</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb19-1" data-line-number="1">valToReal (<span class="dt">RealVal</span> x) <span class="fu">=</span> x</a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb20-1" data-line-number="1">valToFunc (<span class="dt">FuncVal</span> f) <span class="fu">=</span> f</a>
+<a class="sourceLine" id="cb20-2" data-line-number="2">valToFunc (<span class="dt">LambdaVal</span> p b) <span class="fu">=</span> \x <span class="ot">-&gt;</span> valToReal (eval [(p, <span class="dt">Const</span> x)] b)</a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="ot">evalReal ::</span> [(<span class="dt">String</span>, <span class="dt">Expr</span>)] <span class="ot">-&gt;</span> <span class="dt">Expr</span> <span class="ot">-&gt;</span> <span class="dt">RealNum</span></a>
+<a class="sourceLine" id="cb21-2" data-line-number="2">evalReal env e <span class="fu">=</span> valToReal (eval env e)</a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="ot">evalF ::</span> [(<span class="dt">String</span>, <span class="dt">Expr</span>)] <span class="ot">-&gt;</span> <span class="dt">Expr</span> <span class="ot">-&gt;</span> (<span class="dt">RealNum</span> <span class="ot">-&gt;</span> <span class="dt">RealNum</span>)</a>
+<a class="sourceLine" id="cb22-2" data-line-number="2">evalF env e <span class="fu">=</span> valToFunc (eval env e)</a></code></pre></div>
+<p>Substitution function to instantiate expression for environment</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="ot">subst ::</span> [(<span class="dt">String</span>, <span class="dt">Expr</span>)] <span class="ot">-&gt;</span> <span class="dt">Expr</span> <span class="ot">-&gt;</span> <span class="dt">Expr</span></a>
+<a class="sourceLine" id="cb23-2" data-line-number="2">subst env (a <span class="fu">:+</span> b) <span class="fu">=</span> subst env a <span class="fu">:+</span> subst env b</a>
+<a class="sourceLine" id="cb23-3" data-line-number="3">subst env (a <span class="fu">:-</span> b) <span class="fu">=</span> subst env a <span class="fu">:-</span> subst env b</a>
+<a class="sourceLine" id="cb23-4" data-line-number="4">subst env (a <span class="fu">:*</span> b) <span class="fu">=</span> subst env a <span class="fu">:*</span> subst env b</a>
+<a class="sourceLine" id="cb23-5" data-line-number="5">subst env (a <span class="fu">:/</span> b) <span class="fu">=</span> subst env a <span class="fu">:/</span> subst env b</a>
+<a class="sourceLine" id="cb23-6" data-line-number="6">subst env (a <span class="fu">:.</span> b) <span class="fu">=</span> subst env a <span class="fu">:.</span> subst env b</a>
+<a class="sourceLine" id="cb23-7" data-line-number="7">subst env (<span class="dt">Var</span> s) <span class="fu">=</span> <span class="kw">case</span> (lookup s env) <span class="kw">of</span></a>
+<a class="sourceLine" id="cb23-8" data-line-number="8">    <span class="dt">Just</span> e  <span class="ot">-&gt;</span> e</a>
+<a class="sourceLine" id="cb23-9" data-line-number="9">    <span class="dt">Nothing</span> <span class="ot">-&gt;</span> (<span class="dt">Var</span> s)</a>
+<a class="sourceLine" id="cb23-10" data-line-number="10">subst env (<span class="dt">Lambda</span> p b) <span class="fu">=</span> <span class="dt">Lambda</span> p (subst env b)</a>
+<a class="sourceLine" id="cb23-11" data-line-number="11">subst env (f <span class="fu">:$</span> arg) <span class="fu">=</span> subst env f <span class="fu">:$</span> subst env arg</a>
+<a class="sourceLine" id="cb23-12" data-line-number="12">subst env (<span class="dt">Delta</span> x) <span class="fu">=</span> <span class="dt">Delta</span> (subst env x)</a>
+<a class="sourceLine" id="cb23-13" data-line-number="13">subst env (<span class="dt">D</span> f) <span class="fu">=</span> <span class="dt">D</span> (subst env f)</a>
+<a class="sourceLine" id="cb23-14" data-line-number="14">subst _ e <span class="fu">=</span> e</a></code></pre></div>
+<h2 id="differences">Differences</h2>
+<p>Differences are used for stuff like average velocity.</p>
+<p><span class="math display">\[ v_{avg} = \frac{x_2 - x_1}{t_2 - t_1} = \frac{\Delta x}{\Delta t} \]</span></p>
+<p>This is the informal definition of the delta operator used in <em>University Physics</em>:</p>
+<p><span class="math display">\[ \Delta x = x_2 - x_1 \]</span></p>
+<p>Ok, so it’s a difference. But what does <span class="math inline">\(x_2\)</span> and <span class="math inline">\(x_1\)</span> mean, and what do they come from? <span class="math inline">\(x_2\)</span> and <span class="math inline">\(x_1\)</span> are not explicitly bound anywhere, but seems reasonable to assume that <span class="math inline">\(x_i \in x\)</span> or equivalently, that <span class="math inline">\(x\)</span> is a function with a subscript index as an argument, that returns a <span class="math inline">\(\mathbb{R}\)</span>.</p>
+<p>Further, the indices <span class="math inline">\(1,2\)</span> should not be thought of as specific constants, but rather arbitrary real number variables identified by these integers. Lets call them <span class="math inline">\(a,b\)</span> instead, to make it clear that they are not constants.</p>
+<p><span class="math display">\[ \Delta x = x_b - x_a \]</span></p>
+<p>Now <span class="math inline">\(a,b\)</span> are implicitly bound. We make the binding explicit.</p>
+<p><span class="math display">\[ (\Delta x)(a, b) = x_b - x_a \]</span></p>
+<p>% https://en.wikipedia.org/wiki/Finite_difference</p>
+<p>We compare this to the more formal definition of <strong>forward difference</strong> from wikipedia:</p>
+<p><span class="math display">\[ \Delta_h[f](x) = f(x + h) - f(x) \]</span></p>
+<p>The parameter bindings are a bit all over the place here. To move easily compare to our definition, let’s rename <span class="math inline">\(x\)</span> to <span class="math inline">\(a\)</span> and <span class="math inline">\(f\)</span> to <span class="math inline">\(x\)</span>, and change the parameter declaration syntax:</p>
+<p><span class="math display">\[ (\Delta x)(h)(a) = x(a + h) - x(a) \]</span></p>
+<p>This is almost identical to the definition we arrived at earlier, with the exception of expressing <span class="math inline">\(b\)</span> as <span class="math inline">\(a + h\)</span>. We’ll use our own definition hereinafter.</p>
+<p>We express our definition of <span class="math inline">\(\Delta\)</span> in Haskell:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="ot">delta ::</span> (<span class="dt">RealNum</span> <span class="ot">-&gt;</span> <span class="dt">RealNum</span>) <span class="ot">-&gt;</span> <span class="dt">RealNum</span> <span class="ot">-&gt;</span> <span class="dt">RealNum</span> <span class="ot">-&gt;</span> <span class="dt">RealNum</span></a>
+<a class="sourceLine" id="cb24-2" data-line-number="2">delta x a b <span class="fu">=</span> x(b) <span class="fu">-</span> x(a)</a></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb25-1" data-line-number="1">delta x <span class="fu">=</span> \a <span class="ot">-&gt;</span> \b <span class="ot">-&gt;</span> x(b) <span class="fu">-</span> x(a)</a></code></pre></div>
+<p>This is a shallow embedding. Let’s look at how it’s expressed in our deep embedding:</p>
+<p>This is the representation of the delta operator in the syntax tree. The argument will need to be type-checked to ensure that it’s a function.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb26-1" data-line-number="1">          <span class="fu">|</span> <span class="dt">Delta</span> <span class="dt">Expr</span>         <span class="co">-- Difference, like &quot;Δx&quot;</span></a></code></pre></div>
+<p>We implement the delta case of the eval function according to the definition</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb27-1" data-line-number="1">eval env (<span class="dt">Delta</span> x) <span class="fu">=</span></a>
+<a class="sourceLine" id="cb27-2" data-line-number="2">    <span class="dt">LambdaVal</span> env</a>
+<a class="sourceLine" id="cb27-3" data-line-number="3">              <span class="st">&quot;_a&quot;</span></a>
+<a class="sourceLine" id="cb27-4" data-line-number="4">              (<span class="dt">Lambda</span> <span class="st">&quot;_b&quot;</span></a>
+<a class="sourceLine" id="cb27-5" data-line-number="5">                      ((x <span class="fu">:$</span> (<span class="st">&quot;_b&quot;</span>)) <span class="fu">:-</span> (x <span class="fu">:$</span> (<span class="st">&quot;_a&quot;</span>))))</a></code></pre></div>
+<h2 id="verificationprooftest">Verification/proof/test</h2>
+<p>???</p>
+<h2 id="examples">Examples</h2>
+<div class="sourceCode" id="cb28"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb28-1" data-line-number="1">x <span class="fu">=</span> <span class="dt">Lambda</span> <span class="st">&quot;t&quot;</span> (<span class="st">&quot;t&quot;</span> <span class="fu">:*</span> (<span class="dt">Const</span> <span class="dv">5</span>))</a>
+<a class="sourceLine" id="cb28-2" data-line-number="2">id&#39; <span class="fu">=</span> <span class="dt">Lambda</span> <span class="st">&quot;x&quot;</span> <span class="st">&quot;x&quot;</span></a>
+<a class="sourceLine" id="cb28-3" data-line-number="3">t <span class="fu">=</span> id&#39;</a>
+<a class="sourceLine" id="cb28-4" data-line-number="4">vAvg <span class="fu">=</span> <span class="dt">Lambda</span> <span class="st">&quot;x&quot;</span> (<span class="dt">Delta</span> <span class="st">&quot;x&quot;</span> <span class="fu">:/</span> <span class="dt">Delta</span> t)</a>
+<a class="sourceLine" id="cb28-5" data-line-number="5">vAvgX <span class="fu">=</span> vAvg <span class="fu">:$</span> x</a>
+<a class="sourceLine" id="cb28-6" data-line-number="6">v <span class="fu">=</span> eval [] (vAvgX <span class="fu">:$</span> (<span class="dt">Const</span> <span class="dv">0</span>) <span class="fu">:$</span> (<span class="dt">Const</span> <span class="dv">10</span>))</a></code></pre></div>
+<h1 id="derivatives">Derivatives</h1>
+<p>Derivatives are used for stuff like instantaneous velocity.</p>
+<p><span class="math display">\[ v_x = \frac{dx}{dt} = lim_{\Delta t \to 0} \frac{\Delta x}{\Delta t} \]</span></p>
+<p>% https://en.wikipedia.org/wiki/Leibniz%27s_notation</p>
+<blockquote>
+<p>In calculus, Leibniz’s notation, named in honor of the 17th-century German philosopher and mathematician Gottfried Wilhelm Leibniz, uses the symbols dx and dy to represent infinitely small (or infinitesimal) increments of x and y, respectively, just as Δx and Δy represent finite increments of x and y, respectively.</p>
+</blockquote>
+<p>We interpret this in mathematical terms:</p>
+<p><span class="math display">\[ df = lim_{\Delta f \to 0} \Delta f \]</span></p>
+<p>such that</p>
+<p><span class="math display">\[ \forall y(x), D(y) = \frac{dy}{dx} = \frac{lim_{\Delta y \to 0} \Delta y}
+                                             {lim_{\Delta x \to 0} \Delta x} \]</span></p>
+<p>This definition of derivatives is very appealing, as it suggests a very simple and intuitive transition from finite differences to infinitesimal differentials.</p>
+<p>This concept of infinitesimals is very intuitive, and the ability to manipulate differentials algebraically is very useful. However, this concept is generally considered too imprecise to be used as the foundation of calculus.</p>
+<p>% https://en.wikipedia.org/wiki/Leibniz%27s_notation</p>
+<blockquote>
+<p>Leibniz’s concept of infinitesimals, long considered to be too imprecise to be used as a foundation of calculus, was eventually replaced by rigorous concepts developed by Weierstrass and others. Consequently, Leibniz’s quotient notation was re-interpreted to stand for the limit of the modern definition. However, in many instances, the symbol did seem to act as an actual quotient would and its usefulness kept it popular even in the face of several competing notations. In the modern rigorous treatment of non-standard calculus, justification can be found to again consider the notation as representing an actual quotient.</p>
+</blockquote>
+<p>Leibniz’s notation definition. Used to be defined as “the quotient of an infinitesimal increment of y by an infinitesimal increment of x”:</p>
+<p><span class="math display">\[ D(f) = \frac{dy}{dx} = \frac{lim_{\Delta y \to 0} \Delta y}{lim_{\Delta x \to 0} \Delta x} \]</span></p>
+<p>% https://en.wikipedia.org/wiki/Derivative</p>
+<blockquote>
+<p>The most common approach to turn this intuitive idea into a precise definition is to define the derivative as a limit of difference quotients of real numbers.</p>
+</blockquote>
+<blockquote>
+<p>In its modern interpretation, the expression dy/dx should not be read as the division of two quantities dx and dy (as Leibniz had envisioned it); rather, the whole expression should be seen as a single symbol that is shorthand for</p>
+</blockquote>
+<p><span class="math display">\[ D(x) = lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x} \]</span></p>
+<p>which, when <span class="math inline">\(y : \mathbb{R} \to \mathbb{R}\)</span> and <span class="math inline">\(x\)</span> is a real interval <span class="math inline">\(\leftrightarrow x\)</span> is the <span class="math inline">\(id\)</span> function for real numbers, is:</p>
+<span class="math display">\[\begin{align*}
+D(x) &amp;= lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x} \\
+     &amp;= a \mapsto lim_{\Delta x \to 0} \frac{(\Delta y)(a, a + \Delta x)}{\Delta x} \\
+     &amp;= a \mapsto lim_{h \to 0} \frac{y(a + (\Delta x)(a, a + h)) - y(a)}{(\Delta x)(a, a + h)} \\
+     &amp;= a \mapsto lim_{h \to 0} \frac{y(a + ((a + h) - a)) - y(a)}{(a + h) - a} \\
+     &amp;= a \mapsto lim_{h \to 0} \frac{y(a + h) - y(a)}{h}
+\end{align*}\]</span>
+<p>We add the derivative syntax to the <em>Expr</em> syntax tree.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb29-1" data-line-number="1">             <span class="fu">|</span> <span class="dt">D</span> <span class="dt">Expr</span>             <span class="co">-- Derivative, like &quot;D(f)&quot; or &quot;f&#39;&quot;</span></a></code></pre></div>
+<p>Here are some derivatives. Proving these is left as an excercise to the reader:</p>
+<p>% TODO: Higher order functions are discrete. Typecheck to prevent differentiation % of these.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="ot">deriveFn ::</span> [(<span class="dt">String</span>, <span class="dt">Expr</span>)] <span class="ot">-&gt;</span> <span class="dt">Expr</span> <span class="ot">-&gt;</span> <span class="dt">Expr</span></a>
+<a class="sourceLine" id="cb30-2" data-line-number="2">deriveFn env (f <span class="fu">:+</span> g) <span class="fu">=</span> deriveFn env f <span class="fu">+</span> deriveFn env g</a>
+<a class="sourceLine" id="cb30-3" data-line-number="3">deriveFn env (f <span class="fu">:-</span> g) <span class="fu">=</span> deriveFn env f <span class="fu">-</span> deriveFn env g</a>
+<a class="sourceLine" id="cb30-4" data-line-number="4">deriveFn env (f <span class="fu">:*</span> g) <span class="fu">=</span> deriveFn env f <span class="fu">*</span> g <span class="fu">+</span> f <span class="fu">*</span> deriveFn env g</a>
+<a class="sourceLine" id="cb30-5" data-line-number="5">deriveFn env (f <span class="fu">:/</span> g) <span class="fu">=</span> (deriveFn env f <span class="fu">*</span> g <span class="fu">-</span> f <span class="fu">*</span> deriveFn env g) <span class="fu">/</span> (g <span class="fu">*</span> g)</a>
+<a class="sourceLine" id="cb30-6" data-line-number="6">deriveFn env (f <span class="fu">:.</span> g) <span class="fu">=</span> <span class="dt">Lambda</span> <span class="st">&quot;_x&quot;</span> ((<span class="fu">*</span>) (deriveFn env (g <span class="fu">:$</span> <span class="st">&quot;_x&quot;</span>))</a>
+<a class="sourceLine" id="cb30-7" data-line-number="7">                                         (deriveFn env (f <span class="fu">:$</span> (g <span class="fu">:$</span> <span class="st">&quot;_x&quot;</span>))))</a>
+<a class="sourceLine" id="cb30-8" data-line-number="8">deriveFn env (<span class="dt">Var</span> v) <span class="fu">=</span> deriveFn env (fromJust (lookup v env))</a>
+<a class="sourceLine" id="cb30-9" data-line-number="9">deriveFn env (<span class="dt">Lambda</span> p b) <span class="fu">=</span> <span class="dt">Lambda</span> p (deriveEx env p b)</a>
+<a class="sourceLine" id="cb30-10" data-line-number="10">deriveFn env (<span class="dt">Func</span> <span class="st">&quot;log&quot;</span>) <span class="fu">=</span> <span class="dt">Lambda</span> <span class="st">&quot;_x&quot;</span> (<span class="dv">1</span> <span class="fu">/</span> <span class="st">&quot;x&quot;</span>)</a>
+<a class="sourceLine" id="cb30-11" data-line-number="11">deriveFn env (<span class="dt">Func</span> <span class="st">&quot;exp&quot;</span>) <span class="fu">=</span> <span class="dt">Func</span> <span class="st">&quot;exp&quot;</span></a>
+<a class="sourceLine" id="cb30-12" data-line-number="12">deriveFn env (<span class="dt">Func</span> <span class="st">&quot;sin&quot;</span>) <span class="fu">=</span> <span class="dt">Func</span> <span class="st">&quot;cos&quot;</span></a>
+<a class="sourceLine" id="cb30-13" data-line-number="13">deriveFn env (<span class="dt">Func</span> <span class="st">&quot;cos&quot;</span>) <span class="fu">=</span> <span class="dt">Func</span> <span class="st">&quot;negate&quot;</span> <span class="fu">:.</span> <span class="dt">Func</span> <span class="st">&quot;sin&quot;</span></a>
+<a class="sourceLine" id="cb30-14" data-line-number="14">deriveFn env (<span class="dt">Func</span> <span class="st">&quot;asin&quot;</span>) <span class="fu">=</span> <span class="dv">1</span> <span class="fu">/</span> sqrt (<span class="dv">1</span> <span class="fu">-</span> (<span class="st">&quot;x&quot;</span> <span class="fu">*</span> <span class="st">&quot;x&quot;</span>))</a>
+<a class="sourceLine" id="cb30-15" data-line-number="15">deriveFn env (<span class="dt">Func</span> <span class="st">&quot;acos&quot;</span>) <span class="fu">=</span> (<span class="fu">-</span><span class="dv">1</span>) <span class="fu">/</span> sqrt (<span class="dv">1</span> <span class="fu">-</span> (<span class="st">&quot;x&quot;</span> <span class="fu">*</span> <span class="st">&quot;x&quot;</span>))</a>
+<a class="sourceLine" id="cb30-16" data-line-number="16">deriveFn _ _ <span class="fu">=</span> undefined</a></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="ot">deriveEx ::</span> [(<span class="dt">String</span>, <span class="dt">Expr</span>)] <span class="ot">-&gt;</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Expr</span> <span class="ot">-&gt;</span> <span class="dt">Expr</span></a>
+<a class="sourceLine" id="cb31-2" data-line-number="2">deriveEx env v (<span class="dt">Const</span> _) <span class="fu">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb31-3" data-line-number="3">deriveEx env v (a <span class="fu">:+</span> b) <span class="fu">=</span> deriveEx env v a <span class="fu">+</span> deriveEx env v b</a>
+<a class="sourceLine" id="cb31-4" data-line-number="4">deriveEx env v (a <span class="fu">:-</span> b) <span class="fu">=</span> deriveEx env v a <span class="fu">-</span> deriveEx env v b</a>
+<a class="sourceLine" id="cb31-5" data-line-number="5">deriveEx env v (a <span class="fu">:*</span> b) <span class="fu">=</span> deriveEx env v a <span class="fu">*</span> b <span class="fu">+</span> a <span class="fu">*</span> deriveEx env v b</a>
+<a class="sourceLine" id="cb31-6" data-line-number="6">deriveEx env v (a <span class="fu">:/</span> b) <span class="fu">=</span> (deriveEx env v a <span class="fu">*</span> b <span class="fu">-</span> a <span class="fu">*</span> deriveEx env v b) <span class="fu">/</span> (b <span class="fu">*</span> b)</a>
+<a class="sourceLine" id="cb31-7" data-line-number="7">deriveEx env v (<span class="dt">Var</span> u) <span class="fu">|</span> u <span class="fu">==</span> v <span class="fu">=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb31-8" data-line-number="8">                       <span class="fu">|</span> otherwise <span class="fu">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb31-9" data-line-number="9">deriveEx env v (f <span class="fu">:$</span> e) <span class="fu">=</span> deriveEx env v e <span class="fu">*</span> (deriveFn env f <span class="fu">:$</span> e)</a>
+<a class="sourceLine" id="cb31-10" data-line-number="10">deriveEx _ _ _ <span class="fu">=</span> undefined</a></code></pre></div>
+<p>Difficult to read some of these derivatives. Let’s simplify</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="ot">simplify ::</span> <span class="dt">Expr</span> <span class="ot">-&gt;</span> <span class="dt">Expr</span></a>
+<a class="sourceLine" id="cb32-2" data-line-number="2">simplify (<span class="dt">Const</span> <span class="dv">0</span> <span class="fu">:*</span> b) <span class="fu">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb32-3" data-line-number="3">simplify (<span class="dt">Const</span> <span class="dv">1</span> <span class="fu">:*</span> b) <span class="fu">=</span> simplify b</a>
+<a class="sourceLine" id="cb32-4" data-line-number="4">simplify (<span class="dt">Const</span> a <span class="fu">:*</span> <span class="dt">Const</span> b) <span class="fu">=</span> <span class="dt">Const</span> (a <span class="fu">*</span> b)</a>
+<a class="sourceLine" id="cb32-5" data-line-number="5">simplify ((<span class="dt">Const</span> a <span class="fu">:*</span> b) <span class="fu">:+</span> c) <span class="fu">|</span> b&#39; <span class="fu">==</span> c&#39;  <span class="fu">=</span> <span class="dt">Const</span> (a <span class="fu">+</span> <span class="dv">1</span>) <span class="fu">:*</span> b&#39;</a>
+<a class="sourceLine" id="cb32-6" data-line-number="6">                               <span class="fu">|</span> otherwise <span class="fu">=</span> (<span class="dt">Const</span> a <span class="fu">:*</span> b&#39;) <span class="fu">:+</span> c&#39;</a>
+<a class="sourceLine" id="cb32-7" data-line-number="7">  <span class="kw">where</span> b&#39; <span class="fu">=</span> simplify b</a>
+<a class="sourceLine" id="cb32-8" data-line-number="8">        c&#39; <span class="fu">=</span> simplify c</a>
+<a class="sourceLine" id="cb32-9" data-line-number="9">simplify (c <span class="fu">:+</span> (<span class="dt">Const</span> a <span class="fu">:*</span> b)) <span class="fu">=</span> simplify ((<span class="dt">Const</span> a <span class="fu">:*</span> b) <span class="fu">:+</span> c)</a>
+<a class="sourceLine" id="cb32-10" data-line-number="10">simplify (<span class="dt">Const</span> a <span class="fu">:*</span> b) <span class="fu">=</span> <span class="dt">Const</span> a <span class="fu">:*</span> simplify b</a>
+<a class="sourceLine" id="cb32-11" data-line-number="11">simplify (a <span class="fu">:*</span> <span class="dt">Const</span> b) <span class="fu">=</span> simplify (<span class="dt">Const</span> b <span class="fu">:*</span> a)</a>
+<a class="sourceLine" id="cb32-12" data-line-number="12">simplify (a <span class="fu">:*</span> b) <span class="fu">=</span> simplify a <span class="fu">:*</span> simplify b</a>
+<a class="sourceLine" id="cb32-13" data-line-number="13">simplify (<span class="dt">Const</span> <span class="dv">0</span> <span class="fu">:+</span> b) <span class="fu">=</span> simplify b</a>
+<a class="sourceLine" id="cb32-14" data-line-number="14">simplify (<span class="dt">Const</span> a <span class="fu">:+</span> <span class="dt">Const</span> b) <span class="fu">=</span> <span class="dt">Const</span> (a <span class="fu">+</span> b)</a>
+<a class="sourceLine" id="cb32-15" data-line-number="15">simplify (<span class="dt">Const</span> a <span class="fu">:+</span> b) <span class="fu">=</span> <span class="dt">Const</span> a <span class="fu">:+</span> simplify b</a>
+<a class="sourceLine" id="cb32-16" data-line-number="16">simplify (a <span class="fu">:+</span> <span class="dt">Const</span> b) <span class="fu">=</span> simplify (<span class="dt">Const</span> b <span class="fu">:+</span> a)</a>
+<a class="sourceLine" id="cb32-17" data-line-number="17">simplify (a <span class="fu">:+</span> b) <span class="fu">|</span> a&#39; <span class="fu">==</span> b&#39;             <span class="fu">=</span> simplify (<span class="dv">2</span> <span class="fu">*</span> a&#39;)</a>
+<a class="sourceLine" id="cb32-18" data-line-number="18">                  <span class="fu">|</span> (a <span class="fu">+</span> b) <span class="fu">==</span> (a&#39; <span class="fu">+</span> b&#39;) <span class="fu">=</span> a <span class="fu">+</span> b</a>
+<a class="sourceLine" id="cb32-19" data-line-number="19">                  <span class="fu">|</span> otherwise            <span class="fu">=</span> simplify (a&#39; <span class="fu">+</span> b&#39;)</a>
+<a class="sourceLine" id="cb32-20" data-line-number="20">  <span class="kw">where</span> a&#39; <span class="fu">=</span> simplify a</a>
+<a class="sourceLine" id="cb32-21" data-line-number="21">        b&#39; <span class="fu">=</span> simplify b</a>
+<a class="sourceLine" id="cb32-22" data-line-number="22">simplify (<span class="dt">Const</span> <span class="dv">0</span> <span class="fu">:-</span> b) <span class="fu">=</span> simplify (negate (simplify b))</a>
+<a class="sourceLine" id="cb32-23" data-line-number="23">simplify (<span class="dt">Const</span> a <span class="fu">:-</span> <span class="dt">Const</span> b) <span class="fu">=</span> <span class="dt">Const</span> (a <span class="fu">-</span> b)</a>
+<a class="sourceLine" id="cb32-24" data-line-number="24">simplify (<span class="dt">Const</span> a <span class="fu">:-</span> b) <span class="fu">=</span> <span class="dt">Const</span> a <span class="fu">:-</span> simplify b</a>
+<a class="sourceLine" id="cb32-25" data-line-number="25">simplify (a <span class="fu">:-</span> <span class="dt">Const</span> b) <span class="fu">=</span> simplify (<span class="dt">Const</span> (<span class="dv">0</span><span class="fu">-</span>b) <span class="fu">:+</span> a)</a>
+<a class="sourceLine" id="cb32-26" data-line-number="26">simplify (<span class="dt">Lambda</span> p b) <span class="fu">=</span> (<span class="dt">Lambda</span> p (simplify b))</a>
+<a class="sourceLine" id="cb32-27" data-line-number="27">simplify e <span class="fu">=</span> e</a></code></pre></div>
+<h2 id="verificationprooftest-1">Verification/proof/test</h2>
+<p>???</p>
+<h2 id="examples-1">Examples</h2>
+<div class="sourceCode" id="cb33"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb33-1" data-line-number="1">idE <span class="fu">=</span> <span class="dt">Lambda</span> <span class="st">&quot;_x&quot;</span> <span class="st">&quot;_x&quot;</span></a>
+<a class="sourceLine" id="cb33-2" data-line-number="2">constFn n <span class="fu">=</span> <span class="dt">Lambda</span> <span class="st">&quot;_x&quot;</span> (<span class="dt">Const</span> n)</a></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb34-1" data-line-number="1">dF <span class="fu">=</span> simplify <span class="fu">.</span> deriveFn []</a>
+<a class="sourceLine" id="cb34-2" data-line-number="2">dE <span class="fu">=</span> simplify <span class="fu">.</span> deriveEx [] <span class="st">&quot;x&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb35-1" data-line-number="1">test_simplify1 <span class="fu">=</span> (<span class="fu">==</span>) (simplify (<span class="st">&quot;x&quot;</span> <span class="fu">+</span> <span class="st">&quot;x&quot;</span>))</a>
+<a class="sourceLine" id="cb35-2" data-line-number="2">                      (<span class="dv">2</span> <span class="fu">*</span> <span class="st">&quot;x&quot;</span>)</a>
+<a class="sourceLine" id="cb35-3" data-line-number="3">test_simplify2 <span class="fu">=</span> (<span class="fu">==</span>) (simplify (((<span class="dv">1</span> <span class="fu">+</span> <span class="dv">1</span>) <span class="fu">*</span> <span class="st">&quot;x&quot;</span>) <span class="fu">+</span> (<span class="st">&quot;x&quot;</span> <span class="fu">*</span> <span class="dv">1</span>)))</a>
+<a class="sourceLine" id="cb35-4" data-line-number="4">                      (<span class="dv">3</span> <span class="fu">*</span> <span class="st">&quot;x&quot;</span>)</a>
+<a class="sourceLine" id="cb35-5" data-line-number="5">test_derive1   <span class="fu">=</span> (<span class="fu">==</span>) (dF (<span class="dt">Func</span> <span class="st">&quot;sin&quot;</span> <span class="fu">+</span> idE))</a>
+<a class="sourceLine" id="cb35-6" data-line-number="6">                      (<span class="dt">Func</span> <span class="st">&quot;cos&quot;</span> <span class="fu">+</span> constFn <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb35-7" data-line-number="7">test_derive2   <span class="fu">=</span> (<span class="fu">==</span>) (dE (sin (sin <span class="st">&quot;x&quot;</span>)))</a>
+<a class="sourceLine" id="cb35-8" data-line-number="8">                      (cos <span class="st">&quot;x&quot;</span> <span class="fu">*</span> cos (sin <span class="st">&quot;x&quot;</span>))</a></code></pre></div>
+<p>Let’s plot graphs!</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb36-1" data-line-number="1">test_plot1 <span class="fu">=</span> <span class="kw">let</span> fe <span class="fu">=</span> <span class="dt">Lambda</span> <span class="st">&quot;x&quot;</span> (<span class="st">&quot;x&quot;</span> <span class="fu">*</span> <span class="st">&quot;x&quot;</span>)</a>
+<a class="sourceLine" id="cb36-2" data-line-number="2">                 fe&#39; <span class="fu">=</span> dF fe</a>
+<a class="sourceLine" id="cb36-3" data-line-number="3">                 f <span class="fu">=</span> evalF [] fe</a>
+<a class="sourceLine" id="cb36-4" data-line-number="4">                 f&#39; <span class="fu">=</span> evalF [] fe&#39;</a>
+<a class="sourceLine" id="cb36-5" data-line-number="5">             <span class="kw">in</span> plot [<span class="dt">Fun</span> f</a>
+<a class="sourceLine" id="cb36-6" data-line-number="6">                          (show fe),</a>
+<a class="sourceLine" id="cb36-7" data-line-number="7">                      <span class="dt">Fun</span> f&#39;</a>
+<a class="sourceLine" id="cb36-8" data-line-number="8">                          (<span class="st">&quot;(D &quot;</span> <span class="fu">++</span> show fe <span class="fu">++</span> <span class="st">&quot;) = &quot;</span> <span class="fu">++</span> show fe&#39;)]</a></code></pre></div>
+<h1 id="integrals">Integrals</h1>
+<p>Integrals are used in the reversed way as derivatives.</p>
+<p><span class="math display">\[ x_{traveled} = \int_{t_0}^{t_1} v(t) dt \]</span></p>
+<p>TODO: Describe relationship between between “Definite integrals”, “Indefinite integrals”, and “Antiderivatives”.</p>
+<p>The following quotes are cut from <a href="https://en.wikipedia.org/wiki/Fundamental_theorem_of_calculus">Wikipedia</a>.</p>
+<blockquote>
+<p>The fundamental theorem of calculus is a theorem that links the concept of differentiating a function with the concept of integrating a function.</p>
+<p>The first part of the theorem, sometimes called the first fundamental theorem of calculus, states that one of the antiderivatives (also called indefinite integral), say F, of some function f may be obtained as the integral of f with a variable bound of integration. This implies the existence of antiderivatives for continuous functions.[1]</p>
+<p>Conversely, the second part of the theorem, sometimes called the second fundamental theorem of calculus, states that the integral of a function f over some interval can be computed by using any one, say F, of its infinitely many antiderivatives. This part of the theorem has key practical applications, because explicitly finding the antiderivative of a function by symbolic integration allows for avoiding numerical integration to compute integrals.</p>
+</blockquote>
+<blockquote>
+<p>Newton and Leibniz</p>
+<p>The major advance in integration came in the 17th century with the independent discovery of the fundamental theorem of calculus by Newton and Leibniz. The theorem demonstrates a connection between integration and differentiation. This connection, combined with the comparative ease of differentiation, can be exploited to calculate integrals. In particular, the fundamental theorem of calculus allows one to solve a much broader class of problems. Equal in importance is the comprehensive mathematical framework that both Newton and Leibniz developed. Given the name infinitesimal calculus, it allowed for precise analysis of functions within continuous domains. This framework eventually became modern calculus, whose notation for integrals is drawn directly from the work of Leibniz. Formalization While Newton and Leibniz provided a systematic approach to integration, their work lacked a degree of rigour. Bishop Berkeley memorably attacked the vanishing increments used by Newton, calling them “ghosts of departed quantities”. Calculus acquired a firmer footing with the development of limits. Integration was first rigorously formalized, using limits, by Riemann. Although all bounded piecewise continuous functions are Riemann-integrable on a bounded interval, subsequently more general functions were considered—particularly in the context of Fourier analysis—to which Riemann’s definition does not apply, and Lebesgue formulated a different definition of integral, founded in measure theory (a subfield of real analysis). Other definitions of integral, extending Riemann’s and Lebesgue’s approaches, were proposed. These approaches based on the real number system are the ones most common today, but alternative approaches exist, such as a definition of integral as the standard part of an infinite Riemann sum, based on the hyperreal number system.</p>
+</blockquote>
+<p>Newton and Leibniz independently discovered the fundemental theorem of calculus. They based their definitions on infinitesimals which, as described above was considered too imprecise. Later, Riemann rigorously formalized integration using limits.</p>
+<blockquote>
+<p>There are many ways of formally defining an integral, not all of which are equivalent. The differences exist mostly to deal with differing special cases which may not be integrable under other definitions, but also occasionally for pedagogical reasons. The most commonly used definitions of integral are Riemann integrals and Lebesgue integrals.</p>
+</blockquote>
+<p>We only look at Riemann integrals for now, since they will likely be more familiar to most students (They are to me!).</p>
+<blockquote>
+<p>In the branch of mathematics known as real analysis, the Riemann integral, created by Bernhard Riemann, was the first rigorous definition of the integral of a function on an interval. It was presented to the faculty at the University of Göttingen in 1854, but not published in a journal until 1868.[1] For many functions and practical applications, the Riemann integral can be evaluated by the fundamental theorem of calculus or approximated by numerical integration.</p>
+<p>The Riemann integral is unsuitable for many theoretical purposes. Some of the technical deficiencies in Riemann integration can be remedied with the Riemann–Stieltjes in &gt; tegral, and most disappear with the Lebesgue integral.</p>
+</blockquote>
+<p>See: <a href="https://mathoverflow.net/questions/52708/why-should-one-still-teach-riemann-integration">Why should one still teach Riemann integration? (Mathoverflow)</a></p>
+<p>So there are some problems, but Riemann integrals will do for now.(?)</p>
+<p>% Because we won’t do rigorous proofs requiring Lebesgue integrals in this course?</p>
+<p>We will also only study definite integrals here, as indefinite integrals are not required to be used in this course anyway.</p>
+<p>Geometrically (in 2D), the integral of a function over an interval is equivalent to the area under the graph of that function over the same interval.</p>
+<blockquote>
+<p>The definite integral is defined informally as the signed area of the region in the xy-plane that is bounded by the graph of f, the x-axis and the vertical lines <span class="math inline">\(x = a\)</span> and <span class="math inline">\(x = b\)</span>. The area above the x-axis adds to the total and that below the x-axis subtracts from the total.</p>
+<p>– <cite><a href="https://en.wikipedia.org/wiki/Integral">Wikipedia - Integral</a></cite></p>
+</blockquote>
+<p>This is the syntax for definite integrals</p>
+<p><span class="math display">\[ \int_a^b f(x) dx \]</span></p>
+<p>This would be read as “The signed area under the graph of <span class="math inline">\(f(x)\)</span> from <span class="math inline">\(x=a\)</span> to <span class="math inline">\(x=b\)</span>”.</p>
+<p>Clearly, the integral symbol binds <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> which are then the limits of the integral, and constitute the interval over which to integrate/take the area, and <span class="math inline">\(f\)</span> is the function which we integrate/take the area under. The less obvious part of the syntax is the <span class="math inline">\((x)\)</span> part in <span class="math inline">\(f(x)\)</span> and the <span class="math inline">\(dx\)</span>. Is <span class="math inline">\(x\)</span> an argument to be passed to the integral that is bound here? No. What this syntax actually implies is that, in english, “For every infinitesimal interval of <span class="math inline">\(x\)</span>, starting at <span class="math inline">\(a\)</span> and ending at <span class="math inline">\(b\)</span>, take the value of <span class="math inline">\(f\)</span> at that x (equiv. to taking the value at any point in the infinitesimal interval), and calculate the area of the rectangle with width <span class="math inline">\(dx\)</span> and height <span class="math inline">\(f(x)\)</span>, then sum all of these parts together.”</p>
+<p>If we assume that <span class="math inline">\(f\)</span> is a unary function, which is the only kind of function we will be dealing with here, the syntax is redundant. <span class="math inline">\(dx\)</span> is completely internal to the behaviour of the function, and is not an argument bound by it, we could easily omitt it from the syntax. Further, if we see the integral as a function that integrates a function over an interval, <span class="math inline">\(\int_a^b f(x)\)</span> doesn’t really make any sense, and should just be <span class="math inline">\(\int_a^b f\)</span>.</p>
+<p>This syntax is much simpler and leaves less room for confusion.</p>
+<p><code>integrate f a b =</code> <span class="math inline">\(\int_a^b f\)</span></p>
+<p>Now for the definition.</p>
+<p>We look again at the informal definition above. <span class="math inline">\(\int_a^b f\)</span> is the sum of all rectangles with height <span class="math inline">\(f(x)\)</span> and width <span class="math inline">\(dx\)</span> for all infinitesimal intervals <span class="math inline">\(dx\)</span> between <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>.</p>
+<p>So we’re dealing with an infinite sum of infinitesimal parts: a limit must be involved. <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> must be the lower and upper limits of the sum. Our iteration variable should increase with infinitesimal <span class="math inline">\(dx\)</span> each step. Each step we add the area of the rectangle with height <span class="math inline">\(f(x&#39;)\)</span>, where <span class="math inline">\(x&#39;\)</span> is any point in <span class="math inline">\([x\)</span>, <span class="math inline">\(x + dx]\)</span>. As <span class="math inline">\(x + dx\)</span> approaches <span class="math inline">\(x\)</span> when <span class="math inline">\(dx\)</span> approaches zero, <span class="math inline">\(x&#39; = lim_{dx \to 0} x + dx = x\)</span>.</p>
+<p><span class="math display">\[ \int_a^b f = lim_{dx \to 0} \sum_{x = a, a + dx, a + 2dx, ...}^b A(x, dx) \text{ where } A(x, dx) = f(x) * dx \]</span></p>
+<p>Based on this definition, we could implement a function in haskell to compute the numerical approximation of the integral by letting <span class="math inline">\(dx\)</span> be a very small, but finite, number instead of being infinitesimal. The smaller our <span class="math inline">\(dx\)</span>, the better the approximation</p>
+<p>Here’s a pic that shows that smaller <span class="math inline">\(dx\)</span> results in better approximations:</p>
+<figure>
+<img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Riemann_sum_convergence.png" alt="Riemann sum convergence, (C) KSmrq" /><figcaption>Riemann sum convergence, (C) KSmrq</figcaption>
+</figure>
+<div class="sourceCode" id="cb37"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb37-1" data-line-number="1">integrateApprox f a b dx <span class="fu">=</span> sum (fmap area xs)</a>
+<a class="sourceLine" id="cb37-2" data-line-number="2">  <span class="kw">where</span> xs     <span class="fu">=</span> takeWhile (<span class="fu">&lt;</span>b) [a <span class="fu">+</span> <span class="dv">0</span><span class="fu">*</span>dx, a <span class="fu">+</span> <span class="dv">1</span><span class="fu">*</span>dx <span class="fu">..</span>]</a>
+<a class="sourceLine" id="cb37-3" data-line-number="3">        area x <span class="fu">=</span> f x <span class="fu">*</span> dx</a></code></pre></div>
+<p>For example, let’s calculate the area of the right-angled triangle under <span class="math inline">\(y = x\)</span> between <span class="math inline">\(x=0\)</span> and <span class="math inline">\(x=10\)</span>. As the area of a right-angled triangle is calculated as <span class="math inline">\(A = \frac{b * h}{2}\)</span>, we expect the result of  to approach <span class="math inline">\(A = \frac{b * h}{2} = \frac{10 * 10}{2} = 50\)</span> as <span class="math inline">\(dx\)</span> gets smaller</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb38-1" data-line-number="1">λ integrateApprox (\textbackslash x <span class="ot">-&gt;</span> x) <span class="dv">0</span> <span class="dv">10</span> <span class="dv">5</span></a>
+<a class="sourceLine" id="cb38-2" data-line-number="2"><span class="dv">25</span></a>
+<a class="sourceLine" id="cb38-3" data-line-number="3">λ integrateApprox (\textbackslash x <span class="ot">-&gt;</span> x) <span class="dv">0</span> <span class="dv">10</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb38-4" data-line-number="4"><span class="dv">45</span></a>
+<a class="sourceLine" id="cb38-5" data-line-number="5">λ integrateApprox (\textbackslash x <span class="ot">-&gt;</span> x) <span class="dv">0</span> <span class="dv">10</span> <span class="fl">0.5</span></a>
+<a class="sourceLine" id="cb38-6" data-line-number="6"><span class="fl">47.5</span></a>
+<a class="sourceLine" id="cb38-7" data-line-number="7">λ integrateApprox (\textbackslash x <span class="ot">-&gt;</span> x) <span class="dv">0</span> <span class="dv">10</span> <span class="fl">0.1</span></a>
+<a class="sourceLine" id="cb38-8" data-line-number="8"><span class="fl">49.50000000000013</span></a>
+<a class="sourceLine" id="cb38-9" data-line-number="9">λ integrateApprox (\textbackslash x <span class="ot">-&gt;</span> x) <span class="dv">0</span> <span class="dv">10</span> <span class="fl">0.01</span></a>
+<a class="sourceLine" id="cb38-10" data-line-number="10"><span class="fl">50.04999999999996</span></a></code></pre></div>
+<p>Great, it works for numeric approximations! This can be useful at times, but not so much in our case. We want closed expressions to use when solving physics problems, regardless of whether there are computations or not!</p>
+<p>Luckily, the Fundamental Theorem of Calculus tells us that there IS a way to express integrals in closed form!</p>
+<p>From the article on <a href="https://en.wikipedia.org/wiki/Fundamental_theorem_of_calculus">Wikipedia</a>:</p>
+<blockquote>
+<p>First part</p>
+<p>This part is sometimes referred to as the first fundamental theorem of calculus.</p>
+<p>Let <span class="math inline">\(f\)</span> be a continuous real-valued function defined on a closed interval <span class="math inline">\([a, b]\)</span>. Let <span class="math inline">\(F\)</span> be the function defined, for all <span class="math inline">\(x \in [a, b]\)</span>, by</p>
+<p><span class="math display">\[ F(x) = \int_a^x f(t) dt \]</span></p>
+<p>Then, <span class="math inline">\(F\)</span> is uniformly continuous on <span class="math inline">\([a,b]\)</span>, differentiable on the open interval <span class="math inline">\((a, b)\)</span> and</p>
+<p><span class="math display">\[ F&#39;(x) = f(x) \]</span></p>
+<p>for all <span class="math inline">\(x \in (a,b)\)</span>.</p>
+<p>Alternatively, if <span class="math inline">\(f\)</span> is merely Riemann integrable, then <span class="math inline">\(F\)</span> is continuous on <span class="math inline">\([a,b]\)</span> (but not necessarily differentiable).</p>
+<p>Corollary</p>
+<p>The fundamental theorem is often employed to compute the definite integral of a function <span class="math inline">\(f\)</span> for which an antiderivative <span class="math inline">\(F\)</span> is known. Specifically, if <span class="math inline">\(f\)</span> is a real-valued continuous function on <span class="math inline">\([a,b]\)</span> and <span class="math inline">\(F\)</span> is an antiderivative of <span class="math inline">\(f\)</span> in <span class="math inline">\([a,b]\)</span> then</p>
+<p><span class="math display">\[ \int_a^b f(t) dt = F(b) - F(a) \]</span></p>
+<p>The corollary assumes continuity on the whole interval. This result is strengthened slightly in the following part of the theorem.</p>
+<p>Second part</p>
+<p>This part is sometimes referred to as the second fundamental theorem of calculus or the Newton–Leibniz axiom.</p>
+<p>Let <span class="math inline">\(f\)</span> and <span class="math inline">\(f\)</span> be real-valued functions defined on a closed interval <span class="math inline">\([a,b]\)</span> such that <span class="math inline">\(f\)</span> is continuous on all <span class="math inline">\([a,b]\)</span> and the derivative of <span class="math inline">\(F\)</span> is <span class="math inline">\(f\)</span> for almost all points in <span class="math inline">\([a,b]\)</span>. That is, <span class="math inline">\(f\)</span> and <span class="math inline">\(F\)</span> are functions such that for all <span class="math inline">\(x \in (a,b)\)</span> except for perhaps a set of measure zero in the interval:</p>
+<p><span class="math display">\[ F&#39;(x)=f(x) \]</span></p>
+<p>If <span class="math inline">\(f\)</span> is Riemann integrable on <span class="math inline">\([a,b]\)</span> then</p>
+<p><span class="math display">\[ \int_a^b f(x) dx = F(b) - F(a) \]</span></p>
+<p>The second part is somewhat stronger than the corollary because it does not assume that <span class="math inline">\(f\)</span> is continuous.</p>
+<p>When an antiderivative <span class="math inline">\(f\)</span> exists, then there are infinitely many antiderivatives for <span class="math inline">\(f\)</span>, obtained by adding an arbitrary constant to <span class="math inline">\(f\)</span>. Also, by the first part of the theorem, antiderivatives of <span class="math inline">\(f\)</span> always exist when <span class="math inline">\(f\)</span> is continuous.</p>
+</blockquote>
+<p>And here’s the proof. We won’t delve into this, but it’s quite simple.</p>
+<blockquote>
+<p>Bevis</p>
+<p>Satsen kan bevisas enligt följande:</p>
+<span class="math display">\[\begin{align*}
+F&#39;(x) &amp;= \lim_{h \to 0} \frac{F(x + h) - F(x)}{h} \\
+      &amp;= \lim_{h \to 0} \frac{1}{h} \left( \int_a^{x + h} f(t) dt - \int_a^x f(t) dt \right) \\
+      &amp;= \lim_{h \to 0} \frac{1}{h} \int_x^{x + h} f(t) dt \\
+      &amp;= \lim_{h \to 0} f(c) \\
+      &amp;= \lim_{c \to x} f(c) \\
+      &amp;= f(x)
+\end{align*}\]</span>
+<p>I första steget utnyttjas derivatans definition och i det andra definitionen av <span class="math inline">\(f\)</span>. I det tredje steget används räknelagar för integraler. I fjärde steget används medelvärdessatsen för integraler. I femte steget utnyttjas det faktum att <span class="math inline">\(c\)</span> ligger mellan <span class="math inline">\(x\)</span> och <span class="math inline">\(x + h\)</span>, så då <span class="math inline">\(h \to 0\)</span> gäller att <span class="math inline">\(c \to x\)</span>. Sista steget ges av att <span class="math inline">\(f\)</span> är kontinuerlig.</p>
+<p>– <cite><a href="https://sv.wikipedia.org/wiki/Analysens_fundamentalsats">Wikipedia - Analysens Fundamentalsats</a></cite></p>
+</blockquote>
+
+    </main>
+
+    <footer>
+      Licensed under the GPL by the Kandidatboisen (2018)
+    </footer>
+  </body>
+</html>

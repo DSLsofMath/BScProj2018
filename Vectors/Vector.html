@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Learn You a Physics for Great Good!</title>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  </head>
+
+  <body>
+    <header>
+      <a href="../index.html"><h1>Learn You a <span class="physics">Physics</span> for Great Good!</h1></a>
+      <nav>
+        <span>Previous: <a href="../Units/Type-level units.html">Type-level units</a></span>
+        <a href="../index.html">Table of contents</a>
+        <span>Next: <a href="../Calculus/Calculus.html">Calculus</a></span>
+      </nav>
+    </header>
+
+    <main>
+      <p>module Vector.Vector where</p>
+<p>type Scalar = Double</p>
+<p>class Vector vec where vmap :: (Scalar -&gt; Scalar) -&gt; vec -&gt; vec vzipWith :: (Scalar -&gt; Scalar -&gt; Scalar) -&gt; vec -&gt; vec -&gt; vec vfold :: (Scalar -&gt; Scalar -&gt; Scalar) -&gt; vec -&gt; Scalar</p>
+<p>dotProd :: Vector vec =&gt; vec -&gt; vec -&gt; Scalar dotProd v1 v2 = vfold (*) $ vzipWith (+) v1 v2</p>
+<p>magnitude :: Vector vec =&gt; vec -&gt; Scalar magnitude v = sqrt . vfold (+) $ vmap (**2) v</p>
+<p>data Vector3 = V3 Scalar Scalar Scalar data Vector2 = V2 Scalar Scalar</p>
+<p>lift :: Vector2 -&gt; Vector3 lift (V2 x y) = V3 x y 0</p>
+<p>zeroVector :: (Vector a, Num a) =&gt; a zeroVector = 0</p>
+<p>crossProd :: Vector3 -&gt; Vector3 -&gt; Vector3 crossProd (V3 x y z) (V3 x’ y’ z’) = V3 (y<em>z’ - z</em>y’) – X (z<em>x’ - x</em>z’) – Y (x<em>y’ - y</em>x’) – Z</p>
+<p>– | TODO – | <sub>Laws</sub> – | Langrange’s formula: a x (b x c) = b(a * c) - c(a * b) – | Cross product is anticommutative – | Jacobi identity: a x (b x c) + b x (c x a) + c x (a x b) = 0</p>
+<p>– | Unit vectors – | Cross product – | Angles</p>
+<p>– | DONE – | Associativity of addition follows from Monoid instance!</p>
+<p>instance Monoid Vector2 where mempty = zeroVector mappend = (+) mconcat = foldr mappend mempty</p>
+<p>instance Monoid Vector3 where mempty = zeroVector mappend = (+) mconcat = foldr mappend mempty</p>
+<p>instance Vector Vector3 where vmap f (V3 x y z) = V3 (f x) (f y) (f z) vzipWith f (V3 x y z) (V3 x’ y’ z’) = V3 (f x x’) (f y y’) (f z z’) vfold f (V3 x y z) = f z $ f x y</p>
+<p>instance Vector Vector2 where vmap f (V2 x y) = V2 (f x) (f y) vzipWith f (V2 x y) (V2 x’ y’) = V2 (f x x’) (f y y’) vfold f (V2 x y) = f x y</p>
+<p>instance Num Vector2 where (+) = vzipWith (+) (<em>) = undefined – Vec -&gt; Scalar abs = undefined – Vec -&gt; Scalar negate = vmap (</em>(-1)) – | Signum can be though of as the direction of a vector signum = vmap signum fromInteger i = V2 (fromInteger i) 0</p>
+<p>instance Num Vector3 where (+) = vzipWith (+) (<em>) = undefined – Vec -&gt; Scalar abs = undefined – Vec -&gt; Scalar negate = vmap (</em>(-1)) – | Signum can be though of as the direction of a vector signum = vmap signum fromInteger i = V3 (fromInteger i) 0 0</p>
+<p>instance Show Vector2 where show (V2 x y) = “(” ++ show x ++ &quot; x, &quot; ++ show y ++ &quot; y)&quot;</p>
+<p>instance Show Vector3 where show (V3 x y z) = “(” ++ show x ++ &quot; x, &quot; ++ show y ++ &quot; y, &quot; ++ show z ++ &quot; z)&quot;</p>
+<p>instance Ord Vector2 where compare v1 v2 = compare (magnitude v1) (magnitude v2)</p>
+<p>instance Ord Vector3 where compare v1 v2 = compare (magnitude v1) (magnitude v2)</p>
+<p>instance Eq Vector2 where (V2 x y) == (V2 x’ y’) = x == x’ &amp;&amp; y == y’</p>
+<p>instance Eq Vector3 where (V3 x y z) == (V3 x’ y’ z’) = x == x’ &amp;&amp; y == y’ &amp;&amp; z == z’</p>
+
+    </main>
+
+    <footer>
+      Licensed under the GPL by the Kandidatboisen (2018)
+    </footer>
+  </body>
+</html>

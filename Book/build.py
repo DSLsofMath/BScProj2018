@@ -51,18 +51,24 @@ def build_index(sources):
     for (section_name, chapter_sources) in sources:
         toc += "<li>\n"
         toc += "<div>" + section_name + "</div>\n"
-        toc += "<ol>\n"
+        toc += "<ul>\n"
         for (chapter_name, _) in chapter_sources:
             chapter_path = "{}/{}.html".format(section_name, chapter_name)
             toc += "<li><a href=\"{}\">{}</a></li>\n".format(chapter_path, chapter_name)
-        toc += "</ol>\n</li>\n"
+        toc += "</ul>\n</li>\n"
     index_template = open_template("index")
     index = apply_template(index_template, { "toc": toc })
     write_string_to_file(index, "index.html")
 
 sources = [
     ("Units", [
-        ("Intro", "../Physics/src/Units/UnitsIntro.lhs"),
+        ("Introduction", "../Physics/src/Units/UnitsIntro.lhs"),
+        ("Quantities", "../Physics/src/Units/Quantity.lhs"),
+        ("Value-level units", "../Physics/src/Units/ValueLevel.lhs"),
+        ("Type-level units", "../Physics/src/Units/TypeLevel.lhs"),
+    ]),
+    ("Vectors", [
+        ("Main", "../Physics/src/Vector/Vector.hs")
     ]),
     ("Calculus", [
         ("Main", "../Physics/src/Calculus/Calculus.lhs"),

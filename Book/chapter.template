@@ -6,8 +6,18 @@
     <link rel="stylesheet" type="text/css" href="../style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
   </head>
-  <h1>Learn You a Physics for Great Good!</h1>
+
   <body>
-    {content}
+    <header>
+      <a href="../index.html"><h1>Learn You a <span class="physics">Physics</span> for Great Good!</h1></a>
+    </header>
+
+    <main>
+      {content}
+    </main>
+
+    <footer>
+      Licensed under the GPL by the Kandidatboisen (2018)
+    </footer>
   </body>
 </html>

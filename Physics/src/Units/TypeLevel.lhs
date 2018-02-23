@@ -1,14 +1,14 @@
 
-Typnivå
-=======
+Type-level units
+================
 
-Vi ska nu behandla enheter på *typnivå*. Vad är typnivå? När man brukar programmera (i Haskell) gör man operationer (till exempel `+`) på värden (till exempel `1` och `2`). Detta är på *värdenivå*. Nu ska vi göra samma sak fast på typnivå, det vill säga, göra operationer på typer.
+We will now implement *type-level* units. What is type-level? When one usually programs (in Haskell), one operatates (e.g. adds) on values (e.g. `1` and `2`). This is on *value-level*. Now we will do the same thing but on *type-level*, that is, perform operations on types.
 
-Varför ha enheter på typnivå? För då går det att se redan vid kompileringstillfället om det man skriver är riktigt.
+What's the purpose of type-level units? It's so that we'll notice as early as compile-time if we've written something incorrect.
 
-Som tidigare nämnt kommer implementationen här vara snarlik den på värdenivå.
+As previously mentioned, this implementation will be very similar to that on value-level.
 
-För att klara av det vi ska göra nu krävs en drös GHC-extensions. TODO: Förklara vad de behövs till kanske.
+To be able to do type-level programming, we'll need a nice stash of GHC-extensions. TODO: förklara vad de gör.
 
 > {-# LANGUAGE DataKinds #-}
 > {-# LANGUAGE GADTs #-}
@@ -16,74 +16,84 @@ För att klara av det vi ska göra nu krävs en drös GHC-extensions. TODO: För
 > {-# LANGUAGE TypeFamilies #-}
 > {-# LANGUAGE UndecidableInstances #-}
 > {-# LANGUAGE TypeOperators #-}
-> 
+
 > module Units.TypeLevel
 > ( Unit(..)
 > , Mul
 > , Div
 > , Length
-> , Time
 > , Mass
+> , Time
+> , Current
 > , Temperature
 > , Substance
+> , Luminosity
 > , One
 > )
 > where
 
-Vi kommer behöva hantera heltal på typnivå. Istället för att implementera det själva importerar vi hela maskinerit så att vi kan fokusera på fysik-biten.
+We'll need to be able to operate on integers on type-level. Instead of implementing it ourselves, we will just import the machinery so we can focus on the physics-part.
 
 > import Numeric.NumType.DK.Integers
 
-Vi gör en *sort* för enheter igen. På värdenivå gjorde vi en *typ* med *värden*. Nu gör vi en *sort* med *typer*. Det är exakt samma betydelse, men flyttat "ett steg upp".
+We make a *kind* for units, just like we in the previous section made *type* for units. On value-level we made a *type* with *values*. Now we make a *kind* with *types*. The meaning is exactly the same, except we have moved "one step up".
 
 > data Unit = Unit TypeInt -- Length
->                  TypeInt -- Time
 >                  TypeInt -- Mass
+>                  TypeInt -- Time
+>                  TypeInt -- Current
 >                  TypeInt -- Temperature
->                  TypeInt -- Amount of substance
+>                  TypeInt -- Substance
+>                  TypeInt -- Luminosity
 
-Men `data Unit = ...` ser ju ut som en helt vanlig datatyp? Det är riktigt. Men med `DataKinds` skapar detta en normal datatyp precis som vanligt **och** en *sort*. En mindre förvirrande syntax hade kanske varit `kind Unit = ...`.
+But `data Unit = ...` looks awfully similar to a regular data type! That's correct. But with the GHC-extension `DataKinds` this will, apart from creating a regular data type, **also** create a *kind*. Perhaps a less confusing syntax would've been `kind Unit = ...`.
 
-Med hjälp av `Unit`-sorten kan vi tvinga vissa typer i funktioner att vara av den sorten.
+Thanks to the `Unit`-kind we can force certain types in functions to be of this kind.
 
-Detta kan låta förvirrande, men poängen med detta kommer klarna allt efter hand. Låt oss visa några exempel*typer* ur `Unit`-sorten.
+This may sound confusing, but the point of this will become clear over time. Let's show some example *types* of the `Unit`-kind.
 
-> type Length      = 'Unit Pos1 Zero Zero Zero Zero
-> type Time        = 'Unit Zero Pos1 Zero Zero Zero
-> type Mass        = 'Unit Zero Zero Pos1 Zero Zero
-> type Temperature = 'Unit Zero Zero Zero Pos1 Zero
-> type Substance   = 'Unit Zero Zero Zero Zero Pos1
+> type Length      = 'Unit Pos1 Zero Zero Zero Zero Zero Zero
+> type Mass        = 'Unit Zero Pos1 Zero Zero Zero Zero Zero
+> type Time        = 'Unit Zero Zero Pos1 Zero Zero Zero Zero
+> type Current     = 'Unit Zero Zero Zero Pos1 Zero Zero Zero
+> type Temperature = 'Unit Zero Zero Zero Zero Pos1 Zero Zero
+> type Substance   = 'Unit Zero Zero Zero Zero Zero Pos1 Zero
+> type Luminosity  = 'Unit Zero Zero Zero Zero Zero Zero Pos1
 > 
-> type Velocity     = 'Unit Pos1 Neg1 Zero Zero Zero
-> type Acceleration = 'Unit Pos1 Neg2 Zero Zero Zero
+> type Velocity     = 'Unit Pos1 Zero Neg1 Zero Zero Zero Zero
+> type Acceleration = 'Unit Pos1 Zero Neg2 Zero Zero Zero Zero
 > 
-> type One = 'Unit Zero Zero Zero Zero Zero
+> type One = 'Unit Zero Zero Zero Zero Zero Zero Zero
 
-`'Unit` används för att skilja mellan *typen* `Unit` och *typkonstruktorn* `Unit`. `'Unit` syftar på typkonstruktorn. Båda skapas parallellt i Haskell.
+`'Unit` is used to distinguish between the *type* `Unit` (left-hand-side of the `data Unit` definition) and the *type constructor* `Unit` (right-hand-side of the `data Unit` definition, with `DataKinds`-perspective). `'Unit` refers to the type constructor. Both are created when using `DataKinds`.
 
-`Pos1`, `Neg1` och så vidare motsvarar `1` och `-1` i det importerade paketet, som behandlar tal på typnivå.
+`Pos1`, `Neg1` and so on corresponds to `1` and `-1` in the imported package, which operates on integers on type-level.
 
-Vi gör nu multiplikation och division på typnivå. Efter en sådan operation bildas en ny enhet. Och hur detta går till vet vi sedan tidigare. För att översätta till Haskell-språk: "efter en sådan operation bildas en ny *typ*". Hur implementerar man det? Med hjälp av `type family`, som enklast kan ses som en funtion fast på typnivå.
+Let's implement multiplication and division on type-level. After such an operation a new unit is created. And from the previous section we already know what the unit should look like. To translate to the Haskell-language: "after such an operation a new *type* is created". How does one implement that? With `type family`! `type family` can easiest be thought of as a function on the type-level.
 
 > type family Mul (u1 :: Unit) (u2 :: Unit) where
->   Mul ('Unit l1 t1 m1 k1 s1) ('Unit l2 t2 m2 k2 s2) =
->     'Unit (l1+l2) (t1+t2) (m1+m2) (k1+k2) (s1+s2)
+>   Mul ('Unit le1 ma1 ti1 cu1 te1 su1 lu1) 
+>       ('Unit le2 ma2 ti2 cu2 te2 su2 lu2) =
+>       'Unit (le1+le2) (ma1+ma2) (ti1+ti2) (cu1+cu2)
+>         (te1+te2) (su1+su2) (lu1+lu2)
 
-- `type family` anger att det är en funktion på typnivå.
-- `Mul` är namnet.
-- `u1 :: Unit` utläses "typen `u1` har sorten `Unit`.
+- `type family` means that it's a function on type-level.
+- `Mul` is the name of the function.
+- `u1 :: Unit` is read as "the *type* `u1` has *kind* `Unit`".
 
-Division är snarlik.
+Division is very similar.
 
 > type family Div (u1 :: Unit) (u2 :: Unit) where
->   Div ('Unit l1 t1 m1 k1 s1) ('Unit l2 t2 m2 k2 s2) =
->     'Unit (l1-l2) (t1-t2) (m1-m2) (k1-k2) (s1-s2)
+>   Div ('Unit le1 ma1 ti1 cu1 te1 su1 lu1) 
+>       ('Unit le2 ma2 ti2 cu2 te2 su2 lu2) =
+>       'Unit (le1-le2) (ma1-ma2) (ti1-ti2) (cu1-cu2)
+>         (te1-te2) (su1-su2) (lu1-lu2)
 
-Låt oss skapa några exempel*typer* för enheter med hjälp av multiplikation och division.
+Let's create some example *types* for units with multiplication and division.
 
 > type Velocity' = Length `Div` Time
 > type Area      = Length `Mul` Length
 > type Force     = Mass   `Mul` Length
 > type Impulse   = Force  `Mul` Time
 
-Inte så spännande än så länge. Men vänta tills vi skapar en datatyp för storheter. Då blir det tydligare med styrkorna med att ha enheter på typnivå utöver värdenivå.
+Perhaps not very exiting so far. But just wait 'til we create a data type for quantities. Then the strenghts of type-level units will be clearer.

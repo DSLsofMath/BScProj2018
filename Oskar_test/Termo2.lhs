@@ -170,16 +170,19 @@ Begreppet *specifik värme* talar om hur mycket värme som krävs för att höja
 Därför defineras specifik värme för det isobara fallet som
 
 \begin{align}
-  C_p = n \frac{5}{2} R
+  C_p = \frac{5}{2} R
 \end{align}
 
 för enatomiga gaser och, som en liknande beräkning skulle visat
 
 \begin{align}
-  C_p = n \frac{7}{2} R
+  C_p = \frac{7}{2} R
 \end{align}
 
 för tvåatomiga gaser.
+
+> cp :: Gas -> Double
+> cp (Gas na _) = (fromIntegral na*2+3)/2*r
 
 ---
 
@@ -210,13 +213,13 @@ Vi beräknar specifk värme för det enatomiga isokora fallet.
 Därför defineras specifik värme för det isokora fallet, med en atom, som
 
 \begin{align}
-  C_v = n \frac{3}{2} R
+  C_v = \frac{3}{2} R
 \end{align}
 
 och för det tvåatomiga, som en liknande uträkning skulle visat
 
 \begin{align}
-  C_v = n \frac{5}{2} R
+  C_v = \frac{5}{2} R
 \end{align}
 
 Sambandet mellan specikfik värme för isobart och isokort blir
@@ -224,6 +227,9 @@ Sambandet mellan specikfik värme för isobart och isokort blir
 \begin{align}
   C_p = C_v + R
 \end{align}
+
+> cv :: Gas -> Double
+> cv (Gas na _) = (fromIntegral na *2+1)/2*r
 
 ---
 
@@ -259,16 +265,36 @@ När det kommer till isoterma processer är det inte relevant att prata om speci
 
 ---
 
-I en **adiabatisk** process sker inget värmebyte med omgivningen. Det finala tillståndet brukar specificeras med en temperatur. Till hjälp för att hålla koll på värden kan man visa att $pV^\gamma = konstant$ gäller för adiabater där
+I en **adiabatisk** process sker inget värmebyte med omgivningen. Det finala tillståndet kan precis som för en isotem specas med tryck eller volym Till hjälp för att hålla koll på värden kan man visa att $pV^\gamma = konstant$ gäller för adiabater där
 
 \begin{align}
-  \gamma = \frac{C_p}{C_v]}
+  \gamma = \frac{C_p}{C_v}
 \end{align}
 
-> adiabat :: Gas -> State -> Double -> (State, Energy)
-> adiabat gas (State pi vi) tf =
+> gamma :: Gas -> Double
+> gamma gas = cp gas / cv gas
+
+Givet initialt tryck och volym, en antingen finalt tryck eller final volym, ska motsvarande värde beräknas.
+
+\begin{align}
+  &p_i V_i^\gamma = x = p_f V_f^\gamma \\
+  &\implies p_f = \frac{x}{V_f^\gamma} \\
+  &\implies V_f^\gamma = \frac{x}{p_f} \implies V_f = (\frac{x}{p_f})^{\frac{1}{\gamma}}
+\end{align}
+
+> adiabat :: Gas -> State -> Either Double Double -> (State, Energy)
+> adiabat gas state@(State pi vi) pfORvf = (newState, energy)
 >   where
->     
+>     pvg = (pi*vi) ** (gamma gas)
+>     (pf,vf) = case pfORvf of
+>                 Left  pf -> (pf,(pvg/pf)**(1/gamma gas))
+>                 Right vf -> (pvg/(vf ** gamma gas),vf)
+>     newState = State pf vf
+>     ei = iefs gas state
+>     ef = iefs gas newState
+>     ed = ef - ei
+>     work = -ed -- The lost internal energy is the work done
+>     energy = Energy 0 work
 
 
 

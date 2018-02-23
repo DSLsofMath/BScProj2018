@@ -1,0 +1,114 @@
+%LaTeX-inställningar%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Kompliera med pdflatex
+\documentclass[a4paper, 10pt]{article}
+
+\usepackage[utf8x]{inputenc}
+\usepackage[swedish]{babel}
+\usepackage{graphicx}
+
+\usepackage{geometry} 
+\geometry{a4paper} 
+\geometry{margin=1in}
+\setcounter{section}{1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Fyll i vid varje möte:
+\newcommand{\tid}{14:00}
+\newcommand{\plats}{4205}
+\newcommand{\datum}{2016-09-14}
+
+\newcommand{\sammankallande}{\textit{
+Björn\\
+Erik\\
+Oskar\\
+Johan\\
+Handledare Patrik\\
+}}
+
+%Snabbkommandon
+\newcommand{\sect}[1][]{\section*{\S \thesection. #1} \stepcounter{section}}
+\newcommand{\para}{\paragraph \noindent}
+\newcommand{\ssect}[1][]{\subsection*{#1}}
+
+\begin{document}
+
+
+%Rubrik etc
+\section*{\center Dagordning - Grupp DSLsofMath LV1} 
+\vspace{1em}
+\textbf{Kl:} \tid , \datum \\
+\textbf{Plats:} \plats \\
+
+%Dagordning:
+%Detta är en mall. Lägg till paragrafer och underparagrafer om det behövs.
+
+\sect[Mötets öppnande]
+\ssect[Närvarande]
+
+\sect[Val av sekreterare och justerare]
+
+\sect[Godkännande av dagordning]
+
+Planeringsrapporten klar?
+	patriks kommentarer.
+
+Kommande grejer?
+	vad vill vi starta med efter inläsning alt parallellt med inläsning.
+	
+
+\sect[Godkännande av föregående mötesprotokoll]
+
+\sect[Informationspunkter]
+
+Skrivmetodik - Dokumentera så mycket som möjligt av undersökningsarbetet och framtagandet av olika DSLs. Varför är en variant bättre eller sämre ex? Vi behöver mallar.
+
+Vi har fått kritik från Andreas att vara tydligare i dagboken (antagligen den med TODOs och ansvarspersoner). Ett ökat antal timmar per vecka 
+
+björn o oskar fixar halvtidsredovisningen
+erik o johan fixar slutredovisningen
+
+\sect[Statusrapport]
+
+Vi har jobbat med planeringsrapporten samt inläsning.
+
+Detaljer finns i loggboken.
+
+\sect[Uppföljning och eventuella förändringar]
+
+\sect[Kommande uppgifter]
+
+Olika ansvarsområden för olika ämnesområden.
+Ex derivator, kapitel? 
+
+	Matematiken bakom fysiken.
+
+	Derivator integraler
+
+	Momentan(x), genomsnitts(x)
+
+	Vektorer, vektorops
+		förklara med datatyper
+
+	Newtons lagar
+
+	Differentialkalkyl
+
+	Dimensioner!
+
+	Bra om vi presenterar exempel på fredagarna så att patrik kan ge respons.
+
+	Figurer i fysik. Bollar på lutande plan osv.
+
+\sect[Övriga frågor]
+
+Kan man använda existerande verktyg på nätet för att presentera fysik + dsl enklare?
+Haste för grafisk presentation i webbsidor. Kan göras liknande tryhaskell.org.
+
+\sect[Nästa möte sker...]
+
+\sect[Mötets avslutande]
+
+
+\end{document}
+
+

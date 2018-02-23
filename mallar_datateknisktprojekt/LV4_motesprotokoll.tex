@@ -1,0 +1,98 @@
+%LaTeX-inställningar%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Kompliera med pdflatex
+\documentclass[a4paper, 10pt]{article}
+
+\usepackage[utf8x]{inputenc}
+\usepackage[swedish]{babel}
+\usepackage{graphicx}
+
+\usepackage{geometry} 
+\geometry{a4paper} 
+\geometry{margin=1in}
+\setcounter{section}{1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Fyll i vid varje möte:
+\newcommand{\tid}{14:00}
+\newcommand{\plats}{4205}
+\newcommand{\datum}{2016-09-14}
+
+\newcommand{\sammankallande}{\textit{
+Björn\\
+Erik\\
+Oskar\\
+Johan\\
+Handledare Patrik\\
+}}
+
+%Snabbkommandon
+\newcommand{\sect}[1][]{\section*{\S \thesection. #1} \stepcounter{section}}
+\newcommand{\para}{\paragraph \noindent}
+\newcommand{\ssect}[1][]{\subsection*{#1}}
+
+\begin{document}
+
+
+%Rubrik etc
+\section*{\center Dagordning - Grupp DSLsofMath LV1} 
+\vspace{1em}
+\textbf{Kl:} \tid , \datum \\
+\textbf{Plats:} \plats \\
+
+%Dagordning:
+%Detta är en mall. Lägg till paragrafer och underparagrafer om det behövs.
+
+\sect[Mötets öppnande]
+\ssect[Närvarande]
+
+\sect[Val av sekreterare och justerare]
+
+\sect[Godkännande av dagordning]
+Endast relevant vid större möten.
+
+\sect[Godkännande av föregående mötesprotokoll]
+
+
+\sect[Informationspunkter]
+
+Nästa vecka är fackspråk innan mötet.
+
+\sect[Statusrapport]
+
+Halvtidsredovisningen. Saknas ett par saker om nivarande status.
+
+    27de februari? Patrik undervisar. Går att byta?
+    Jag kan fråga det? 13-17 går ej. Dvs före lunch.
+
+Gantt:
+    Vi gör dsl, ska börja med lärarmaterial.
+
+\sect[Uppföljning och eventuella förändringar]
+
+\sect[Kommande uppgifter]
+
+Fackspråk handledning. 
+Halvtidsredovisningen kompletterar vi senare när vi vet mer om nuvarande status om ett par veckor.
+
+\sect[Övriga frågor]
+Diskusion om DSL med Patrik.
+
+Krav på bevisföring? Vad behöver eleverna kunna bevisa? Vi på data behöver inte bevisa förhållanden som på andra instutitioner?
+Jag kan fråga detta i smyg. (mattematiska vetenskaper, stefan lemurell. sj@chalmers.se)
+
+(Hur bevisar man själv i verkligheten ett induktionsbevis?/ konstruktionsbevis/ dyl?)
+
+
+Många av operationerna behöver vara dimensionslösa (ex sinus) ty det finns inte "sinus x meter".
+
+Simplifiering och avrundningsfel? Ang att kolla om två saker är ekvivalenta. Syntaxträd skulle kunna "arrangeras om".
+
+\sect[Nästa möte sker...]
+
+11:30 Tisdag LV6. VI hoppar LV5 ty patrik ska på semester.
+
+\sect[Mötets avslutande]
+
+
+\end{document}
+

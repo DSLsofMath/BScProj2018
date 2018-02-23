@@ -6,6 +6,7 @@ mostly using basic templating
 """
 
 import os
+import shutil
 import subprocess
 
 def read_file(filepath):
@@ -48,7 +49,7 @@ def build_sections(sources):
             next_chap_href = "../{}/{}.html".format(next_section, next_chap_name)
         if not os.path.exists(section):
             os.makedirs(section)
-        content = render_lhs(chapter_source)
+        content = render_lhs("../../" + chapter_source)
         chapter = apply_template(
             chapter_templ,
             {
@@ -79,19 +80,30 @@ def build_index(sources):
 
 sources = [
     ("Units", [
-        ("Introduction", "../Physics/src/Units/UnitsIntro.lhs"),
-        ("Quantities", "../Physics/src/Units/Quantity.lhs"),
-        ("Value-level units", "../Physics/src/Units/ValueLevel.lhs"),
-        ("Type-level units", "../Physics/src/Units/TypeLevel.lhs"),
+        ("Introduction", "Physics/src/Units/UnitsIntro.lhs"),
+        ("Quantities", "Physics/src/Units/Quantity.lhs"),
+        ("Value-level units", "Physics/src/Units/ValueLevel.lhs"),
+        ("Type-level units", "Physics/src/Units/TypeLevel.lhs"),
     ]),
     ("Vectors", [
-        ("Vector", "../Physics/src/Vector/Vector.hs")
+        ("Vector", "Physics/src/Vector/Vector.hs")
     ]),
     ("Calculus", [
-        ("Calculus", "../Physics/src/Calculus/Calculus.lhs"),
+        ("Calculus", "Physics/src/Calculus/Calculus.lhs"),
     ])
 ]
 
-build_sections(sources)
+if not os.path.exists("build"):
+    os.makedirs("build")
 
+shutil.copy("style.css", "build")
+shutil.copy("index.template", "build")
+shutil.copy("chapter.template", "build")
+
+os.chdir("build")
+
+build_sections(sources)
 build_index(sources)
+
+os.remove("index.template")
+os.remove("chapter.template")

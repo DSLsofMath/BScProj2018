@@ -33,18 +33,35 @@ def render_lhs(lhs_filepath):
                   "--mathjax"
     ]).decode("utf8")
 
-def build_sections(sources):
-    for (section_name, chapter_sources) in sources:
-        section_out_path = section_name
-        if not os.path.exists(section_out_path):
-            os.makedirs(section_out_path)
-        for (chap_name, chap_source) in chapter_sources:
-            chap_content = render_lhs(chap_source)
-            chap_templ = open_template("chapter")
-            chap = apply_template(chap_templ, { "content": chap_content })
-            out_path = "{}/{}.html".format(section_out_path, chap_name)
-            write_string_to_file(chap, out_path)
 
+def build_sections(sources):
+    chapter_templ = open_template("chapter")
+    prev_chap_href = "../index.html"
+    prev_chap_name = "Table of contents"
+    chapters = [(s, c_n, c_s) for (s, cs) in sources for (c_n, c_s) in cs]
+    for i in range(0, len(chapters)):
+        (section, chapter_name, chapter_source) = chapters[i]
+        next_chap_href = "../index.html"
+        next_chap_name = "Table of contents"
+        if (i + 1) < len(chapters):
+            next_section, next_chap_name, _ = chapters[i + 1]
+            next_chap_href = "../{}/{}.html".format(next_section, next_chap_name)
+        if not os.path.exists(section):
+            os.makedirs(section)
+        content = render_lhs(chapter_source)
+        chapter = apply_template(
+            chapter_templ,
+            {
+                "content": content,
+                "previous-href": prev_chap_href,
+                "previous-name": prev_chap_name,
+                "next-href": next_chap_href,
+                "next-name": next_chap_name,
+            })
+        out_path = "{}/{}.html".format(section, chapter_name)
+        write_string_to_file(chapter, out_path)
+        prev_chap_href = "../" + out_path
+        prev_chap_name = chapter_name
 
 def build_index(sources):
     toc = "<ol>\n"
@@ -68,10 +85,10 @@ sources = [
         ("Type-level units", "../Physics/src/Units/TypeLevel.lhs"),
     ]),
     ("Vectors", [
-        ("Main", "../Physics/src/Vector/Vector.hs")
+        ("Vector", "../Physics/src/Vector/Vector.hs")
     ]),
     ("Calculus", [
-        ("Main", "../Physics/src/Calculus/Calculus.lhs"),
+        ("Calculus", "../Physics/src/Calculus/Calculus.lhs"),
     ])
 ]
 

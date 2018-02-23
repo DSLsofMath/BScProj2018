@@ -6,6 +6,11 @@ body {
   background-color: #FCFCFB;
 }
 
+header {
+  padding: 20px 10px;
+  background-color: #F0F0F0;
+}
+
 header > a {
   color: inherit;
   text-decoration: none;
@@ -17,6 +22,11 @@ header h1 {
 
 header h1 .physics {
   color: #E2A;
+}
+
+header nav {
+  display: flex;
+  justify-content: space-around;
 }
 
 main {
@@ -42,7 +52,7 @@ figcaption {
 footer {
   padding: 30px 30px;
   text-align: center;
-  background-color: #E0E0E0;
+  background-color: #F0F0F0;
 }
 
 pre.sourceCode {

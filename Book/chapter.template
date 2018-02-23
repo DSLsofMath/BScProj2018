@@ -10,6 +10,11 @@
   <body>
     <header>
       <a href="../index.html"><h1>Learn You a <span class="physics">Physics</span> for Great Good!</h1></a>
+      <nav>
+        <span>Previous: <a href="{previous-href}">{previous-name}</a></span>
+        <a href="../index.html">Table of contents</a>
+        <span>Next: <a href="{next-href}">{next-name}</a></span>
+      </nav>
     </header>
 
     <main>

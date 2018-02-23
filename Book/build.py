@@ -18,7 +18,7 @@ def open_template(name):
 def apply_template(template, substs):
     t = template
     for (k, v) in substs.items():
-        t = template.replace("{" + k + "}", v)
+        t = t.replace("{" + k + "}", v)
     return t
 
 def write_string_to_file(s, filepath):

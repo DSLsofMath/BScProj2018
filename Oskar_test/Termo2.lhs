@@ -285,7 +285,7 @@ Givet initialt tryck och volym, en antingen finalt tryck eller final volym, ska 
 > adiabat :: Gas -> State -> Either Double Double -> (State, Energy)
 > adiabat gas state@(State pi vi) pfORvf = (newState, energy)
 >   where
->     pvg = (pi*vi) ** (gamma gas)
+>     pvg = pi*(vi**(gamma gas))
 >     (pf,vf) = case pfORvf of
 >                 Left  pf -> (pf,(pvg/pf)**(1/gamma gas))
 >                 Right vf -> (pvg/(vf ** gamma gas),vf)
@@ -295,6 +295,8 @@ Givet initialt tryck och volym, en antingen finalt tryck eller final volym, ska 
 >     ed = ef - ei
 >     work = -ed -- The lost internal energy is the work done
 >     energy = Energy 0 work
+
+När det gäller adiabater är det inte relevant att prata om specifik värme eftersom man inte tillför värme till en adiabatisk process.
 
 
 

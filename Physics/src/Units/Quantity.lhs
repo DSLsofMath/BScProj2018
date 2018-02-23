@@ -318,6 +318,10 @@ The code comments show what GHCi prints for that row.
 
 The exercise is "A dog runs, jumps and lands sliding on a carriage. The dog weighs `40 kg` and runs in `8 m/s`. The carriage weighs `190 kg`. The coefficient of friction between the dog's paws and the carriage is `0.7`."
 
+This is illustrated in the painting below.
+
+<img src="Exercise.png" alt="" style="width: 600px;"/>
+
 a) Calculate the (shared) final velocity of the dog and the carriage.
 
 > mDog      = 40 # mass    -- 40 kg

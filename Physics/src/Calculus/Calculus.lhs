@@ -450,7 +450,7 @@ $$ x_{traveled} = \int_{t_0}^{t_1} v(t) dt $$
 
 TODO: Describe relationship between between "Definite integrals", "Indefinite integrals", and "Antiderivatives".
 
-% https://en.wikipedia.org/wiki/Fundamental_theorem_of_calculus
+The following quotes are cut from [Wikipedia](https://en.wikipedia.org/wiki/Fundamental_theorem_of_calculus).
 
  > The fundamental theorem of calculus is a theorem that links the
  > concept of differentiating a function with the concept of integrating
@@ -502,6 +502,7 @@ TODO: Describe relationship between between "Definite integrals", "Indefinite in
  > standard part of an infinite Riemann sum, based on the hyperreal
  > number system.
 
+
 Newton and Leibniz independently discovered the fundemental theorem of calculus.
 They based their definitions on infinitesimals which, as described above was considered too imprecise.
 Later, Riemann rigorously formalized integration using limits.
@@ -540,12 +541,12 @@ We will also only study definite integrals here, as indefinite integrals are not
 Geometrically (in 2D), the integral of a function over an interval is equivalent to the area under the graph of that function
 over the same interval.
 
-% Wikipedia: https://en.wikipedia.org/wiki/Integral
-
  > The definite integral is defined informally as the signed area of the
  > region in the xy-plane that is bounded by the graph of f, the x-axis
  > and the vertical lines $x = a$ and $x = b$. The area above the x-axis adds
  > to the total and that below the x-axis subtracts from the total.
+ >
+ > -- <cite>[Wikipedia - Integral](https://en.wikipedia.org/wiki/Integral)</cite>
 
 This is the syntax for definite integrals
 
@@ -586,7 +587,8 @@ by letting $dx$ be a very small, but finite, number instead of being infinitesim
 approximation
 
 Here's a pic that shows that smaller $dx$ results in better approximations:
-![Riemann sum convergence](https://en.wikipedia.org/wiki/File:Riemann_sum_convergence.png)
+
+![Riemann sum convergence, (C) KSmrq](https://upload.wikimedia.org/wikipedia/commons/2/2a/Riemann_sum_convergence.png)
 
 > integrateApprox f a b dx = sum (fmap area xs)
 >   where xs     = takeWhile (<b) [a + 0*dx, a + 1*dx ..]
@@ -612,10 +614,10 @@ Great, it works for numeric approximations! This can be useful at times,
 but not so much in our case. We want closed expressions to use when solving
 physics problems, regardless of whether there are computations or not!
 
-Luckily, the Fundemental Theorem of Calculus tells us that there IS a way to
+Luckily, the Fundamental Theorem of Calculus tells us that there IS a way to
 express integrals in closed form!
 
-% Wikipedia: https://en.wikipedia.org/wiki/Fundamental_theorem_of_calculus
+From the article on [Wikipedia](https://en.wikipedia.org/wiki/Fundamental_theorem_of_calculus):
 
  > First part
  >
@@ -694,3 +696,5 @@ And here's the proof. We won't delve into this, but it's quite simple.
  > integraler. I femte steget utnyttjas det faktum att $c$ ligger mellan
  > $x$ och $x + h$, så då $h \to 0$ gäller att $c \to x$. Sista steget
  > ges av att $f$ är kontinuerlig.
+ >
+ > -- <cite>[Wikipedia - Analysens Fundamentalsats](https://sv.wikipedia.org/wiki/Analysens_fundamentalsats)</cite>

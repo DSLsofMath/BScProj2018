@@ -11,7 +11,7 @@ Thermodynamics
 > )
 > where
 
-Målet med det här kapitlet är att kunna beskriva kretsprocesser i Haskell. Men innan dess behöver teori och hjälpfunktioner skapas.
+Målet med det här kapitlet är att kunna beskriva kretsprocesser i Haskell.
 
 Ideala gaslagen är ett användbart samband.
 
@@ -30,11 +30,15 @@ $pV = nRT$
 
 Fundamentalt för kretsprocesser är termodynamikens första huvudsats. Den är
 
-$dQ = dE_{int} + dW_{gas}$
+\begin{align}
+  dQ = dE_{int} + dW_{gas}
+\end{align}
 
 eller om man integrer från "initialt" till "finalt" tillstånd.
 
-$Q = \Delta E_{int} + W_{gas}$
+\begin{align}
+  Q = \Delta E_{int} + W_{gas}
+\end{align}
 
 $Q$ är den värme som tillförs gasen. $\Delta E_{int}$ är hur gasens interna energi förändras. $W_{gas}$ är det arbete som *gasen* utför på omgivningen.
 
@@ -42,15 +46,19 @@ De tre inblandade variablerna är av olika karaktär. $Q$ och $W_{gas}$ är *öv
 
 ---
 
-Finns det några slags uttryck för den interna energin och arbetet som kan kopplas till några andra variabler? Ja, det finns.
+Finns det några samband mellan intern energi, arbete och några andra variabler? Ja!
 
 Formeln för intern energi är som följer. Är gasen enatomig gäller
 
-$E_{int} = n \frac{3}{2} R T$
+\begin{align}
+  E_{int} = n \frac{3}{2} R T
+\end{align}
 
 och är den tvåatomig gäller
 
-$E_{int} = n \frac{5}{2} R T$
+\begin{align}
+  $E_{int} = n \frac{5}{2} R T$
+\end{align}
 
 ---
 
@@ -70,7 +78,9 @@ Vi gör även en funktion som beräknar den interna energin i en gas utifrån de
 
 ---
 
-För arbetet kan man härleda uttrycket utifrån bilden (som här saknas hehe).
+För arbetet kan man härleda uttrycket utifrån bilden nedan.
+
+<img src="Work.png" alt="" style="width: 600px;"/>
 
 \begin{align}
   dW &= F*dx \\
@@ -82,7 +92,7 @@ För arbetet kan man härleda uttrycket utifrån bilden (som här saknas hehe).
 Det ger att
 
 \begin{align}
-  \int_i^f dW &= \int_i^f p*dV <-> \\
+  \int_i^f dW &= \int_i^f p*dV \iff \\
             W &= \int_i^f p*dV
 \end{align}
 
@@ -235,6 +245,10 @@ Sambandet mellan specikfik värme för isobart och isokort blir
 
 I en **isoterm** process är temperaturen konstant. Det finala tillståndet specifieras därför av antingen ett önskat tryck eller en önskad volym. Temperaturen ändras inte, så den av tryck och volymn man inte specar måste anpassa sig. Eftersom temperaturen inte heller ändras så ändras inte den interna energin.
 
+> -- Pressure Or Volume
+> data POV = P Double
+>          | V Double
+
 Vi behöver beräkna det arbete som utförs.
 
 \begin{align}
@@ -248,14 +262,14 @@ Vi behöver beräkna det arbete som utförs.
     &= nRT * ln \frac{V_f}{V_i}
 \end{align}
 
-> isoterm :: Gas -> State -> Either Double Double -> (State, Energy)
+> isoterm :: Gas -> State -> POV -> (State, Energy)
 > isoterm gas@(Gas _ n) state@(State pi vi) pfORvf = (newState, energy)
 >   where
 >     ti = tfs gas state
 >     nRT = n*r*ti -- nRT is constant
 >     (pf,vf) = case pfORvf of
->                 Left  pf -> (pf, nRT/pf)
->                 Right vf -> (nRT/vf, vf)
+>                 P pf -> (pf, nRT/pf)
+>                 V vf -> (nRT/vf, vf)
 >     newState = State pf vf
 >     work = nRT*log (vf/vi)
 >     q = work -- Only work, no internal energy change
@@ -282,13 +296,13 @@ Givet initialt tryck och volym, en antingen finalt tryck eller final volym, ska 
   &\implies V_f^\gamma = \frac{x}{p_f} \implies V_f = (\frac{x}{p_f})^{\frac{1}{\gamma}}
 \end{align}
 
-> adiabat :: Gas -> State -> Either Double Double -> (State, Energy)
+> adiabat :: Gas -> State -> POV -> (State, Energy)
 > adiabat gas state@(State pi vi) pfORvf = (newState, energy)
 >   where
 >     pvg = pi*(vi**(gamma gas))
 >     (pf,vf) = case pfORvf of
->                 Left  pf -> (pf,(pvg/pf)**(1/gamma gas))
->                 Right vf -> (pvg/(vf ** gamma gas),vf)
+>                 P pf -> (pf,(pvg/pf)**(1/gamma gas))
+>                 V vf -> (pvg/(vf ** gamma gas),vf)
 >     newState = State pf vf
 >     ei = iefs gas state
 >     ef = iefs gas newState
@@ -298,9 +312,103 @@ Givet initialt tryck och volym, en antingen finalt tryck eller final volym, ska 
 
 När det gäller adiabater är det inte relevant att prata om specifik värme eftersom man inte tillför värme till en adiabatisk process.
 
+---
+
+En *cykel* är en vandring i ett pV-diagram. Den består av flera kretsprocesser och börjar och slutar i samma punkt. Den består av ett första tillstånd. Sedan består den av en kedja kretsprocesser som flyttar gasen från ett tillstånd till ett annat.
+
+> data Chain = InitialState State
+>            | Isobar Double Chain
+>            | Isokor Double Chain
+>            | Isoterm POV Chain
+>            | Adiabat POV Chain
+
+Som ett exempel, låt oss modellera följande process:
+
+<img src="Process1.png" alt="" style="width: 600px;"/>
+
+Där gasen i fråga är enatomig och det finns $0.5$ mol av den.
+
+> gasen = Gas 1 0.5
+> initialState = State 700000 2
+
+> p1 = InitialState initialState
+> p2 = Isoterm (V 10) p1
+> p3 = Isobar 2 p2
+> p4 = Isokor 700000 p3
+
+---
+
+Nu är den modellerad. Man vill kanske evaluera kedjan. Det man får ut då är den värme som upptogs och arbetet som utfördes i varje steg. Den använder också tillståndet man anlände till för att kolla att man anget en giltig kedja.
+
+För att undvika eventuella problem med avrunding defineras en ungefär-lika-med operator.
+
+> (===) :: Double -> Double -> Bool
+> a === b = abs (a-b) < 0.01
+
+> eval :: Gas -> Chain -> [Energy]
+> eval gas chain = reverse . snd $ eval' gas chain
+>
+> -- The state after the whole chain
+> eval' :: Gas -> Chain -> (State, [Energy])
+> eval' gas (InitialState state) = (state, [])
+> eval' gas (Isobar start rest) = (currState, energy:prevEnergies)
+>   where
+>     (prevState, prevEnergies) = eval' gas rest
+>     (currState, energy) = isobar gas prevState start
+> eval' gas (Isokor start rest) = (currState, energy:prevEnergies)
+>   where
+>     (prevState, prevEnergies) = eval' gas rest
+>     (currState, energy) = isokor gas prevState start
+> eval' gas (Isoterm start rest) = (currState, energy:prevEnergies)
+>   where
+>     (prevState, prevEnergies) = eval' gas rest
+>     (currState, energy) = isoterm gas prevState start
+> eval' gas (Adiabat start rest) = (currState, energy:prevEnergies)
+>   where
+>     (prevState, prevEnergies) = eval' gas rest
+>     (currState, energy) = adiabat gas prevState start
+
+Vi provar evaluera.
+
+< ghci> eval gasen p4
+< [Energy 2253213.0774077405 2253213.0774077405,
+<  Energy (-2800000.0) (-1120000.0),
+<  Energy 1680000.0 0.0]
+
+Detta har tolkningen att varje element anger energin för processerna. Det första elementet är värme som upptas från omgivingen (negativt betyder att avger) och det andra elementet är arbetet utfört på omgivningen (negativt betyder att omgivningen utförde arbete på gasen).
+
+I det här fallet var den första processen en isotermisk expansion. Mycket riktigt stämmer det att arbetet är positivt (för expansion) och all upptagen värme gick till att utföra arbete, för eftersom temperaturen inte ändrades gjorde inte inre energin det häller.
+
+Den andra processen är en isobar kompression. Värme lämnas och arbete måste utföras på gasen.
+
+Den tredje processen är en isokor uppvärmning. Inget arbete utförs men värme tillförs.
+
+---
+
+Hur "bra" processen är bestäms av dess verkningsgrad, som defineres som kvoten mellan nyttig energi och tillförd energi. Den nyttiga energin är arbete och den tillförda energin är värmen med positiva tecken.
+
+\begin{align}
+  \eta = \frac{\sum W}{\sum Q_{tillförd}}
+\end{align}
+
+Vad har den avgedda värmen med ovanstående att göra? Här kommmer energiprincipen in i bilden, som säger att ingen energi försvinner. In i systemt kommer värme, en del arbete utförs och en del värme kommer ut igen. Sambandet
+
+\begin{align}
+  |Q_{tillförd}| - |Q_{avgedd}| = W_{netto}
+\end{align}
+
+gäller.
+
+<img src="Energy_principle.png" alt="" style="width: 600px;"/>
 
 
 
+
+
+
+
+
+TODO: Jämför energier beräknade med de formler som stod i tabellen.
 
 
 
@@ -320,69 +428,7 @@ Initial koordinat, sedan processer som tar vid och stannar vid något visst.
 
 Detta DSL inte så bra vid problemlösning, men kanske i verkliga fall där man vill titta på verkningsgrader genom att kombinera olika processer
 
--------------
 
-Idela gaslagen: `pV = nRT`.
-
-Inre energi: `E = n*(3/2)*R*T` för enatomiga och `E = n*(5/2)*R*T` för tvåatomiga. Har att göra med antal frihetsgrader.
-
-Vägen som togs för inre energi spelar ingen roll.
-
-----------
-
-Värme och arbete är bara något som finns vid en process.
-
-`dW = F*dx = p*A*dx = P*dV`
-
-`W i->f = int i -> f p*dV`
-
-Hur vi tar oss i till f spelar roll för arbetet.
-
-------------
-
-Isokor process. Då är arbetet `0` för `dV = 0` hela tiden.
-
-Isobar process. Då är arbetet `p*(Vf-Vi)` När expanderar så gör positivt arbete.
-
-Isoterm process. `pV=nRT` och `T` är konstant. `p = nRT/V` Gör man lite algebra får man att wg = nRT*ln(Vf/Vi). Fortfarande positivt arbete om expansion.
-
--------------
-
-Termodynamikens 1:a huvudsats
-
-`dQ = dE + dW` tillförd värme står för ökad inre energi och utfört arbete.
-
-Fråga om det fastsvetsade locket och löst. Är arbetet för att lyfta locket mot gravitationskraften?
-
------------
-
-Specifikt värme är så mycket värme behöver tillföras för att öka med viss temperatur. Cv om volymen hålls konstant. Cp om trycket hålls konstant.
-
-Cv är `3/2*R` för enatomig, eftersom vid konstant volym är `dW=0` så inget arbete. Allt går åt till den inre energi. 
-
-Gör man lite beräkningar får man att `Cp=Cv+R`.
-
--------------
-
-Adiabatisk process är termiskt isolerad från omgivningen. Inget värmeutbyte.
-
-I `Q = deltaE + W` är `Q = 0` så om expanderar och gör arbete måste deltaE vara negativ, dvs minskar i temp, så kurvan ser ut som isoterm fast brantare.
-
-För en isoterm gäller pV = konst
-
-För en adiabat gäller pV^(Cp/Cv) 
-
-gamma = Cp/Cv.
-
----------------
-
-Sammanfattande tabell
-
-| Värde       | Isokor                | Isobar                | Iosterm               | Adiabat               |
-| ------------|-----------------------|-----------------------|-----------------------|-----------------------|
-| $$ Q $$     | $$ n*C_v*(T_2-T_1) $$ | $$ n*C_p*(T_2-T_1) $$ | $$ nRT*ln(V_2/V_1) $$ | $$ 0 $$               |
-| $$ E_int $$ | $$ n*C_v*(T_2-T_1) $$ | $$ n*C_v*(T_2-T_1) $$ | $$ 0 $$               | $$ n*C_v*(T_2-T_1) $$ |
-| $$ W_gas $$ | $$ 0 $$               | $$ n*R*(T_2-T_1) $$   | $$ nRT*ln(V_2/V_1) $$ | $$ n*C_v*(T_1-T_2) $$ |
 
 ---------------
 

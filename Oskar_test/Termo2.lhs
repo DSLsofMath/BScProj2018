@@ -46,11 +46,11 @@ Finns det några slags uttryck för den interna energin och arbetet som kan kopp
 
 Formeln för intern energi är som följer. Är gasen enatomig gäller
 
-$E_{int} = n \frac{3}{2} T$
+$E_{int} = n \frac{3}{2} R T$
 
 och är den tvåatomig gäller
 
-$E_{int} = n \frac{5}{2} T$
+$E_{int} = n \frac{5}{2} R T$
 
 ---
 
@@ -58,12 +58,13 @@ Vi har nu introducerat de egenskaper som man kan säga definerar ett system av e
 
 > data Gas = Gas Int    -- Number of atoms
 >                Double -- Amount of substance
+>            deriving (Show)
 
 Vi gör även en funktion som beräknar den interna energin i en gas utifrån dess nuvarande temperatur.
 
 > -- Internal Energy From Temperature
 > ieft :: Gas -> Double -> Double
-> ieft (Gas na n) t = n*((fromIntegral na)*2+1)/2*t
+> ieft (Gas na n) t = n*((fromIntegral na)*2+1)/2*r*t
 
 Är inte temperatur, tryck och volym egenskaper hos en gas? Jo, det är de, men de ändras över tid. Så vi behandlar dem separat från de fixa variablerna.
 
@@ -93,6 +94,7 @@ En gas genomgår olika *kretsprocesser*. Den tar sig från ett tillstånd till e
 
 > data State = State Double -- Pressure
 >                    Double -- Volume
+>              deriving (Show)
 
 För en viss gas kan nu temperaturen bestämmas om man vet vilket tillstånd man är i. Det ser man om ideala gaslagen skrivs om.
 
@@ -108,10 +110,12 @@ Vi gör även en funktion för att få intern energi direkt från ett tillstånd
 
 > -- Internal Energy From State
 > iefs :: Gas -> State -> Double
-> iefs gas = ieft' . tfs'
+> iefs gas state = ieft gas temp
 >   where
->     tfs' = tfs gas
->     ieft' = ieft gas
+>     temp = tfs gas state
+
+> gas = Gas 1 8.0
+> st1 = State 200 1
 
 Varför välja just $p$ och $V$ som tillstånd? Det hade gått att välja exempelvis $p$ och $T$ som tillstånd men man brukar inte göra så.
 
@@ -130,6 +134,7 @@ Vi ska nu göra funktioner som "genomför" en process på ett system. Gemensamt 
 
 > data Energy = Energy Double -- Tillförd värme
 >                      Double -- Utfört arbete
+>               deriving (Show)
 
 ---
 
@@ -149,6 +154,33 @@ Vi beräknar vad arbetet ska bli. Från tidigare har vi att $W = \int_i^f p*dV$ 
 >     q = ed + work          -- 1:a huvudsatsen
 >     energy = Energy q work
 
+Begreppet *specifik värme* talar om hur mycket värme som krävs för att höja temperaturen med en viss nivå. I det isobara och enatomiga fallet gäller
+
+\begin{align}
+  Q &= \Delta E_{int} + W_{gas} \\
+    &= n \frac{3}{2} R T_f - n \frac{3}{2} R T_i + p*(V_f - V_i) \\
+    &= n \frac{3}{2} R \Delta T + pV_f - pV_i \\
+    &= \{ pV_f = nRT_f \} \\
+    &= n \frac{3}{2} R \Delta T + nRT_f - nRT_i \\
+    &= n \frac{3}{2} R \Delta T + nR \Delta T \\
+    &= n(\frac{3}{2} + 1)R \Delta T \\
+    &= n \frac{5}{2} R \Delta T
+\end{align}
+
+Därför defineras specifik värme för det isobara fallet som
+
+\begin{align}
+  C_p = n \frac{5}{2} R
+\end{align}
+
+för enatomiga gaser och, som en liknande beräkning skulle visat
+
+\begin{align}
+  C_p = n \frac{7}{2} R
+\end{align}
+
+för tvåatomiga gaser.
+
 ---
 
 I en **isokor** process är volymen konstant. Det finala tillståndet specifieras därför av önskat finalt tryck.
@@ -166,6 +198,32 @@ Arbetet som utförs är $0$ eftersom $dV=0$ hela tiden.
 >     ed = ef - ei
 >     q = ed -- No work, only internal energy difference
 >     energy = Energy q work
+
+Vi beräknar specifk värme för det enatomiga isokora fallet.
+
+\begin{align}
+  Q &= \Delta E_{int} + W_{gas} \\
+    &= n \frac{3}{2} R T_f - n \frac{3}{2} R T_i + 0 \\
+    &= n \frac{3}{2} R \Delta T\\
+\end{align}
+
+Därför defineras specifik värme för det isokora fallet, med en atom, som
+
+\begin{align}
+  C_v = n \frac{3}{2} R
+\end{align}
+
+och för det tvåatomiga, som en liknande uträkning skulle visat
+
+\begin{align}
+  C_v = n \frac{5}{2} R
+\end{align}
+
+Sambandet mellan specikfik värme för isobart och isokort blir
+
+\begin{align}
+  C_p = C_v + R
+\end{align}
 
 ---
 
@@ -197,6 +255,29 @@ Vi behöver beräkna det arbete som utförs.
 >     q = work -- Only work, no internal energy change
 >     energy = Energy q work
 
+När det kommer till isoterma processer är det inte relevant att prata om specik värme eftersom temperaturen inte ändras.
+
+---
+
+I en **adiabatisk** process sker inget värmebyte med omgivningen. Det finala tillståndet brukar specificeras med en temperatur. Till hjälp för att hålla koll på värden kan man visa att $pV^\gamma = konstant$ gäller för adiabater där
+
+\begin{align}
+  \gamma = \frac{C_p}{C_v]}
+\end{align}
+
+> adiabat :: Gas -> State -> Double -> (State, Energy)
+> adiabat gas (State pi vi) tf =
+>   where
+>     
+
+
+
+
+
+
+
+
+
 
 
 
@@ -207,14 +288,9 @@ Vi behöver beräkna det arbete som utförs.
 
 
 IDE: Ha isoterm, isobar m.m. som en syntax-träd!!!
+Initial koordinat, sedan processer som tar vid och stannar vid något visst.
 
-
-
-
-
-
-
-
+Detta DSL inte så bra vid problemlösning, men kanske i verkliga fall där man vill titta på verkningsgrader genom att kombinera olika processer
 
 -------------
 

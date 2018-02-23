@@ -276,7 +276,11 @@ $$ v_x = \frac{dx}{dt} = lim_{\Delta t \to 0} \frac{\Delta x}{\Delta t} $$
 
 % https://en.wikipedia.org/wiki/Leibniz%27s_notation
 
-"In calculus, Leibniz's notation, named in honor of the 17th-century German philosopher and mathematician Gottfried Wilhelm Leibniz, uses the symbols dx and dy to represent infinitely small (or infinitesimal) increments of x and y, respectively, just as Δx and Δy represent finite increments of x and y, respectively."
+ > In calculus, Leibniz's notation, named in honor of the 17th-century
+ > German philosopher and mathematician Gottfried Wilhelm Leibniz,
+ > uses the symbols dx and dy to represent infinitely small (or
+ > infinitesimal) increments of x and y, respectively, just as Δx and
+ > Δy represent finite increments of x and y, respectively.
 
 We interpret this in mathematical terms:
 
@@ -297,7 +301,16 @@ considered too imprecise to be used as the foundation of calculus.
 
 % https://en.wikipedia.org/wiki/Leibniz%27s_notation
 
-"Leibniz's concept of infinitesimals, long considered to be too imprecise to be used as a foundation of calculus, was eventually replaced by rigorous concepts developed by Weierstrass and others. Consequently, Leibniz's quotient notation was re-interpreted to stand for the limit of the modern definition. However, in many instances, the symbol did seem to act as an actual quotient would and its usefulness kept it popular even in the face of several competing notations. In the modern rigorous treatment of non-standard calculus, justification can be found to again consider the notation as representing an actual quotient."
+ > Leibniz's concept of infinitesimals, long considered to be too
+ > imprecise to be used as a foundation of calculus, was eventually
+ > replaced by rigorous concepts developed by Weierstrass and
+ > others. Consequently, Leibniz's quotient notation was re-interpreted
+ > to stand for the limit of the modern definition. However, in many
+ > instances, the symbol did seem to act as an actual quotient would and
+ > its usefulness kept it popular even in the face of several competing
+ > notations. In the modern rigorous treatment of non-standard calculus,
+ > justification can be found to again consider the notation as
+ > representing an actual quotient.
 
 Leibniz's notation definition. Used to be defined as "the quotient of an infinitesimal increment of y by an infinitesimal increment of x":
 
@@ -305,9 +318,14 @@ $$ D(f) = \frac{dy}{dx} = \frac{lim_{\Delta y \to 0} \Delta y}{lim_{\Delta x \to
 
 % https://en.wikipedia.org/wiki/Derivative
 
-"The most common approach to turn this intuitive idea into a precise definition is to define the derivative as a limit of difference quotients of real numbers."
+ > The most common approach to turn this intuitive idea into a
+ > precise definition is to define the derivative as a limit of
+ > difference quotients of real numbers.
 
-"In its modern interpretation, the expression dy/dx should not be read as the division of two quantities dx and dy (as Leibniz had envisioned it); rather, the whole expression should be seen as a single symbol that is shorthand for"
+ > In its modern interpretation, the expression dy/dx should not be read
+ > as the division of two quantities dx and dy (as Leibniz had envisioned
+ > it); rather, the whole expression should be seen as a single symbol
+ > that is shorthand for
 
 $$ D(x) = lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x} $$
 
@@ -434,31 +452,84 @@ TODO: Describe relationship between between "Definite integrals", "Indefinite in
 
 % https://en.wikipedia.org/wiki/Fundamental_theorem_of_calculus
 
-"The fundamental theorem of calculus is a theorem that links the concept of differentiating a function with the concept of integrating a function.
+ > The fundamental theorem of calculus is a theorem that links the
+ > concept of differentiating a function with the concept of integrating
+ > a function.
+ >
+ > The first part of the theorem, sometimes called the first fundamental
+ > theorem of calculus, states that one of the antiderivatives (also
+ > called indefinite integral), say F, of some function f may be obtained
+ > as the integral of f with a variable bound of integration. This
+ > implies the existence of antiderivatives for continuous functions.[1]
+ >
+ > Conversely, the second part of the theorem, sometimes called the
+ > second fundamental theorem of calculus, states that the integral of a
+ > function f over some interval can be computed by using any one, say F,
+ > of its infinitely many antiderivatives. This part of the theorem has
+ > key practical applications, because explicitly finding the
+ > antiderivative of a function by symbolic integration allows for
+ > avoiding numerical integration to compute integrals.
 
-The first part of the theorem, sometimes called the first fundamental theorem of calculus, states that one of the antiderivatives (also called indefinite integral), say F, of some function f may be obtained as the integral of f with a variable bound of integration. This implies the existence of antiderivatives for continuous functions.[1]
-
-Conversely, the second part of the theorem, sometimes called the second fundamental theorem of calculus, states that the integral of a function f over some interval can be computed by using any one, say F, of its infinitely many antiderivatives. This part of the theorem has key practical applications, because explicitly finding the antiderivative of a function by symbolic integration allows for avoiding numerical integration to compute integrals."
-
-"Newton and Leibniz
-
-The major advance in integration came in the 17th century with the independent discovery of the fundamental theorem of calculus by Newton and Leibniz. The theorem demonstrates a connection between integration and differentiation. This connection, combined with the comparative ease of differentiation, can be exploited to calculate integrals. In particular, the fundamental theorem of calculus allows one to solve a much broader class of problems. Equal in importance is the comprehensive mathematical framework that both Newton and Leibniz developed. Given the name infinitesimal calculus, it allowed for precise analysis of functions within continuous domains. This framework eventually became modern calculus, whose notation for integrals is drawn directly from the work of Leibniz.
-Formalization
-While Newton and Leibniz provided a systematic approach to integration, their work lacked a degree of rigour. Bishop Berkeley memorably attacked the vanishing increments used by Newton, calling them "ghosts of departed quantities". Calculus acquired a firmer footing with the development of limits. Integration was first rigorously formalized, using limits, by Riemann. Although all bounded piecewise continuous functions are Riemann-integrable on a bounded interval, subsequently more general functions were considered—particularly in the context of Fourier analysis—to which Riemann's definition does not apply, and Lebesgue formulated a different definition of integral, founded in measure theory (a subfield of real analysis). Other definitions of integral, extending Riemann's and Lebesgue's approaches, were proposed. These approaches based on the real number system are the ones most common today, but alternative approaches exist, such as a definition of integral as the standard part of an infinite Riemann sum, based on the hyperreal number system."
+ > Newton and Leibniz
+ >
+ > The major advance in integration came in the 17th century with the
+ > independent discovery of the fundamental theorem of calculus by Newton
+ > and Leibniz. The theorem demonstrates a connection between integration
+ > and differentiation. This connection, combined with the comparative
+ > ease of differentiation, can be exploited to calculate integrals. In
+ > particular, the fundamental theorem of calculus allows one to solve a
+ > much broader class of problems. Equal in importance is the
+ > comprehensive mathematical framework that both Newton and Leibniz
+ > developed. Given the name infinitesimal calculus, it allowed for
+ > precise analysis of functions within continuous domains. This
+ > framework eventually became modern calculus, whose notation for
+ > integrals is drawn directly from the work of Leibniz.  Formalization
+ > While Newton and Leibniz provided a systematic approach to
+ > integration, their work lacked a degree of rigour. Bishop Berkeley
+ > memorably attacked the vanishing increments used by Newton, calling
+ > them "ghosts of departed quantities". Calculus acquired a firmer
+ > footing with the development of limits. Integration was first
+ > rigorously formalized, using limits, by Riemann. Although all bounded
+ > piecewise continuous functions are Riemann-integrable on a bounded
+ > interval, subsequently more general functions were
+ > considered—particularly in the context of Fourier analysis—to which
+ > Riemann's definition does not apply, and Lebesgue formulated a
+ > different definition of integral, founded in measure theory (a
+ > subfield of real analysis). Other definitions of integral, extending
+ > Riemann's and Lebesgue's approaches, were proposed. These approaches
+ > based on the real number system are the ones most common today, but
+ > alternative approaches exist, such as a definition of integral as the
+ > standard part of an infinite Riemann sum, based on the hyperreal
+ > number system.
 
 Newton and Leibniz independently discovered the fundemental theorem of calculus.
 They based their definitions on infinitesimals which, as described above was considered too imprecise.
 Later, Riemann rigorously formalized integration using limits.
 
-"There are many ways of formally defining an integral, not all of which are equivalent. The differences exist mostly to deal with differing special cases which may not be integrable under other definitions, but also occasionally for pedagogical reasons. The most commonly used definitions of integral are Riemann integrals and Lebesgue integrals."
+ > There are many ways of formally defining an integral, not all of
+ > which are equivalent. The differences exist mostly to deal with
+ > differing special cases which may not be integrable under other
+ > definitions, but also occasionally for pedagogical reasons. The most
+ > commonly used definitions of integral are Riemann integrals and
+ > Lebesgue integrals.
 
 We only look at Riemann integrals for now, since they will likely be more familiar to most students (They are to me!).
 
-"In the branch of mathematics known as real analysis, the Riemann integral, created by Bernhard Riemann, was the first rigorous definition of the integral of a function on an interval. It was presented to the faculty at the University of Göttingen in 1854, but not published in a journal until 1868.[1] For many functions and practical applications, the Riemann integral can be evaluated by the fundamental theorem of calculus or approximated by numerical integration.
+ > In the branch of mathematics known as real analysis, the Riemann
+ > integral, created by Bernhard Riemann, was the first rigorous
+ > definition of the integral of a function on an interval. It was
+ > presented to the faculty at the University of Göttingen in 1854, but
+ > not published in a journal until 1868.[1] For many functions and
+ > practical applications, the Riemann integral can be evaluated by the
+ > fundamental theorem of calculus or approximated by numerical
+ > integration.
+ >
+ > The Riemann integral is unsuitable for many theoretical
+ > purposes. Some of the technical deficiencies in Riemann integration
+ > can be remedied with the Riemann–Stieltjes in > tegral, and most
+ > disappear with the Lebesgue integral.
 
-The Riemann integral is unsuitable for many theoretical purposes. Some of the technical deficiencies in Riemann integration can be remedied with the Riemann–Stieltjes integral, and most disappear with the Lebesgue integral."
-
-See: \url{https://mathoverflow.net/questions/52708/why-should-one-still-teach-riemann-integration}
+See: [Why should one still teach Riemann integration? (Mathoverflow)](https://mathoverflow.net/questions/52708/why-should-one-still-teach-riemann-integration)
 
 So there are some problems, but Riemann integrals will do for now.(?)
 
@@ -470,9 +541,11 @@ Geometrically (in 2D), the integral of a function over an interval is equivalent
 over the same interval.
 
 % Wikipedia: https://en.wikipedia.org/wiki/Integral
-"
-The definite integral is defined informally as the signed area of the region in the xy-plane that is bounded by the graph of f, the x-axis and the vertical lines x = a and x = b. The area above the x-axis adds to the total and that below the x-axis subtracts from the total.
-"
+
+ > The definite integral is defined informally as the signed area of the
+ > region in the xy-plane that is bounded by the graph of f, the x-axis
+ > and the vertical lines $x = a$ and $x = b$. The area above the x-axis adds
+ > to the total and that below the x-axis subtracts from the total.
 
 This is the syntax for definite integrals
 
@@ -544,83 +617,80 @@ express integrals in closed form!
 
 % Wikipedia: https://en.wikipedia.org/wiki/Fundamental_theorem_of_calculus
 
-"
-First part
-
-This part is sometimes referred to as the first fundamental theorem of calculus.
-
-Let $f$ be a continuous real-valued function defined on a closed
-interval $[a, b]$. Let $F$ be the function defined, for all $x \in [a, b]$, by
-
-$$ F(x) = \int_a^x f(t) dt $$
-
-Then, $F$ is uniformly continuous on $[a,b]$, differentiable on the
-open interval $(a, b)$ and
-
-$$ F'(x) = f(x) $$
-
-for all $x \in (a,b)$.
-
-Alternatively, if $f$ is merely Riemann integrable, then $F$ is
-continuous on $[a,b]$ (but not necessarily differentiable).
-
-Corollary
-
-The fundamental theorem is often employed to compute the definite
-integral of a function $f$ for which an antiderivative $F$ is
-known. Specifically, if $f$ is a real-valued continuous function on
-$[a,b]$ and $F$ is an antiderivative of $f$ in $[a,b]$ then
-
-$$ \int_a^b f(t) dt = F(b) - F(a) $$
-
-The corollary assumes continuity on the whole interval. This result is
-strengthened slightly in the following part of the theorem.
-
-Second part
-
-This part is sometimes referred to as the second fundamental theorem
-of calculus or the Newton–Leibniz axiom.
-
-Let $f$ and $f$ be real-valued functions defined on a closed interval
-$[a,b]$ such that $f$ is continuous on all $[a,b]$ and the derivative
-of $F$ is $f$ for almost all points in $[a,b]$. That is, $f$ and $F$
-are functions such that for all $x \in (a,b)$ except for perhaps a set
-of measure zero in the interval:
-
-$$ F'(x)=f(x) $$
-
-If $f$ is Riemann integrable on $[a,b]$ then
-
-$$ \int_a^b f(x) dx = F(b) - F(a) $$
-
-The second part is somewhat stronger than the corollary because it
-does not assume that $f$ is continuous.
-
-When an antiderivative $f$ exists, then there are infinitely many
-antiderivatives for $f$, obtained by adding an arbitrary constant to
-$f$. Also, by the first part of the theorem, antiderivatives of $f$
-always exist when $f$ is continuous.  "
+ > First part
+ >
+ > This part is sometimes referred to as the first fundamental theorem of calculus.
+ >
+ > Let $f$ be a continuous real-valued function defined on a closed
+ > interval $[a, b]$. Let $F$ be the function defined, for all $x \in [a, b]$, by
+ >
+ > $$ F(x) = \int_a^x f(t) dt $$
+ >
+ > Then, $F$ is uniformly continuous on $[a,b]$, differentiable on the
+ > open interval $(a, b)$ and
+ >
+ > $$ F'(x) = f(x) $$
+ >
+ > for all $x \in (a,b)$.
+ >
+ > Alternatively, if $f$ is merely Riemann integrable, then $F$ is
+ > continuous on $[a,b]$ (but not necessarily differentiable).
+ >
+ > Corollary
+ >
+ > The fundamental theorem is often employed to compute the definite
+ > integral of a function $f$ for which an antiderivative $F$ is
+ > known. Specifically, if $f$ is a real-valued continuous function on
+ > $[a,b]$ and $F$ is an antiderivative of $f$ in $[a,b]$ then
+ >
+ > $$ \int_a^b f(t) dt = F(b) - F(a) $$
+ >
+ > The corollary assumes continuity on the whole interval. This result is
+ > strengthened slightly in the following part of the theorem.
+ >
+ > Second part
+ >
+ > This part is sometimes referred to as the second fundamental theorem
+ > of calculus or the Newton–Leibniz axiom.
+ >
+ > Let $f$ and $f$ be real-valued functions defined on a closed interval
+ > $[a,b]$ such that $f$ is continuous on all $[a,b]$ and the derivative
+ > of $F$ is $f$ for almost all points in $[a,b]$. That is, $f$ and $F$
+ > are functions such that for all $x \in (a,b)$ except for perhaps a set
+ > of measure zero in the interval:
+ >
+ > $$ F'(x)=f(x) $$
+ >
+ > If $f$ is Riemann integrable on $[a,b]$ then
+ >
+ > $$ \int_a^b f(x) dx = F(b) - F(a) $$
+ >
+ > The second part is somewhat stronger than the corollary because it
+ > does not assume that $f$ is continuous.
+ >
+ > When an antiderivative $f$ exists, then there are infinitely many
+ > antiderivatives for $f$, obtained by adding an arbitrary constant to
+ > $f$. Also, by the first part of the theorem, antiderivatives of $f$
+ > always exist when $f$ is continuous.
 
 And here's the proof. We won't delve into this, but it's quite simple.
 
-"
-Bevis
-
-Satsen kan bevisas enligt följande:
-
-\begin{align*}
-F'(x) &= \lim_{h \to 0} \frac{F(x + h) - F(x)}{h} \\
-      &= \lim_{h \to 0} \frac{1}{h} \left( \int_a^{x + h} f(t) dt - \int_a^x f(t) dt \right) \\
-      &= \lim_{h \to 0} \frac{1}{h} \int_x^{x + h} f(t) dt \\
-      &= \lim_{h \to 0} f(c) \\
-      &= \lim_{c \to x} f(c) \\
-      &= f(x)
-\end{align*}
-
-I första steget utnyttjas derivatans definition och i det andra
-definitionen av $f$. I det tredje steget används räknelagar för
-integraler. I fjärde steget används medelvärdessatsen för
-integraler. I femte steget utnyttjas det faktum att $c$ ligger mellan
-$x$ och $x + h$, så då $h \to 0$ gäller att $c \to x$. Sista steget
-ges av att $f$ är kontinuerlig.
-"
+ > Bevis
+ >
+ > Satsen kan bevisas enligt följande:
+ >
+ > \begin{align*}
+ > F'(x) &= \lim_{h \to 0} \frac{F(x + h) - F(x)}{h} \\
+ >       &= \lim_{h \to 0} \frac{1}{h} \left( \int_a^{x + h} f(t) dt - \int_a^x f(t) dt \right) \\
+ >       &= \lim_{h \to 0} \frac{1}{h} \int_x^{x + h} f(t) dt \\
+ >       &= \lim_{h \to 0} f(c) \\
+ >       &= \lim_{c \to x} f(c) \\
+ >       &= f(x)
+ > \end{align*}
+ >
+ > I första steget utnyttjas derivatans definition och i det andra
+ > definitionen av $f$. I det tredje steget används räknelagar för
+ > integraler. I fjärde steget används medelvärdessatsen för
+ > integraler. I femte steget utnyttjas det faktum att $c$ ligger mellan
+ > $x$ och $x + h$, så då $h \to 0$ gäller att $c \to x$. Sista steget
+ > ges av att $f$ är kontinuerlig.

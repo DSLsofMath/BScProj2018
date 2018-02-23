@@ -1,0 +1,105 @@
+%LaTeX-inställningar%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Kompliera med pdflatex
+\documentclass[a4paper, 10pt]{article}
+
+\usepackage[utf8x]{inputenc}
+\usepackage[swedish]{babel}
+\usepackage{graphicx}
+
+\usepackage{geometry} 
+\geometry{a4paper} 
+\geometry{margin=1in}
+\setcounter{section}{1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Fyll i vid varje möte:
+\newcommand{\tid}{11:30}
+\newcommand{\plats}{3209}
+\newcommand{\datum}{2018-02-20}
+
+\newcommand{\sammankallande}{\textit{
+Björn\\
+Erik\\
+Oskar\\
+Johan\\
+Handledare Patrik\\
+}}
+
+%Snabbkommandon
+\newcommand{\sect}[1][]{\section*{\S \thesection. #1} \stepcounter{section}}
+\newcommand{\para}{\paragraph \noindent}
+\newcommand{\ssect}[1][]{\subsection*{#1}}
+
+\begin{document}
+
+
+%Rubrik etc
+\section*{\center Dagordning - Grupp DSLsofMath LV1} 
+\vspace{1em}
+\textbf{Kl:} \tid , \datum \\
+\textbf{Plats:} \plats \\
+
+%Dagordning:
+%Detta är en mall. Lägg till paragrafer och underparagrafer om det behövs.
+
+\sect[Mötets öppnande]
+
+\ssect[Närvarande]
+
+\sect[Val av sekreterare och justerare]
+
+\sect[Godkännande av dagordning]
+
+\sect[Godkännande av föregående mötesprotokoll]
+
+\sect[Informationspunkter]
+
+Vi har inte fått svar angående ombokning av halvtidsredovisningen. Fråga fler? Andra?
+    Jag gör.
+
+
+Åke har kommit hem. Vi kan kontakta honom nu.
+    jag tar kontakt med honom.
+\sect[Statusrapport]
+
+Saker vi funderade på under arbetsmötet 2018-02-16.
+    "mega bisarro DSLS" 
+
+
+\sect[Uppföljning och eventuella förändringar]
+
+\sect[Kommande uppgifter]
+
+Halvtidsredovisningen 27de Februari.
+
+\sect[Övriga frågor]
+
+Snack om DSLsofMath för grundskole
+
+Patrik har kollat igenom en del kod. 
+    
+Monster DSLs?
+    Antagligen separata dsls.
+
+    Elever brukar fråga efter exempel på lösningar.
+
+    Ge början på nånting, ge lite ledtrådar.
+        Olika delar utelämnade.
+
+    Patrik tror på separata, inte på mother of all dsls.
+        på afp föreläsning:
+            funktioner från tid:
+
+        en vektor av funktioner? 
+
+        enheter, prefix, storheter, mm, m, alla har samma dimension, men olika koeffecient.
+
+
+\sect[Nästa möte sker...]
+
+\sect[Mötets avslutande]
+
+
+\end{document}
+
+

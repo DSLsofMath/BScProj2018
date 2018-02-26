@@ -1,0 +1,67 @@
+\chapter{Bilaga $\lambda$}
+
+\section*{Inläsning}
+
+\begin{itemize}
+    \item Identifikation av problemområden.
+        \begin{itemize}
+            \item Kontakt med Åke Fäldt och DNS. Studera kursutvärderingar.
+            \item Reflektera över vad vi själva tyckt varit svåra områden då vi
+          läst kursen.  \end{itemize}
+    \item Studerande av existerande läromaterial, både inom ren fysik och liknande vårt material.
+        \begin{itemize}
+            \item Fysikboken.
+            \item Åke Fäldts egna material.
+            \item Boken \textit{Structure Interpretaton of Classical Mechanics}\cite{SICM}.
+            \item Kursboken till kursen \textit{Matematikens domänspecifika språk}.
+        \end{itemize}
+    \item Existerande implementationer.
+        \begin{itemize}
+            \item OpenTA.
+            \item Hamilton.
+            \item MasteringPhysics.
+        \end{itemize}
+    \item Tidigare forskning.
+        \begin{itemize}
+            \item Cezar och Patriks 2015 forskningsartikel.
+            \item 2016 års kandidatarbete.
+            \item Artikeln \textit{DSL for the Uninitiated}.
+            \item \textit{Communicating Mathematics: Useful Ideas from Computer Science}
+        \end{itemize}
+\end{itemize}
+
+\section*{Implementation av domänspecifika språk}
+
+Vid implementationen av ett/flera domänspecika språk behöver nedanstående punkter genomföras.
+
+\begin{itemize}
+    \item Hitta relevanta grundtyper inom fysik, exempelvis sträcka och massa.
+    \item Hitta relevanta komposittyper, exempelvis hastighet och tryck.
+    \item Utförligt typsystem.
+    \item Dimensionskontroll.
+    \item Modellera fysikens syntax i språket.
+    \item Pedagogiska syntaxträd.
+    \item Kombinatorer och konstruktorer.
+    \item Hålla våra typer polymorfa.
+\end{itemize}
+
+\section*{Skrivande av läromaterial}
+
+Vid skrivandet av läromaterialet kommer följande punkter ligga till grund.
+
+\begin{itemize}
+    \item En gemensam vokabulär som fungerar när man skriver om både
+      fysik och programmering (generics kontra polymorfism), och som gör det
+      möjligt att prata om dem i samma mening utan att byta språk och på så sätt
+      brygga det semantiska gapet mellan områdena.  
+    \item Övningar
+        \begin{itemize}
+            \item Modellera ett fysikaliskt problem med vårt domänspecifika språk.
+            \item Lös ett ''vanligt'' fysikaliskt problem med hjälp av vårt domänspecifika språk.
+            \item Simuleringar i stil med \textit{Bouncing Balls}.
+            \item Delar av fysiken vi inte behandlat lämnas som övning att själv implementera.
+        \end{itemize}
+    \item Gå igenom allmän teori (t.ex. Newtons lagar, krafter som verkar, etc) tillsammans med en parallell utveckling av ett domänspecifikt språk.
+    \item Materialet ska vara enkelt att ta till sig.
+    \item Verkligen exponera det DSL som vi gemensamt bygger för att påvisa kopplingen mellan fysik och programmering.
+\end{itemize}

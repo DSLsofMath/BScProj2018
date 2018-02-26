@@ -1,0 +1,135 @@
+%LaTeX-inställningar%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Kompliera med pdflatex
+\documentclass[a4paper, 10pt]{article}
+
+\usepackage[utf8x]{inputenc}
+\usepackage[swedish]{babel}
+\usepackage{graphicx}
+
+\usepackage{enumitem}
+
+\usepackage{geometry} 
+\geometry{a4paper} 
+\geometry{margin=1in}
+\setcounter{section}{1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Fyll i:
+\newcommand{\tid}{11:30}
+\newcommand{\plats}{4205}
+\newcommand{\lasvecka}{2}
+\newcommand{\datum}{2018-01-26}
+\newcommand{\present}{
+Erik\\
+Björn\\
+Johan\\
+Oskar\\
+Handledare Patrik
+}
+\newcommand{\justerare}{Oskar}
+\newcommand{\sekreterare}{Björn}
+%Snabbkommandon
+\newcommand{\sect}[1][]{\section*{\S \thesection. #1} \stepcounter{section}}
+\newcommand{\para}{\paragraph \noindent}
+\newcommand{\ssect}[1][]{\subsection*{#1}}
+
+\begin{document}
+
+
+%Rubrik etc
+\section*{\center Protokoll Projektmöte LV\lasvecka} 
+\vspace{1em}
+\textbf{Tid:} \tid , \datum \\
+\textbf{Plats:} \plats \\
+
+%Protokoll:
+%Observera att detta är ett exempel som speglar exemplet på kallelse. Protokollet skall utformas på så sätt att det varje vecka speglar den aktuella kallelsen. Paragrafer kan komma att läggas till eller justeras.
+\sect[Mötets öppnande]
+\ssect[Närvarande]
+\present %Fyll i listan som startar på rad 20
+
+\sect[Val av sekreterare och justerare]
+
+\sekreterare \ väljs som sekreterare.\\
+\\
+\justerare \ väljs som justerare.
+
+\sect[Godkännande av dagordning]
+Learn you a physics?\\
+\\
+Fråga patrik om hur bidragsrapporten ska se ut.\\
+\\
+Bokningar av föreläsningar och handledningstillfällen.\\
+\\
+Skriva under gruppkontrakt.\\
+\\
+Tidsplaneringen.\\
+\\
+Gå igenom utkastet av planeringsrapporten med Patrik.\\
+
+\sect[Godkännande av föregående mötesprotokoll]
+Föregående mötesprotokoll gicks igenom, inga kommentarer.
+
+\sect[Informationspunkter]
+Alla sharelatex-commits hamnar på Björn, ty ändringarna görs på Björns delade sharelatex projekt. En möjlighet är git-branches, och en annan är att alla importerar sitt egna sharelatex repo.\\
+\\
+Vi fick svar från fysiklärare Åke. Han menar på att det eleverna har mest problem med är infinitesmalkalkyl. Vi kan ha möte med honom efter den 19de februari.
+
+\sect[Statusrapport]
+%Alla rapporterar individuellt status
+
+\ssect[Individuellt]
+Samtliga har skrivit på planeringsrapporten samt gjort sina åtaganden från förra handledarmötet.
+
+\sect[Uppföljning och eventuella förändringar]
+%Mötet diskuterar om milstolparna för denna veckan har nåtts. Om inte, hur ska de nås under kommande vecka?
+Vi har ett utkast på en planeringsrapport. Patrik har skrivit kommentarer i den.
+
+\sect[Kommande uppgifter]
+
+\ssect[Projektet]
+Färdigställa planeringsrapporten.\\
+
+%Vad är kommande uppgifter för varje individ?
+
+\ssect[Individuellt]
+Vi fixar planeringsrapporten gemensamt enligt Patriks kommentarer. Under nästa arbetsmöte kan vi fixa fler uppgifter.
+
+\sect[Övriga frågor]
+%Här tas frågorna som kom upp i §3 upp
+Learn you a physics:\\
+Vi kom fram till att vi skulle göra ett ''Learn you a haskell'' liknande material, fast för fysik.\\
+\\
+Boktips om etik: Weapons of math destruction.\\
+\\
+Bokningar: Allt från fackspråk är bokat, utom handledningstillfälle 3, ty inte handledare har anmält sig. Det är något otydligt kring biblioteket. Oskar ska fråga.\\
+\\
+Tidsplaneringen: Är betygsandelen på varje arbete menat att motsvara tidsåtgången? Patrik tolkar det annorlunda, och menar på att hälften av arbetet inte ska hamna på rapporten.\\
+
+\sect[Nästa möte sker...]
+
+\ssect[Handledarmöte:]
+%14:00-15:00 Onsdag 14/9.
+LV3 fredag. 11:30 - 13:00.
+Johan bokar.
+
+\sect[Mötets avslutande]
+
+\ \\
+\parbox[b]{250pt}{
+\parbox[b]{250pt}{
+Vid protokollet
+\ \\ \ \\ \ \\ 
+\sekreterare \\
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ \\
+}
+\\ \ \\
+\parbox[b]{250pt}{
+Justeras
+\ \\ \ \\ \ \\ 
+\justerare \\
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ \\
+}
+}
+
+\end{document}

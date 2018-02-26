@@ -80,129 +80,128 @@ How does all this tie together? First the *type* is decided, for instance
 then a *value* of that type is created
 
 < exampleValue :: ExampleType
-< exampleValue = Quantity 5.3 V.length
+< exampleValue = Quantity V.length 5.3
 
 A taste of types
 ----------------
 
 We will implement all arithmetic operations on `Quantity`, but for now, to get a taste of types, we show here addition and multiplication and some examples of values of type `Quantity`.
 
-> quantityAdd :: (Num v) => Quantity u v ->
->                           Quantity u v ->
->                           Quantity u v
-> quantityAdd (Quantity v1 u) (Quantity v2 _) = Quantity (v1+v2) u
+> quantityAdd :: (Num v) => Quantity d v ->
+>                           Quantity d v ->
+>                           Quantity d v
+> quantityAdd (Quantity d v1) (Quantity _ v2) = Quantity d (v1+v2)
 
-The type is interpreted as follows: two values of type `Quantity u v` is the input, where `u` is the type-level unit. The output is also a value of `Quantity u v`.
+The type is interpreted as follows: two values of type `Quantity d v` is the input, where `d` is the type-level dimension. The output is also a value of type `Quantity d v`.
 
-The type of the function forces the inputs to have the same units. For this reason, the unit on value-level doesn't matter on one of the arguments, because they will be the same. (It's possible to create values where the units on value-level and type-level don't match. We'll come back to this later.)
+The type of the function forces the inputs to have the same dimensions. For this reason, the dimension on value-level doesn't matter on one of the arguments, because they will be the same. (It's possible to create values where the dimensions on value-level and type-level don't match. We'll come back to this later.)
 
 Multiplication is
 
-> quantityMul :: (Num v) => Quantity u1 v -> 
->                           Quantity u2 v ->             
->                           Quantity (u1 `Mul` u2) v
-> quantityMul (Quantity v1 u1) (Quantity v2 u2) = 
->   Quantity (v1*v2) (u1 `V.mul` u2)
+> quantityMul :: (Num v) => Quantity d1 v -> 
+>                           Quantity d2 v ->             
+>                           Quantity (d1 `Mul` d2) v
+> quantityMul (Quantity d1 v1) (Quantity d2 v2) = 
+>   Quantity (d1 `V.mul` d2) (v1*v2)
 
-The type has the following interpretation: two valus of type `Quantity ux v` is input, where `ux` are two types representing (potentially different) units. As output, a value of type `Quantity` is returned. The type in the `Quantity` will be the type that is the product of the two units in.
+The type has the following interpretation: two valus of type `Quantity dx v` is input, where `dx` are two types representing (potentially different) dimensions. As output, a value of type `Quantity` is returned. The type in the `Quantity` will be the type that is the product of the two dimensions in.
 
 Now on to some example values.
 
 > width :: Quantity T.Length Double
-> width = Quantity 0.5 V.length
+> width = Quantity V.length 0.5
 
 > height :: Quantity T.Length Double
-> height = Quantity 0.3 V.length
+> height = Quantity V.length 0.3
 
 > type Area = Mul T.Length T.Length
 
-The following example shows that during a multiplication, the types will change, as they should. The units change not only on value-level but also on type-level.
+The following example shows that during a multiplication, the types will change, as they should. The dimensions change not only on value-level but also on type-level.
 
 > area :: Quantity Area Double
 > area = quantityMul width height
 
-Having type-level units is used below, to enforce at compile-time that only allowed operations are performed.
+Having type-level dimensions is used below, to enforce at compile-time that only allowed operations are performed.
 
 < -- Doesn't even compile
 < weird = quantityAdd width area
 
-If the units only were value-level, this error would be noticed only at run-time.
+If the dimensions only were value-level, this error would be noticed only at run-time.
 
 Pretty-printer
 --------------
 
-Let's do a pretty-printer for quantities. Most of the work is already done by the units at value-level.
+Let's do a pretty-printer for quantities. Most of the work is already done by the value-level dimensions.
 
-> showQuantity :: (Show v) => Quantity u v -> String
-> showQuantity (Quantity v u) = show v ++ " " ++ show u
+> showQuantity :: (Show v) => Quantity d v -> String
+> showQuantity (Quantity dValue vValue) = show vValue ++ " " ++ show dValue
 
-> instance (Show v) => Show (Quantity u v) where
+> instance (Show v) => Show (Quantity d v) where
 >   show = showQuantity
 
 Comparsions
 -----------
 
-It's useful to be able to compare quantities. Perhaps one wants to know which of two amounts of energy is the largest. But what's the largest of `1 J` and `1 m`? That's no meaningful comparsion since the units don't match. This behaviour is prevented by having type-level units.
+It's useful to be able to compare quantities. Perhaps one wants to know which of two amounts of energy is the largest. But what's the largest of `1 J` and `1 m`? That's no meaningful comparsion since the dimensions don't match. This behaviour is prevented by having type-level dimensions.
 
-> quantityEq :: (Eq v) => Quantity u v -> Quantity u v -> Bool
-> quantityEq (Quantity v1 _) (Quantity v2 _) = v1 == v2
-> 
-> instance (Eq v) => Eq (Quantity u v) where
+> quantityEq :: (Eq v) => Quantity d v -> Quantity d v -> Bool
+> quantityEq (Quantity _ v1) (Quantity _ v2) = v1 == v2
+
+> instance (Eq v) => Eq (Quantity d v) where
 >   (==) = quantityEq
 
-> 
-> quantityCompare :: (Ord v) => Quantity u v -> 
->                               Quantity u v -> Ordering
-> quantityCompare (Quantity v1 _) (Quantity v2 _) =
+> quantityCompare :: (Ord v) => Quantity d v -> 
+>                               Quantity d v -> Ordering
+> quantityCompare (Quantity _ v1) (Quantity _ v2) =
 >   compare v1 v2
 
-> instance (Ord v) => Ord (Quantity u v) where
+> instance (Ord v) => Ord (Quantity d v) where
 >   compare = quantityCompare
 
 Arithmetic on quantities
 ------------------------
 
-Let's implement the arithmetic operations on `Quantity`. Basically it's all about creating functions with the correct type-level units.
+Let's implement the arithmetic operations on `Quantity`. Basically it's all about creating functions with the correct type-level dimensions.
 
 > infixl 6 +#
-> (+#) :: (Num v) => Quantity u v -> Quantity u v -> 
->                    Quantity u v
+> (+#) :: (Num v) => Quantity d v -> Quantity d v -> 
+>                    Quantity d v
 > (+#) = quantityAdd
-> 
+
 > infixl 6 -#
-> (-#) :: (Num v) => Quantity u v -> Quantity u v -> 
->                    Quantity u v
-> (Quantity v1 u) -# (Quantity v2 _) = Quantity (v1-v2) u
-> 
+> (-#) :: (Num v) => Quantity d v -> Quantity d v -> 
+>                    Quantity d v
+> (Quantity d v1) -# (Quantity _ v2) = Quantity d (v1-v2)
+
 > infixl 7 *#
-> (*#) :: (Num v) => Quantity u1 v -> Quantity u2 v ->
->                    Quantity (u1 `Mul` u2) v
+> (*#) :: (Num v) => Quantity d1 v -> Quantity d2 v ->
+>                    Quantity (d1 `Mul` d2) v
 > (*#) = quantityMul
-> 
+
 > infixl 7 /#
-> (/#) :: (Fractional  v) => Quantity u1 v -> 
->                            Quantity u2 v ->
->                            Quantity (u1 `Div` u2) v
-> (Quantity v1 u1) /# (Quantity v2 u2) =
->   Quantity (v1 / v2) (u1 `V.div` u2)
+> (/#) :: (Fractional  v) => Quantity d1 v -> 
+>                            Quantity d2 v ->
+>                            Quantity (d1 `Div` d2) v
+> (Quantity d1 v1) /# (Quantity d2 v2) =
+>   Quantity (d1 `V.div` d2) (v1 / v2)
 
-For all operations on quantities, one does the operation on the value and, in the case of multiplication and division, on the units separetly. For addition and subtraction the in-units must be the same. Nothing then happens with the unit.
+For all operations on quantities, one does the operation on the value and, in the case of multiplication and division, on the dimensions separetly. For addition and subtraction the in-dimensions must be the same. Nothing then happens with the dimension.
 
-How does one perform operations such as `sin` on a quantity with a *potential* unit? The answer is that the quantity must be unitless, and with the unit nothing happens. For the follwing functions, the quantites must be unitless.
+How does one perform operations such as `sin` on a quantity with a *potential* dimensions? The answer is that the quantity must be dimensionless, and with the dimension nothing happens. For the follwing functions, the quantites must be dimensionless.
 
 < sinq :: (Floating v) => Quantity One v -> Quantity One v
-< sinq (Quantity v ul) = Quantity (sin v) ul
+< sinq (Quantity dl v) = Quantity d1 (sin v)
 < 
 < cosq :: (Floating v) => Quantity One v -> Quantity One v
-< cosq (Quantity v ul) = Quantity (cos v) ul
+< cosq (Quantity dl v) = Quantity d1 (cos v)
 
 We quickly realize a pattern, so let's generalize a bit.
 
 > qmap :: (a -> b) -> Quantity One a -> Quantity One b
-> qmap f (Quantity v ul) = Quantity (f v) ul
-> 
+> qmap f (Quantity d1 v) = Quantity d1 (f v)
+
 > type UnaryScalar v = Quantity One v -> Quantity One v
-> 
+
 > sinq, cosq, asinq, acosq, atanq, expq, logq :: (Floating v) =>
 >   UnaryScalar v
 > sinq  = qmap sin
@@ -219,8 +218,8 @@ Why not make `Quantity` an instance of `Num`, `Fractional`, `Floating` och `Func
 
 which isn't compatible with `Quantity` since multiplication with `Quantity` has the following type
 
-< (*#) :: (Num v) => Quantity u1 v -> Quantity u2 v ->
-<                    Quantity (u1 `Mul` u2) v
+< (*#) :: (Num v) => Quantity d1 v -> Quantity d2 v ->
+<                    Quantity (d1 `Mul` d2) v
 
 The input here may actually be of *different* types, and the output has a type depending on the types of the input. However, the *kind* of the inputs and output are the same, namely `Quantity`. We'll just have to live with not being able to make `Quantity` a `Num`-instance.
 
@@ -229,50 +228,50 @@ However, operations with only scalars (type `One`) has types compatible with `Nu
 Syntactic sugar
 ---------------
 
-In order to create a value representing a certain distance (5 meters, for example) one does the following
+In order to create a value representing a certain distance (5 metres, for example) one does the following
 
 < distance :: Quantity T.Length Double
-< distance = Quantity 5 V.length
+< distance = Quantity V.length 5.0
 
 Writing that way each time is very clumsy. You can also do "dumb" things such as
 
 < distance :: Quantity T.Length Double
-< distance = Quantity 5 V.time
+< distance = Quantity V.time 5.0
 
-with different units on value-level and type-level.
+with different dimensions on value-level and type-level.
 
-To solve these two problems we will introduce some syntactic sugar. First some pre-made values for the 7 base units and the scalar.
+To solve these two problems we will introduce some syntactic sugar. First some pre-made values for the 7 base dimensions and the scalar.
 
 > length :: (Num v) => Quantity Length v
-> length = Quantity 0 V.length
+> length = Quantity V.length 0
 > 
 > mass :: (Num v) => Quantity Mass v
-> mass = Quantity 0 V.mass
+> mass = Quantity V.mass 0
 > 
 > time :: (Num v) => Quantity Time v
-> time = Quantity 0 V.time
+> time = Quantity V.time 0
 > 
 > current :: (Num v) => Quantity Current v
-> current = Quantity 0 V.current
+> current = Quantity V.current 0
 > 
 > temperature :: (Num v) => Quantity Temperature v
-> temperature = Quantity 0 V.temperature
+> temperature = Quantity V.temperature 0
 > 
 > substance :: (Num v) => Quantity Substance v
-> substance = Quantity 0 V.substance
+> substance = Quantity V.substance 0
 > 
 > luminosity :: (Num v) => Quantity Luminosity v
-> luminosity = Quantity 0 V.luminosity
+> luminosity = Quantity V.luminosity 0
 > 
 > one :: (Num v) => Quantity One v
-> one = Quantity 0 V.one
+> one = Quantity V.one 0
 
 And now the sugar.
 
 [PaJa: här skulle man kunna använda multiplikation, ifall enheterna hade 1 som värde. Kommentera eller implementera.]
 
-> (#) :: (Num v) => v -> Quantity u v -> Quantity u v
-> v # (Quantity _ u) = Quantity v u
+> (#) :: (Num v) => v -> Quantity d v -> Quantity d v
+> v # (Quantity d _) = Quantity d v
 
 The intended usage of the function is the following
 
@@ -282,9 +281,9 @@ The intended usage of the function is the following
 < ghci> myDistance
 < 5 m
 
-To create a `Quantity` with a certain value (here `5`) and a certain unit (here `length`), you write as above and get the correct unit on both value-level and type-level.
+To create a `Quantity` with a certain value (here `5`) and a certain dimension (here `length`), you write as above and get the correct dimension on both value-level and type-level.
 
-`length`, `mass` and so on are just dummy-values with the correct unit (on both value-level and type-level) in order to easier create `Quantity` values. Any value with the correct unit on both levels can be used as the right hand argument.
+`length`, `mass` and so on are just dummy-values with the correct dimension (on both value-level and type-level) in order to easier create `Quantity` values. Any value with the correct dimension on both levels can be used as the right hand argument.
 
 < ghci> let otherPersonsDistance = 10 # length
 < ghci> let myDistance = 5 # otherPersonsDistance
@@ -295,9 +294,9 @@ To create a `Quantity` with a certain value (here `5`) and a certain unit (here 
 
 Precisely the same result.
 
-We want to maintain the invariant that the unit on value-level and type-level always match. The pre-made values from above maintain it, and so does the arithmetic operations we previously created. Therefore, we only export those from this module! The user will have no choice but to use these constructs and hence the invariant will be maintained.
+We want to maintain the invariant that the dimension on value-level and type-level always match. The pre-made values from above maintain it, and so does the arithmetic operations we previously created. Therefore, we only export those from this module! The user will have no choice but to use these constructs and hence the invariant will be maintained.
 
-If the user needs other units than the base units (which it probably will), the follwing example shows how it's done.
+If the user needs other dimensions than the base dimensions (which it probably will), the follwing example shows how it's done.
 
 < ghci> let myLength = 5 # length
 < ghci> let myTime = 2 # time
@@ -305,21 +304,47 @@ If the user needs other units than the base units (which it probably will), the 
 < ghci> myVelocity
 < 2.5 m/s
 
-New units are created "on demand". Furthermore
+New dimensions are created "on demand". Furthermore
 
 < ghci> let velocity = myVelocity
 < ghci> let otherVelocity = 188 # velocity
 
-it's possible to use the sugar from before on user-defined units.
+it's possible to use the sugar from before on user-defined dimensions.
 
 TODO: Dessa har alla Double som värdetyp. Hur förhindra det? Explicita typsignaturer löser det, men man vill inte att "användaren" ska *behöva* och *få* göra det för att behålla den tidigare nämnda invarianten.
 
-Just for convenience sake we'll define a bunch of common composite units.
+Just for convenience sake we'll define a bunch of common composite dimensions.
 
 > velocity     = length   /# time
 > acceleration = velocity /# time
 > force        = mass     *# acceleration
 > momentum     = force    *# time
+
+Alternative sugar with units support
+------------------------------------
+
+One way to add support for non SI-units (at least for input) would be to modify the sugar from above in the following way.
+
+> metre = 1 # length
+> kilometre = 1000 # length
+> second = 1 # time
+> hour = 3600 # time
+> metresPerSecond = metre /# second
+> kilometresPerHour = kilometre /# hour
+
+Each of these pre-made quantites has as numerical value the corresponding value in the SI-unit.
+
+The sugar function would then look like
+
+> (##) :: (Num v) => v -> Quantity d v -> Quantity d v
+> v ## (Quantity d bv) = Quantity d (v*bv)
+
+Notice how the value is multiplied with the "base value" of the unit. This function is intended to be used as follows.
+
+< ghci> let velocity1 = 100 ## kilometresPerHour
+< ghci> let velocity2 = 33 ## metersPerSecond
+< ghci> velocity1 +# velocity2
+< 67.77 m/s
 
 A physics example
 -----------------

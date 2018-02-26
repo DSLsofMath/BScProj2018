@@ -1,6 +1,13 @@
 
-Value-level units
-=================
+Value-level dimensions
+======================
+
+From the introduction, two things became apparanent:
+
+1. Given the unit of a quantity, its dimension is known implicitly.
+2. If we only care about SI-units, there is a one-to-one correspondence between dimensions and units.
+
+We'll use these facts when implementing dimensions. More precisely, we'll basically don't care about units at all in this text, save for printing. But let's no get ahead of ourselves anymore. This way of treating dimensions and quantites will become clear.
 
 > module Units.ValueLevel
 > ( Unit(..)

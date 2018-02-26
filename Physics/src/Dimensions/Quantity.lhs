@@ -2,7 +2,7 @@
 Quantities
 ==========
 
-We will now create a data type for quantities and combine units on value-level and type-level. Just as before, a bunch of GHC-extensions are necessary.
+We'll now create a data type for quantities and combine dimensions on value-level and type-level. Just as before, a bunch of GHC-extensions are necessary.
 
 > {-# LANGUAGE DataKinds #-}
 > {-# LANGUAGE GADTs #-}
@@ -11,7 +11,7 @@ We will now create a data type for quantities and combine units on value-level a
 > {-# LANGUAGE UndecidableInstances #-}
 > {-# LANGUAGE TypeOperators #-}
 
-> module Units.Quantity
+> module Dimensions.Quantity
 > ( length
 > , mass
 > , time
@@ -39,36 +39,48 @@ We will now create a data type for quantities and combine units on value-level a
 > )
 > where
 
-> import qualified Units.ValueLevel as V
-> import           Units.TypeLevel  as T
-> import           Prelude          as P hiding (length, div)
-
-The data type
--------------
+> import qualified Dimensions.ValueLevel as V
+> import           Dimensions.TypeLevel  as T
+> import           Prelude               as P hiding (length, div)
 
 First we create the data type for quantities.
 
 [PaJa: förklara gärna varför typ-arg. inte är i samma ordning som värde-arg.]
+TODO: Kolla med Patrik att det var rätt att ändra ordning så att de är samma
 
-> data Quantity (u :: T.Unit) (v :: *) where
->   Quantity :: v -> V.Unit -> Quantity u v
+> data Quantity (u :: T.Dim) (v :: *) where
+>   Quantity :: V.Dim -> v -> Quantity u v
 
-- `data Quantity` creates a *type*.
-- `u` is a *type* and `T.Unit` is a *kind*. This makes our data type have a type parameter where the type must have the kind `T.Unit`.
-- `v :: *` means that `v`, as in **v**alue, has the kind `*`, which is the kind of types that can have values. `v` could for instance be `Double` or `Integer`.
-- `Quantity` on the row below is a value constructor.
-- The value constructor has two *value*-parameters which should have certain *types*.
-  - `v` is a type which represents a number.
-  - `V.Unit` is the unit of the quantity on value-level.
-- `Quantity` on the upper row is the name of a type (or rather a type constructor since it has the two type-parameters `u` and `v`) while `Quantity` on the lower row is the name of a value (value constructor). Same names but different things. It's possible to do this, just like the definition below is possible, with the same name on different things on different sides of the equals-sign.
+`data Quantity` creates a *type constructor*. Which means it takes two *types* to create another *type*. For comparsion, here's a *value constructor* which takes two *values* (of certain *types*) as input to create another *value* (of a certain *type*).
 
-The corresponding data type without units on type-level would look like
+< data MyDataType = MyValueConstructor String Int
+<
+< ghci> :t MyValueConstructor
+< MyDataType :: String -> Int -> MyDataType
 
-[PaJa: jag föreslår att ni använder GADT-syntax även här för att underlätta jämförelsen.]
+So this `Quantity` type constructor takes two *types* (of certain *kinds*) as input to create another *type* (of a certain *kind*). See the parallell to the value constructor? It's the same thing, but "one step up" to the type-level.
 
-< data Quantity v = Quantity V.Unit v
+< ghci> :k Quantity
+< Quantity :: T.Dim -> * -> *
 
-`u` in the prior definition should not be confused with `V.Unit` in the latter. `u` is the name of an unbound type, which should be of kind `T.Unit`, while `V.Unit` means that a value of type `V.Unit` should be here. Due to syntactical reasons it stands `u` instead of `T.Unit`, but one can think it stands `T.Unit` if it makes it easier to understand.
+Instead of checking the *type* (like we do on the value constructor above), we check the *kind*. The kind of `Quantity` shows, just as we said, that it takes two types as input. We also see that the *kind* of the first *type* must be `T.Dim`, i.e., a type-level dimension. The kind of the second type is `*`, which is the kind of types that can have values. Such types are for instance `Double`, `Integer` and `String` (but not `T.Dim`).
+
+So the first row was a *type constructor*. The second row is a *value constructor*. It takes two values, one of type `V.Unit` and the other of type `v` (`v` will be bound when the type of the whole thing is decided). This is the same deal as "your average data type" value constructor, like the `MyDataType` example above.
+
+Both the type constructor and the value constructor have the same name `Quantity`. This is legal syntax. Just like the following is legal:
+
+< data YourAverageDataType = YourAverageDataType Double
+
+The left-hand-side type constructor (that happens to take no arguments) and the right-hand-side value constructor have the same name.
+
+How does all this tie together? First the *type* is decided, for instance
+
+< type ExampleType = Quantity T.Length Double
+
+then a *value* of that type is created
+
+< exampleValue :: ExampleType
+< exampleValue = Quantity 5.3 V.length
 
 A taste of types
 ----------------

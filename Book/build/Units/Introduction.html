@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Learn You a Physics for Great Good!</title>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  </head>
+
+  <body>
+    <header>
+      <a href="../index.html"><h1>Learn You a <span class="physics">Physics</span> for Great Good!</h1></a>
+      <h1>&gt;&gt;&gt; WORK IN PROGRESS &lt;&lt;&lt;</h1>
+      <nav>
+        <span>Previous: <a href="../index.html">Table of contents</a></span>
+        <a href="../index.html">Table of contents</a>
+        <span>Next: <a href="../Units/Quantities.html">Quantities</a></span>
+      </nav>
+    </header>
+
+    <main>
+      <p>Oskars kompileringsinsturktioner</p>
+<p>Skriv <code>.lhs</code>-filer med bird-style <code>&gt;</code> för kod och <code>&lt;</code> för “kod” som inte ska kompileras.</p>
+<p>Kompilera med kommandot <code>pandoc FILNAMN.lhs -f markdown+lhs -t html -o FILNAMN.html -s</code></p>
+<h1 id="units">Units</h1>
+<p>This chapter, called “Units”, covers units and quantities.</p>
+<p>A <em>quantity</em> is fundamental to physics. A <em>quantity</em> has a <em>unit</em> and a <em>numerical value</em> (and a prefix, but we will skip prefixes). Only quantities of the same unit are possible to add. Summing, for instance, a volume and a distance, wouldn’t make sense.</p>
+<p>There are 7 types of quantities, each with a corresponding SI-unit:</p>
+<ul>
+<li>Length (metre)</li>
+<li>Mass (kilogram)</li>
+<li>Time (seconds)</li>
+<li>Electric current (ampere)</li>
+<li>Temperature (kelvin)</li>
+<li>Amount of substance (mole)</li>
+<li>Luminous intensity (candela)</li>
+</ul>
+<p>We will only use the SI-units. Therefore, for instance, “meters” will be exchangable with “length”. For this reason we have chosen to name all “units” with the corresponding name of the quantity.</p>
+<p>The domain specific language for units, at the completion of this chater, covers units on both <em>value-level</em> and <em>type-level</em>. Value-level in order to print units nicely. Type-level in order to ensure at compile-time no unallowed operations are performed.</p>
+<p>The implementation on both levels are very similar. One could choose only to do one implementation, and use <code>Data.Proxy</code>, but this is tricky. Using two implementations is lengthier but easier.</p>
+<p>Let’s start with units on value-level.</p>
+<hr />
+<div class="sourceCode" id="cb1"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">module</span> <span class="dt">Units.Units</span> <span class="kw">where</span></a></code></pre></div>
+
+    </main>
+
+    <footer>
+      Licensed under the GPL by the Kandidatboisen (2018)
+    </footer>
+  </body>
+</html>

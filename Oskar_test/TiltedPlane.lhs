@@ -7,7 +7,117 @@ TiltedPlane
 > )
 > where
 
-Ett lutande plan består av en låda på en lutande triangel. Om vi tänker på ett enkelt sådant system, utan friktion och begynnelsehastighet, så finns följande egenskaper hos det.
+Ett lutande plan består av en låda på en lutande triangel. I ett sådant "system" finns egenskaper som friktion, massor, krafter som drar m.m.
+
+Uppgifter om lutande plan kan ha många former. T.ex. en låda som glider ner och som samtidigt dras uppåt i, eller att triangeln accelereras för att förhindra lådan att glida ner o.s.v.
+
+De fysikalsiska ekvationerna är såklart gemensamma för alla varianter.
+
+Vi kommer skapa några DSLs för olika varianter av problemet. I varje variant finns ett gäng ekvationer som beskriver samband mellan ingående variabler. Ett typiskt sätt att variera en variant är att ge alla värden utom ett, och att det sakande är olika, och beräkna det sakande. (Det kan också vara att skriva som en funktion av några grejer, men samma princip gäller. Man behandlar ogivna variabler som ett värde och räknar som vanligt)
+
+Det handlar alltså om att hålla koll på vilka ekvationer som gäller och hur man använder dom för att lösa ut den okända.
+
+evaluera sambanden till funktioner. svaret är en komposition av funktioner
+
+En variant
+----------
+
+I denna variant är triangeln stillastående, och lådan glider neråt. En sne kraft drar i den. Det är friktion mellan lådan och triangeln.
+
+<img src="tp_1_1.png" alt="" style="width: 600px;"/>
+
+- $a$ är acceleraion av lådan nerför planet.
+- $m$ är massan av lådan.
+- $N$ är normalkraften på lådan.
+- $G$ är tyngdkraften på lådan.
+- $f$ är friktionskraften.
+- $\mu$ är friktionskoeffcienten mellan lådan och triangeln.
+- $F$ är den snea kraften som drar uppåt.
+- $\alpha$ är vinkeln mellan horisontalplanet och den snea kraften.
+- $\theta$ är vinkeln på triangelns plan och horisontalplanet.
+
+Som väntat finns det ett gäng samband mellan dem. Positiv riktning är höger och uppåt. Krafterna är definerade i den riktning de är på i bilden. Nettokraften är definerad åt höger och uppåt.
+
+Vi delar upp alla krafter i komposanter. En längs med triangelpanet (subskript p) och en vinkellrätt (subskript n). Vi skapar också en hjälpvinkel.
+
+\begin{align}
+  \gamma &= \alpha - \beta \\
+  F_p &= F * cos \gamma \\
+  F_n &= F * sin \gamma \\
+  G_p &= G * sin \beta \\
+  G_n &= G * cos \beta
+\end{align}
+
+Bilden bör övertyga om de två sista sambanden.
+
+<img src="tp_1_2.png" alt="" style="width: 600px;"/>
+
+Vi ritar en ny bild med de komposantuppdelade krafterna.
+
+<img src="tp_1_3.png" alt="" style="width: 600px;"/>
+
+Och här är sambanden som nu finns. Vad som räknas som positiv rikning finns angivit i figuren.
+
+\begin{align}
+  f &= N * \mu \\
+  N + F_n - G_n &= 0 \\
+  G_p - f - F_p &= F_{netto} \\
+  a * m &= F_{netto} \\
+\end{align}
+
+Låta oss koda upp dessa samband
+
+> data Property = Alpha
+>               | Beta
+>               | Gamma
+>               | F
+>               | Fp
+>               | Fn
+>               | G
+>               | Gp
+>               | Gn
+>               | Ff
+>               | N
+>               | M
+>               | A
+>               | Fnet
+>               deriving (Show)
+
+> data Expr = Expr `Mul` Expr
+>           | Expr `Div` Expr
+>           | Sin Expr
+>           | Asin Expr
+>           | Cos Expr
+>           | Acos Expr
+>           | Prop Property
+>           deriving (Show)
+
+> data Equ = Expr `Equ` Expr
+>          deriving (Show)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Gammalt
+-------
+
+
+
+
+
+
+
+
 
 | Egenskap                  | Beteckning |
 |---------------------------|------------|

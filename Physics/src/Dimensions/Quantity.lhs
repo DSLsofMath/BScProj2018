@@ -354,7 +354,7 @@ To conclude this chapter, we show an example on how to code an exercise and its 
 
 The code comments show what GHCi prints for that line.
 
-The exercise is "A dog runs, jumps and lands sliding on a carriage. The dog weighs `40 kg` and runs in `8 m/s`. The carriage weighs `190 kg`. The coefficient of friction between the dog's paws and the carriage is `0.7`."
+The exercise is "A dog runs, jumps and lands sliding on a carriage. The dog weighs $40 \, kg$ and runs in $8 \, m/s$. The carriage weighs $190 \, kg$. The coefficient of friction between the dog's paws and the carriage is $0.7$."
 
 This is illustrated in the painting below.
 
@@ -397,3 +397,33 @@ Whoops! That's not a good operation. Luckily the compiler caught it.
 
 > vDelta = viDog -# vfSystem -- 6.60 m/s
 > tSlide = vDelta /# aDog    -- 0.96 s
+
+Conclusion
+----------
+
+Okay, so you've read a whole lot of text by now. But in order to really learn anything, you need to practise with some exercises.
+
+We don't think you learn a lot by coding up a bunch of examples like the last one we did. Instead you should try things such as
+
+- Implementing first value-level dimensions, then type-level dimensions and last quantites by yourself, without looking too much at this text.
+- Making `Quantity` a `Num`, `Fractional`, `Floating` and `Functor` instance.
+- Extending the `Quantity` data type here by adding support for prefixes and non-SI-units.
+- Ditching the separate implementations of value-level and type-level, and only use one with `Data.Proxy`.
+- Implement a power function.
+- Implement a square-root function. The regular square-root function in Haskell uses `exp` and `log`, which only work on `Quantity One`. But taking the the square-root of e.g. an area should be possible.
+
+After reading this text and doing some exercies, we hope you've learnt
+
+- The relation between dimensions, quantities and units.
+- How dimensions...
+  - ...restrict operations such as comparsion to quantities of the same dimension.
+  - ...change after operations such as multiplication.
+  - ...can be implemented on the type-level in Haskell to enforce the two above at compile-time.
+- The basics about kinds and type-level programming in Haskell.
+
+Further reading
+---------------
+
+The package [Dimensional](https://hackage.haskell.org/package/dimensional) inspired a lot of what we did here. Our `Quantity` is like a "lite" version of Dimensional, which among other things, support different units and use `Data.Proxy`.
+
+The type-level progamming in this text was done with the help of the tutorial [Basic Type Level Programming in Haskell](http://www.parsonsmatt.org/2017/04/26/basic_type_level_programming_in_haskell.html). If you want to know more about kinds and type-level programming, it's a very good starting point.

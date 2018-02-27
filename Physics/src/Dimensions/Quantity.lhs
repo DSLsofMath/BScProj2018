@@ -4,6 +4,8 @@ Quantities
 
 We'll now create a data type for quantities and combine dimensions on value-level and type-level. Just as before, a bunch of GHC-extensions are necessary.
 
+TODO: Pröva dom en och en, kolla vad de behövs till
+
 > {-# LANGUAGE DataKinds #-}
 > {-# LANGUAGE GADTs #-}
 > {-# LANGUAGE KindSignatures #-}
@@ -45,16 +47,13 @@ We'll now create a data type for quantities and combine dimensions on value-leve
 
 First we create the data type for quantities.
 
-[PaJa: förklara gärna varför typ-arg. inte är i samma ordning som värde-arg.]
-TODO: Kolla med Patrik att det var rätt att ändra ordning så att de är samma
+> data Quantity (d :: T.Dim) (v :: *) where
+>   Quantity :: V.Dim -> v -> Quantity d v
 
-> data Quantity (u :: T.Dim) (v :: *) where
->   Quantity :: V.Dim -> v -> Quantity u v
-
-`data Quantity` creates a *type constructor*. Which means it takes two *types* to create another *type*. For comparsion, here's a *value constructor* which takes two *values* (of certain *types*) as input to create another *value* (of a certain *type*).
+`data Quantity` creates a *type constructor*. Which means it takes two *types* (of certain *kinds*) to create another *type* (of a certain *kind*). For comparsion, here's a *value constructor* which takes two *values* (of certain *types*) as input to create another *value* (of a certain *type*).
 
 < data MyDataType = MyValueConstructor String Int
-<
+
 < ghci> :t MyValueConstructor
 < MyDataType :: String -> Int -> MyDataType
 
@@ -64,6 +63,8 @@ So this `Quantity` type constructor takes two *types* (of certain *kinds*) as in
 < Quantity :: T.Dim -> * -> *
 
 Instead of checking the *type* (like we do on the value constructor above), we check the *kind*. The kind of `Quantity` shows, just as we said, that it takes two types as input. We also see that the *kind* of the first *type* must be `T.Dim`, i.e., a type-level dimension. The kind of the second type is `*`, which is the kind of types that can have values. Such types are for instance `Double`, `Integer` and `String` (but not `T.Dim`).
+
+The definition of `Quantity` tells us this too. In it, `(d :: T.Dim) (v :: *)` signifies that the type constructor `Quantity` takes a type `u` of kind `T.Dim` and a type of kind `*`. In this context, `u :: T.Dim` is read as "`u` has kind of `T.Dim`".
 
 So the first row was a *type constructor*. The second row is a *value constructor*. It takes two values, one of type `V.Unit` and the other of type `v` (`v` will be bound when the type of the whole thing is decided). This is the same deal as "your average data type" value constructor, like the `MyDataType` example above.
 
@@ -82,10 +83,12 @@ then a *value* of that type is created
 < exampleValue :: ExampleType
 < exampleValue = Quantity V.length 5.3
 
+Note that the `Quantity` data type has both value-level and type-level dimensions. As previosuly mentioned, value-level in order to print prettily and type-level to only permit legal operations.
+
 A taste of types
 ----------------
 
-We will implement all arithmetic operations on `Quantity`, but for now, to get a taste of types, we show here addition and multiplication and some examples of values of type `Quantity`.
+We'll implement all arithmetic operations on `Quantity`, but for now, to get a taste of types, we show here addition and multiplication and some examples of values of type `Quantity`.
 
 > quantityAdd :: (Num v) => Quantity d v ->
 >                           Quantity d v ->
@@ -95,6 +98,8 @@ We will implement all arithmetic operations on `Quantity`, but for now, to get a
 The type is interpreted as follows: two values of type `Quantity d v` is the input, where `d` is the type-level dimension. The output is also a value of type `Quantity d v`.
 
 The type of the function forces the inputs to have the same dimensions. For this reason, the dimension on value-level doesn't matter on one of the arguments, because they will be the same. (It's possible to create values where the dimensions on value-level and type-level don't match. We'll come back to this later.)
+
+`Quantity d v` in the type and `Quantity d v1` as a value pattern shoudln't be confused. The first `d` is a type variable, holding the type-level dimension while the second `d` is a (value) variable holding the value-level dimension. Similary, the first `v` is a type variable holding the type of values (e.g. `Double`) and the second `v` holds the actual value.
 
 Multiplication is
 
@@ -134,7 +139,7 @@ Pretty-printer
 Let's do a pretty-printer for quantities. Most of the work is already done by the value-level dimensions.
 
 > showQuantity :: (Show v) => Quantity d v -> String
-> showQuantity (Quantity dValue vValue) = show vValue ++ " " ++ show dValue
+> showQuantity (Quantity d v) = show v ++ " " ++ show d
 
 > instance (Show v) => Show (Quantity d v) where
 >   show = showQuantity
@@ -200,10 +205,8 @@ We quickly realize a pattern, so let's generalize a bit.
 > qmap :: (a -> b) -> Quantity One a -> Quantity One b
 > qmap f (Quantity d1 v) = Quantity d1 (f v)
 
-> type UnaryScalar v = Quantity One v -> Quantity One v
-
 > sinq, cosq, asinq, acosq, atanq, expq, logq :: (Floating v) =>
->   UnaryScalar v
+>   Quantity One v -> Quantity One v
 > sinq  = qmap sin
 > cosq  = qmap cos
 > asinq = qmap asin
@@ -268,8 +271,6 @@ To solve these two problems we will introduce some syntactic sugar. First some p
 
 And now the sugar.
 
-[PaJa: här skulle man kunna använda multiplikation, ifall enheterna hade 1 som värde. Kommentera eller implementera.]
-
 > (#) :: (Num v) => v -> Quantity d v -> Quantity d v
 > v # (Quantity d _) = Quantity d v
 
@@ -320,8 +321,8 @@ Just for convenience sake we'll define a bunch of common composite dimensions.
 > force        = mass     *# acceleration
 > momentum     = force    *# time
 
-Alternative sugar with units support
-------------------------------------
+Alternative sugar with support for units
+----------------------------------------
 
 One way to add support for non SI-units (at least for input) would be to modify the sugar from above in the following way.
 
@@ -351,7 +352,7 @@ A physics example
 
 To conclude this chapter, we show an example on how to code an exercise and its solution in this domain specific language we've created for quantities.
 
-The code comments show what GHCi prints for that row.
+The code comments show what GHCi prints for that line.
 
 The exercise is "A dog runs, jumps and lands sliding on a carriage. The dog weighs `40 kg` and runs in `8 m/s`. The carriage weighs `190 kg`. The coefficient of friction between the dog's paws and the carriage is `0.7`."
 

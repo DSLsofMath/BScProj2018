@@ -4,8 +4,6 @@ Quantities
 
 We'll now create a data type for quantities and combine dimensions on value-level and type-level. Just as before, a bunch of GHC-extensions are necessary.
 
-TODO: Pröva dom en och en, kolla vad de behövs till
-
 > {-# LANGUAGE DataKinds #-}
 > {-# LANGUAGE GADTs #-}
 > {-# LANGUAGE KindSignatures #-}

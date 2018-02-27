@@ -8,7 +8,7 @@ What's the purpose of type-level dimensions? It's so we'll notice as soon as com
 
 This implemention is very similar to the value-level one. It would be possible to only have one implementation by using `Data.Proxy`. But it would be trickier. This way is lengthier but easier to understand.
 
-To be able to do type-level programming, we'll need a nice stash of GHC-extensions. TODO: förklara vad de gör.
+To be able to do type-level programming, we'll need a nice stash of GHC-extensions.
 
 > {-# LANGUAGE DataKinds #-}
 > {-# LANGUAGE GADTs #-}
@@ -16,6 +16,8 @@ To be able to do type-level programming, we'll need a nice stash of GHC-extensio
 > {-# LANGUAGE TypeFamilies #-}
 > {-# LANGUAGE UndecidableInstances #-}
 > {-# LANGUAGE TypeOperators #-}
+
+See the end of the next chapter to read what they do.
 
 > module Dimensions.TypeLevel
 > ( Dim(..)

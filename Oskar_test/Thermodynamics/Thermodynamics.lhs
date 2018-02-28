@@ -1,8 +1,4 @@
 
-Oskars instruktioner: använd enkla dollarteckan för att ha bättre kontroll över radbrytningar. Ha inga mellansslag. $Q$ och inte $ Q $ !
-
-Haka på `--mathjax` för att `\frac` m.m. ska funka
-
 Thermodynamics
 ==============
 

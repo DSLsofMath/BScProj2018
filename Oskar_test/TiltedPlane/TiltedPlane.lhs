@@ -117,6 +117,67 @@ Låta oss koda upp dessa samband.
 
 > eqNewton = (Var A `Mul` Var M) `Equ` Var Fnet
 
+Dessa ekvationer ska gälla i alla fall, dvs alla lösningar till olika uppgifter. Ett sätt att kolla lösningen är då att sätta in alla värden i ekvationerna och se att de stämmer. Detta kan man göra både på papper, men vi gör det här även i datorn.
+
+> type PropVals = Property -> Double
+
+> eval :: Expr -> PropVals -> Double
+> eval (e1 `Mul` e2) pv = eval e1 pv * eval e2 pv
+> eval (e1 `Div` e2) pv = eval e1 pv / eval e2 pv
+> eval (e1 `Add` e2) pv = eval e1 pv + eval e2 pv
+> eval (e1 `Sub` e2) pv = eval e1 pv - eval e2 pv
+> eval (Sin e) pv = sin $ eval e pv
+> eval (Asin e) pv = asin $ eval e pv
+> eval (Cos e) pv = cos $ eval e pv
+> eval (Acos e) pv = acos $ eval e pv
+> eval (Var p) pv = pv p
+
+För att undvika avrundningsfel.
+
+> almostEqual :: Double -> Double -> Bool
+> almostEqual d1 d2 = abs (d1-d2) < 0.01
+
+> check :: Equ -> PropVals -> Bool
+> check (lhs `Equ` rhs) pv = almostEqual lhs' rhs'
+>   where
+>     lhs' = eval lhs pv
+>     rhs' = eval rhs pv
+
+Ett exempel.
+
+- Lådan väger 70 kg.
+- Vinkeln är 30 grader.
+- Normal tyngdacceleration på 9,82 m/s^2 gäller.
+- Vad blir lådans acceleration?
+
+Vi räknar och inser att `a = g * sin v`. Alltså är accelerationen 4.909999999 m/s^2
+
+Vi testar.
+
+< f Alpha = undefined
+< f Beta = 30 * pi / 180
+< f Gamma = undefined
+< f F = 0
+< f Fp = 0
+< f Fn = 0
+< f G = 9.82
+< f Gp = ...
+
+Problmet med detta sättet att modellera är att det finns ekvivalenta sätt att uttrycka egenskaper. T.ex. tyngdkraften i form av bara neråt + vinkel på planet, eller tyngdkraften i två komposanter. Har vi den ena representationen vill vi inte behöva räkna ut den andra manuellet bara för att kontrollräknaren ska fungera.
+
+Hur vet vi vilka som är ekvivalenta? Man använder samma tankesätt som när man ritar kraftdiagram. Efter en komposantuppdelning finns det ju inte plötsligt fler krafter, så man måste ta bort en av representationerna.
+
+Vi gör nu så här att vi i våra samband "stoppar in" de ekvivalenta ekvationerna i andra.
+
+\begin{align}
+  f &= N * \mu \\
+  N + F * sin (\alpha - \beta)  &= G * cos \beta \\
+  G * sin \beta - f - F * cos (\alpha - \beta) &= a * m \\
+\end{align}
+
+
+Nja även detta blir inte bra, för man kan lösa problemet utan att blanda in många av 
+
 
 
 

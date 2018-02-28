@@ -92,9 +92,35 @@ Stack, git kan säkert passa här för att beskriva hur vi samarbetade med samma
 
 # Resultat
 
+## Läromaterialet (i sig)
+
+En kombination av brödtext och DSL:er. De två är sammanvävda där fysik eller relaterad matematik presenters för att sedan modelleras i DSL:er.
+
+Områden som är behandlade är 
+- Dimensioner
+- Vektorer
+- Analys
+- Och mer med tid att vi arbetar vidare...
+
+### Specifikt om DSL:erna
+
+Avgränsade DSLer för separata områden. Modellerar olika saker snarare än som en uppgiftslösare.
+
+### Specifikt om brödtexten
+
+Lättsamma stilen och de roliga bilderna.
+
+## Hemsidan
+
+## Något om källkoden i sig?
+
 # Diskussion
 
 ## Metoddiskussion
+
+Vi har kanske inte varit så strukturerade, utan bara valt ut något område på måfå som vi kände för, t.ex. valet av termodynmik.
+
+Blev så för svårt att veta vad som DSL lämpligt för.
 
 ## Resultatdiskussion
 
@@ -130,12 +156,7 @@ Man kan ju programmera en ekvationslösare, men den måste vara väldigt mekanis
 
 Och vad är skillnaden mellan dessa två kategorier av områden?
 
-
-
-Men t.ex. lutande plan och problemlösning i allmänhet har för många olika former, och kräver att man använder kunskaper på icke-standardeiserade sätt.
-
-Med vår modellering går det bara att lösa problem i "en riktning", t.ex. hitta accelerationen om en viss vinkel, för det är så vi ställt upp sambandet. Skulle behöva ekvationslösare för att lösa åt andra hållet. Är en sådan relevant för området?
-
+Den viktiga skillnaden är att t.ex. analys har tydlig data och operationer medan problemlösning som lutande plan har ett gäng samband som man använder beroende på behov.
 
 ### Gör DSLs så att fysik blir enklare att förstå?
 

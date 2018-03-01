@@ -1,4 +1,8 @@
 
+---
+geometry: margin=1in
+---
+
 # Abstract (engelska)
 
 # Sammandrag (svenska)

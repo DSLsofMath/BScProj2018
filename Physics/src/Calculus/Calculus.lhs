@@ -698,3 +698,95 @@ And here's the proof. We won't delve into this, but it's quite simple.
  > ges av att $f$ är kontinuerlig.
  >
  > -- <cite>[Wikipedia - Analysens Fundamentalsats](https://sv.wikipedia.org/wiki/Analysens_fundamentalsats)</cite>
+
+Let's write a function for symbolic integration of
+functions. `integrate` will be the indefinite integration function, as
+it's more powerful. Definite integrals can be expressed directly in
+terms of indefinite integrals, but not quite vice versa.
+
+> integrate :: [(String, Expr)] -> Expr -> RealNum -> Expr
+> integrate env (f :+ g) c = (integrate env f 0 + integrate env g 0) + Const c
+> integrate env (f :- g) c = (integrate env f 0 - integrate env g 0) + Const c
+
+There exists a great product rule in the case of differentiation, but
+not for integration. There just doesn't exist a great way to integrate a
+product that always works! The integration rule that's most analogous
+to the product rule for differentiation, is integration by parts:
+
+$$ \int f(x) g(x) dx = f(x) G(x) - \int f'(x) g(x) dx $$
+
+Hmm, this doesn't look quite as helpful as the differentiation product rule, does it?
+We want this rule to give us an expression of simpler and/or fewer integrals, and it may indeed do so.
+For example, the integration of the product $x * e^x$ is a great examples of a case where it works well:
+
+$$ \int x e^x dx = x e^x - \int 1 e^x dx = x e^x - e^x = e^x (x - 1) $$
+
+Now THAT is a simplification.
+
+However, just by flipping the order of the expressions, we get a case where the integration by parts rule only makes things worse:
+
+$$ \int e^x x dx = e^x x^2 - \int e^x x dx = e^x x^2 - (e^x x^2 - \int e^x x dx) = e^x x^2 - (e^x x^2 - (e^x x^2 - \int e^x x dx)) = ... $$
+
+Oh no, it's an infinite recursion!
+
+There is also the problem that the integration by parts rule is simply
+undefined in the case of $g(x)$ not being integrable to $G(x)$. And
+so, as there exists no great way to do it, we'll settle for a mediocre
+one! We'll define the integration of a product to use integration by
+parts, but before integrating we'll simplify the expression in the
+hopes that it will become better suited for integration.
+
+> integrate env (f :* g) c =
+>     let simplified = simplify (f * g)
+>     in if simplified == (f * g)
+>        then f * integrate env g 0 - integrate env (deriveFn env f * g) 0 + Const c
+>        else integrate env simplified c
+
+We get a similar rule for quotients
+
+> integrate env (f :/ g) c =
+>     let simplified = simplify (f / g)
+>     in if simplified == (f / g)
+>        then let _F = integrate env f 0
+>             in _F / g + integrate env (_F * (deriveFn env g / (g^2))) 0 + Const c
+>        else integrate env simplified c
+
+Integration of function composition is, simply said, somewhat
+complicated.  The technique to use is called "integration by
+substituted", and is something like a reverse of the chain-rule of
+differentiation. Luckily, most beginner-to-intermediate physics
+courses purposfully avoid the use of composed functions when
+integration is required, and as such, we simply won't implement it!
+
+As long as we ensure our input functions are not composed functions,
+`integrate` will still be well behaved.
+
+> integrate env (f :. g) c = error "Please don't try to integrate function compositions!"
+
+You probably already know the rule for integrating polynomials (which
+$x$ is a case of). It's just the reverse of the simple differentiation
+rule!
+
+$$ \int a_n x^n + a_{n-1} x^{n-1} + ... + a_1 x^1 + a_0 = \frac{a_n}{n+1} x^{n+1} + \frac{a_{n-1}}{n} x^{n} + ... + \frac{a_1}{2} x^2 + a_0 x^1 + C $$
+
+implies that
+
+$$ \int x = \frac{x^2}{2} + C $$
+
+And so, we implement exactly that
+
+> integrate env (Var v) c = (Var v)^2 / 2 + c
+
+To integrate a lambda function, we simply integrate the
+body-expression with regards to the parameter variable
+
+-- > integrate env (Lambda p b) c = undefined
+
+-- > deriveFn env (Lambda p b) = Lambda p (deriveEx env p b)
+-- > deriveFn env (Func "log") = Lambda "_x" (1 / "x")
+-- > deriveFn env (Func "exp") = Func "exp"
+-- > deriveFn env (Func "sin") = Func "cos"
+-- > deriveFn env (Func "cos") = Func "negate" :. Func "sin"
+-- > deriveFn env (Func "asin") = 1 / sqrt (1 - ("x" * "x"))
+-- > deriveFn env (Func "acos") = (-1) / sqrt (1 - ("x" * "x"))
+-- > deriveFn _ _ = undefined

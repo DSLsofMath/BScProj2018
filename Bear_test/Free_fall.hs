@@ -1,8 +1,7 @@
 
+-- Importera deep embedding och Dimensions
+import 
+
+
 -- Freefall
-
-inc1 :: Int -> Int
-inc1 = (+1)
-
-
 

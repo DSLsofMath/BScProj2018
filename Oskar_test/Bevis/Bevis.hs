@@ -13,19 +13,36 @@ data Equals lhs rhs
 data Mul a b
 data Div num den
 
+-- Är något `undefined` är det axiom
+
+-- Implikationer modelleras av funktioner från en sak
+-- till en annan sak
+
 -- a = b --> b = a
 equCom :: Equals a b -> Equals b a
 equCom = undefined
 
--- a * b --> b * a
-mulCom :: Mul a b -> Mul b a
+-- Likheter (mellan uttryck) modellas av två saker
+-- i likhetstypen
+
+-- a * b == b * a
+mulCom :: Equals (Mul a b) (Mul b a)
 mulCom = undefined
+
+-- En implikation till
 
 -- a / b = c --> a = c * b
 mulUpDiv :: Equals (Div a b) c -> Equals a (Mul c b)
 mulUpDiv = undefined
 
+-- En differential av någonting. En infinitesimal bit av 
+-- något vid en obestämd tidpunkt.
+
 data Diff a
+
+-- "Om a == b, och a == c, så b == c"
+transitivity :: Equals a b -> Equals a c -> Equals b c
+transitivity = undefined
 
 -- Tar som axiom
 -- a = dv / dt
@@ -47,10 +64,12 @@ s2 = mulUpDiv s1
 data Integ a
 
 -- a = b --> Integ a = Integ b
-bothSideInteg :: Equals a b -> Equals (Integ a) (Integ b)
-bothSideInteg = undefined
+--bothSideInteg :: Equals a b -> Equals (Integ a) (Integ b)
+--bothSideInteg = undefined
 -- Här uppe kanske man ska kräva att en differential är
 -- inblandad
+
+bothSideInteg :: Equals (Mul a (Diff b)) (Mul c (Diff d)) -> Equals (Integ (Mul a (Diff b))) (Integ (Mul c (Diff d)))
 
 {- Vill egentligen ha något sådant här
 
@@ -58,6 +77,8 @@ bothSideOp :: Equals a b -> op -> Equals (op a) (op b)
 bothSideOp = undefined
 
 -}
+
+mulWithOne :: 
 
 s3 :: Equals (Integ (Diff v)) (Integ (Mul a (Diff t)))
 s3 = bothSideInteg s2
@@ -79,16 +100,17 @@ integConstant = undefined
 -- Problem: om k och x är samma gör denna funktion
 -- otillåtna saker
 
-transitivity :: Equals a b -> Equals a c -> Equals b c
-transitivity = undefined
+
 
 s4 :: Equals (Integ (Mul a (Diff t))) (Delta v)
 s4 = transitivity s3 integDiff
 
--- s5 :: Equals (Mul a (Integ (Diff t))) (Delta v)
+s5 :: Equals (Delta v) (Mul a (Integ (Diff t)))
 s5 = transitivity s4 integConstant
 
 -- Problem: hur använda en likhet "långt inne", som i fallet med s5. Här vill man använda `integDiff` inuti direkt på Mul a (Integ (Diff t))
+
+
 
 -- Dessa blir typer
 -- Integ k dx = k * Integ 1 dx

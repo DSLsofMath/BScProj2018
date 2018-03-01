@@ -170,8 +170,4 @@ Man kan också se det som att DSLs och denna extrakunskap vi presenterat är fö
 
 # Källförteckning
 
-Källor ska finnas med, men det får kanske göras nogrannare när vi börja latexa
-
 # Bilagor
-
-Samma sak med bilagor som med källor

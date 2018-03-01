@@ -1,29 +1,31 @@
 % CREATED BY DAVID FRISK, 2016
+
 \chapter{Metod}
-Som ett genomgående tema vill vi arbeta in återkoppling med Åke Fäldt och Patrik
-Jansson så att vi vet att vi håller oss på banan och inte gör det för svårt för
-oss själva eller potentiella studenter.
 
-Den övergripande planen är att börja med att läsa in oss på fysik, domänspecika
-språk och liknande projekt. Detta för att få en grundläggande uppfattning av hur
-projeket kan tänkas se ut. Därefter kommer läromaterialet att skrivas. Eftersom
-domänspecifika språk kommer presenteras invävt i läromaterialet kommer därför
-också de domänspecika språken skapas parallellt med skrivandet. Vi vet ännu inte
-hur vi bra kan fördela arbetet mellan gruppmedlemmarna. En möjlighet, beroende
-på tidsbehovet, är att en/två skriver om mekanik och en/två om termodynamik
-eller våglära. Under skrivandets gång kommer en del inläsning behöva göras
-parallellt. Det kan handla både om fysik och domänspecika språk, till exempel
-att jämföra vår implementation med likaratade implementationer.
+Skapandet av läromaterialet har i grova drag haft tre faser. Först valdes olika arbetsområden ut, som enskilt gick att arbeta med. Sedan Skapades läromaterial för dessa områden. Till sist sammanfoagdes resultatet.
 
-För att hitta de områden datateknologer har problem med i \textit{Fysik för
-ingenjörer} kommer vi prata med kursens föreläsare, med DNS
-(Datateknologsektionen på Chalmers) samt reflektera över de delar vi själva
-tyckte var svåra.
+\section{Selektion av arbetsområden}
 
-De primära källorna till inläsning av fysik kommer att vara kursboken
-\textit{University Physics}\cite{UP} samt föreläsarens egna material i form av
-anteckningar och övningsuppgifter. Till vår hjälp för att förstå hur man på ett
-bra sätt kan skapa domänspecika språk inom fysik har vi boken \textit{Structure
-and Interpretaton of Classical Mechanics}\cite{SICM}.
+För att hitta områden att arbeta med studerades främst kursboken *Univeristy Physics*. Där lästes de kapitel som ingick i *Fysik för ingenjörer*. Sådant som verkade hade syntax som behövde förklaras, eller sådant som var svårt, eller sådant som var spännande valdes ut. De områden som hittats sorterades upp i grupper som var så fristående som möjligt för att kunna arbetas med på parallellt.
 
-Se bilaga $\lambda$ för en mer detaljerad lista över hur vi tänkt lägga upp arbetet.
+De områden som valdes ut blev
+- Vektorer
+- Enheter
+- Momentan och genomsnitt
+- Differentalkalkyl
+
+\section{Skapande av de första områdena}
+
+Varje gruppmedlem fck varsitt område att arbeta med. Man började med att experimentera med DSL:et för att hitta bra sätt att representera området på, vad som var tydligt och lätthanterat i datorn.
+
+Det skedde också en del Haskell-inläsning av nya områden, exempelvis typnivå-progammering, för att kunna göra DSL:er på bästa sätt.
+
+När en tanke börjat formas så implementerades först DSL:et. När det till stora delar var klart började förklarande brödtext skrivas till det, främst för att förklara koden som skrivits.
+
+När koden var färdig och kommenterad tillräckligt väl började brödtexten uppdaters för att även innehålla mer kopplingar till fysik.
+
+\section{Sammanfogning av flera områden}
+
+Stack, git kan säkert passa här för att beskriva hur vi samarbetade med sammanfogningen.
+
+\section{Skapandet av hemsidan}

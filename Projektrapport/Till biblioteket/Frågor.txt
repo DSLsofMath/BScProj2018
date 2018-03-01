@@ -11,4 +11,4 @@
 
 - Upphovsrätt när det gäller fysikuppgifter
 
-- Om man hämtar info från en kurshemsida, är det föreläsaren själv eller den som skrivit in det?
+- Om man hämtar information, e.g. kursbeskrivning, direkt från en kursbeskrivningssida som https://ocw.mit.edu/courses/earth-atmospheric-and-planetary-sciences/12-620j-classical-mechanics-a-computational-approach-fall-2008/, vem ska man referera till då? Examinatorn/föreläsarna som gjort kursens material, eller MIT/individen som skrivit den faktiska kursbeskrivningssidan?

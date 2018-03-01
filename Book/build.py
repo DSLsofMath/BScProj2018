@@ -86,7 +86,7 @@ sources = [
         ("Type-level units", "Physics/src/Units/TypeLevel.lhs"),
     ]),
     ("Vectors", [
-        ("Vector", "Physics/src/Vector/Vector.hs")
+        ("Vector", "Physics/src/Vector/Vector.lhs")
     ]),
     ("Calculus", [
         ("Calculus", "Physics/src/Calculus/Calculus.lhs"),

@@ -133,7 +133,7 @@ which is equivalent to
 >     _             -> error "Not a function"
 > eval env (Delta x) = LambdaVal "_a" (Lambda "_b" ((x' :$ ("_b")) - (x' :$ ("_a"))))
 >   where x' = subst env x
-> eval env (D f) = eval env (simplify (deriveFn env f))
+> eval env (D f) = eval env (simplify (derive f))
 
 > evalBinop env a b cons op = case (eval env a, eval env b) of
 
@@ -349,33 +349,32 @@ Here are some derivatives. Proving these is left as an excercise to the reader:
 % TODO: Higher order functions are discrete. Typecheck to prevent differentiation
 %       of these.
 
-> deriveFn :: [(String, Expr)] -> Expr -> Expr
-> deriveFn env (f :+ g) = deriveFn env f + deriveFn env g
-> deriveFn env (f :- g) = deriveFn env f - deriveFn env g
-> deriveFn env (f :* g) = deriveFn env f * g + f * deriveFn env g
-> deriveFn env (f :/ g) = (deriveFn env f * g - f * deriveFn env g) / (g * g)
-> deriveFn env (f :. g) = Lambda "_x" ((*) (deriveFn env (g :$ "_x"))
->                                          (deriveFn env (f :$ (g :$ "_x"))))
-> deriveFn env (Var v) = deriveFn env (fromJust (lookup v env))
-> deriveFn env (Lambda p b) = Lambda p (deriveEx env p b)
-> deriveFn env (Func "log") = Lambda "_x" (1 / "x")
-> deriveFn env (Func "exp") = Func "exp"
-> deriveFn env (Func "sin") = Func "cos"
-> deriveFn env (Func "cos") = Func "negate" :. Func "sin"
-> deriveFn env (Func "asin") = 1 / sqrt (1 - ("x" * "x"))
-> deriveFn env (Func "acos") = (-1) / sqrt (1 - ("x" * "x"))
-> deriveFn _ _ = undefined
+> derive :: Expr -> Expr
+> derive (f :+ g) = derive f + derive g
+> derive (f :- g) = derive f - derive g
+> derive (f :* g) = derive f * g + f * derive g
+> derive (f :/ g) = (derive f * g - f * derive g) / (g^2)
+> derive (f :. g) = derive g * (derive f :. g)
+> derive (Var v) = error ("(Var \"" ++ v ++ "\") is not a function")
+> derive (Lambda p b) = Lambda p (deriveEx b p)
+> derive (Func "log") = Lambda "x" (1 / "x")
+> derive (Func "exp") = Func "exp"
+> derive (Func "sin") = Func "cos"
+> derive (Func "cos") = Func "negate" :. Func "sin"
+> derive (Func "asin") = Lambda "x" (1 / sqrt (1 - ("x" * "x")))
+> derive (Func "acos") = Lambda "x" ((-1) / sqrt (1 - ("x" * "x")))
+> derive _ = undefined
 
-> deriveEx :: [(String, Expr)] -> String -> Expr -> Expr
-> deriveEx env v (Const _) = 0
-> deriveEx env v (a :+ b) = deriveEx env v a + deriveEx env v b
-> deriveEx env v (a :- b) = deriveEx env v a - deriveEx env v b
-> deriveEx env v (a :* b) = deriveEx env v a * b + a * deriveEx env v b
-> deriveEx env v (a :/ b) = (deriveEx env v a * b - a * deriveEx env v b) / (b * b)
-> deriveEx env v (Var u) | u == v = 1
->                        | otherwise = 0
-> deriveEx env v (f :$ e) = deriveEx env v e * (deriveFn env f :$ e)
-> deriveEx _ _ _ = undefined
+> deriveEx :: Expr -> String -> Expr
+> deriveEx (Const _) v = 0
+> deriveEx (a :+ b) v = deriveEx a v + deriveEx b v
+> deriveEx (a :- b) v = deriveEx a v - deriveEx b v
+> deriveEx (a :* b) v = deriveEx a v * b + a * deriveEx b v
+> deriveEx (a :/ b) v = (deriveEx a v * b - a * deriveEx b v) / b^2
+> deriveEx (Var u) v | u == v = 1
+>                    | otherwise = 0
+> deriveEx (f :$ e) v = deriveEx e v * (derive f :$ e)
+> deriveEx _ _ = undefined
 
 Difficult to read some of these derivatives. Let's simplify
 
@@ -418,8 +417,8 @@ Examples
 > idE = Lambda "_x" "_x"
 > constFn n = Lambda "_x" (Const n)
 
-> dF = simplify . deriveFn []
-> dE = simplify . deriveEx [] "x"
+> dF = simplify . derive
+> dE = simplify . (flip deriveEx) "x"
 
 > test_simplify1 = (==) (simplify ("x" + "x"))
 >                       (2 * "x")
@@ -427,8 +426,8 @@ Examples
 >                       (3 * "x")
 > test_derive1   = (==) (dF (Func "sin" + idE))
 >                       (Func "cos" + constFn 1)
-> test_derive2   = (==) (dE (sin (sin "x")))
->                       (cos "x" * cos (sin "x"))
+> test_derive2   = (==) (dE (sin (sin (Var "x"))))
+>                       (cos "x" * cos (sin (Var "x")))
 
 Let's plot graphs!
 

@@ -457,8 +457,10 @@ Let's plot graphs!
 >                       Fun f'
 >                           ("(D " ++ show fe ++ ") = " ++ show fe')]
 
-Integrals
+Integrals - An integral part of calculus
 ======================================================================
+
+![](integral.png "A snaky integral"){.float-img-right}
 
 Integrals are used in the reversed way as derivatives.
 

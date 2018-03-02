@@ -2,9 +2,6 @@
 Oskars anteckningar
 -------------------
 
-Ha 80 tecken som kodbredd
-Lägg in bilder med markdown
-
 Vissa regler är generella, som upp-multiplicering
 
 Andra är specifika, som a = dv/dt. Ha data A osv för att skilja på dom
@@ -24,6 +21,25 @@ När uttryck moddas, så är det likheter som nyttjas.
 För den sistnämnda, ha både funktion och Equals-värde. Även equalsElim: tar värde och likhet, ger andra värdet.
 
 Fast kanske bäst att bara ha transitivitet. 
+
+Ekvationer Oskar haft i åtanke
+------------------------------
+
+Utgå ifrån
+
+\begin{align}
+  v &= \frac{dx}{dt} \\
+  a &= \frac{dv}{dt} \\
+\end{align}
+
+Om accelerationen är konstant så visa att följande gäller.
+
+\begin{align}
+  v_f &= v_i + a*t \\
+  x_f &= x_i + 0.5*(v_f + v_i)*t \\
+  x_f &= x_i + v_i*t + 0.5*a*t^2 \\
+  v_f^2 &= v_i^2 + 2*a*(x_f - x_i) \\
+\end{align}
 
 Faktiska starten
 ----------------

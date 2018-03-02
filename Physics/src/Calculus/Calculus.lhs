@@ -1,10 +1,23 @@
 Introduction
 ======================================================================
 
-% TODO: Move relevant stuff out of the general structures/eval to their
-%       respective sections? (differences, derivatives, integrals)
-%       Or maybe, first introduce differences et al. separately, and then
-%       tie them together in a common section of evaluation?
+TODO: Move relevant stuff out of the general structures/eval to their
+      respective sections? (differences, derivatives, integrals)
+      Or maybe, first introduce differences et al. separately, and then
+      tie them together in a common section of evaluation?
+
+TODO: Good introduction
+
+TODO: Make the text good in general
+
+TODO: Quotes -> good teaching text (especially in Integral secion)
+
+TODO: Proofs/tests/verification
+
+TODO: Improve DSLs a bit? I don't like the `Expr` tree very much.
+      Separate into `FunExpr` and `Expr`, where `Expr` is very simple?
+
+TODO: Have someone critique this
 
 Calculus is cool
 
@@ -821,3 +834,28 @@ And so, we implement exactly that
 > integrateEx e@(f :$ (Var u)) v c | v == u    = integrate f c :$ Var v
 >                                  | otherwise = e * Var v + Const c
 > integrateEx _ _ _ = undefined
+
+And we're done with our DSL of calculus!
+
+TODO: Proof/verification
+----------------------------------------------------------------------
+
+proof and/or tests go here
+
+TODO: Examples
+----------------------------------------------------------------------
+
+they go here
+
+TODO: Applying our DSL to solve physics problems!
+----------------------------------------------------------------------
+
+Mostly problems regarding position, velocity, acceleration, time.
+
+Average FOO vs. Instantaneous FOO -- Differences vs Derivatives.
+
+Integrating to get rid of /t:s.
+
+cool stuff here in general.
+
+Also, many pretty pictores

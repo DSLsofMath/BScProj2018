@@ -75,4 +75,62 @@ Detta är faktiskt det första vi ska göra.
 > s1 :: Equals (Mul A (Diff T)) (Diff V)
 > s1 = mulUpDiv s0
 
-Hej
+Gör man samma operation på båda sidor av lika-med-tecknet är det tillåtet. Specifikt är att integera på båda sidor tillåtet.
+
+Vad är det för slags integral vi vill göra egentligen? Jo, vi vill integrera "från initialt tillstånd till finalt tillstånd", "i -> f". Beroende på om det integreras map tid eller hastighet, så är det från initial tid till final tid, eller initial hastighet till final hastighet. Dvs, det man får ut av integralen är $t_f-t_i$, eller $\Delta t$. Vi börjar med $\Delta$ tankesättet.
+
+> data Integ a
+> data Delta x
+
+Nu är det en ekvivalens som gäller, eftersom det är en likhett som transformers till en annan likhet. (I andra ord, ett påstående till ett annat påstående).
+
+> bothSideInteg :: Equals a b -> Equals (Integ a) (Integ b)
+> bothSideInteg = undefined
+
+TODO: Kräv att indata är differentialer
+
+TODO: Vi kanske måste ha något sätt att markera att variabler är konstanta.
+
+Vi integrerar likheten på båda sidor.
+
+> s2 :: Equals (Integ (Mul A (Diff T))) (Integ (Diff V))
+> s2 = bothSideInteg s1
+
+Integralen av en ensam differential är delta.
+
+> eqLoneDiffDelta :: Equals (Integ (Diff x)) (Delta x)
+> eqLoneDiffDelta = undefined
+
+Den likhet vill vi applicera på `s2`-likheten. Tur att likheter är transitiva, en form av ekvivalens.
+
+> transitivity :: Equals a b -> Equals a c -> Equals b c
+> transitivity = undefined
+
+Likheter är också kommutativa.
+
+> equCom :: Equals a b -> Equals b a
+> equCom = undefined
+
+> s3 :: Equals (Integ (Diff V)) (Integ (Mul A (Diff T)))
+> s3 = equCom s2
+
+> s4 :: Equals (Integ (Mul A (Diff T))) (Delta V)
+> s4 = transitivity s3 eqLoneDiffDelta
+
+En integral av en multiplikation av en konstant och en differential, är en multiplikation av konstant och integralen av differentialen.
+
+TODO: Hur vet att den är en konstant?
+
+> eqMoveOutMult :: Equals (Integ (Mul a (Diff b))) (Mul a (Integ (Diff b)))
+> eqMoveOutMult = undefined
+
+> s5 :: Equals (Delta V) (Mul A (Integ (Diff T)))
+> s5 = transitivity s4 eqMoveOutMult
+
+> transitivityInMul :: Equals a (Mul b c) -> Equals c d -> Equals a (Mul b d)
+> transitivityInMul = undefined
+
+> s6 :: Equals (Delta V) (Mul A (Delta T))
+> s6 = transitivityInMul s5 eqLoneDiffDelta
+
+TODO: Typer för tids-beroende och oberoende variabler. För final och initiala värden.

@@ -7,19 +7,33 @@ Ska vi som de gjorde tidigare, förklara Git, Haskell, DSL, och fysik?
 
 \section{Haskell och funktionell programmering}
 
-I funktionell progammering uttrycker man allting i små och självständiga funktioner. Rekursion används ofta. Fördelen med detta är att programmen blir koncisa och de tenderar sakna de "progammeringsteknsika" delar som behövs för att få progammet att fungera, men som inte tillför någon betydelse till det man uttrycker.
+VARFÖR VALDE VI HASKELL??
 
-Haskell är ett funktionellt progammeringsspråk med ett starkt typsystem. Ett exempel nedan
+I funktionell progammering uttrycker man allting i små och självständiga
+funktioner. Rekursion används ofta. Fördelen med detta är att programmen blir
+koncisa och de tenderar sakna de "progammeringsteknsika" delar som behövs för
+att få progammet att fungera, men som inte tillför någon betydelse till det man
+uttrycker.
 
-    fakultet :: (Num n) => n -> n
-    fakultet 0 = 1
-    fakultet n = n * fakultet \$ n-1
+Haskell är ett funktionellt progammeringsspråk med ett starkt typsystem.
+VARFÖR?
 
 \section{Domänspecifika språk}
 
-Ett domänspecifikt språk är som namnet låter ett språk som är gjort till en viss domän. En domän kan vara t.ex. fysikaliska enhter, eller tillgångar och skulder i ett företag. Eftersom språket är specifikt för domänen kan saker i den uttryckas enklare än i ett generellt språk.
+Ett domänspecifikt språk är som namnet låter ett språk som är gjort till en
+viss domän. En domän kan vara t.ex. fysikaliska enhter, eller tillgångar och
+skulder i ett företag. Eftersom språket är specifikt för domänen kan saker i
+den uttryckas enklare än i ett generellt språk. VARFÖR BLIR DET ENKLARE? 
 
-Det finns två kategorier av domänspecifika språk, fristående och inbäddade. Skillnaden är att ett fristående är ett nytt progammeringsspråk från grunden medan ett inbäddat är skapat i ett värdspråk, och använder det språkets syntax. I detta fall kommer inbäddade domänspecika språk att skapas i Haskell.
+
+LÄNGRE FÖRKLARING??
+Det finns två kategorier av domänspecifika språk, fristående och inbäddade.
+Skillnaden är att ett fristående är ett nytt progammeringsspråk från grunden
+medan ett inbäddat är skapat i ett värdspråk, och använder det språkets syntax.
+I detta fall kommer inbäddade domänspecika språk att skapas i Haskell (Kanske
+onödigt att säga).
+
+\section{Syntaxträd och deras evaluering}
 
 Ett typexempel på ett domänspecifkt språk är ett syntaxträd för algebraisk uttryck, här kodat i Haskell.
 
@@ -32,14 +46,24 @@ Ett typexempel på ett domänspecifkt språk är ett syntaxträd för algebraisk
 
 Ha med en bild på detta.
 
-\section{Fysik vi behanldar och Fysik för ingenjörer}
+!!!Plus förklaring om evaluering!
+
+\section{Fysik vi behandlar och Fysik för ingenjörer}
 
 *Fysik för ingenjörer* är en fysikkurs som är obligatorisk för Datateknik i 2:an. Det är en grundläggande fysikkurs som behandlar mekanik, termodynamik och vågrörelselära
 
 Den innehåller även en hel del tillämpad matematik, exempelvis vektorer och differentialkalkyl. Det användas bland annat vid beräkning av värmeledning.
 
+Vi har utgått från kursplanen när vi plockat ut våra områden...
+
 \section{LHS, Pandoc, HTML-hemsidan}
 
-Blablabla
+Vad är LHS??
+
+Vad är Pandoc??
+
+Hur generar vi hemsidan???
+
+build.py????
 
 \end{binge}

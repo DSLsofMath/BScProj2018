@@ -50,6 +50,12 @@ The syntax tree of an expression
 >           | Expr :$ Expr       -- Function application
 >   deriving Eq
 
+A `const` and `id` function could be useful. We can describe them like this:
+
+> const' c = Lambda "x" (Const c)
+>
+> id' = Lambda "x" "x"
+
 We implement Num, Fractal, Floating, and IsString for Expr to make it nicer to use
 
 > instance Num Expr where
@@ -261,7 +267,6 @@ Examples
 ----------------------------------------------------------------------
 
 > x = Lambda "t" ("t" :* (Const 5))
-> id' = Lambda "x" "x"
 > t = id'
 > vAvg = Lambda "x" (Delta "x" :/ Delta t)
 > vAvgX = vAvg :$ x
@@ -355,7 +360,6 @@ Here are some derivatives. Proving these is left as an excercise to the reader:
 > derive (f :* g) = derive f * g + f * derive g
 > derive (f :/ g) = (derive f * g - f * derive g) / (g^2)
 > derive (f :. g) = derive g * (derive f :. g)
-> derive (Var v) = error ("(Var \"" ++ v ++ "\") is not a function")
 > derive (Lambda p b) = Lambda p (deriveEx b p)
 > derive (Func "log") = Lambda "x" (1 / "x")
 > derive (Func "exp") = Func "exp"
@@ -363,6 +367,7 @@ Here are some derivatives. Proving these is left as an excercise to the reader:
 > derive (Func "cos") = Func "negate" :. Func "sin"
 > derive (Func "asin") = Lambda "x" (1 / sqrt (1 - ("x" * "x")))
 > derive (Func "acos") = Lambda "x" ((-1) / sqrt (1 - ("x" * "x")))
+> derive (Func "negate") = Func "negate"
 > derive _ = undefined
 
 > deriveEx :: Expr -> String -> Expr
@@ -415,7 +420,6 @@ Examples
 ----------------------------------------------------------------------
 
 > idE = Lambda "_x" "_x"
-> constFn n = Lambda "_x" (Const n)
 
 > dF = simplify . derive
 > dE = simplify . (flip deriveEx) "x"
@@ -425,7 +429,7 @@ Examples
 > test_simplify2 = (==) (simplify (((1 + 1) * "x") + ("x" * 1)))
 >                       (3 * "x")
 > test_derive1   = (==) (dF (Func "sin" + idE))
->                       (Func "cos" + constFn 1)
+>                       (Func "cos" + const' 1)
 > test_derive2   = (==) (dE (sin (sin (Var "x"))))
 >                       (cos "x" * cos (sin (Var "x")))
 
@@ -703,9 +707,9 @@ functions. `integrate` will be the indefinite integration function, as
 it's more powerful. Definite integrals can be expressed directly in
 terms of indefinite integrals, but not quite vice versa.
 
-> integrate :: [(String, Expr)] -> Expr -> RealNum -> Expr
-> integrate env (f :+ g) c = (integrate env f 0 + integrate env g 0) + Const c
-> integrate env (f :- g) c = (integrate env f 0 - integrate env g 0) + Const c
+> integrate :: Expr -> RealNum -> Expr
+> integrate (f :+ g) c = (integrate f 0 + integrate g 0) + const' c
+> integrate (f :- g) c = (integrate f 0 - integrate g 0) + const' c
 
 There exists a great product rule in the case of differentiation, but
 not for integration. There just doesn't exist a great way to integrate a
@@ -735,20 +739,20 @@ one! We'll define the integration of a product to use integration by
 parts, but before integrating we'll simplify the expression in the
 hopes that it will become better suited for integration.
 
-> integrate env (f :* g) c =
+> integrate (f :* g) c =
 >     let simplified = simplify (f * g)
 >     in if simplified == (f * g)
->        then f * integrate env g 0 - integrate env (deriveFn env f * g) 0 + Const c
->        else integrate env simplified c
+>        then f * integrate g 0 - integrate (derive f * g) 0 + const' c
+>        else integrate simplified c
 
 We get a similar rule for quotients
 
-> integrate env (f :/ g) c =
+> integrate (f :/ g) c =
 >     let simplified = simplify (f / g)
 >     in if simplified == (f / g)
->        then let _F = integrate env f 0
->             in _F / g + integrate env (_F * (deriveFn env g / (g^2))) 0 + Const c
->        else integrate env simplified c
+>        then let _F = integrate f 0
+>             in _F / g + integrate (_F * (derive g / (g^2))) 0 + const' c
+>        else integrate simplified c
 
 Integration of function composition is, simply said, somewhat
 complicated.  The technique to use is called "integration by
@@ -760,32 +764,60 @@ integration is required, and as such, we simply won't implement it!
 As long as we ensure our input functions are not composed functions,
 `integrate` will still be well behaved.
 
-> integrate env (f :. g) c = error "Please don't try to integrate function compositions!"
+> integrate (f :. g) c = error "Please don't try to integrate function compositions!"
+
+To integrate a lambda function, we simply integrate the
+body-expression with regards to the parameter variable
+
+> integrate (Lambda p b) c = Lambda p (integrateEx b p c)
+
+And then there are these functions. We just look up the formulas of
+integration in Wolfram Alpha or something.
+
+> integrate (Func "log") c = Lambda "x" ("x" * log "x" - "x" + const' c)
+> integrate (Func "exp") c = Func "exp" + const' c
+> integrate (Func "sin") c = Func "negate" :. Func "cos" + const' c
+> integrate (Func "cos") c = Func "sin" + const' c
+> integrate (Func "asin") c = Lambda "x" (sqrt (1 - "x"^2) + "x" * asin "x" + const' c)
+> integrate (Func "acos") c = Lambda "x" ("x" * acos "x" - sqrt (1 - "x"^2) + const' c)
+> integrate (Func "negate") c = Func "negate" + const' c
+> integrate _ _ = undefined
+
+> integrateEx :: Expr -> String -> RealNum -> Expr
 
 You probably already know the rule for integrating polynomials (which
 $x$ is a case of). It's just the reverse of the simple differentiation
 rule!
 
-$$ \int a_n x^n + a_{n-1} x^{n-1} + ... + a_1 x^1 + a_0 = \frac{a_n}{n+1} x^{n+1} + \frac{a_{n-1}}{n} x^{n} + ... + \frac{a_1}{2} x^2 + a_0 x^1 + C $$
+$$ \int a_n x^n + a_{n-1} x^{n-1} + ... + a_1 x^1 + a_0 dx = \frac{a_n}{n+1} x^{n+1} + \frac{a_{n-1}}{n} x^{n} + ... + \frac{a_1}{2} x^2 + a_0 x^1 + C $$
 
 implies that
 
-$$ \int x = \frac{x^2}{2} + C $$
+$$ \int a dx = ax + C $$
+
+and
+
+$$ \int x dx = \frac{x^2}{2} + C $$
 
 And so, we implement exactly that
 
-> integrate env (Var v) c = (Var v)^2 / 2 + c
-
-To integrate a lambda function, we simply integrate the
-body-expression with regards to the parameter variable
-
--- > integrate env (Lambda p b) c = undefined
-
--- > deriveFn env (Lambda p b) = Lambda p (deriveEx env p b)
--- > deriveFn env (Func "log") = Lambda "_x" (1 / "x")
--- > deriveFn env (Func "exp") = Func "exp"
--- > deriveFn env (Func "sin") = Func "cos"
--- > deriveFn env (Func "cos") = Func "negate" :. Func "sin"
--- > deriveFn env (Func "asin") = 1 / sqrt (1 - ("x" * "x"))
--- > deriveFn env (Func "acos") = (-1) / sqrt (1 - ("x" * "x"))
--- > deriveFn _ _ = undefined
+> integrateEx (Const a) v c = Const a * Var v + Const c
+> integrateEx (Var u) v c | u == v    = (Var u)^2 / 2 + Const c
+>                         | otherwise = Var u * Var v + Const c
+> integrateEx (a :+ b) v c = integrateEx a v 0 + integrateEx b v 0 + Const c
+> integrateEx (a :- b) v c = integrateEx a v 0 - integrateEx b v 0 + Const c
+> integrateEx (a :* b) v c =
+>     let simplified = simplify (a * b)
+>     in if simplified == (a * b)
+>        then a * integrateEx b v 0 - integrateEx (derive a * b) v 0 + Const c
+>        else integrateEx simplified v c
+> integrateEx (a :/ b) v c =
+>     let simplified = simplify (a / b)
+>     in if simplified == (a / b)
+>        then let _A = integrateEx a v 0
+>             in _A / b + integrateEx (_A * (derive b / (b^2))) v 0 + Const c
+>        else integrateEx simplified v c
+> integrateEx e@(f :$ (Const a)) v c = e * Var v + Const c
+> integrateEx e@(f :$ (Var u)) v c | v == u    = integrate f c :$ Var v
+>                                  | otherwise = e * Var v + Const c
+> integrateEx _ _ _ = undefined

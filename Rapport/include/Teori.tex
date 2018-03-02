@@ -1,0 +1,45 @@
+% CREATED BY DAVID FRISK, 2016
+
+\chapter{Teori}
+
+\begin{binge}
+Ska vi som de gjorde tidigare, förklara Git, Haskell, DSL, och fysik?
+
+\section{Haskell och funktionell programmering}
+
+I funktionell progammering uttrycker man allting i små och självständiga funktioner. Rekursion används ofta. Fördelen med detta är att programmen blir koncisa och de tenderar sakna de "progammeringsteknsika" delar som behövs för att få progammet att fungera, men som inte tillför någon betydelse till det man uttrycker.
+
+Haskell är ett funktionellt progammeringsspråk med ett starkt typsystem. Ett exempel nedan
+
+    fakultet :: (Num n) => n -> n
+    fakultet 0 = 1
+    fakultet n = n * fakultet \$ n-1
+
+\section{Domänspecifika språk}
+
+Ett domänspecifikt språk är som namnet låter ett språk som är gjort till en viss domän. En domän kan vara t.ex. fysikaliska enhter, eller tillgångar och skulder i ett företag. Eftersom språket är specifikt för domänen kan saker i den uttryckas enklare än i ett generellt språk.
+
+Det finns två kategorier av domänspecifika språk, fristående och inbäddade. Skillnaden är att ett fristående är ett nytt progammeringsspråk från grunden medan ett inbäddat är skapat i ett värdspråk, och använder det språkets syntax. I detta fall kommer inbäddade domänspecika språk att skapas i Haskell.
+
+Ett typexempel på ett domänspecifkt språk är ett syntaxträd för algebraisk uttryck, här kodat i Haskell.
+
+    data Expr = Expr :+: Expr
+                Expr :*: Expr
+                Const Double
+                VarX
+
+    exempel = (Const 7.0 :+: VarX) :*: ((VarX :+: Const 10.0) :*: VarX)
+
+Ha med en bild på detta.
+
+\section{Fysik vi behanldar och Fysik för ingenjörer}
+
+*Fysik för ingenjörer* är en fysikkurs som är obligatorisk för Datateknik i 2:an. Det är en grundläggande fysikkurs som behandlar mekanik, termodynamik och vågrörelselära
+
+Den innehåller även en hel del tillämpad matematik, exempelvis vektorer och differentialkalkyl. Det användas bland annat vid beräkning av värmeledning.
+
+\section{LHS, Pandoc, HTML-hemsidan}
+
+Blablabla
+
+\end{binge}

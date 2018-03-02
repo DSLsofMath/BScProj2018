@@ -2,6 +2,16 @@
 
 \usepackage[super]{natbib}
 
+\usepackage{xcolor}  % Setting text color
+
+\newenvironment{binge} {
+    \color{red}
+}
+
+\newenvironment{draft} {
+    \color{blue}
+}
+
 % BASIC SETTINGS
 \usepackage{moreverb}								% List settings
 \usepackage{textcomp}								% Fonts, symbols etc.
@@ -19,8 +29,7 @@
 \numberwithin{table}{chapter}						% Numbering order for tables
 \usepackage{listings}								% Enables source code listings
 \usepackage{chemfig}								% Chemical structures
-\usepackage[top=3cm, bottom=3cm,
-			inner=3cm, outer=3cm]{geometry}			% Page margin lengths			
+\usepackage[margin=1in]{geometry}			% Page margin lengths			
 \usepackage{eso-pic}								% Create cover page background
 \newcommand{\backgroundpic}[3]{
 	\put(#1,#2){
@@ -30,6 +39,7 @@
 \usepackage{float} 									% Enables object position enforcement using [H]
 \usepackage{parskip}								% Enables vertical spaces correctly 
 
+\setlength{\parskip}{\baselineskip}
 
 
 % OPTIONAL SETTINGS (DELETE OR COMMENT TO SUPRESS)

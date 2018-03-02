@@ -1,0 +1,4 @@
+
+Jag har försökt göra något i stil med AbstractFOL i DSLM-kursen, men för algebraiska uttryck som dyker upp i fysikkursen. Min tanke är att samband som "delta v = a * delta t om a är konstant" ska bevisas utifrån rätt många axiom (så att man inte behöver bevisa all matematik ner till de minsta riktiga axiomen).
+
+Tror du det detta är ett fruktsamt spår att följa? Än så länge känns det mest som att jag introducerar en massa axiom, precis dom som behövs för att kunna genomföra beviset. Sedan finns det en del problem, som jag markerat i källkoden. Har de någon bra lösning i Haskells typsystem? 

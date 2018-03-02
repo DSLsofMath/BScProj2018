@@ -2,6 +2,9 @@
 Oskars anteckningar
 -------------------
 
+Ha 80 tecken som kodbredd
+Lägg in bilder med markdown
+
 Vissa regler är generella, som upp-multiplicering
 
 Andra är specifika, som a = dv/dt. Ha data A osv för att skilja på dom

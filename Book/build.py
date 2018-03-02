@@ -84,6 +84,7 @@ sources = [
         ("Value-level dimensions", "Physics/src/Dimensions/ValueLevel.lhs"),
         ("Type-level dimensions", "Physics/src/Dimensions/TypeLevel.lhs"),
         ("Quantities", "Physics/src/Dimensions/Quantity.lhs"),
+        ("Usage", "Physics/src/Dimensions/Usage.lhs"),
     ]),
     ("Vectors", [
         ("Vector", "Physics/src/Vector/Vector.lhs")

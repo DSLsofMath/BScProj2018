@@ -79,11 +79,11 @@ def build_index(sources):
     write_string_to_file(index, "index.html")
 
 sources = [
-    ("Units", [
-        ("Introduction", "Physics/src/Units/UnitsIntro.lhs"),
-        ("Quantities", "Physics/src/Units/Quantity.lhs"),
-        ("Value-level units", "Physics/src/Units/ValueLevel.lhs"),
-        ("Type-level units", "Physics/src/Units/TypeLevel.lhs"),
+    ("Dimensions", [
+        ("Introduction", "Physics/src/Dimensions/Intro.lhs"),
+        ("Quantities", "Physics/src/Dimensions/Quantity.lhs"),
+        ("Value-level units", "Physics/src/Dimensions/ValueLevel.lhs"),
+        ("Type-level units", "Physics/src/Dimensions/TypeLevel.lhs"),
     ]),
     ("Vectors", [
         ("Vector", "Physics/src/Vector/Vector.lhs")

@@ -1,10 +1,23 @@
 Introduction
 ======================================================================
 
-% TODO: Move relevant stuff out of the general structures/eval to their
-%       respective sections? (differences, derivatives, integrals)
-%       Or maybe, first introduce differences et al. separately, and then
-%       tie them together in a common section of evaluation?
+TODO: Move relevant stuff out of the general structures/eval to their
+      respective sections? (differences, derivatives, integrals)
+      Or maybe, first introduce differences et al. separately, and then
+      tie them together in a common section of evaluation?
+
+TODO: Good introduction
+
+TODO: Make the text good in general
+
+TODO: Quotes -> good teaching text (especially in Integral secion)
+
+TODO: Proofs/tests/verification
+
+TODO: Improve DSLs a bit? I don't like the `Expr` tree very much.
+      Separate into `FunExpr` and `Expr`, where `Expr` is very simple?
+
+TODO: Have someone critique this
 
 Calculus is cool
 
@@ -49,6 +62,12 @@ The syntax tree of an expression
 >           | D Expr             -- Derivative, like "f'"
 >           | Expr :$ Expr       -- Function application
 >   deriving Eq
+
+A `const` and `id` function could be useful. We can describe them like this:
+
+> const' c = Lambda "x" (Const c)
+>
+> id' = Lambda "x" "x"
 
 We implement Num, Fractal, Floating, and IsString for Expr to make it nicer to use
 
@@ -133,7 +152,7 @@ which is equivalent to
 >     _             -> error "Not a function"
 > eval env (Delta x) = LambdaVal "_a" (Lambda "_b" ((x' :$ ("_b")) - (x' :$ ("_a"))))
 >   where x' = subst env x
-> eval env (D f) = eval env (simplify (deriveFn env f))
+> eval env (D f) = eval env (simplify (derive f))
 
 > evalBinop env a b cons op = case (eval env a, eval env b) of
 
@@ -261,7 +280,6 @@ Examples
 ----------------------------------------------------------------------
 
 > x = Lambda "t" ("t" :* (Const 5))
-> id' = Lambda "x" "x"
 > t = id'
 > vAvg = Lambda "x" (Delta "x" :/ Delta t)
 > vAvgX = vAvg :$ x
@@ -349,33 +367,32 @@ Here are some derivatives. Proving these is left as an excercise to the reader:
 % TODO: Higher order functions are discrete. Typecheck to prevent differentiation
 %       of these.
 
-> deriveFn :: [(String, Expr)] -> Expr -> Expr
-> deriveFn env (f :+ g) = deriveFn env f + deriveFn env g
-> deriveFn env (f :- g) = deriveFn env f - deriveFn env g
-> deriveFn env (f :* g) = deriveFn env f * g + f * deriveFn env g
-> deriveFn env (f :/ g) = (deriveFn env f * g - f * deriveFn env g) / (g * g)
-> deriveFn env (f :. g) = Lambda "_x" ((*) (deriveFn env (g :$ "_x"))
->                                          (deriveFn env (f :$ (g :$ "_x"))))
-> deriveFn env (Var v) = deriveFn env (fromJust (lookup v env))
-> deriveFn env (Lambda p b) = Lambda p (deriveEx env p b)
-> deriveFn env (Func "log") = Lambda "_x" (1 / "x")
-> deriveFn env (Func "exp") = Func "exp"
-> deriveFn env (Func "sin") = Func "cos"
-> deriveFn env (Func "cos") = Func "negate" :. Func "sin"
-> deriveFn env (Func "asin") = 1 / sqrt (1 - ("x" * "x"))
-> deriveFn env (Func "acos") = (-1) / sqrt (1 - ("x" * "x"))
-> deriveFn _ _ = undefined
+> derive :: Expr -> Expr
+> derive (f :+ g) = derive f + derive g
+> derive (f :- g) = derive f - derive g
+> derive (f :* g) = derive f * g + f * derive g
+> derive (f :/ g) = (derive f * g - f * derive g) / (g^2)
+> derive (f :. g) = derive g * (derive f :. g)
+> derive (Lambda p b) = Lambda p (deriveEx b p)
+> derive (Func "log") = Lambda "x" (1 / "x")
+> derive (Func "exp") = Func "exp"
+> derive (Func "sin") = Func "cos"
+> derive (Func "cos") = Func "negate" :. Func "sin"
+> derive (Func "asin") = Lambda "x" (1 / sqrt (1 - ("x" * "x")))
+> derive (Func "acos") = Lambda "x" ((-1) / sqrt (1 - ("x" * "x")))
+> derive (Func "negate") = Func "negate"
+> derive _ = undefined
 
-> deriveEx :: [(String, Expr)] -> String -> Expr -> Expr
-> deriveEx env v (Const _) = 0
-> deriveEx env v (a :+ b) = deriveEx env v a + deriveEx env v b
-> deriveEx env v (a :- b) = deriveEx env v a - deriveEx env v b
-> deriveEx env v (a :* b) = deriveEx env v a * b + a * deriveEx env v b
-> deriveEx env v (a :/ b) = (deriveEx env v a * b - a * deriveEx env v b) / (b * b)
-> deriveEx env v (Var u) | u == v = 1
->                        | otherwise = 0
-> deriveEx env v (f :$ e) = deriveEx env v e * (deriveFn env f :$ e)
-> deriveEx _ _ _ = undefined
+> deriveEx :: Expr -> String -> Expr
+> deriveEx (Const _) v = 0
+> deriveEx (a :+ b) v = deriveEx a v + deriveEx b v
+> deriveEx (a :- b) v = deriveEx a v - deriveEx b v
+> deriveEx (a :* b) v = deriveEx a v * b + a * deriveEx b v
+> deriveEx (a :/ b) v = (deriveEx a v * b - a * deriveEx b v) / b^2
+> deriveEx (Var u) v | u == v = 1
+>                    | otherwise = 0
+> deriveEx (f :$ e) v = deriveEx e v * (derive f :$ e)
+> deriveEx _ _ = undefined
 
 Difficult to read some of these derivatives. Let's simplify
 
@@ -416,19 +433,18 @@ Examples
 ----------------------------------------------------------------------
 
 > idE = Lambda "_x" "_x"
-> constFn n = Lambda "_x" (Const n)
 
-> dF = simplify . deriveFn []
-> dE = simplify . deriveEx [] "x"
+> dF = simplify . derive
+> dE = simplify . (flip deriveEx) "x"
 
 > test_simplify1 = (==) (simplify ("x" + "x"))
 >                       (2 * "x")
 > test_simplify2 = (==) (simplify (((1 + 1) * "x") + ("x" * 1)))
 >                       (3 * "x")
 > test_derive1   = (==) (dF (Func "sin" + idE))
->                       (Func "cos" + constFn 1)
-> test_derive2   = (==) (dE (sin (sin "x")))
->                       (cos "x" * cos (sin "x"))
+>                       (Func "cos" + const' 1)
+> test_derive2   = (==) (dE (sin (sin (Var "x"))))
+>                       (cos "x" * cos (sin (Var "x")))
 
 Let's plot graphs!
 
@@ -698,3 +714,148 @@ And here's the proof. We won't delve into this, but it's quite simple.
  > ges av att $f$ är kontinuerlig.
  >
  > -- <cite>[Wikipedia - Analysens Fundamentalsats](https://sv.wikipedia.org/wiki/Analysens_fundamentalsats)</cite>
+
+Let's write a function for symbolic integration of
+functions. `integrate` will be the indefinite integration function, as
+it's more powerful. Definite integrals can be expressed directly in
+terms of indefinite integrals, but not quite vice versa.
+
+> integrate :: Expr -> RealNum -> Expr
+> integrate (f :+ g) c = (integrate f 0 + integrate g 0) + const' c
+> integrate (f :- g) c = (integrate f 0 - integrate g 0) + const' c
+
+There exists a great product rule in the case of differentiation, but
+not for integration. There just doesn't exist a great way to integrate a
+product that always works! The integration rule that's most analogous
+to the product rule for differentiation, is integration by parts:
+
+$$ \int f(x) g(x) dx = f(x) G(x) - \int f'(x) g(x) dx $$
+
+Hmm, this doesn't look quite as helpful as the differentiation product rule, does it?
+We want this rule to give us an expression of simpler and/or fewer integrals, and it may indeed do so.
+For example, the integration of the product $x * e^x$ is a great examples of a case where it works well:
+
+$$ \int x e^x dx = x e^x - \int 1 e^x dx = x e^x - e^x = e^x (x - 1) $$
+
+Now THAT is a simplification.
+
+However, just by flipping the order of the expressions, we get a case where the integration by parts rule only makes things worse:
+
+$$ \int e^x x dx = e^x x^2 - \int e^x x dx = e^x x^2 - (e^x x^2 - \int e^x x dx) = e^x x^2 - (e^x x^2 - (e^x x^2 - \int e^x x dx)) = ... $$
+
+Oh no, it's an infinite recursion!
+
+There is also the problem that the integration by parts rule is simply
+undefined in the case of $g(x)$ not being integrable to $G(x)$. And
+so, as there exists no great way to do it, we'll settle for a mediocre
+one! We'll define the integration of a product to use integration by
+parts, but before integrating we'll simplify the expression in the
+hopes that it will become better suited for integration.
+
+> integrate (f :* g) c =
+>     let simplified = simplify (f * g)
+>     in if simplified == (f * g)
+>        then f * integrate g 0 - integrate (derive f * g) 0 + const' c
+>        else integrate simplified c
+
+We get a similar rule for quotients
+
+> integrate (f :/ g) c =
+>     let simplified = simplify (f / g)
+>     in if simplified == (f / g)
+>        then let _F = integrate f 0
+>             in _F / g + integrate (_F * (derive g / (g^2))) 0 + const' c
+>        else integrate simplified c
+
+Integration of function composition is, simply said, somewhat
+complicated.  The technique to use is called "integration by
+substituted", and is something like a reverse of the chain-rule of
+differentiation. Luckily, most beginner-to-intermediate physics
+courses purposfully avoid the use of composed functions when
+integration is required, and as such, we simply won't implement it!
+
+As long as we ensure our input functions are not composed functions,
+`integrate` will still be well behaved.
+
+> integrate (f :. g) c = error "Please don't try to integrate function compositions!"
+
+To integrate a lambda function, we simply integrate the
+body-expression with regards to the parameter variable
+
+> integrate (Lambda p b) c = Lambda p (integrateEx b p c)
+
+And then there are these functions. We just look up the formulas of
+integration in Wolfram Alpha or something.
+
+> integrate (Func "log") c = Lambda "x" ("x" * log "x" - "x" + const' c)
+> integrate (Func "exp") c = Func "exp" + const' c
+> integrate (Func "sin") c = Func "negate" :. Func "cos" + const' c
+> integrate (Func "cos") c = Func "sin" + const' c
+> integrate (Func "asin") c = Lambda "x" (sqrt (1 - "x"^2) + "x" * asin "x" + const' c)
+> integrate (Func "acos") c = Lambda "x" ("x" * acos "x" - sqrt (1 - "x"^2) + const' c)
+> integrate (Func "negate") c = Func "negate" + const' c
+> integrate _ _ = undefined
+
+> integrateEx :: Expr -> String -> RealNum -> Expr
+
+You probably already know the rule for integrating polynomials (which
+$x$ is a case of). It's just the reverse of the simple differentiation
+rule!
+
+$$ \int a_n x^n + a_{n-1} x^{n-1} + ... + a_1 x^1 + a_0 dx = \frac{a_n}{n+1} x^{n+1} + \frac{a_{n-1}}{n} x^{n} + ... + \frac{a_1}{2} x^2 + a_0 x^1 + C $$
+
+implies that
+
+$$ \int a dx = ax + C $$
+
+and
+
+$$ \int x dx = \frac{x^2}{2} + C $$
+
+And so, we implement exactly that
+
+> integrateEx (Const a) v c = Const a * Var v + Const c
+> integrateEx (Var u) v c | u == v    = (Var u)^2 / 2 + Const c
+>                         | otherwise = Var u * Var v + Const c
+> integrateEx (a :+ b) v c = integrateEx a v 0 + integrateEx b v 0 + Const c
+> integrateEx (a :- b) v c = integrateEx a v 0 - integrateEx b v 0 + Const c
+> integrateEx (a :* b) v c =
+>     let simplified = simplify (a * b)
+>     in if simplified == (a * b)
+>        then a * integrateEx b v 0 - integrateEx (derive a * b) v 0 + Const c
+>        else integrateEx simplified v c
+> integrateEx (a :/ b) v c =
+>     let simplified = simplify (a / b)
+>     in if simplified == (a / b)
+>        then let _A = integrateEx a v 0
+>             in _A / b + integrateEx (_A * (derive b / (b^2))) v 0 + Const c
+>        else integrateEx simplified v c
+> integrateEx e@(f :$ (Const a)) v c = e * Var v + Const c
+> integrateEx e@(f :$ (Var u)) v c | v == u    = integrate f c :$ Var v
+>                                  | otherwise = e * Var v + Const c
+> integrateEx _ _ _ = undefined
+
+And we're done with our DSL of calculus!
+
+TODO: Proof/verification
+----------------------------------------------------------------------
+
+proof and/or tests go here
+
+TODO: Examples
+----------------------------------------------------------------------
+
+they go here
+
+TODO: Applying our DSL to solve physics problems!
+----------------------------------------------------------------------
+
+Mostly problems regarding position, velocity, acceleration, time.
+
+Average FOO vs. Instantaneous FOO -- Differences vs Derivatives.
+
+Integrating to get rid of /t:s.
+
+cool stuff here in general.
+
+Also, many pretty pictores

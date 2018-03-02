@@ -12,37 +12,221 @@
       <a href="../index.html"><h1>Learn You a <span class="physics">Physics</span> for Great Good!</h1></a>
       <h1>&gt;&gt;&gt; WORK IN PROGRESS &lt;&lt;&lt;</h1>
       <nav>
-        <span>Previous: <a href="../Units/Type-level units.html">Type-level units</a></span>
+        <span>Previous: <a href="../Dimensions/Quantities.html">Quantities</a></span>
         <a href="../index.html">Table of contents</a>
         <span>Next: <a href="../Calculus/Calculus.html">Calculus</a></span>
       </nav>
     </header>
 
     <main>
-      <p>module Vector.Vector where</p>
-<p>type Scalar = Double</p>
-<p>class Vector vec where vmap :: (Scalar -&gt; Scalar) -&gt; vec -&gt; vec vzipWith :: (Scalar -&gt; Scalar -&gt; Scalar) -&gt; vec -&gt; vec -&gt; vec vfold :: (Scalar -&gt; Scalar -&gt; Scalar) -&gt; vec -&gt; Scalar</p>
-<p>dotProd :: Vector vec =&gt; vec -&gt; vec -&gt; Scalar dotProd v1 v2 = vfold (*) $ vzipWith (+) v1 v2</p>
-<p>magnitude :: Vector vec =&gt; vec -&gt; Scalar magnitude v = sqrt . vfold (+) $ vmap (**2) v</p>
-<p>data Vector3 = V3 Scalar Scalar Scalar data Vector2 = V2 Scalar Scalar</p>
-<p>lift :: Vector2 -&gt; Vector3 lift (V2 x y) = V3 x y 0</p>
-<p>zeroVector :: (Vector a, Num a) =&gt; a zeroVector = 0</p>
-<p>crossProd :: Vector3 -&gt; Vector3 -&gt; Vector3 crossProd (V3 x y z) (V3 x’ y’ z’) = V3 (y<em>z’ - z</em>y’) – X (z<em>x’ - x</em>z’) – Y (x<em>y’ - y</em>x’) – Z</p>
-<p>– | TODO – | <sub>Laws</sub> – | Langrange’s formula: a x (b x c) = b(a * c) - c(a * b) – | Cross product is anticommutative – | Jacobi identity: a x (b x c) + b x (c x a) + c x (a x b) = 0</p>
-<p>– | Unit vectors – | Cross product – | Angles</p>
-<p>– | DONE – | Associativity of addition follows from Monoid instance!</p>
-<p>instance Monoid Vector2 where mempty = zeroVector mappend = (+) mconcat = foldr mappend mempty</p>
-<p>instance Monoid Vector3 where mempty = zeroVector mappend = (+) mconcat = foldr mappend mempty</p>
-<p>instance Vector Vector3 where vmap f (V3 x y z) = V3 (f x) (f y) (f z) vzipWith f (V3 x y z) (V3 x’ y’ z’) = V3 (f x x’) (f y y’) (f z z’) vfold f (V3 x y z) = f z $ f x y</p>
-<p>instance Vector Vector2 where vmap f (V2 x y) = V2 (f x) (f y) vzipWith f (V2 x y) (V2 x’ y’) = V2 (f x x’) (f y y’) vfold f (V2 x y) = f x y</p>
-<p>instance Num Vector2 where (+) = vzipWith (+) (<em>) = undefined – Vec -&gt; Scalar abs = undefined – Vec -&gt; Scalar negate = vmap (</em>(-1)) – | Signum can be though of as the direction of a vector signum = vmap signum fromInteger i = V2 (fromInteger i) 0</p>
-<p>instance Num Vector3 where (+) = vzipWith (+) (<em>) = undefined – Vec -&gt; Scalar abs = undefined – Vec -&gt; Scalar negate = vmap (</em>(-1)) – | Signum can be though of as the direction of a vector signum = vmap signum fromInteger i = V3 (fromInteger i) 0 0</p>
-<p>instance Show Vector2 where show (V2 x y) = “(” ++ show x ++ &quot; x, &quot; ++ show y ++ &quot; y)&quot;</p>
-<p>instance Show Vector3 where show (V3 x y z) = “(” ++ show x ++ &quot; x, &quot; ++ show y ++ &quot; y, &quot; ++ show z ++ &quot; z)&quot;</p>
-<p>instance Ord Vector2 where compare v1 v2 = compare (magnitude v1) (magnitude v2)</p>
-<p>instance Ord Vector3 where compare v1 v2 = compare (magnitude v1) (magnitude v2)</p>
-<p>instance Eq Vector2 where (V2 x y) == (V2 x’ y’) = x == x’ &amp;&amp; y == y’</p>
-<p>instance Eq Vector3 where (V3 x y z) == (V3 x’ y’ z’) = x == x’ &amp;&amp; y == y’ &amp;&amp; z == z’</p>
+      <div class="sourceCode" id="cb1"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">module</span> <span class="dt">Vector</span> <span class="kw">where</span></a></code></pre></div>
+<h2 id="vectors-in-two-dimensions.">Vectors in two dimensions.</h2>
+A physical quantity that has only a magnitude is called a scalar. In Haskell we’ll represent this using a Double.
+<div class="sourceCode" id="cb2"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">type</span> <span class="dt">Scalar</span> <span class="fu">=</span> <span class="dt">Double</span></a></code></pre></div>
+<p>A vector is a quantity that has both a magnitude and a direction. For instance the  of a moving body involves its speed (magnitude) and the direction of motion.</p>
+We cen represent the direction of a vector in two dimensions using its <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> coordinates, which are both scalars. The direction is then given by the angle between these coordinates and the origin (0,0).
+<div class="sourceCode" id="cb3"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">data</span> <span class="dt">Vector2</span> <span class="fu">=</span> <span class="dt">V2</span> <span class="dt">Scalar</span> <span class="dt">Scalar</span></a></code></pre></div>
+<p>The magnitude of the vector is it’s length. We can calculate this using Pythagorean theorem: <span class="math display">\[\begin{equation}
+  x^2 + y^2 = mag^2 
+\end{equation}\]</span></p>
+In haskell this would be:
+
+<p>And now we can calulate the magnitude of a vector in two dimensions:</p>
+<pre><code>  Vector&gt; let vec = V2 5 3
+  Vector&gt; magnitude vec
+  7.0710678118654755</code></pre>
+<p>Addition and subtraction of vectors is acamplished using the components of the vectors. For instance when adding the forces (vectors) acting on a body we would add the components of the forces acting in the <span class="math inline">\(x\)</span> direction and the components in the <span class="math inline">\(y\)</span> direction. So our functions for adding and subtracting vectors in two dimensions are:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="ot">add2 ::</span> <span class="dt">Vector2</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">add2 (<span class="dt">V2</span> x1 y1) (<span class="dt">V2</span> x2 y2) <span class="fu">=</span> <span class="dt">V2</span> (x1 <span class="fu">+</span> x2) (y1 <span class="fu">+</span> y2)</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="ot">sub2 ::</span> <span class="dt">Vector2</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">sub2 (<span class="dt">V2</span> x1 y1) (<span class="dt">V2</span> x2 y2) <span class="fu">=</span> <span class="dt">V2</span> (x1 <span class="fu">-</span> x2) (y1 <span class="fu">-</span> y2)</a></code></pre></div>
+But this only works for two vectors. In reality we might be working with several hundreds of vectors so it would be useful to add, for instance a list of vectors together and get one final vector as a result. We can use  using the zero vector as a starting value. to acomplish this.
+<div class="sourceCode" id="cb6"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="ot">addListOfVectors ::</span> [<span class="dt">Vector2</span>] <span class="ot">-&gt;</span> <span class="dt">Vector2</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">addListOfVectors vectors <span class="fu">=</span> foldr add zeroVector vectors</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">  <span class="kw">where</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">    zeroVector <span class="fu">=</span> <span class="dt">V2</span> <span class="dv">0</span> <span class="dv">0</span></a></code></pre></div>
+<p>Let’s try it out!</p>
+<pre><code>  *Vector&gt; let vec1 = V2 5 3
+  *Vector&gt; let vec2 = V2 6 5
+  *Vector&gt; sub2 vec1 vec2
+
+  &lt;interactive&gt;:23:1: error:
+      • No instance for (Show Vector2) arising from a use of ‘print’
+      • In a stmt of an interactive GHCi command: print it</code></pre>
+<p>The interpreter is complaining that it doesn’t know how to interpret our datatype for vectors as a string. The easy solution would be to just derive our instance for Show, but to really solidify the fact that we are working with coordinates let’s make our own instance for Show.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">instance</span> <span class="dt">Show</span> <span class="dt">Vector2</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">  show (<span class="dt">V2</span> x y) <span class="fu">=</span> <span class="st">&quot;(&quot;</span> <span class="fu">++</span> show x <span class="fu">++</span> <span class="st">&quot; x, &quot;</span> <span class="fu">++</span> show y <span class="fu">++</span> <span class="st">&quot; y)&quot;</span></a></code></pre></div>
+<p>And let’s try our example again:</p>
+<pre><code>  *Vector&gt; let vec1 = V2 5 3
+  *Vector&gt; let vec2 = V2 6 5
+  *Vector&gt; sub2 vec1 vec2
+  (-1.0 x, -2.0 y)</code></pre>
+<p>And let’s also try adding a list of vectors using our new function:</p>
+<pre><code>  *Vector&gt; let vec3 = V2 8 9
+  *Vector&gt; let vectors = [vec1, vec2, vec3]
+  *Vector&gt; addListOfVectors vectors
+  (19.0 x, 17.0 y)</code></pre>
+<p>It works!</p>
+<p>We can also multiply a vector by a scalar. This is also done componentwise. We’ll call this scaling a vector. So we could make double a vector by multiplying it with <span class="math inline">\(2.0\)</span> and halving it by multiplying it with <span class="math inline">\(0.5\)</span>.</p>
+
+<p>Combining this with the unit vectors:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="ot">unitX ::</span> <span class="dt">Vector2</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">unitX <span class="fu">=</span> <span class="dt">V2</span> <span class="dv">1</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="ot">unitY ::</span> <span class="dt">Vector2</span></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5">unitY <span class="fu">=</span> <span class="dt">V2</span> <span class="dv">0</span> <span class="dv">1</span></a></code></pre></div>
+<p>We get a new way of making vectors, namely by scaling the unit vectors and adding them together. Let’s create the vector (5 x, 3 y) using this approach.</p>
+<pre class="shell"><code>  *Vector&gt; add (scale 5 unitX) (scale 3 unitY)
+  (5.0 x, 3.0 y) </code></pre>
+<p>In order to check that this vector is actually equal to the vector created using the contructor  we need to make our vector an instance of .</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">instance</span> <span class="dt">Eq</span> <span class="dt">Vector2</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">  (<span class="dt">V2</span> x1 y1) <span class="fu">==</span> (<span class="dt">V2</span> x2 y2) <span class="fu">=</span> (x1 <span class="fu">==</span> x2) <span class="fu">&amp;&amp;</span> (y1 <span class="fu">==</span> y2)</a></code></pre></div>
+<p>Let’s try it out:</p>
+<pre><code>  *Vector&gt; let vec1 = V2 5 3
+  *Vector&gt; let vec2 =  add (scale 5 unitX) (scale 3 unitY)
+  *Vector&gt; vec1 == vec2
+  True</code></pre>
+<p><img src="http://i.imgur.com/GMCn5mi.png" /></p>
+<p>We have one final important operation left to define for vectors in two dimensions, the dot product. The formula is quite simple: <span class="math display">\[\begin{equation}
+  \vec{a} \cdot \vec{b} = a_x \cdot b_x + a_y \cdot b_y
+\end{equation}\]</span></p>
+<p>And our function simply becomes:</p>
+
+<p>But this doesn’t give us any intuition about what it means to take the dot product between vectors. The common interpretation is “geometric projection”, but that only makes sense if you already understand the dot product. Let’s try to give an easier analogy using the dash panels (boost pads) from . The dash panel is designed to give you boost of speed in a specific direction, usually straight forward. So the vector associated with the dash panel can be represented with a unit vector multiplied with some factor of boost, say 10.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="ot">dashPanel ::</span> <span class="dt">Vector2</span></a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">dashPanel <span class="fu">=</span> scale <span class="dv">10</span> unitY</a></code></pre></div>
+<p>Now let’s say that your cart has this arbitrarily chosen velocity vector:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="ot">cart ::</span> <span class="dt">Vector2</span></a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">cart <span class="fu">=</span> <span class="dt">V2</span> <span class="dv">3</span> <span class="dv">5</span></a></code></pre></div>
+<p>Depending on which angle you hit the dash panel you’ll receive different amounts of boost. Since the <span class="math inline">\(x\)</span>-component of the dashPanel is 0 any component of speed on the <span class="math inline">\(x\)</span>-direction will be reduced to zero. Only the speed in the direction of <span class="math inline">\(y\)</span> will be boosted. But there are worse ways to hit the dash panel. We could for instance create a new velocity vector with the exact same magnitude of speed but which would recieve a worse boost.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="ot">worseCart ::</span> <span class="dt">Vector2</span></a>
+<a class="sourceLine" id="cb17-2" data-line-number="2">worseCart <span class="fu">=</span> <span class="dt">V2</span> <span class="dv">5</span> <span class="dv">3</span></a></code></pre></div>
+<p>Let’s see this in action.</p>
+<pre><code>*Vector&gt; magnitude cart == magnitude worseCart 
+True
+*Vector&gt; dotProd dashPanel cart
+50.0
+*Vector&gt; dotProd dashPanel worseCart 
+30.0</code></pre>
+<p>We talked a lot about angles between vectors but we havn’t used it in our code, so lets make a function which calculates the angle of a vector. The formula is as follows: %TODO </p>
+We’ll use Doubles to represent the angle.
+<div class="sourceCode" id="cb19"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw">type</span> <span class="dt">Angle</span>  <span class="fu">=</span> <span class="dt">Double</span></a>
+<a class="sourceLine" id="cb19-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb19-3" data-line-number="3"><span class="ot">angle ::</span> <span class="dt">Vector2</span> <span class="ot">-&gt;</span> <span class="dt">Scalar</span></a>
+<a class="sourceLine" id="cb19-4" data-line-number="4">angle (<span class="dt">V2</span> x y) <span class="fu">=</span> atan y<span class="fu">/</span>x</a></code></pre></div>
+<p>Using angles and magnitudes we can even make a new function for making vectors:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="ot">mkVector ::</span> <span class="dt">Scalar</span> <span class="ot">-&gt;</span> <span class="dt">Angle</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span></a>
+<a class="sourceLine" id="cb20-2" data-line-number="2">mkVector mag angle <span class="fu">=</span> <span class="dt">V2</span> x y</a>
+<a class="sourceLine" id="cb20-3" data-line-number="3">  <span class="kw">where</span></a>
+<a class="sourceLine" id="cb20-4" data-line-number="4">    x <span class="fu">=</span> mag <span class="fu">*</span> cos angle</a>
+<a class="sourceLine" id="cb20-5" data-line-number="5">    y <span class="fu">=</span> mag <span class="fu">*</span> sin angle</a></code></pre></div>
+<p>%– Angle between two vectors %angleG :: Vector vec =&gt; vec -&gt; vec -&gt; Scalar %angleG v1 v2 = (dotProd v1 v2) / ((magnitude v1) * (magnitude v2))</p>
+<h2 id="vectors-in-three-dimensions.">Vectors in three dimensions.</h2>
+<p>The datatype for a vector in three dimensions is basically the same as vector in two dimensions, we’ll just add a <span class="math inline">\(z\)</span>-component.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">data</span> <span class="dt">Vector3</span> <span class="fu">=</span> <span class="dt">V3</span> <span class="dt">Scalar</span> <span class="dt">Scalar</span> <span class="dt">Scalar</span></a></code></pre></div>
+Similarily the functions for adding three dimensional vectors:
+<div class="sourceCode" id="cb22"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="ot">add3 ::</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Vector3</span></a>
+<a class="sourceLine" id="cb22-2" data-line-number="2">add3 (<span class="dt">V3</span> x1 y1 z1) (<span class="dt">V3</span> x2 y2 z2) <span class="fu">=</span> <span class="dt">V3</span> (x1 <span class="fu">+</span> x2) (y1 <span class="fu">+</span> y2) (z1 <span class="fu">+</span> z2)</a></code></pre></div>
+Multiplying with a scalar:
+<div class="sourceCode" id="cb23"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="ot">scale3 ::</span> <span class="dt">Scalar</span> <span class="ot">-&gt;</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Vector3</span></a>
+<a class="sourceLine" id="cb23-2" data-line-number="2">scale3 fac (<span class="dt">V3</span> x y z) <span class="fu">=</span> <span class="dt">V3</span> (fac <span class="fu">*</span> x) (fac <span class="fu">*</span> y) (fac <span class="fu">*</span> z)</a></code></pre></div>
+And for calculating the magnitude:
+<div class="sourceCode" id="cb24"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="ot">mag3 ::</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Scalar</span></a>
+<a class="sourceLine" id="cb24-2" data-line-number="2">mag3 (<span class="dt">V3</span> x y z) <span class="fu">=</span> sqrt <span class="fu">$</span> x<span class="fu">**</span><span class="dv">2</span> <span class="fu">+</span> y<span class="fu">**</span><span class="dv">2</span> <span class="fu">+</span> z<span class="fu">**</span><span class="dv">2</span></a></code></pre></div>
+<p>Looks earily similar to our functions for vectors in two dimensions. This suggest that there might be a better way to handle this, in order to avoid repeating ourselves.</p>
+<p>Addition and subtraction on vectors works by “unpacking” the vectors, taking their components, applying some function to them (+/-) and then packing them up as a new vector. This is very similar to the Haskell function  which works over lists instead of vectors.</p>
+
+<p>When we’re multiplying with a scalar we again unpack the vector and then apply mulitiplication with a factor to each component before packing it up again. This is quite similar to the Haskell function , which again works over lists.</p>
+
+<p>When calculating the magnitude of a vector we first unpack the vector and then apply <span class="math inline">\(^2\)</span> to each component of the vector. This is doable with aformentioned . We then  the components together using <span class="math inline">\(+\)</span> which results in a final scalar value. Those of you familliar with functional languages will know where I’m going with this, those of you who aren’t will hopefully understand where I’m going when reading the examples.</p>
+<p>Using this information we will now create a new class for vectors which implement this functionality:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw">class</span> <span class="dt">Vector</span> vector <span class="kw">where</span></a>
+<a class="sourceLine" id="cb25-2" data-line-number="2"><span class="ot">  vmap      ::</span> (<span class="dt">Scalar</span> <span class="ot">-&gt;</span> <span class="dt">Scalar</span>) <span class="ot">-&gt;</span> vector  <span class="ot">-&gt;</span> vector</a>
+<a class="sourceLine" id="cb25-3" data-line-number="3"><span class="ot">  vzipWith  ::</span> (<span class="dt">Scalar</span> <span class="ot">-&gt;</span> <span class="dt">Scalar</span>  <span class="ot">-&gt;</span> <span class="dt">Scalar</span>) <span class="ot">-&gt;</span> vector <span class="ot">-&gt;</span> vector <span class="ot">-&gt;</span> vector</a>
+<a class="sourceLine" id="cb25-4" data-line-number="4"><span class="ot">  vfold     ::</span> (<span class="dt">Scalar</span> <span class="ot">-&gt;</span> <span class="dt">Scalar</span>  <span class="ot">-&gt;</span> <span class="dt">Scalar</span>) <span class="ot">-&gt;</span> vector <span class="ot">-&gt;</span> <span class="dt">Scalar</span></a></code></pre></div>
+Now we have a blueprint for what vector is, so let’s implement it for our own vector datatypes.
+<div class="sourceCode" id="cb26"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">instance</span> <span class="dt">Vector</span> <span class="dt">Vector2</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb26-2" data-line-number="2">  vmap     f (<span class="dt">V2</span> x y)            <span class="fu">=</span> <span class="dt">V2</span> (f x)    (f y)</a>
+<a class="sourceLine" id="cb26-3" data-line-number="3">  vzipWith f (<span class="dt">V2</span> x y) (<span class="dt">V2</span> x&#39; y&#39;) <span class="fu">=</span> <span class="dt">V2</span> (f x x&#39;) (f y y&#39;)</a>
+<a class="sourceLine" id="cb26-4" data-line-number="4">  vfold    f (<span class="dt">V2</span> x y)            <span class="fu">=</span> f x y</a>
+<a class="sourceLine" id="cb26-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb26-6" data-line-number="6"><span class="kw">instance</span> <span class="dt">Vector</span> <span class="dt">Vector3</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb26-7" data-line-number="7">  vmap     f (<span class="dt">V3</span> x y z)               <span class="fu">=</span> <span class="dt">V3</span> (f x)    (f y)    (f z)</a>
+<a class="sourceLine" id="cb26-8" data-line-number="8">  vzipWith f (<span class="dt">V3</span> x y z) (<span class="dt">V3</span> x&#39; y&#39; z&#39;) <span class="fu">=</span> <span class="dt">V3</span> (f x x&#39;) (f y y&#39;) (f z z&#39;)</a>
+<a class="sourceLine" id="cb26-9" data-line-number="9">  vfold    f (<span class="dt">V3</span> x y z)               <span class="fu">=</span> f z <span class="fu">$</span> f x y</a></code></pre></div>
+<p>Now we’re finally leveraging the power of the Haskell typesystem!</p>
+<p>We can now implement more generalized functions for addition and subtraction between vectors.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="ot">add ::</span> <span class="dt">Vector</span> vec <span class="ot">=&gt;</span> vec <span class="ot">-&gt;</span> vec <span class="ot">-&gt;</span> vec</a>
+<a class="sourceLine" id="cb27-2" data-line-number="2">add v1 v2 <span class="fu">=</span> vzipWith (<span class="fu">+</span>) v1 v2</a>
+<a class="sourceLine" id="cb27-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb27-4" data-line-number="4"><span class="ot">sub ::</span> <span class="dt">Vector</span> vec <span class="ot">=&gt;</span> vec <span class="ot">-&gt;</span> vec <span class="ot">-&gt;</span> vec</a>
+<a class="sourceLine" id="cb27-5" data-line-number="5">sub v1 v2 <span class="fu">=</span> vzipWith (<span class="fu">-</span>) v1 v2</a></code></pre></div>
+For multiplying with a scalar:
+<div class="sourceCode" id="cb28"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="ot">scale ::</span> <span class="dt">Vector</span> vec <span class="ot">=&gt;</span> <span class="dt">Scalar</span> <span class="ot">-&gt;</span> vec <span class="ot">-&gt;</span> vec</a>
+<a class="sourceLine" id="cb28-2" data-line-number="2">scale factor vector <span class="fu">=</span> vmap (<span class="fu">*</span> factor) vector</a></code></pre></div>
+And for calculating the magnitude of a vector:
+<div class="sourceCode" id="cb29"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="ot">magnitude ::</span> <span class="dt">Vector</span> vec <span class="ot">=&gt;</span> vec <span class="ot">-&gt;</span> <span class="dt">Scalar</span></a>
+<a class="sourceLine" id="cb29-2" data-line-number="2">magnitude v <span class="fu">=</span> sqrt <span class="fu">.</span> vfold (<span class="fu">+</span>) <span class="fu">$</span> vmap (<span class="fu">**</span><span class="dv">2</span>) v</a></code></pre></div>
+We can even use it to make a generalized function for calculating the dot product.
+<div class="sourceCode" id="cb30"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="ot">dotProd ::</span> <span class="dt">Vector</span> vec <span class="ot">=&gt;</span> vec <span class="ot">-&gt;</span> vec <span class="ot">-&gt;</span> <span class="dt">Scalar</span></a>
+<a class="sourceLine" id="cb30-2" data-line-number="2">dotProd v1 v2 <span class="fu">=</span> vfold (<span class="fu">*</span>) <span class="fu">$</span> vzipWith (<span class="fu">+</span>) v1 v2</a></code></pre></div>
+<h2 id="cross-product">Cross Product</h2>
+<p>We have one final function left to define, the cross product. The formula is as follows: <span class="math display">\[\begin{equation}
+  \vec{a} \times \vec{b} = |\vec{a}| \cdot |\vec{b}| \cdot sin(\theta)
+\end{equation}\]</span></p>
+<p>Where <span class="math inline">\(\theta\)</span> is the angle between the vectors. And <span class="math inline">\(|\vec{a}|\)</span>, <span class="math inline">\(|\vec{b}|\)</span> are the magnitudes of the vectors.</p>
+<p>So our function for calculating the cross product becomes:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="ot">crossProd ::</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Vector3</span></a>
+<a class="sourceLine" id="cb31-2" data-line-number="2">crossProd a b <span class="fu">=</span> (magnitude a) <span class="fu">*</span> (magnitude b)</a></code></pre></div>
+
+<p>% lift :: Vector2 -&gt; Vector3 % lift (V2 x y) = V3 x y 0</p>
+<p>% % prop_crossProd :: Vector3 -&gt; Bool % prop_crossProd v = (crossProd v v) == 0 % % – | TODO % – | <sub>Laws</sub> % – | Langrange’s formula: a x (b x c) = b(a * c) - c(a * b) % – | Cross product is anticommutative % – | Jacobi identity: a x (b x c) + b x (c x a) + c x (a x b) = 0</p>
+<h2 id="fun-instances">Fun instances</h2>
+<div class="sourceCode" id="cb32"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="kw">instance</span> <span class="dt">Monoid</span> <span class="dt">Vector2</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb32-2" data-line-number="2">  mempty  <span class="fu">=</span> zeroVector</a>
+<a class="sourceLine" id="cb32-3" data-line-number="3">  mappend <span class="fu">=</span> (<span class="fu">+</span>)</a>
+<a class="sourceLine" id="cb32-4" data-line-number="4">  mconcat <span class="fu">=</span> foldr mappend mempty</a>
+<a class="sourceLine" id="cb32-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb32-6" data-line-number="6"><span class="kw">instance</span> <span class="dt">Monoid</span> <span class="dt">Vector3</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb32-7" data-line-number="7">  mempty  <span class="fu">=</span> zeroVector</a>
+<a class="sourceLine" id="cb32-8" data-line-number="8">  mappend <span class="fu">=</span> (<span class="fu">+</span>)</a>
+<a class="sourceLine" id="cb32-9" data-line-number="9">  mconcat <span class="fu">=</span> foldr mappend mempty</a>
+<a class="sourceLine" id="cb32-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb32-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb32-12" data-line-number="12"><span class="kw">instance</span> <span class="dt">Num</span> <span class="dt">Vector2</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb32-13" data-line-number="13">  (<span class="fu">+</span>)           <span class="fu">=</span> vzipWith (<span class="fu">+</span>)</a>
+<a class="sourceLine" id="cb32-14" data-line-number="14">  (<span class="fu">*</span>)           <span class="fu">=</span> undefined <span class="co">-- Vec -&gt; Scalar</span></a>
+<a class="sourceLine" id="cb32-15" data-line-number="15">  abs           <span class="fu">=</span> undefined <span class="co">-- Vec -&gt; Scalar</span></a>
+<a class="sourceLine" id="cb32-16" data-line-number="16">  negate        <span class="fu">=</span> vmap (<span class="fu">*</span>(<span class="fu">-</span><span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb32-17" data-line-number="17">  <span class="co">-- | Signum can be though of as the direction of a vector</span></a>
+<a class="sourceLine" id="cb32-18" data-line-number="18">  signum        <span class="fu">=</span> vmap signum</a>
+<a class="sourceLine" id="cb32-19" data-line-number="19">  fromInteger i <span class="fu">=</span> <span class="dt">V2</span> (fromInteger i) <span class="dv">0</span></a>
+<a class="sourceLine" id="cb32-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb32-21" data-line-number="21"><span class="kw">instance</span> <span class="dt">Num</span> <span class="dt">Vector3</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb32-22" data-line-number="22">  (<span class="fu">+</span>)           <span class="fu">=</span> vzipWith (<span class="fu">+</span>)</a>
+<a class="sourceLine" id="cb32-23" data-line-number="23">  (<span class="fu">*</span>)           <span class="fu">=</span> undefined <span class="co">-- Vec -&gt; Scalar</span></a>
+<a class="sourceLine" id="cb32-24" data-line-number="24">  abs           <span class="fu">=</span> undefined <span class="co">-- Vec -&gt; Scalar</span></a>
+<a class="sourceLine" id="cb32-25" data-line-number="25">  negate        <span class="fu">=</span> vmap (<span class="fu">*</span>(<span class="fu">-</span><span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb32-26" data-line-number="26">  <span class="co">-- | Signum can be though of as the direction of a vector</span></a>
+<a class="sourceLine" id="cb32-27" data-line-number="27">  signum        <span class="fu">=</span> vmap signum</a>
+<a class="sourceLine" id="cb32-28" data-line-number="28">  fromInteger i <span class="fu">=</span> <span class="dt">V3</span> (fromInteger i) <span class="dv">0</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb32-29" data-line-number="29"></a>
+<a class="sourceLine" id="cb32-30" data-line-number="30"><span class="ot">zeroVector ::</span> (<span class="dt">Vector</span> a, <span class="dt">Num</span> a) <span class="ot">=&gt;</span> a</a>
+<a class="sourceLine" id="cb32-31" data-line-number="31">zeroVector <span class="fu">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb32-32" data-line-number="32"></a>
+<a class="sourceLine" id="cb32-33" data-line-number="33"><span class="kw">instance</span> <span class="dt">Show</span> <span class="dt">Vector3</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb32-34" data-line-number="34">  show (<span class="dt">V3</span> x y z) <span class="fu">=</span> <span class="st">&quot;(&quot;</span> <span class="fu">++</span> show x <span class="fu">++</span> <span class="st">&quot; x, &quot;</span></a>
+<a class="sourceLine" id="cb32-35" data-line-number="35">                        <span class="fu">++</span> show y <span class="fu">++</span> <span class="st">&quot; y, &quot;</span></a>
+<a class="sourceLine" id="cb32-36" data-line-number="36">                        <span class="fu">++</span> show z <span class="fu">++</span> <span class="st">&quot; z)&quot;</span></a>
+<a class="sourceLine" id="cb32-37" data-line-number="37"><span class="kw">instance</span> <span class="dt">Ord</span> <span class="dt">Vector2</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb32-38" data-line-number="38">  compare v1 v2 <span class="fu">=</span> compare (magnitude v1) (magnitude v2)</a>
+<a class="sourceLine" id="cb32-39" data-line-number="39"></a>
+<a class="sourceLine" id="cb32-40" data-line-number="40"><span class="kw">instance</span> <span class="dt">Ord</span> <span class="dt">Vector3</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb32-41" data-line-number="41">  compare v1 v2 <span class="fu">=</span> compare (magnitude v1) (magnitude v2)</a>
+<a class="sourceLine" id="cb32-42" data-line-number="42"></a>
+<a class="sourceLine" id="cb32-43" data-line-number="43"><span class="kw">instance</span> <span class="dt">Eq</span> <span class="dt">Vector3</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb32-44" data-line-number="44">  (<span class="dt">V3</span> x y z) <span class="fu">==</span> (<span class="dt">V3</span> x&#39; y&#39; z&#39;) <span class="fu">=</span> x <span class="fu">==</span> x&#39; <span class="fu">&amp;&amp;</span> y <span class="fu">==</span> y&#39; <span class="fu">&amp;&amp;</span> z <span class="fu">==</span> z&#39;</a></code></pre></div>
 
     </main>
 

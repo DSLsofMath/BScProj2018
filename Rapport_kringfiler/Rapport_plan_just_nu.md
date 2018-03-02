@@ -1,7 +1,7 @@
 
 **Björn** 1. Introduktion (få in syfte hit) BLÅ
 
-**Eerik** 2. Teori BLÅ
+**Erik** 2. Teori BLÅ
 
 **Johan** 3. Metod (expandera, skriva blå så gott det går, kanske ej komposita områden) BLÅ
 

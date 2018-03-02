@@ -9,13 +9,18 @@ Vi har kanske inte varit så strukturerade, utan bara valt ut något område på
 
 Blev så för svårt att veta vad som DSL lämpligt för.
 
+Största svårigheten var att välja områden som skulla passa bra för DSL. Som att
+famla i mörkret.
+
 \section{Resultatdiskussion}
 
 \subsection{Vad för slags områden är DSLs lämpligt att göra för?}
 
-Analys känns som ett område där DSLs kan vara lämpligt. Likaså dimensioner och vektorer. Vad har dessa gemensamt?
+Analys känns som ett område där DSLs kan vara lämpligt. Likaså dimensioner och
+vektorer. Vad har dessa gemensamt?
 
-Gemensamt för de ovanstående är att de är matematiska, har en fix struktur, rigoröst hur de fungerar och har "data och operationer".
+Gemensamt för de ovanstående är att de är matematiska, har en fix struktur,
+rigoröst hur de fungerar och har "data och operationer".
 
 Orkar inte göra Latex tabell...
 | DSL / data         | Ex operationer               |
@@ -24,34 +29,60 @@ Orkar inte göra Latex tabell...
 | Vektorer           | Skalärprodukt, vektorprodukt |
 | Analys, funktioner | Derivera, multiplicera       |
 
-Operationerna på datan resultar också i ny data av samma slag (t.ex. vektorprodukt av två vektorer ger en ny vektor)
+Operationerna på datan resultar också i ny data av samma slag (t.ex.
+vektorprodukt av två vektorer ger en ny vektor)
 
-Varför gör detta dem lämpliga att göra DSLs för? För datan har en fix form. Och operaion av data blir ny data som evalueras till någon av formerna.
+Varför gör detta dem lämpliga att göra DSLs för? För datan har en fix form. Och
+operaion av data blir ny data som evalueras till någon av formerna.
 
-Detta gör DSL till områdena lämpliga ur två synvinklar. Dels enkelt att göra det rent praktiskt i Haskell. Dels för att man med DSL:et strukuretat upp och tydliggjort all data och operationer som går att göra.
+Detta gör DSL till områdena lämpliga ur två synvinklar. Dels enkelt att göra
+det rent praktiskt i Haskell. Dels för att man med DSL:et strukuretat upp och
+tydliggjort all data och operationer som går att göra.
 
-Skillnad på enkelt att göra rent tekniskt, och vad som är lämpliga DSLs för att underlätta förståelsen av något.
+Skillnad på enkelt att göra rent tekniskt, och vad som är lämpliga DSLs för att
+underlätta förståelsen av något.
 
 \newpage
 
-DSLs var svårare för lutande plan och termodynamik (och problemlösning i allmänhet). Vad har dessa gemensamt?
+DSLs var svårare för lutande plan och termodynamik (och problemlösning i
+allmänhet). Vad har dessa gemensamt?
 
-Gemensamt för dessa är att det finns teoretiska samband/ekvationer som relaterar olika egenskaer i problemet. T.ex. för det lutande planet `a = g * sin v` är sambandet mellan `a` och `v` (och `g` som dock är en konstant bara). För termodynamik är det att t.ex. samband mellan inre energi, antal atomer i gasen och temperaturen.
+Gemensamt för dessa är att det finns teoretiska samband/ekvationer som
+relaterar olika egenskaer i problemet. T.ex. för det lutande planet `a = g *
+sin v` är sambandet mellan `a` och `v` (och `g` som dock är en konstant bara).
+För termodynamik är det att t.ex. samband mellan inre energi, antal atomer i
+gasen och temperaturen.
 
-Visst kan man modellera dessa samband. Men vad för nytta gör det? Problemlösning handlar om att känna till vilka samband som finns och tillämpa dem på olika sätt beroende på uppgift.
+Visst kan man modellera dessa samband. Men vad för nytta gör det?
+Problemlösning handlar om att känna till vilka samband som finns och tillämpa
+dem på olika sätt beroende på uppgift.
 
-Man kan ju programmera en ekvationslösare, men den måste vara väldigt mekanisk av sig. Gör det kanske inte enklare för en själv att lösa problem.
+Man kan ju programmera en ekvationslösare, men den måste vara väldigt mekanisk
+av sig. Gör det kanske inte enklare för en själv att lösa problem.
 
 Och vad är skillnaden mellan dessa två kategorier av områden?
 
-Den viktiga skillnaden är att t.ex. analys har tydlig data och operationer medan problemlösning som lutande plan har ett gäng samband som man använder beroende på behov.
+Den viktiga skillnaden är att t.ex. analys har tydlig data och operationer
+medan problemlösning som lutande plan har ett gäng samband som man använder
+beroende på behov.
 
 \subsection{Gör DSLs så att fysik blir enklare att förstå?}
 
-Ex med lutande plan: man kan betrakta ett sådant problem som en samling ekvationer. Man har några kända värden och med hjälp av ekvationerna ska man hitta den sökta obekanta. Hjälper verkligen ett DSL till att man blir bättre på detta?
+Ex med lutande plan: man kan betrakta ett sådant problem som en samling
+ekvationer. Man har några kända värden och med hjälp av ekvationerna ska man
+hitta den sökta obekanta. Hjälper verkligen ett DSL till att man blir bättre på
+detta?
 
-Med enheter, räcker det inte att förklara skillnaden mellan storheter, dimensioner och enheter på ett så grundligt sätt vi gjorde, utan att blanda in DSLs? Problemet i fysik för Data kanske är att det inte förklras grundligt och mycket är underförsått. Behöver man ens förstå enheter grundligare för att klara fysik bättre?
+Med enheter, räcker det inte att förklara skillnaden mellan storheter,
+dimensioner och enheter på ett så grundligt sätt vi gjorde, utan att blanda in
+DSLs? Problemet i fysik för Data kanske är att det inte förklras grundligt och
+mycket är underförsått. Behöver man ens förstå enheter grundligare för att
+klara fysik bättre?
 
-Man kan också se det som att DSLs och denna extrakunskap vi presenterat är för att göra fysik intressant genom att visa på vad för kopplingar till programmering man kan göra, även om områdena vi behandlat inte är direkt de områden som man behöver förstå för att klara kursen. Projektet kan ses som ren kuriosa som kan vara intressant.
+Man kan också se det som att DSLs och denna extrakunskap vi presenterat är för
+att göra fysik intressant genom att visa på vad för kopplingar till
+programmering man kan göra, även om områdena vi behandlat inte är direkt de
+områden som man behöver förstå för att klara kursen. Projektet kan ses som ren
+kuriosa som kan vara intressant.
 
 \end{binge}

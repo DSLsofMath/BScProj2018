@@ -81,9 +81,9 @@ def build_index(sources):
 sources = [
     ("Dimensions", [
         ("Introduction", "Physics/src/Dimensions/Intro.lhs"),
+        ("Value-level dimensions", "Physics/src/Dimensions/ValueLevel.lhs"),
+        ("Type-level dimensions", "Physics/src/Dimensions/TypeLevel.lhs"),
         ("Quantities", "Physics/src/Dimensions/Quantity.lhs"),
-        ("Value-level units", "Physics/src/Dimensions/ValueLevel.lhs"),
-        ("Type-level units", "Physics/src/Dimensions/TypeLevel.lhs"),
     ]),
     ("Vectors", [
         ("Vector", "Physics/src/Vector/Vector.lhs")

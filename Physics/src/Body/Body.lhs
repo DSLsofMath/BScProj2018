@@ -1,7 +1,7 @@
-> module Body where
+> module Body.Body where
 
 \begin{code}
-import Vector
+import Vector.Vector
 \end{code}
 
 In classical mechanics a physical body is a collection of matter having

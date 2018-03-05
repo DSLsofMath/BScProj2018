@@ -76,16 +76,6 @@ Låt oss koda upp dessa insikter. Först typer för att referera till $a$ och $v
 > data V
 > data T
 
-Variablerna är i det generella fallet en funktion av tid. Och som det kommer visa sig, polynomfunktioner av tid.
-
-> data Poly name a2 a1 a0
-
-I `Poly` är `name` det som används för att hänvisa till variabeln. Sedan är funktionen på formen
-
-\begin{align}
-  var(t) = a_2*t^2 + a_1*t + a_0
-\end{align}
-
 Sedan en typ för att representera en differential av "något".
 
 > data Diff x
@@ -131,3 +121,135 @@ Nästa steg är att integrera uttrycket på båda sidorna. Man integrerar från 
   \int_i^f dv(t) = \int_i^f a(t) * dt
 \end{align}
 
+> data Integ x
+
+> twoSideInteg :: Equals a b -> Equals (Integ a) (Integ b)
+> twoSideInteg = undefined
+
+> s2 :: Equals (Integ (Diff V)) (Integ (Mul A (Diff T)))
+> s2 = twoSideInteg s1
+
+Att integrera bara en integral på det ovanstående sättet ger
+
+\begin{align}
+  \int_i^f dv(t) &= v_f - v_i \\
+  v_f &= v(t_f) \\
+  v_i &= v(t_i) \\
+\end{align}
+
+> data Final n
+> data Initial n
+
+> data Sub a b
+
+> integLoneDiff :: Equals (Integ (Diff var)) (Sub (Final var) (Initial var))
+> integLoneDiff = undefined
+
+För att nyttja likhehten så använder vi oss av likheters transitivitet
+
+> transitivity :: Equals a b -> Equals a c -> Equals b c
+> transitivity = undefined
+
+> s3 :: Equals (Sub (Final V) (Initial V)) (Integ (Mul A (Diff T)))
+> s3 = transitivity integLoneDiff s2
+
+Hur tacklas den andra integralen? Det beror på vad för slags "grej" `A` är. Är den en konstant händer en sak. Är det en linjär funktion av $t$ händer något annat o.s.v.
+
+Insikten är att se att `A` (eller $a$) bara är ett namn på en funktion. Vi representerar en funktion på följande vis
+
+> data Poly c2 c1 c0
+
+I `Poly` är funktionen på formen
+
+\begin{align}
+  var(t) = c_2*t^2 + c_1*t + c_0
+\end{align}
+
+eftersom det kommer visa sig att vi enbart behöver polynomfunktioner av högst andra grad.
+
+I detta bevis har vi det *givet* att accelerationen är konstant. Alltså att $a(t)=K$ där $K$ är något tal, som är den konstanta accelerationens värde.
+
+Det är lätt att blanda ihop $a$ som i $a(t)$ för accelerationen. Och $a$ som i *värdet* på accelerationen, $K$. Vi döper $K$ till $a_{värde}$ för att ha något liknande som $a$, men för att explicit tala om att det är *värdet* den syftar på.
+
+> data A_value
+
+Vi modellerar att "accelerationen är konstant" genom att ha följande likhet
+
+> constantAcc :: Equals A (Poly Zero Zero A_value)
+> constantAcc = undefined
+
+Den räknas som "premiss" till uppgiften.
+
+Vi behöver ha talet 0!
+
+> data Zero
+
+Vi behöver använda transitivitet inuti multiplikation
+
+< transitivityMul :: Equals a (Mul b c) -> Equals b d ->  Equals a (Mul d c)
+< transitivityMul = undefined
+
+Den ovanstående behöver inte ses som ett axoim. Vi ska visa den! Men först behövs några andra axiom (av slaget ekvivalens)
+
+> divDownMul :: Equals a (Mul b c) -> Equals (Div a c) b
+> divDownMul = undefined
+
+> equCom :: Equals a b -> Equals b a
+> equCom = undefined
+
+> transitivity' :: Equals b a -> Equals a c -> Equals b c
+> transitivity' = transitivity . equCom
+
+< transitivityMul :: Equals a (Mul b c) -> Equals b d -> Equals a (Mul d c)
+< transitivityMul aEEbMc bEEd = aEEdMc
+<   where
+<     aDcEEb = divDownMul aEEbMc
+<     bEEaDc = equCom aDcEEb
+<     aDcEEd = transitivity bEEaDc bEEd
+<     dEEaDc = equCom aDcEEd
+<     aEEdMc = mulUpDiv dEEaDc
+
+TODO: Förklara här typed holes och hur man tänkar när man bevisar så här.
+
+> transitivityMul :: Equals a b -> Equals (Mul a c) (Mul b c)
+> transitivityMul = undefined
+
+Vi behöver också liknande för integral
+
+> transitivityInteg :: Equals a (Integ b) -> Equals b c -> Equals a (Integ c)
+> transitivityInteg = undefined
+
+TODO: bevis den
+
+Och nu nyttjar vi det i vårt huvudsakliga bevis.
+
+> s4 :: Equals (Sub (Final V) (Initial V)) (Integ (Mul (Poly Zero Zero A_value) (Diff T)))
+> s4 = x
+>   where
+>     x = transitivityInteg s3 y
+>     -- y :: y :: forall c. Equals (Mul A c) (Mul (Poly Zero Zero A_value) c)
+>     y = transitivityMul constantAcc
+
+Nu kan vi beräkna integralen i rhs. Vi gör det generellt först. Notera att integralen *måste* vara map $t$.
+
+> data Two
+
+TODO: Introducera att $t_i=0$. Mycket av nedanstående följer ur det.
+
+> integPoly :: Equals (Integ (Mul (Poly Zero c1 c0) (diff T))) 
+>              (Poly (Div c1 Two) c0 Zero)
+> integPoly = undefined
+
+> s5 :: Equals (Sub (Final V) (Initial V)) 
+>              (Poly (Div Zero Two) A_value Zero)
+> s5 = transitivity' s4 integPoly
+
+> divZero :: Equals (Div Zero x) Zero
+> divZero = undefined
+
+> transitivityPoly2 :: Equals c2 c2' -> Equals (Poly c2 c1 c0) (Poly c2' c1 c0)
+> transitivityPoly2 = undefined
+
+> s6 :: Equals (Sub (Final V) (Initial V)) 
+>              (Poly Zero A_value Zero)
+> s6 = transitivity' s5 (transitivityPoly2 divZero)

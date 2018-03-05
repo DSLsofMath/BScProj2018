@@ -200,6 +200,8 @@ Den ovanstående behöver inte ses som ett axoim. Vi ska visa den! Men först be
 > transitivity' :: Equals b a -> Equals a c -> Equals b c
 > transitivity' = transitivity . equCom
 
+Nedanstående form behövs visst inte längre...
+
 < transitivityMul :: Equals a (Mul b c) -> Equals b d -> Equals a (Mul d c)
 < transitivityMul aEEbMc bEEd = aEEdMc
 <   where
@@ -219,7 +221,7 @@ Vi behöver också liknande för integral
 > transitivityInteg :: Equals a (Integ b) -> Equals b c -> Equals a (Integ c)
 > transitivityInteg = undefined
 
-TODO: bevis den
+TODO: bevisa den
 
 Och nu nyttjar vi det i vårt huvudsakliga bevis.
 
@@ -253,3 +255,44 @@ TODO: Introducera att $t_i=0$. Mycket av nedanstående följer ur det.
 > s6 :: Equals (Sub (Final V) (Initial V)) 
 >              (Poly Zero A_value Zero)
 > s6 = transitivity' s5 (transitivityPoly2 divZero)
+
+> data Add a b
+
+Ekvivalens-karaktär på nedanstående
+
+> subToAdd :: Equals (Sub a b) c -> Equals a (Add b c)
+> subToAdd = undefined
+
+> s7 :: Equals (Final V) (Add (Initial V) (Poly Zero A_value Zero))
+> s7 = subToAdd s6
+
+I sådana här sammanhang brukar man kalla den initiala hastigheten för $V_0$.
+
+> data V_0
+
+> initialVelocity :: Equals (Initial V) V_0
+> initialVelocity = undefined
+
+> transitivityAdd :: Equals a b -> Equals (Add a c) (Add b c)
+> transitivityAdd = undefined
+
+> s8 :: Equals (Final V) (Add V_0 (Poly Zero A_value Zero))
+> s8 = transitivity' s7 (transitivityAdd initialVelocity)
+
+Sammanfattningsvis har vi utifrån det allmäna sambandet
+
+\begin{align}
+  a(t) = \frac{dv(t)}{dt}
+\end{align}
+
+och givet att acceleration är konstant $a_värde$, $t_i=0$ samt att $v_0$ är den initiala hastigheten visat att
+
+\begin{align}
+  v_f = v_0 + a_värde * t
+\end{align}
+
+Där $v_f$ är en funktion av tiden. Man brukar skriva ovanstående som
+
+\begin{align}
+  v(t) = v_0 + a_värde * t
+\end{align}

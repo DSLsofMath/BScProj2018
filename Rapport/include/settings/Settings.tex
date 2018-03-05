@@ -2,6 +2,8 @@
 
 \usepackage[super]{natbib}
 
+\newcommand{\skip}{\vskip 15pt}
+
 \usepackage{xcolor}  % Setting text color
 
 \newenvironment{binge} {
@@ -36,8 +38,12 @@
 	\parbox[b][\paperheight]{\paperwidth}{
 	\centering
 	\includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{#3}}}}
-\usepackage{float} 									% Enables object position enforcement using [H]
-\usepackage{parskip}								% Enables vertical spaces correctly 
+
+% Enables object position enforcement using [H]
+\usepackage{float}
+
+% Enables vertical spaces correctly 
+\usepackage{parskip} 
 
 \setlength{\parskip}{\baselineskip}
 

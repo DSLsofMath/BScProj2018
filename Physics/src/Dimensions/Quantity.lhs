@@ -12,7 +12,8 @@ We'll now create a data type for quantities and combine dimensions on value-leve
 > {-# LANGUAGE TypeOperators #-}
 
 > module Dimensions.Quantity
-> ( length
+> ( Quantity
+> , length
 > , mass
 > , time
 > , current
@@ -395,6 +396,11 @@ Whoops! That's not a good operation. Luckily the compiler caught it.
 
 > vDelta = viDog -# vfSystem -- 6.60 m/s
 > tSlide = vDelta /# aDog    -- 0.96 s
+
+Usage of the Dimension things
+-----------------------------
+
+Before wrapping up, how do you actually use the different things constructed so far? This is studied in the next chapter. It is a separate chapter in order to only be able to use the types and functions exported from the three modules crated so far.
 
 Conclusion
 ----------

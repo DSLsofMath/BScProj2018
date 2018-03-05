@@ -3,24 +3,53 @@
 
 \begin{binge}
 
+\section{Läromaterialet}
 
-\section{Läromaterialet (i sig)}
+Läromaterialet blev i slutändan, precis som målet var, en sammanvävning mellan domänspecifika språk som modellerar fysik och brödtext som förklarar både fysiken i sig, men också förklarar de domänspecifika språken.
 
-En kombination av brödtext och DSL:er. De två är sammanvävda där fysik eller relaterad matematik presenters för att sedan modelleras i DSL:er.
+\begin{figure}
+  \includegraphics[width=\linewidth]{figure/smakprov_läromaterial.png}
+  \caption{Ett smakprov över hur det resulterande läromaterielt ser ut.}
+  \label{fig:smakprov}
+\end{figure}
 
-Områden som är behandlade är 
-- Dimensioner
-- Vektorer
-- Analys
-- Och mer med tid att vi arbetar vidare...
+Figur \ref{fig:smakprov} visar ett smakprov över det resulterande läromaterialet. Som figuren visar är brödtext sammanvävt med Haskell-kod för domänspecifika språk.
 
-\subsection{Specifikt om DSL:erna}
+Brödtexten finns till som ett förklarande komplement till Haskell-koden. Texten förklarar dels den bakomliggande fysiken, dels den Haskell-kod som finns. Generellt står förklaring av kod för en stor del av brödtexten. Detta för att det är själva modellerandet som är den stora delen - det är egentligen ganska lite fysik som presenteras. Därav behöver koden en utförlig förklaring. Dessutom används avancerade koncept i Haskell, bland annat typnivå-programmering, som läsaren inte förväntas kunna sedan innan. Av naturliga skäl kräver dessa en längre förklaring.
+
+Läromataterialet behandlar ett flertal områden inom fysik, samt matematik som används inom fysik. Fokuset är på mekanik samt till det området tillhörande matematik. I sin fullständighet är de behandlade områdena
+
+\begin{itemize}
+  \item Analys
+  \item Bevis
+  \item Dimensioner
+  \item Fysikaliska kroppar
+  \item Vektorer
+\end{itemize}
+
+\textit{Analys} handlar om matematisk analys och bygger upp ett syntaxträd... TODO: kolla mer detaljrikt.
+
+I \textit{Bevis}-kapitlet presenteras bevisföringen med hjälp av Haskells typsystem. Det exemplifieras genom att kinematiska formler bevisas.
+
+\textit{Dimensioner} behandlar dimensioner, storheter och enheter inom fysiken. Dimensioner införs på typnivå i Haskell för att kunna visa på likheten mellan Haskells typsystem och hur man måste förhålla sig till dimensioner inom fysiken.
+
+\textit{Fysikaliska kroppar} vet ej TODO: ta reda på
+
+\textit{Vektorer} vet ej TODO: ta reda på
+
+I läromataterialet finns, förutom de fem ovanstående separata områdena, även tillämpningar av de områdena på exempelproblem. Till exempel används *Dimensioner* till att lösa problem med fritt fall. TODO: fyll på när vet mer om hur tillämpningarna ser ut.
+
+\subsection{Domänspecifika språk}
+
+
 
 Avgränsade DSLer för separata områden. Modellerar olika saker snarare än som en uppgiftslösare.
 
 Vilka moduler skapades och hur bra blev dom.
 
-\subsection{Specifikt om brödtexten}
+\subsection{Brödtexten}
+
+Engelska
 
 Lättsamma stilen och de roliga bilderna.
 

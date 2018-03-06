@@ -2,8 +2,6 @@
 
 \usepackage[super]{natbib}
 
-\newcommand{\skip}{\vskip 15pt}
-
 \usepackage{xcolor}  % Setting text color
 
 \newenvironment{binge} {
@@ -13,6 +11,10 @@
 \newenvironment{draft} {
     \color{blue}
 }
+
+% Radavstånd i listor
+\usepackage{enumitem}
+\setlist{noitemsep}
 
 % BASIC SETTINGS
 \usepackage{moreverb}								% List settings
@@ -30,6 +32,8 @@
 \numberwithin{figure}{chapter}						% Numbering order for figures
 \numberwithin{table}{chapter}						% Numbering order for tables
 \usepackage{listings}								% Enables source code listings
+\lstset{language=Haskell}
+\lstset{frame=single}
 \usepackage{chemfig}								% Chemical structures
 \usepackage[margin=1in]{geometry}			% Page margin lengths			
 \usepackage{eso-pic}								% Create cover page background

@@ -12,16 +12,12 @@
   denna begränsning gör det möjligt att utveckla ett rikt och lättanvändligt
   språk för just detta område. 
 
-  \vskip 10pt
-
   Motsatsen till ett domänspecifikt språk är ett generellt språk (C, Java,
   Python) som är turingkompletta, vilket betyder att det kan uttrycka alla
   beräkningsbara problem i dem och även lösa dem givet tillräckligt med tid och
   minnestillgångar. Begränsningen med dessa generella språk är just deras egen
   generaliserbarhet, eftersom de har stöd för alla typer av beräkningar så blir
   både läsbarheten och användarvänligheten lidande.
-
-  \vskip 10pt
   
   Ett domänspecifikt språk kan antingen implementeras som ett fristående språk
   eller bäddas in i ett redan existerande språk. De domänspecifika språk som
@@ -46,21 +42,26 @@ VARFÖR BLIR DET ENKLARE?
 
 \textbf{???Osäker på om detta avsnitt är nödvändigt???}
 
-\begin{binge}
+
 
 Ett typexempel på ett domänspecifkt språk är ett syntaxträd för algebraisk uttryck, här kodat i Haskell.
 
-    data Expr = Expr :+: Expr
-                Expr :*: Expr
-                Const Double
-                VarX
+\begin{lstlisting}
+data Expr = Expr :+: Expr
+          | Expr :*: Expr
+          | Const Double
+          | VarX
 
-    exempel = (Const 7.0 :+: VarX) :*: ((VarX :+: Const 10.0) :*: VarX)
+exempel = (Const 7.0 :+: VarX) :*: ((VarX :+: Const 10.0)
+          :*: VarX)
+\end{lstlisting}
+
+I detta exempel visar hur uttrycket $(7+x)*((x+10)*x)$ kodas.
 
 Ha med en bild på detta.
 
 !!!Plus förklaring om evaluering!
-\end{binge}
+
 
 \section{Fysik vi behandlar och Fysik för ingenjörer}
 

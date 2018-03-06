@@ -399,9 +399,7 @@ Whoops! That's not a good operation. Luckily the compiler caught it.
 Conclusion
 ----------
 
-Okay, so you've read a whole lot of text by now. But in order to really learn anything, you need to practise with some exercises.
-
-We don't think you learn a lot by coding up a bunch of examples like the last one we did. Instead you should try things such as
+Okay, so you've read a whole lot of text by now. But in order to really learn anything, you need to practise with some exercises. Some suggestions are
 
 - Implementing first value-level dimensions, then type-level dimensions and last quantites by yourself, without looking too much at this text.
 - Making `Quantity` a `Num`, `Fractional`, `Floating` and `Functor` instance.

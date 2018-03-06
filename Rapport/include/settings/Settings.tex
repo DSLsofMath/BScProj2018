@@ -12,6 +12,10 @@
     \color{blue}
 }
 
+% Radavstånd i listor
+\usepackage{enumitem}
+\setlist{noitemsep}
+
 % BASIC SETTINGS
 \usepackage{moreverb}								% List settings
 \usepackage{textcomp}								% Fonts, symbols etc.
@@ -36,9 +40,13 @@
 	\parbox[b][\paperheight]{\paperwidth}{
 	\centering
 	\includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{#3}}}}
-\usepackage{float} 									% Enables object position enforcement using [H]
-\usepackage{parskip}								% Enables vertical spaces correctly 
-\setlength{\parindent}{0pt}
+
+% Enables object position enforcement using [H]
+\usepackage{float}
+
+% Enables vertical spaces correctly 
+\usepackage{parskip} 
+
 \setlength{\parskip}{\baselineskip}
 
 

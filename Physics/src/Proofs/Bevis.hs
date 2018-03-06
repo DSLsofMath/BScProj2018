@@ -1,3 +1,4 @@
+module Proofs.Bevis where
 
 --Bevis av "dom där fyra" kinematiska reglerna. Ha som axiom vanliga regler för algebra.
 
@@ -35,7 +36,7 @@ mulCom = undefined
 mulUpDiv :: Equals (Div a b) c -> Equals a (Mul c b)
 mulUpDiv = undefined
 
--- En differential av någonting. En infinitesimal bit av 
+-- En differential av någonting. En infinitesimal bit av
 -- något vid en obestämd tidpunkt.
 
 data Diff a
@@ -78,7 +79,7 @@ bothSideOp = undefined
 
 -}
 
-mulWithOne :: 
+mulWithOne ::
 
 s3 :: Equals (Integ (Diff v)) (Integ (Mul a (Diff t)))
 s3 = bothSideInteg s2
@@ -110,6 +111,8 @@ s5 = transitivity s4 integConstant
 
 -- Problem: hur använda en likhet "långt inne", som i fallet med s5. Här vill man använda `integDiff` inuti direkt på Mul a (Integ (Diff t))
 
+-- Svar: Olika versioner av kongruens (för olika f): cong_f :: Equals a b -> Equals (f a) (f b)
+-- Här verkar cong_Mul behövas: E a b -> E c d -> E (Mul a c) (Mul b d)
 
 
 -- Dessa blir typer

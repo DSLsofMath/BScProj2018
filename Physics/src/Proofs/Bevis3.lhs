@@ -1,3 +1,6 @@
+\begin{code}
+module Proofs.Bevis3 where
+\end{code}
 
 < data Equals lhs rhs
 
@@ -24,7 +27,7 @@ Där är `n` "namnet" på variablen, och `a` och `b` är a+b*x uttrycket.
 
 < data Diff x
 
-< time = Poly1 T 
+< time = Poly1 T
 
 "Givna likheter"
 - a(t) = a (annat a som är ett konstant tal)
@@ -238,11 +241,11 @@ Nu kan vi beräkna integralen i rhs. Vi gör det generellt först. Notera att in
 
 TODO: Introducera att $t_i=0$. Mycket av nedanstående följer ur det.
 
-> integPoly :: Equals (Integ (Mul (Poly Zero c1 c0) (diff T))) 
+> integPoly :: Equals (Integ (Mul (Poly Zero c1 c0) (diff T)))
 >              (Poly (Div c1 Two) c0 Zero)
 > integPoly = undefined
 
-> s5 :: Equals (Sub (Final V) (Initial V)) 
+> s5 :: Equals (Sub (Final V) (Initial V))
 >              (Poly (Div Zero Two) A_value Zero)
 > s5 = transitivity' s4 integPoly
 
@@ -252,7 +255,7 @@ TODO: Introducera att $t_i=0$. Mycket av nedanstående följer ur det.
 > transitivityPoly2 :: Equals c2 c2' -> Equals (Poly c2 c1 c0) (Poly c2' c1 c0)
 > transitivityPoly2 = undefined
 
-> s6 :: Equals (Sub (Final V) (Initial V)) 
+> s6 :: Equals (Sub (Final V) (Initial V))
 >              (Poly Zero A_value Zero)
 > s6 = transitivity' s5 (transitivityPoly2 divZero)
 

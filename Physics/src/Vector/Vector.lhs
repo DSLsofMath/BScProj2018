@@ -431,5 +431,6 @@ instance Ord Vector3 where
 
 instance Eq Vector3 where
   (V3 x y z) == (V3 x' y' z') = x == x' && y == y' && z == z'
+
 \end{code}
 

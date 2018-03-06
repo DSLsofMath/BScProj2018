@@ -63,6 +63,32 @@ The syntax tree of an expression
 >           | Expr :$ Expr       -- Function application
 >   deriving Eq
 
+
+> equals :: Expr -> Expr -> Bool
+> -- Addition is commutative
+> equals (e1 :+ e2) (e3 :+ e4) = (canonify (e1 :+ e2) == canonify (e3 :+ e4)) || 
+>                                (canonify (e1 :+ e2) == canonify (e4 :+ e3))
+> -- Multiplication is commutative
+> equals (e1 :* e2) (e3 :* e4) = (canonify (e1 :* e2) == canonify (e3 :* e4)) || 
+>                                (canonify (e1 :* e2) == canonify (e4 :* e3))
+> equals e1 e2 = canonify e1 == canonify e2
+
+> canonify :: Expr -> Expr
+> canonify (_ :* (Const 0)) = (Const 0)
+> canonify ((Const 0) :* _) = (Const 0)
+
+> canonify (e :* (Const 1)) = canonify e
+> canonify ((Const 1) :* e) = canonify e
+
+> canonify (e :+ (Const 0)) = canonify e
+> canonify ((Const 0) :+ e) = canonify e
+
+> canonify (e1 :+ e2) = canonify e1 :+ canonify e2
+> canonify (e1 :* e2) = canonify e1 :* canonify e2
+> canonify e = e
+
+
+
 A `const` and `id` function could be useful. We can describe them like this:
 
 > const' c = Lambda "x" (Const c)

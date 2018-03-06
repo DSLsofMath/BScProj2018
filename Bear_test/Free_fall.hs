@@ -20,11 +20,15 @@ asd x = x + 1
 -- 2*S / a = t²
 -- sqrt(2*S / a) = t
 
+-- Sträckan?
 --freefall_s :: Double -> Double -> Double -> (Double, Dims )
 freefall_s v0 a t = (v0 * t + ((a * t**2) / 2), length )
 
 
+-- Tiden?
 freefall_t s a = sqrt (2 * s / a)
+
+
 
 
 -- Möjl additions: exportera showDims?

@@ -42,21 +42,26 @@ VARFÖR BLIR DET ENKLARE?
 
 \textbf{???Osäker på om detta avsnitt är nödvändigt???}
 
-\begin{binge}
+
 
 Ett typexempel på ett domänspecifkt språk är ett syntaxträd för algebraisk uttryck, här kodat i Haskell.
 
-    data Expr = Expr :+: Expr
-                Expr :*: Expr
-                Const Double
-                VarX
+\begin{lstlisting}
+data Expr = Expr :+: Expr
+          | Expr :*: Expr
+          | Const Double
+          | VarX
 
-    exempel = (Const 7.0 :+: VarX) :*: ((VarX :+: Const 10.0) :*: VarX)
+exempel = (Const 7.0 :+: VarX) :*: ((VarX :+: Const 10.0)
+          :*: VarX)
+\end{lstlisting}
+
+I detta exempel visar hur uttrycket $(7+x)*((x+10)*x)$ kodas.
 
 Ha med en bild på detta.
 
 !!!Plus förklaring om evaluering!
-\end{binge}
+
 
 \section{Fysik vi behandlar och Fysik för ingenjörer}
 

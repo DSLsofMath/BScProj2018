@@ -207,6 +207,8 @@ Substitution function to instantiate expression for environment
 Differences
 ----------------------------------------------------------------------
 
+![](delta.png "Feel the might if the illum-... the delta!"){.float-img-left}
+
 Differences are used for stuff like average velocity.
 
 $$ v_{avg} = \frac{x_2 - x_1}{t_2 - t_1} = \frac{\Delta x}{\Delta t} $$
@@ -457,8 +459,10 @@ Let's plot graphs!
 >                       Fun f'
 >                           ("(D " ++ show fe ++ ") = " ++ show fe')]
 
-Integrals
+Integrals - An integral part of calculus
 ======================================================================
+
+![](integral.png "A snaky integral"){.float-img-right}
 
 Integrals are used in the reversed way as derivatives.
 

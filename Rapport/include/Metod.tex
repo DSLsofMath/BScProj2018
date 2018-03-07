@@ -1,13 +1,49 @@
-% CREATED BY DAVID FRISK, 2016
+% Metoddelen redogör för vad du gjort och hur du gått tillväga; det är
+% en beskrivning av den metod som ligger till grund för det du kommit
+% fram till och hävdar i din rapport.
 
-\chapter{Metod}
+% Beskrivningen i metoddelen ska vara koncis snarare än helt
+% uttömmande men ska samtidigt göra det möjligt att upprepa studien
+
+% Metoddelen ska inte vara en omgjord labbinstruktion och den ska inte
+% heller innehålla teori med mindre än att teoretiska hänsyn har haft
+% en direkt inverkan på metoden.
+
+% Metoddelen skrivs nästan alltid i dåtid (imperfekt) och ofta används
+% passiv form för att beskriva forskningsaktiviteter.
+
+\chapter{Metod/Genomförande}
+
+% TODO: Är det intressant att ha med HUR vi, genom research, kom fram
+% till att göra en specifik sak och varför den är bra?
+%
+% E.g. "Genom att läsa i bok A om område B så kom vi fram till att vi
+% ska applicera metod C för att lösa problem D. Enligt bok A är metod
+% C bra därför att ..."
+% vs.
+% "Vi valde att lösa problem D genom att applicera metod C. Metod C är
+% bra därför att ...[ev. källhänvisning]."
 
 \begin{binge}
 Skapandet av läromaterialet har i grova drag haft tre faser. Först valdes olika
 arbetsområden ut, som enskilt gick att arbeta med. Sedan Skapades läromaterial
 för dessa områden. Till sist sammanfoagdes resultatet.
 
+% TODO: Varför på detta viset? Lite mer om strukturen både i hur vi
+% arbetade, och hur läromaterialet ser ut.
+% E.g. "1. identifiera problemområden; 2. impl dsl; 3. Skriv lärotext
+% om DSL; 4. Visa hur DSL kan appliceras för att lösa problem"
+
+% TODO: Sektion om våra litteraturstudier? Känns lite skumt att ha,
+% men 2016 hade. Litteratur är väl bara intressant att ha med som
+% refens när man refererar till fakta eller motiverar ett val? Själva
+% studieprocessen, i.e. HUR man nådde beslutet, är väl inte alls lika
+% intressant att ha med som VARFÖR man tog beslutet?
+
 \section{Selektion av arbetsområden}
+
+% TODO: Åke mailet hjälpte oss identifiera områden.
+% TODO: Hjälpte det senare Åke mötet nåt? För just detta?
 
 För att hitta områden att arbeta med studerades främst kursboken *Univeristy
 Physics*. Där lästes de kapitel som ingick i *Fysik för ingenjörer*. Sådant som
@@ -26,9 +62,11 @@ De områden som valdes ut blev
 
 - Differentalkalkyl
 
-\section{Skapande av de områdena}
+% TODO: Nåt om hur områdesvalen speglas i strukturen av läromaterialet?
 
-\subsection{Först områdena}
+\section{Implementation av DSLer för områdena}
+
+\subsection{Skriva DSL för ett område}
 
 Varje gruppmedlem valde varsitt område att arbeta med. Man började med att
 experimentera med DSL:et för att hitta bra sätt att representera området på,
@@ -45,13 +83,76 @@ När koden var färdig och kommenterad tillräckligt väl började brödtexten
 uppdaters för att även innehålla mer kopplingar till fysik.
 
 \subsection{Komposita områden}
+
+Importera DSLerna för varandra för att göra mer komplicerade grejer.
+
+Eller, \emph{Bruk av de mer fundamentala/teoretiska DSLerna för att
+  angripa områden av mer ``tillämpad'' natur (såsom Krafter, Arbete,
+  etc) )}(?)
+
 !! Områden/moduler soom bygger vidare på redan implementerade områden.
 
-Stack, git kan säkert passa här för att beskriva hur vi samarbetade med sammanfogningen.
+stack, git kan säkert passa här för att beskriva hur vi samarbetade med sammanfogningen.
 
-\section{Hemsidan}
+\section{Skriva lärotext till DSLer}
 
-!! Hur skrevs den?
-Kompilerades kontinuerligt.
+\subsection{Didaktik/språk/utlärningsmetod}
+
+Lättsamt språk o en gnutta humor för att hålla kvar
+uppmärksamhet. Relaterat till Attention i ARCS modellen (2016 skrev om
+det, såg vettigt ut).
+
+\section{Skriva läromaterial för hur DSLer appliceras för problemlösning}
+
+Vari vi visar att DSLerna både är praktiskt användbara, likt Wolfram
+Alpha, och att implementationen+applikationen hjälper oss förstå
+mekanik i allmänhet och probleminstanserna i synnerhet.
+
+% TODO: Motivera varför vi valde LHS
+% TODO: Motivera varför vi valde hemsida istället för PDF.
+% TODO: Motivera varför vi valde Markdown istället för LaTeX i LHS filerna.
+
+\section{Publicering/presentation}
+
+Läromaterialet publiceras på en internethemsida, varpå man kan läsa
+allt o ha skoj.
+
+\subsection{Beskrivning}
+
+Ett build-script hämtar .lhs källfilerna, i vilka brödtexten är
+skriven med markdown. Rendrar med pandoc, och sätter in lite
+navigationselement etc. med hjälp av eget templating-system. Manuellt
+läggs sedan stoffet på gh-pages branchen för att automatiskt visas på
+dslsofmath.github.io/BScProj2018.
+
+Obs: Medan bygget är scriptat så är inte publiceringen det, och
+ingenting genereras/publiceras automatiskt kontinuerligt. Måste köra
+scriptet manuellt och lägga stoff på gh-pages branchen.
+
+\subsection{Build-script}
+
+I.e. implementation av python-build-scriptet i mer detalj.
+
+Är detta ens intressant? Viktigt för att producera sidan såklart, men
+inte intressant ur varken matte eller haskell/DSL perspektiv.
+
+\subsection{Hemsidan}
+
+Nåt om design, läslighet, grafik(?), navigation, avsiktligt undvikande
+av javascript, etc.
+
+Tänker lite samma med denna sektion som ovan. Har ju ingenting med
+varken matte eller DSL att göra i sig, så kanske inte så intressant?
+Samtidigt är det kanske lite intressant ur pedagogik-aspekten. Kan det
+kanske vara lättare/roligare att lära sig om sidan är fin och
+lättläst? Att javascript inte krävs gör att sidan kan visas ordentligt
+även om man sitter i U-land med dålig/gammal/billig telefon.
+
+\section{Test och återkoppling}
+
+Test på försöksstudenter. Återkoppling med Åke(?).
+
+Nog bra att vara explicit här med att det inte är en rigorös empirisk
+studio, om inte det redan täckts väl i Avgränsningar.
 
 \end{binge}

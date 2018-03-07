@@ -1,6 +1,8 @@
 
 # Frågor till Fackspråk handledning 2
 
-- Frågeställningar. Var de ska stå samt var de ska svaras på. Tänker på om det går att göra DSLs.
-- Var ska det står varför man valde en viss teknik? Under teorin eller nån annanstans?
-- Tabeller, figurer, att det är dubbla sidor. Även dubbla sidor efter varje kapitel
+- Har vi valt en bra övergripande struktur på rapporten? Det vi skrivit i de olika avsnitten, passar det där?
+
+- Vi har ett par frågeställningar (Går det att kombinera fysik och DSLs? Hur kan ett sådant möjligt läromaterial se ut? Är det lärorikt att lära ut på detta sätt?) Var ska de presenteras och var ska de svaras på?
+
+- Var ska det står varför man valde en viss teknik? (Ex Haskell till DSLs) Under teorin eller nån annanstans?

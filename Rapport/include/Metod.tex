@@ -24,15 +24,23 @@
 % "Vi valde att lösa problem D genom att applicera metod C. Metod C är
 % bra därför att ...[ev. källhänvisning]."
 
-\begin{binge}
-Skapandet av läromaterialet har i grova drag haft tre faser. Först valdes olika
-arbetsområden ut, som enskilt gick att arbeta med. Sedan Skapades läromaterial
-för dessa områden. Till sist sammanfoagdes resultatet.
+% TODO: Nånting om hur processen såg ut, lite mer meta. I.e. hur
+% arbetade vi i allmänhet? Scrum, vattenfall? Med issue-tracker, med
+% jira? Versionshantering? Etc.
 
-% TODO: Varför på detta viset? Lite mer om strukturen både i hur vi
-% arbetade, och hur läromaterialet ser ut.
-% E.g. "1. identifiera problemområden; 2. impl dsl; 3. Skriv lärotext
-% om DSL; 4. Visa hur DSL kan appliceras för att lösa problem"
+\begin{draft}
+
+  Projektet har i grova drag genomförts i fyra överlappande
+  faser. Först identifierades de områden inom mekanik som studenter
+  verkar ha svårt för, eller som vi trodde skulle vara intressanta att
+  arbeta med. Sedan skrevs både DSL och lärotext för dessa
+  områden. Efter det anpassades texterna för att bli publicerbara som
+  kapitel, och kompilerades till ett läromaterial i form av en
+  HTML-bok som publicerades på en internethemsida. Slutligen gjordes
+  en icke-rigorös evaluering av materialet, i form av att ett urval
+  studenter fick läsa det och komma med feedback.
+
+\end{draft}
 
 % TODO: Sektion om våra litteraturstudier? Känns lite skumt att ha,
 % men 2016 hade. Litteratur är väl bara intressant att ha med som
@@ -40,31 +48,55 @@ för dessa områden. Till sist sammanfoagdes resultatet.
 % studieprocessen, i.e. HUR man nådde beslutet, är väl inte alls lika
 % intressant att ha med som VARFÖR man tog beslutet?
 
+\begin{binge}
 \section{Selektion av arbetsområden}
 
 % TODO: Åke mailet hjälpte oss identifiera områden.
 % TODO: Hjälpte det senare Åke mötet nåt? För just detta?
 
-För att hitta områden att arbeta med studerades främst kursboken *Univeristy
-Physics*. Där lästes de kapitel som ingick i *Fysik för ingenjörer*. Sådant som
-verkade hade syntax som behövde förklaras, eller sådant som var svårt, eller
-sådant som var spännande valdes ut. De områden som hittats sorterades upp i
-grupper som var så fristående som möjligt för att kunna arbetas med på
+\begin{draft}
+  Först kontaktades Åke Fäldt, som är examinator för kursen TIF085,
+  Fysik för Ingenjörer. Åke befrågades om vilka områden han tycker att
+  studenter verkar ha svårt för, och svarade att studenter i allmänhet
+  verkar ha svårt för att sätta upp egna, mentala modeller för många
+  problem och koncept. ``Man tar genvägar (som ofta är fel) och bygger
+  inte från det som man är säker på gäller'' skrev han, och han pekade
+  ut infinitesimalkalkyl som ett speciellt svårt område:
+  ``Infinitesimalkalkyl är ju en av hörnpelarna i fysiken och
+  studenterna har trots att de har läst ganska mycket matematik
+  jättesvårt att använda detta på verkliga system''.
+
+  För att identifiera mer specifika ämnesområden att arbeta med,
+  studerades kursboken *Univeristy Physics*. Speciellt av intresse var
+  kapitel som berörde saker som Åke Fäldt tidigare pekat ut som svåra,
+  och kapitel som använde sig av specifik syntax. Domänspecifik syntax
+  var av intresse att finna, då en betydlig del av domänspecifika språk
+  är modellering av just syntaxen. Även områden som projektgruppen fann
+  personligen intressanta, och områden som inte var av direkt intresse,
+  men som utgjorde en kritisk beståndsdel av mer intressanta områden,
+  valdes ut.
+\end{draft}
+
+De valda ämnesområdena delades upp och definierades sådana att de var
+fristående, i så god mån som möjligt, för att kunna arbetas med
 parallellt.
 
-De områden som valdes ut blev
+De områden som valdes ut blev: Vektorer, Enheter, Momentan och
+genomsnitt, och Infinitesimalkalkyl.
+% TODO: och mer?
 
-- Vektorer
+% TODO: Nåt om hur områdesvalen speglas i strukturen av
+% läromaterialet?
 
-- Enheter
+\end{binge}
 
-- Momentan och genomsnitt
+\begin{binge}
+  \section{Implementation av DSL för områdena}
 
-- Differentalkalkyl
-
-% TODO: Nåt om hur områdesvalen speglas i strukturen av läromaterialet?
-
-\section{Implementation av DSLer för områdena}
+  % TODO: Hur? I haskell, med syntaxträd, etc.
+  Först experimentering. Sen implementation i haskell med syntaxträd
+  och sånt. Sen få flera dsl att fungera tillsammans. Sist
+  problemlösning o sånt.
 
 \subsection{Skriva DSL för ett område}
 
@@ -94,7 +126,7 @@ Eller, \emph{Bruk av de mer fundamentala/teoretiska DSLerna för att
 
 stack, git kan säkert passa här för att beskriva hur vi samarbetade med sammanfogningen.
 
-\section{Skriva lärotext till DSLer}
+\section{Skriva lärotext till DSL}
 
 \subsection{Didaktik/språk/utlärningsmetod}
 
@@ -102,7 +134,7 @@ Lättsamt språk o en gnutta humor för att hålla kvar
 uppmärksamhet. Relaterat till Attention i ARCS modellen (2016 skrev om
 det, såg vettigt ut).
 
-\section{Skriva läromaterial för hur DSLer appliceras för problemlösning}
+\section{Skriva läromaterial för hur DSL appliceras för problemlösning}
 
 Vari vi visar att DSLerna både är praktiskt användbara, likt Wolfram
 Alpha, och att implementationen+applikationen hjälper oss förstå
@@ -112,7 +144,7 @@ mekanik i allmänhet och probleminstanserna i synnerhet.
 % TODO: Motivera varför vi valde hemsida istället för PDF.
 % TODO: Motivera varför vi valde Markdown istället för LaTeX i LHS filerna.
 
-\section{Publicering/presentation}
+\section{Sammanställning, presentation, och publicering}
 
 Läromaterialet publiceras på en internethemsida, varpå man kan läsa
 allt o ha skoj.
@@ -149,6 +181,20 @@ lättläst? Att javascript inte krävs gör att sidan kan visas ordentligt
 även om man sitter i U-land med dålig/gammal/billig telefon.
 
 \section{Test och återkoppling}
+
+% Återkoppling från examinator (NAD): "Nils Anders Danielsson <nad@cse.gu.se>
+% 27 Feb (1 day ago)
+% to Patrik, Andreas
+% Hi,Your BSc project groups both try to make tools for learning. I had some
+% discussion with Andreas' group about their plans for evaluating how well
+% their product works. My position is that, given the resource limits of
+% these projects (and general problems of reproducibility in social
+% sciences), it is very hard to perform an evaluation that gives useful
+% results. I don't mind if your groups try to perform some kind of
+% evaluation, but I suggest that you tell them to avoid overstating the
+% importance of the evaluations in the final reports."
+% Jag tror det är kompatibelt med det jag sagt tidigare - att göra en "ordentlig" utvärdering av det pedagogiska utfallet är komplicerat och tar (kalender-)tid.
+% Informell utvärdering av en testgrupp bör dock ingå.
 
 Test på försöksstudenter. Återkoppling med Åke(?).
 

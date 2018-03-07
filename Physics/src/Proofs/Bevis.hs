@@ -1,4 +1,4 @@
-
+module Proofs.Bevis where
 --Bevis av "dom där fyra" kinematiska reglerna. Ha som axiom vanliga regler för algebra.
 
 -- Börjar med a = dv/dt och a konstant
@@ -69,7 +69,7 @@ data Integ a
 -- Här uppe kanske man ska kräva att en differential är
 -- inblandad
 
-bothSideInteg :: Equals (Mul a (Diff b)) (Mul c (Diff d)) -> Equals (Integ (Mul a (Diff b))) (Integ (Mul c (Diff d)))
+-- bothSideInteg :: Equals (Mul a (Diff b)) (Mul c (Diff d)) -> Equals (Integ (Mul a (Diff b))) (Integ (Mul c (Diff d)))
 
 {- Vill egentligen ha något sådant här
 
@@ -78,10 +78,10 @@ bothSideOp = undefined
 
 -}
 
-mulWithOne :: 
+--mulWithOne :: 
 
-s3 :: Equals (Integ (Diff v)) (Integ (Mul a (Diff t)))
-s3 = bothSideInteg s2
+-- s3 :: Equals (Integ (Diff v)) (Integ (Mul a (Diff t)))
+-- s3 = bothSideInteg s2
 
 -- Integrera dx från xi till xf ger... xf-xi! Detta kanske
 -- man eventuellt ska bevisa senare
@@ -102,11 +102,11 @@ integConstant = undefined
 
 
 
-s4 :: Equals (Integ (Mul a (Diff t))) (Delta v)
-s4 = transitivity s3 integDiff
+-- s4 :: Equals (Integ (Mul a (Diff t))) (Delta v)
+--s4 = transitivity s3 integDiff
 
-s5 :: Equals (Delta v) (Mul a (Integ (Diff t)))
-s5 = transitivity s4 integConstant
+-- s5 :: Equals (Delta v) (Mul a (Integ (Diff t)))
+-- s5 = transitivity s4 integConstant
 
 -- Problem: hur använda en likhet "långt inne", som i fallet med s5. Här vill man använda `integDiff` inuti direkt på Mul a (Integ (Diff t))
 

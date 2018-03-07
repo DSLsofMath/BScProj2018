@@ -1,4 +1,4 @@
-> module Vector.Vector where
+> module VecTest.Vector where
 
 > import Dimensions.Quantity
 > import Dimensions.TypeLevel as T

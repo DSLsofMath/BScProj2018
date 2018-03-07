@@ -23,6 +23,8 @@ dependencies:
 - base >= 4.7 && < 5
 - Hatlab
 - numtype-dk
+- containers
+- pretty-tree
 
 library:
   source-dirs: src

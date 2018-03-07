@@ -38,6 +38,7 @@ Fun imports
 > import Data.List
 > import Data.String
 > import Control.Exception
+> import Data.Tree.Pretty
 
 Simple graph plotting library
 
@@ -63,28 +64,69 @@ The syntax tree of an expression
 >           | Expr :$ Expr       -- Function application
 >   deriving Eq
 
+> data Tree e = Leaf e 
+>             | Plus (Tree e) (Tree e)
+>             | Minus (Tree e) (Tree e)
+
+> makeTree :: Expr -> Tree Expr
+> makeTree (Const x)  = Leaf (Const x)
+> makeTree (e1 :+ e2) = Plus (makeTree e1) (makeTree e2)
+
+> pp :: Tree Expr -> String
+> pp (Leaf c) = show ic
+
+> e1 = (Const 2 :+ Const 3) :* (Const 3 :+ Const 2)
+> e2 = Const (25)
 
 > equals :: Expr -> Expr -> Bool
 > -- Addition is commutative
 > equals (e1 :+ e2) (e3 :+ e4) = (canonify (e1 :+ e2) == canonify (e3 :+ e4)) || 
 >                                (canonify (e1 :+ e2) == canonify (e4 :+ e3))
+> -- | Addition is associative
+> -- equals (e1 :+ (e2 :+ e3))    = undefined
 > -- Multiplication is commutative
 > equals (e1 :* e2) (e3 :* e4) = (canonify (e1 :* e2) == canonify (e3 :* e4)) || 
 >                                (canonify (e1 :* e2) == canonify (e4 :* e3))
 > equals e1 e2 = canonify e1 == canonify e2
 
 > canonify :: Expr -> Expr
-> canonify (_ :* (Const 0)) = (Const 0)
-> canonify ((Const 0) :* _) = (Const 0)
-
-> canonify (e :* (Const 1)) = canonify e
-> canonify ((Const 1) :* e) = canonify e
-
+> -- | Addition
+> -- | e + 0 = e
 > canonify (e :+ (Const 0)) = canonify e
 > canonify ((Const 0) :+ e) = canonify e
+> -- | Lifting
+> canonify (Const x :+ Const y) = Const (x + y)
+> canonify (e1 :+ e2) = canonify $ canonify e1 :+ canonify e2
 
-> canonify (e1 :+ e2) = canonify e1 :+ canonify e2
-> canonify (e1 :* e2) = canonify e1 :* canonify e2
+> -- | Subtraction
+> -- | e - 0 = e
+> canonify (e :- Const 0) = canonify e
+> -- | 0 - b = -b
+> canonify (Const 0 :- b) = canonify (negate (canonify b))
+> -- | Lifting
+> canonify (Const a :- Const b) = Const (a - b)
+> canonify (e1 :- e2) = canonify $ canonify e1 :- canonify e2
+
+> -- | Multiplication
+> -- | e * 0 = 0
+> canonify (_ :* Const 0) = Const 0
+> canonify (Const 0 :* _) = Const 0
+> -- | e * 1 = e
+> canonify (e :* (Const 1)) = canonify e
+> canonify ((Const 1) :* e) = canonify e
+> -- | Lifting
+> canonify (Const a :* Const b) = Const (a * b)
+> -- | Propagate
+> canonify (e1 :* e2) = canonify $ canonify e1 :* canonify e2
+
+> -- | Division
+> canonify (Const a :/ Const b) = Const (a / b)
+> canonify (e1 :/ e2) = canonify $ canonify e1 :/ canonify e2
+
+> -- | Lambda
+> canonify (Lambda p b) = (Lambda p (canonify b))
+
+> -- | Catch all
 > canonify e = e
 
 
@@ -199,6 +241,9 @@ TODO: Should a lambda really be returnable here? Kinda makes sense, kinda doesn'
 > data Val = RealVal RealNum
 >          | LambdaVal String Expr
 >          | FuncVal (RealNum -> RealNum)
+
+> instance Show Val where
+>   show (RealVal n) = show n
 
 Helper functions to improve ergonomics of evaluation
 

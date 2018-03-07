@@ -92,33 +92,43 @@ rekommenderas \textit{DSL for the Uninitiated}.\cite{DSLU}
 
 \section{Rapportens syfte}
 
-\begin{binge}
+\begin{draft}
 Rapportens syfte är att beskriva utvecklingen av läromaterialet, läromaterialet
-i sig samt den tekniska bakgrund som krävs för att förstå. Vi går även in på
-svårigheterna som stötts på under utveckliingen av läromaterialet, vilka delar
-av fysik som har lämpats sig väl, och vilka som har lämpat sig mindre väl.
-\end{binge}
+i sig samt den tekniska bakgrund som krävs för att förstå läromaterialet. Vi går in på
+svårigheter projektgruppen stött på under utvecklingen av läromaterialet, vilka områden
+av fysik som lämpat sig väl samt lämpat sig mindre väl för implementering i ett 
+domänspecifikt språk med syfte att tjäna som läromaterial.
+%Ska vi berätta om:
+%    att syftet är att rapporten utgör betygsgrundande material
+%    att belysa hela projektets helhet (nu är det restriktivt till läromaterialet)
+%    Ska vi beskriva vår ursprungsposition? fast det skulle kunna vara mer i bakgrund?  
+
+%Rapportens syfte är att beskriva utförandet av projektarbetet samt utgöra betygsgrundande material för projektgruppen.
+\end{draft}
+
 
 \section{Projektets mål}
 
-\begin{binge}
+\begin{draft}
+
+\iffalse
 Projekets mål är att skapa ett roligt läromaterial som kombinerar fysik med
-tillhörande domänspecika språk. Läromaterialet ska väcka intresse hos läsaren
-för fysik och inspirera till vidare studier. DSL:erna ska modellera utvalda
-fysikaliska områden och den tillhörande brödtexten ska förklara både DSL:erna i
-sig, fysik i sig samt kopplingen mellan dem.
-
-Läromaterialet ska i slutändan bestå av en hemsida. Källkoden för projektet
-ska finnas fritt tillgängligt.
-
+tillhörande domänspecika språk. Läromaterialets syfte är att väcka intresse hos läsaren
+för fysikaliska samband samt inspirera till vidare studier. DSL:erna är menade att modellera specifikt utvalda
+områden inom fysik. Den tillhörande brödtexten är menad att beskriva både DSL:erna, fysiken i sig,    %DSL:erna är bruten svenska?
+samt kopplingen mellan dem.
+\fi
 % Annan formulering från nån annanstans
-Syftet med projektet är att skapa domänspecifika språk för fysik samt ett
-tillhörande läromaterial. Läromaterialet ska både förklara fysik och
-parallellerna med de domänspecifika språken. Förhoppningen är att väcka intresse
+Målet med projektet är att skapa domänspecifika språk för fysik samt ett   %Målet med...
+tillhörande läromaterial. Läromaterialets syfte är att beskriva fysiken och  %Läromaterialets syfte är ...
+dess koppling till de domänspecifika språken projektgruppen utvecklat. Förhoppningen är att väcka intresse
 för fysik hos datateknologer genom att presentera fysik från ett annat
 perspektiv.
 
-\end{binge}
+Läromaterialet är menat att i slutändan bestå av en hemsida. Källkoden för projektet
+skall vara offentligt tillgänglig.
+
+\end{draft}
 
 \section{Avgränsningar}
 
@@ -128,6 +138,11 @@ Att börjar med mekanik o.s.v.
 
 Att inte gör en ordentlig undersökning med testgrupp.
 
+Läromaterialet begränsar sig till att enbart beskriva en del områden inom fysik som ingår i kursen Fysik för ingenjöer. Denna avgränsningen valdes dells för att det är den fysik gruppmedlemmarnas kunskaper begränsar sig till, samt att det är den nämda kursen detta projekt kan bli mest relevant för, då kursen är en del av datastudenternas obligatoriska utbildning.
+
+%TODO: PaJa: Jag tror att det i praktiken är en hel del tillämpad matematik inbäddat i kursen också, och det kan vara värt att nämna.
+\textit{Fysik för ingenjörer} behandlar grunderna inom de tre områdena mekanik (inklusive stelkroppsmekanik), termodynamik och vågrörelselära. Vi har valt att i första hand prioritera mekanik, vilket även innefattar tillämpad matematik i form av Euklidisk geometri och infinitesimalkalkyl. Senare, i mån av tid, har vi valt att även behandla termodynamik och vågrörelselära. Dessutom kommer de områden datateknologer haft svårt för prioriteras. Även om projekets direkta syfte inte är att förbättra tentastatistiken på \textit{Fysik för ingenjörer}, är vår förhoppning att förståelsen för de svåra delarna ska bli bättre.
+
 \end{binge}
 
 \section{Frågeställningar}
@@ -136,12 +151,14 @@ Att inte gör en ordentlig undersökning med testgrupp.
 
 Kanske ska de vara här?
 
+Ska de va punktform? Är detta faktiska frågeställningar eller höftade?
+
 !! Frågor som vi ska både ställa och besvara.
 \begin{itemize}
-  \item Går det att implementera fysik
-  \item Kunde vi realisera vår initiala modeller
-  \item Blir det ett bra läromaterial.
-  \item Vad tyckte andra studenter
+  \item Går det att implementera fysik m.h.a. DSL:er?
+  \item Kunde vi realisera våra initiala modeller (???)
+  \item Blir det ett bra läromaterial. (bra?)
+  \item Vad tyckte andra studenter      
   \item Hur kan ett läromaterial för fysik med DSL se ut?
 \end{itemize}
 

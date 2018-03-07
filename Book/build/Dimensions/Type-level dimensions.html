@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Learn You a Physics for Great Good!</title>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  </head>
+
+  <body>
+    <header>
+      <a href="../index.html"><h1>Learn You a <span class="physics">Physics</span> for Great Good!</h1></a>
+      <h1>&gt;&gt;&gt; WORK IN PROGRESS &lt;&lt;&lt;</h1>
+      <nav>
+        <span>Previous: <a href="../Dimensions/Value-level dimensions.html">Value-level dimensions</a></span>
+        <a href="../index.html">Table of contents</a>
+        <span>Next: <a href="../Dimensions/Quantities.html">Quantities</a></span>
+      </nav>
+    </header>
+
+    <main>
+      <h1 id="type-level-dimensions">Type-level dimensions</h1>
+<p>We will now implement <em>type-level</em> dimensions. What is type-level? When one usually programs (in Haskell), one operatates (e.g. adds) on values (e.g. <code>1</code> and <code>2</code>). This is on <em>value-level</em>. Now we’ll do the same thing but on <em>type-level</em>, that is, perform operations on types.</p>
+<p>What’s the purpose of type-level dimensions? It’s so we’ll notice as soon as compile-time if we’ve written something incorrect. E.g. adding a length and an area is not allowed since they have different dimensions.</p>
+<p>This implemention is very similar to the value-level one. It would be possible to only have one implementation by using <code>Data.Proxy</code>. But it would be trickier. This way is lengthier but easier to understand.</p>
+<p>To be able to do type-level programming, we’ll need a nice stash of GHC-extensions.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="ot">{-# LANGUAGE DataKinds #-}</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="ot">{-# LANGUAGE GADTs #-}</span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="ot">{-# LANGUAGE KindSignatures #-}</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="ot">{-# LANGUAGE TypeFamilies #-}</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="ot">{-# LANGUAGE UndecidableInstances #-}</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="ot">{-# LANGUAGE TypeOperators #-}</span></a></code></pre></div>
+<p>See the end of the next chapter to read what they do.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">module</span> <span class="dt">Dimensions.TypeLevel</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">( <span class="dt">Dim</span>(<span class="fu">..</span>)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">, <span class="dt">Mul</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">, <span class="dt">Div</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">, <span class="dt">Length</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">, <span class="dt">Mass</span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">, <span class="dt">Time</span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">, <span class="dt">Current</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9">, <span class="dt">Temperature</span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10">, <span class="dt">Substance</span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11">, <span class="dt">Luminosity</span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12">, <span class="dt">One</span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13">)</a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="kw">where</span></a></code></pre></div>
+<p>We’ll need to be able to operate on integers on type-level. Instead of implementing it ourselves, we will just import the machinery so we can focus on the physics-part.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">import</span> <span class="dt">Numeric.NumType.DK.Integers</span></a></code></pre></div>
+<p>We make a <em>kind</em> for dimensions, just like we in the previous section made <em>type</em> for dimensions. On value-level we made a <em>type</em> with <em>values</em>. Now we make a <em>kind</em> with <em>types</em>. The meaning is exactly the same, except we have moved “one step up”.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">data</span> <span class="dt">Dim</span> <span class="fu">=</span> <span class="dt">Dim</span> <span class="dt">TypeInt</span> <span class="co">-- Length</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">               <span class="dt">TypeInt</span> <span class="co">-- Mass</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">               <span class="dt">TypeInt</span> <span class="co">-- Time</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">               <span class="dt">TypeInt</span> <span class="co">-- Current</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">               <span class="dt">TypeInt</span> <span class="co">-- Temperature</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">               <span class="dt">TypeInt</span> <span class="co">-- Substance</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7">               <span class="dt">TypeInt</span> <span class="co">-- Luminosity</span></a></code></pre></div>
+<p>But <code>data Dim = ...</code> looks awfully similar to a regular data type! That’s correct. But with the GHC-extension <code>DataKinds</code> this will, apart from creating a regular data type, <strong>also</strong> create a <em>kind</em>. Perhaps a less confusing syntax would’ve been <code>kind Dim = ...</code>. The above definition can be seen as the two following definitions.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co">-- LHS: Type</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">-- RHS: Value</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="kw">data</span> <span class="dt">Dim</span> <span class="fu">=</span> <span class="dt">Dim</span> <span class="dt">TypeInt</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">               <span class="dt">TypeInt</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">               <span class="dt">TypeInt</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">               <span class="dt">TypeInt</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">               <span class="dt">TypeInt</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8">               <span class="dt">TypeInt</span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9">               <span class="dt">TypeInt</span></a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co">-- LHS: Kind</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">-- RHS: Type</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">kind <span class="dt">Dim</span> <span class="fu">=</span> <span class="dt">Dim</span> <span class="dt">TypeInt</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">               <span class="dt">TypeInt</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">               <span class="dt">TypeInt</span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">               <span class="dt">TypeInt</span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">               <span class="dt">TypeInt</span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8">               <span class="dt">TypeInt</span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9">               <span class="dt">TypeInt</span></a></code></pre></div>
+<p>Thanks to the <code>Dim</code>-kind we can force certain types in functions to be of this kind.</p>
+<p>This may sound confusing, but the point of this will become clear over time. Let’s show some example <em>types</em> of the <code>Dim</code>-kind.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">type</span> <span class="dt">Length</span>      <span class="fu">=</span> <span class="ch">&#39;Dim Pos1 Zero Zero Zero Zero Zero Zero</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw">type</span> <span class="dt">Mass</span>        <span class="fu">=</span> <span class="ch">&#39;Dim Zero Pos1 Zero Zero Zero Zero Zero</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="kw">type</span> <span class="dt">Time</span>        <span class="fu">=</span> <span class="ch">&#39;Dim Zero Zero Pos1 Zero Zero Zero Zero</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="kw">type</span> <span class="dt">Current</span>     <span class="fu">=</span> <span class="ch">&#39;Dim Zero Zero Zero Pos1 Zero Zero Zero</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="kw">type</span> <span class="dt">Temperature</span> <span class="fu">=</span> <span class="ch">&#39;Dim Zero Zero Zero Zero Pos1 Zero Zero</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="kw">type</span> <span class="dt">Substance</span>   <span class="fu">=</span> <span class="ch">&#39;Dim Zero Zero Zero Zero Zero Pos1 Zero</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="kw">type</span> <span class="dt">Luminosity</span>  <span class="fu">=</span> <span class="ch">&#39;Dim Zero Zero Zero Zero Zero Zero Pos1</span></a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">type</span> <span class="dt">Velocity</span>     <span class="fu">=</span> <span class="ch">&#39;Dim Pos1 Zero Neg1 Zero Zero Zero Zero</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw">type</span> <span class="dt">Acceleration</span> <span class="fu">=</span> <span class="ch">&#39;Dim Pos1 Zero Neg2 Zero Zero Zero Zero</span></a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">type</span> <span class="dt">One</span> <span class="fu">=</span> <span class="ch">&#39;Dim Zero Zero Zero Zero Zero Zero Zero</span></a></code></pre></div>
+<p><code>'Dim</code> is used to distinguish between the <em>type</em> <code>Dim</code> (left-hand-side of the <code>data Dim</code> definition) and the <em>type constructor</em> <code>Dim</code> (right-hand-side of the <code>data Dim</code> definition, with <code>DataKinds</code>-perspective). <code>'Dim</code> refers to the type constructor. Both are created when using <code>DataKinds</code>.</p>
+<p><code>Pos1</code>, <code>Neg1</code> and so on corresponds to <code>1</code> and <code>-1</code> in the imported package, which operates on type-level integers.</p>
+<h2 id="multiplication-and-division">Multiplication and division</h2>
+<p>Let’s implement multiplication and division on type-level. After such an operation a new dimension is created. And from the previous section we already know what the dimension should look like. To translate to Haskell-language: “after such an operation a new <em>type</em> is created”. How does one implement that? With <code>type family</code>! <code>type family</code> can easiest be thought of as a function on the type-level.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">type</span> family <span class="dt">Mul</span> (<span class="ot">d1 ::</span> <span class="dt">Dim</span>) (<span class="ot">d2 ::</span> <span class="dt">Dim</span>) <span class="kw">where</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">  <span class="dt">Mul</span> (<span class="ch">&#39;Dim le1 ma1 ti1 cu1 te1 su1 lu1) </span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">      (<span class="ch">&#39;Dim le2 ma2 ti2 cu2 te2 su2 lu2) =</span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4">      <span class="ch">&#39;Dim (le1+le2) (ma1+ma2) (ti1+ti2) (cu1+cu2)</span></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5">        (te1<span class="fu">+</span>te2) (su1<span class="fu">+</span>su2) (lu1<span class="fu">+</span>lu2)</a></code></pre></div>
+<ul>
+<li><code>type family</code> means it’s a function on type-level.</li>
+<li><code>Mul</code> is the name of the function.</li>
+<li><code>d1 :: Dim</code> is read as “the <em>type</em> <code>d1</code> has <em>kind</em> <code>Dim</code>”.</li>
+</ul>
+<p>Division is very similar.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">type</span> family <span class="dt">Div</span> (<span class="ot">d1 ::</span> <span class="dt">Dim</span>) (<span class="ot">d2 ::</span> <span class="dt">Dim</span>) <span class="kw">where</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">  <span class="dt">Div</span> (<span class="ch">&#39;Dim le1 ma1 ti1 cu1 te1 su1 lu1) </span></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">      (<span class="ch">&#39;Dim le2 ma2 ti2 cu2 te2 su2 lu2) =</span></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">      <span class="ch">&#39;Dim (le1-le2) (ma1-ma2) (ti1-ti2) (cu1-cu2)</span></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5">        (te1<span class="fu">-</span>te2) (su1<span class="fu">-</span>su2) (lu1<span class="fu">-</span>lu2)</a></code></pre></div>
+<p>Let’s create some example <em>types</em> for dimensions with multiplication and division.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">type</span> <span class="dt">Velocity&#39;</span> <span class="fu">=</span> <span class="dt">Length</span> <span class="ot">`Div`</span> <span class="dt">Time</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw">type</span> <span class="dt">Area</span>      <span class="fu">=</span> <span class="dt">Length</span> <span class="ot">`Mul`</span> <span class="dt">Length</span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="kw">type</span> <span class="dt">Force</span>     <span class="fu">=</span> <span class="dt">Mass</span>   <span class="ot">`Mul`</span> <span class="dt">Length</span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="kw">type</span> <span class="dt">Impulse</span>   <span class="fu">=</span> <span class="dt">Force</span>  <span class="ot">`Mul`</span> <span class="dt">Time</span></a></code></pre></div>
+<p>Perhaps not very exiting so far. But just wait ’til we create a data type for quantities. Then the strenghts of type-level dimensions will be clearer.</p>
+
+    </main>
+
+    <footer>
+      Licensed under the GPL by the Kandidatboisen (2018)
+    </footer>
+  </body>
+</html>

@@ -36,8 +36,13 @@ We'll now create a data type for quantities and combine dimensions on value-leve
 > , atanq
 > , expq
 > , logq
+> , Quantity
+> , qmap'
+> , qfold
+> , lol
 > )
 > where
+
 
 > import qualified Dimensions.ValueLevel as V
 > import           Dimensions.TypeLevel  as T
@@ -47,6 +52,9 @@ First we create the data type for quantities.
 
 > data Quantity (d :: T.Dim) (v :: *) where
 >   Quantity :: V.Dim -> v -> Quantity d v
+
+> lift :: Quantity dim a -> a
+> lift (Quantity _ v) = v
 
 `data Quantity` creates a *type constructor*. Which means it takes two *types* (of certain *kinds*) to create another *type* (of a certain *kind*). For comparsion, here's a *value constructor* which takes two *values* (of certain *types*) as input to create another *value* (of a certain *type*).
 
@@ -202,6 +210,12 @@ We quickly realize a pattern, so let's generalize a bit.
 
 > qmap :: (a -> b) -> Quantity One a -> Quantity One b
 > qmap f (Quantity d1 v) = Quantity d1 (f v)
+
+> qmap' :: (a -> b) -> Quantity dim a -> Quantity dim b
+> qmap' f (Quantity d v) = Quantity d (f v)
+
+> qfold :: (a -> a -> b) -> Quantity dim a -> Quantity dim a -> Quantity dim b
+> qfold f (Quantity d v1) (Quantity _ v2) = Quantity d (f v1 v2)
 
 > sinq, cosq, asinq, acosq, atanq, expq, logq :: (Floating v) =>
 >   Quantity One v -> Quantity One v

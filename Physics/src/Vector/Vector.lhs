@@ -1,4 +1,4 @@
-> module Vector where
+> module Vector.Vector where
 
 Vectors in two dimensions.
 -----------------------------------------------------------
@@ -359,10 +359,10 @@ are the magnitudes of the vectors.
 
 So our function for calculating the cross product becomes:
 
-\begin{code}
-crossProd :: Vector3 -> Vector3 -> Vector3
-crossProd a b = (magnitude a) * (magnitude b)
-\end{code}
+%\begin{code}
+%crossProd :: Vector3 -> Vector3 -> Vector3
+%crossProd a b = (magnitude a) * (magnitude b)
+%\end{code}
 
 \begin{spec}
 crossProd :: Vector3 -> Vector3 -> Vector3
@@ -431,5 +431,6 @@ instance Ord Vector3 where
 
 instance Eq Vector3 where
   (V3 x y z) == (V3 x' y' z') = x == x' && y == y' && z == z'
+
 \end{code}
 

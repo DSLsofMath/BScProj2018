@@ -14,3 +14,5 @@
 - Ska formalian på titelsidan och annat i början (exempelvis handledare, avdelning, plats...) vara på svenska eller engelska? (Rapporten är skriven på svenska)
 
 - Ska våra namn på förstasidan, och senare, vara sorterade efter för- eller efternamn?
+
+- Ska vi ha sammanfattning och abstract? I vilken ordning och ska båda ha nyckelord då?

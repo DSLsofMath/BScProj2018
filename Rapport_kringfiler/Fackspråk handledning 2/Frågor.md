@@ -1,9 +1,13 @@
 
 # Frågor till Fackspråk handledning 2
 
+Om alla frågor inter hinner svaras på är struktur-frågorna de viktigaste (som även råkar vara de längsta).
+
 ## Struktur
 
 - Har vi valt en bra övergripande struktur på rapporten? Det vi skrivit i de olika avsnitten, passar det där? Möjligt överlapp mellan teori, metod och resultat?
+
+  - Vårt arbetssätt (experimenterandet med olika möjliga DSLs) kanske inte passar bra med IMRaD vi har nu? Vad för annat skulle för oss fungera bättre?
 
 - Vi har ett par frågeställningar (Går det att kombinera fysik och DSLs? Hur kan ett sådant möjligt läromaterial se ut? Är det lärorikt att lära ut på detta sätt?) Var ska de presenteras och var ska de svaras på?
 

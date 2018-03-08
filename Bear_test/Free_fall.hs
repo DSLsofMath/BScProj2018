@@ -1,40 +1,16 @@
 
--- Importera deep embedding och Dimensions
---import Dimensions.ValueLevel
+import Dimensions.TypeLevel
 import Dimensions.Quantity
-import Prelude hiding (length, div)
-asd x = x + 1
+import Prelude hiding (length)
 
+fTime = 1.0 # time
 
--- Vi skulle vilja ha showDims, i answer också
+fVo = 3.0 # velocity
 
--- Freefall
--- Hur lång tid tills bollen slår i marken?
+fAcc = 9.8 # acceleration
 
--- S = v*t + a*t² / 2
---
--- Säg begynnelsehastighet = 0
---
--- S = a*t² / 2
---
--- 2*S / a = t²
--- sqrt(2*S / a) = t
-
--- Sträckan?
---freefall_s :: Double -> Double -> Double -> (Double, Dims )
-freefall_s v0 a t = (v0 * t + ((a * t**2) / 2), length )
-
-
--- Tiden?
-freefall_t s a = sqrt (2 * s / a)
+--freefall
+fLength = fVo *# fTime +# fAcc *# fTime *# fTime /# (2.0 # one)
 
 
 
-
--- Möjl additions: exportera showDims?
---                 vectors?
-
--- En adderare av dimensioner
-
--- Oskar har typ många saker i Quantity.lhs som jag bör läsa.
---

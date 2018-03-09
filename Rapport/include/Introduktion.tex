@@ -25,8 +25,7 @@ tar genvägar som ofta är fel.
 Sedan våren 2016 har kursen ``Domain Specific Languages of
 Mathematics'' (``DSLsofMath'') eller ``Matematikens domänspecifika språk''
 givits som en valbar kurs på kandidatnivå för studenter på Chalmers och
-Göteborgs Universitet. År 2016 var Cezar Ionescu huvudföreläsare, och från 2017
-är Patrik Jansson huvudföreläsare.
+Göteborgs Universitet.
 
 För läsaren som inte är insatt i domänspecifika språk, kan det
 förklaras som ett språk konstruerat för ett specifikt område, en
@@ -35,7 +34,8 @@ domänen, till exempel Newtons andra lag $F=m \cdot a$ än vad som är
 möjligt inom generella (programmerings) språk. För vidare läsning
 rekommenderas \textit{DSL for the Uninitiated}.\cite{DSLU}
 
-Det direkta målet med kursen DSLsofMath är att förbättra den
+I kursen DSLsofMath, var år 2016 var Cezar Ionescu huvudföreläsare, och från 2017
+är Patrik Jansson huvudföreläsare. Det direkta målet med kursen är att förbättra den
 matematiska utbildningen för datavetare och den datavetenskapliga utbildningen
 för matematiker, där den grundläggande idéen bakom kursen är: 
 
@@ -82,26 +82,15 @@ signallära.\cite{kandidat2016}
 
 \begin{draft}
 
-\iffalse
-Projekets mål är att skapa ett roligt läromaterial som kombinerar fysik med
-tillhörande domänspecika språk. Läromaterialets syfte är att väcka intresse hos läsaren
-för fysikaliska samband samt inspirera till vidare studier. De domänspecifika språken är menade att modellera specifikt utvalda
-områden inom fysik. Den tillhörande brödtexten är menad att beskriva både de domänspecifika språken, fysiken i sig,    %DSL:erna är bruten svenska?
-samt kopplingen mellan dem.
-\fi
-
-
 % Annan formulering från nån annanstans
 Målet med projektet är att skapa domänspecifika språk för fysik samt ett   
 tillhörande läromaterial. Läromaterialets syfte är att beskriva fysiken och
-dess koppling till de domänspecifika språken projektgruppen utvecklat. Förhoppningen är att väcka intresse
-för fysik hos datateknologer genom att presentera fysik från ett annat
-perspektiv.
+dess koppling till de domänspecifika språken projektgruppen utvecklat.
 
 Läromaterialet är menat att i slutändan bestå av en hemsida. Källkoden för projektet
-skall vara offentligt tillgänglig.
+skall finnas offentligt tillgänglig.
 
-Det är inte uppenbart hur en kombination av fysik och domänspecifika språk ser ut. En del av projektets mål är därför att ta reda på hur en sådan kombination \textit{kan} se ut, samt om det finns en pedagogisk nytta.
+Att ta reda på hur en kombination mellan fysik och domänspecifika språk kan se ut, samt om det finns en pedagogisk nytta.   %Om vi sätter det som mål måste vi underbygga det med studier
 
 % Vi kanske inte behöver skriva ut alla dessa, men de är ju däremot nyttiga för oss att internt fundera kring för att få stoff att besvara frågeställningen i rapporten.
 %!! Frågor som vi ska både ställa och besvara.
@@ -119,6 +108,11 @@ Det är inte uppenbart hur en kombination av fysik och domänspecifika språk se
 %Syfte/Mål
 
 \begin{draft}
+\iffalse
+Nedan beskrivs hur att vi vill väcka intresse för fysik hos
+datateknologer genom att presentera fysik ur ett annat perspektiv.
+\fi
+
 Vår tanke med detta kandidatarbete är att, likt premissen bakom kursen DSLsofMath
 och kandidatarbetet från 2016, angripa fysik på ett sådant sätt att ämnet blir både
 intressant och roligt för datateknologer, och därmed förhoppningvis
@@ -130,33 +124,8 @@ Förhoppningen är att bl.a.\ det kraftfulla typsystemet i Haskell ska
 hjälpa studenter att bygga mentala modeller som är korrekta och inte
 bygger på felaktig intuition eller felaktiga antaganden.
 
-\end{draft}
-
-\section{Avgränsningar}
-
-\begin{draft}
-
-Svårt att veta vad som kommer hinnas med.
-
-Läromaterialet begränsar sig till att enbart beskriva en del områden inom fysik som ingår i kursen Fysik för ingenjöer. Denna avgränsningen valdes dells för att det är den fysik gruppmedlemmarnas kunskaper begränsar sig till, samt att det är den nämda kursen detta projekt kan bli mest relevant för, då kursen är en del av datastudenternas obligatoriska utbildning.
-
-%TODO: PaJa: Jag tror att det i praktiken är en hel del tillämpad matematik inbäddat i kursen också, och det kan vara värt att nämna.
-\textit{Fysik för ingenjörer} behandlar grunderna inom de tre områdena mekanik (inklusive stelkroppsmekanik), termodynamik och vågrörelselära. Vi har valt att i första hand prioritera mekanik, vilket även innefattar tillämpad matematik i form av Euklidisk geometri och infinitesimalkalkyl. Dessutom har de områden där datateknologer haft svårigheter prioriterats. I mån av tid har vi valt att behandla termodynamik och vågrörelselära (WE WILL SEE). 
-
- 
-Läromaterialet kommer inte att testas av en testgrupp under projektets gång. Detta ty en sådan undersökning hade krävt omfattande tid, genomgång av återkoppling samt omformning av läromaterialet. Även om projekets direkta syfte inte är att förbättra tentastatistiken på \textit{Fysik för ingenjörer}, är vår förhoppning att förståelsen för de svåra delarna ska bli bättre.
-\end{draft}
-
-\begin{draft}
-Vilka är projektet relevant för:
-% Relevant för  ??? var bör relevant för vara? I syfte eller avgränsningar?
-Projektet är relevant för datateknologer som läser en fysikkurs. Men
-det kan också bli relevant för en fysikstudent som är ute efter en
-inkörsport till funktionell programmering. Förhoppningsvis blir det
-också relevant för de som är intresserade av domänspecifika språk i
-stort, pedagoger och föreläsare inom de berörda områdena och kanske
-till och med programledningen som ser vår rapport som ett skäl att
-introducera innehåll av detta slag i till exempel fysikkursen.
+Slutligen är det för oss inte uppenbart hur en kombination av fysik och domänspecifika språk kan se ut,
+vilket är något vi nämner under projektets mål att vi vill undersöka.
 
 \end{draft}
 
@@ -175,3 +144,32 @@ domänspecifikt språk med syfte att tjäna som läromaterial.
 
 %Rapportens syfte är att beskriva utförandet av projektarbetet samt utgöra betygsgrundande material för projektgruppen.
 \end{draft}
+
+
+\section{Avgränsningar}
+
+\begin{draft}
+
+Svårt att veta vad som kommer hinnas med.
+
+Läromaterialet begränsar sig till att enbart beskriva en del områden inom fysik som ingår i kursen Fysik för ingenjöer. Denna avgränsningen valdes dells för att det är den fysik gruppmedlemmarnas kunskaper begränsar sig till, samt att det är den nämda kursen detta projekt kan bli mest relevant för, då kursen är en del av datastudenternas obligatoriska utbildning.
+
+%TODO: PaJa: Jag tror att det i praktiken är en hel del tillämpad matematik inbäddat i kursen också, och det kan vara värt att nämna.
+\textit{Fysik för ingenjörer} behandlar grunderna inom de tre områdena mekanik (inklusive stelkroppsmekanik), termodynamik och vågrörelselära. Vi har valt att i första hand prioritera mekanik, vilket även innefattar tillämpad matematik i form av Euklidisk geometri och infinitesimalkalkyl. Dessutom har de områden där datateknologer haft svårigheter prioriterats. I mån av tid har vi valt att behandla termodynamik och vågrörelselära (WE WILL SEE). 
+
+Läromaterialet kommer testas inofficielt av en testgrupp. Detta ty en formell undersökning hade krävt omfattande tid för att välja ut en testgrupp på ett lämpligt sätt, analysera återkopplingen, samt dokumentering av testningsförloppet. Även om projekets direkta syfte inte är att förbättra tentastatistiken på \textit{Fysik för ingenjörer}, är vår förhoppning att förståelsen för de svåra delarna ska bli bättre.
+\end{draft}
+
+\begin{draft}
+Vilka är projektet relevant för:
+% Relevant för  ??? var bör relevant för vara? I syfte eller avgränsningar?
+Projektet är relevant för datateknologer som läser en fysikkurs. Men
+det kan också bli relevant för en fysikstudent som är ute efter en
+inkörsport till funktionell programmering. Förhoppningsvis blir det
+också relevant för de som är intresserade av domänspecifika språk i
+stort, pedagoger och föreläsare inom de berörda områdena och kanske
+till och med programledningen som ser vår rapport som ett skäl att
+introducera innehåll av detta slag i till exempel fysikkursen.
+
+\end{draft}
+

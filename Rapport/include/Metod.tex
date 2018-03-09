@@ -40,6 +40,15 @@ jira? Versionshantering? Etc.
   en icke-rigorös evaluering av materialet, i form av att ett urval
   studenter fick läsa det och komma med feedback.
 
+  \ref{fig:oeaversikt_separata} visar en översikt över processen med
+  att skapa läromaterial för ett område.
+
+  \begin{figure}
+    \includegraphics[width=\linewidth]{figure/oeversikt_metod_process.pdf}
+    \caption{Översikt över processen med att skapa de separata områdena.}
+    \label{fig:oeversikt_separata}
+  \end{figure}
+
 \end{draft}
 
 TODO: Sektion om våra litteraturstudier? Känns lite skumt att ha,
@@ -75,12 +84,10 @@ TODO: Hur hjälpte det senare Åke mötet? Med vad?
   men som utgjorde en kritisk beståndsdel av mer intressanta områden,
   valdes ut.
 
-  De valda ämnesområdena delades upp och definierades sådana att de var
-  fristående, i så god mån som möjligt, för att kunna arbetas med
-  parallellt.
-
-  De områden som valdes ut blev: Vektorer, Enheter, Momentan- och
-  medel-rörelse, och Matematisk analys.
+  De valda grundområdena definierades sådana att de var fristående, i
+  så god mån som möjligt, för att kunna arbetas med parallellt. De
+  områden som valdes ut blev: Vektorer, Enheter, och Matematisk
+  analys.
 
   Vektorer eftersom det är en viktig grundsten i mekanik. Alla krafter,
   hastigheter, och accelerationer, betraktas oftast som vektorer i
@@ -92,6 +99,38 @@ TODO: Hur hjälpte det senare Åke mötet? Med vad?
   hjälpsamt att kunna utföra automatisk, datorassisterad
   dimensionsanalys på ens beräkningar.
 
+  Analys eftersom alla koncept i klassisk mekanik är relaterade genom
+  matematisk analys. Mer specifikt används differenser för att beskriva
+  medelrörelse, och infinitesimalkalkyl för att beskriva
+  momentanrörelser. Vidare var infinitesimalkalkyl just det område som
+  Åke Fäldt pekade ut som speciellt viktigt, och något som studenter har
+  svårt för.
+
+  \begin{binge}
+    När en mängd av de fristående, grundläggande områdena var
+    fädigimplementerade så formulerades mer tillämpade områden i form
+    av problemmängder. De tillämpade fysikproblemen krävde ofta bruk
+    av flera olika DSL för att lösa. Exempelvis kan ett rörelseproblem
+    använda sig av både differentialkalkyl och dimensionsanalys.  Till
+    dessa områden skrevs därför komposita DSL som kombinerade en mängd
+    grundläggande DSL för att bättre kunna beskriva problemdomänen.
+
+    De tillämpade områdena var inte lika lätthanterliga som de
+    grundläggande områdena. Det var sällan uppenbart hur komposita DSL
+    skulle skrivas och appliceras, och vissa områden visade sig vara
+    olämpade att skriva DSL för. Vidare motivation av varför vissa
+    områden var mindre lämpade för den sortens DSL som skrevs finnes
+    under Diskussionskapitlet. (TODO: Fast en kort motivation här med
+    kanske?). Detta medförde att experimentering med DSL
+    implementation var ett viktigt steg i processen att selektera lämpliga
+    tillämpade områden, då experimenteringen kunde visa hurvida ett område
+    var lämpat att skriva DSL för eller inte. TODO: oj vad hände med
+    denna meningen, jag är trött.
+  \end{binge}
+
+  De komposita områden som valdes ut blev: Momentan- och
+  medel-rörelse, TODO: Mer, etc.
+
   Momentan- och medel-rörelse eftersom de direkt utgör en stor delmängd
   av alla problem inom mekanik på den aktuella nivån. Väldigt många av
   de uppgifter studenter lär sig lösa inom mekanik är
@@ -99,13 +138,6 @@ TODO: Hur hjälpte det senare Åke mötet? Med vad?
   sträcka om man har en viss medelhastighet? Om ett objekt med massa $m$
   påverkas av en kraft som varierar enligt $sin(t)$, vad är då
   momentanhastigheten vid $t=10$?
-
-  Analys eftersom alla koncept i klassisk mekanik är relaterade genom
-  matematisk analys. Mer specifikt används differenser för att beskriva
-  medelrörelse, och infinitesimalkalkyl för att beskriva
-  momentanrörelser. Vidare var infinitesimalkalkyl just det område som
-  Åke Fäldt pekade ut som speciellt viktigt, och något som studenter har
-  svårt för.
 \end{draft}
 
 TODO: Nåt om hur områdesvalen speglas i strukturen av läromaterialet?
@@ -115,11 +147,17 @@ TODO: Nåt om hur områdesvalen speglas i strukturen av läromaterialet?
 \begin{binge}
   \section{Implementation av DSL för områdena}
 
-  Först experimentering. Sen implementation i haskell med syntaxträd
-  och sånt. Sen få flera dsl att fungera tillsammans. Sist
-  problemlösning och sånt.
+  \begin{draft}
+    Det första steget vid implementering av ett DSL var alltid
+    experimentering. Det finns ingen absolut, kanonisk metod att skriva
+    ett DSL på, speciellt för specifik fysik, så experimentering var
+    viktigt för att finna lämpliga representationer av syntax och andra
+    element av DSL.
+  \end{draft}
 
-  \subsection{Skriva DSL för ett område}
+  TODO: Förbättra
+
+  \subsection{Skriva DSL för områden}
 
   \begin{draft}
     Av de områden som selekterats för projektet, valde varje gruppmedlem
@@ -135,15 +173,28 @@ TODO: Nåt om hur områdesvalen speglas i strukturen av läromaterialet?
     TODO: Stycket om ``vår intuition som erfarna haskell-programmerare''
     lät lite pretentiöst. Annat ordval? ``vår intuition som studenter
     som läst DSLsofMath kursen"?''
+
+    Alla områden krävde i varierande mån inläsning och studering av
+    Haskell, Agda, fysik, matematik, och DSL. Till exempel krävde
+    enhets-DSLet inläsning om ett gäng Haskell-extensions och
+    typnivå-programmering. För att kunna bevisa korrekthet i beteende
+    för vissa DSL studerades även Agda.
+
+    I allmänhet implementerades DSL i Haskell som en kombination av
+    syntaxträd, funktioner för att manipulera dessa träd, och
+    evalueringsfunktioner till någon slags semantisk domän. Komposita
+    DSL var istället mer TODO: beskrivning. Varje DSL, grundläggande och
+    komposit, parades även ihop med en mängd fysikproblem att appliceras
+    på, sådant att läsaren ska få förståelse för hur DSLen kan brukas
+    utöver hur de implementeras.
+
+    TODO: Vi bevisade/försökte bevisa grejer med. Skriv om att DSL i
+    allmänhet hade bevis eller tester för att verifiera korrekthet.
   \end{draft}
 
-  Alla områden krävde i varierande mån inläsning och studering av
-  Haskell, fysik, matematik, och DSL. Till exempel krävde enhets-DSLet
-  inläsning om ett gäng Haskell-extensions och typnivå-programmering.
-
-  DSLerna skrevs i Haskell. Syntax analyserades och modellerades i
-  syntaxträd. För vissa områden (enheter?) definierades även ett
-  semantiskt värde som representerade en slags kanonisk form.
+  Syntax analyserades och modellerades i syntaxträd. För vissa områden
+  (enheter?) definierades även ett semantiskt värde som representerade
+  en slags kanonisk form.
 
   För vektorer gjordes ...
 
@@ -165,10 +216,11 @@ TODO: Nåt om hur områdesvalen speglas i strukturen av läromaterialet?
 
   stack, git kan säkert passa här för att beskriva hur vi samarbetade
   med sammanfogningen.
+
 \end{binge}
 
 \begin{binge}
-  \section{Skriva lärotext till DSL}
+  \section{Skriva lärotext}
 
   En massa bra och fina didaktiska metoder användes för att skriva
   riktigt fin lärotext. Texten skrevs i LHS format, vilket innebar att
@@ -176,7 +228,15 @@ TODO: Nåt om hur områdesvalen speglas i strukturen av läromaterialet?
   med.
 
   TODO: Referera till Donald knuth och literate programming. Literate
-  programming som ``paradigm'' känns relevant för hur vi skriver lärotext.
+  programming som ``paradigm'' känns relevant för hur vi skriver
+  lärotext.
+
+  TODO: Motivera varför vi valde LHS
+
+  TODO: Motivera varför vi valde hemsida istället för PDF.
+
+  TODO: Motivera varför vi valde Markdown istället för LaTeX i LHS
+  filerna.
 
   \subsection{Didaktik/språk/utlärningsmetod}
 
@@ -188,18 +248,24 @@ TODO: Nåt om hur områdesvalen speglas i strukturen av läromaterialet?
   som appliceras i Learn You a Haskell, mer eller mindre. Fånga
   uppmärksamhet med lite humor och lättsamhet etc.
 
-  \section{Skriva läromaterial för hur DSL appliceras för problemlösning}
+  \subsection{Skriva lärotext till DSL}
+
+  När en modul DSL var färdigimplementerad, ofta med nödtorftiga
+  kodkommentarer, skrevs brödtext som förklarade kod-delen. Detta
+  efterföljande steg för att förstå koden är viktigt, och är ett krav
+  för att man ska kunna skriva en förklaring (och förstå den) om
+  kopplingen till fysik.
+
+  Vidare skrevs brödtexten som sammankopplade DSL och fysik. När
+  själva koden var på plats skrevs hur den relaterar till och
+  modellera fysik. I slutändan skrevs också inledning och avslutning
+  till kapitlet.
+
+  \subsection{Skriva läromaterial för hur DSL appliceras för problemlösning}
 
   Vari vi visar att DSLerna både är praktiskt användbara, likt Wolfram
   Alpha, och att implementationen+applikationen hjälper oss förstå
   mekanik i allmänhet och probleminstanserna i synnerhet.
-
-  TODO: Motivera varför vi valde LHS
-
-  TODO: Motivera varför vi valde hemsida istället för PDF.
-
-  TODO: Motivera varför vi valde Markdown istället för LaTeX i LHS
-  filerna.
 \end{binge}
 
 \begin{binge}

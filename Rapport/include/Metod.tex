@@ -30,24 +30,22 @@ jira? Versionshantering? Etc.
 
 \begin{draft}
 
-  Projektet har i grova drag genomförts i fyra överlappande
-  faser. Först identifierades de områden inom mekanik som studenter
-  verkar ha svårt för, eller som vi trodde skulle vara intressanta att
-  arbeta med. Sedan skrevs både DSL och lärotext för dessa
-  områden. Efter det anpassades texterna för att bli publicerbara som
-  kapitel, och kompilerades till ett läromaterial i form av en
-  HTML-bok som publicerades på en internethemsida. Slutligen gjordes
-  en icke-rigorös evaluering av materialet, i form av att ett urval
-  studenter fick läsa det och komma med feedback.
+Läromaterialet består av ett antal kapitel som vardera behandlar ett fysikaliskt område. Skapandet av läromaterialet har skett \textit{kapitelvis}. För varje kapitel har en process följts. Denna process illustreras i figur \ref{fig:hejhejhej}.
 
-  \ref{fig:oeaversikt_separata} visar en översikt över processen med
-  att skapa läromaterial för ett område.
-
-  \begin{figure}
-    \includegraphics[width=\linewidth]{figure/oeversikt_metod_process.pdf}
-    \caption{Översikt över processen med att skapa de separata områdena.}
-    \label{fig:oeversikt_separata}
+  \begin{figure}[h]
+    \includegraphics[width=\linewidth]{figure/hejhejhej.jpg}
+    \caption{Översikt över processen med att skapa kapitlena i läromaterialet.}
+    \label{fig:hejhejhej}
   \end{figure}
+
+Som figur \ref{fig:hejhejhej} visar så bestod processen med att skapa ett kapitel av tre steg. Det första steget var att välja ett fysikaliskt område att behandla. Den andra steget var att implemenetera ett DSL för området. Det tredje steget var att skriva förklarande brödtext till det området.
+
+Figuren visar också att, beroende på utfallet i implementationssteget, så antingen skrotas ett område eller gås vidare med. Huruvida området är lämpligt diskuteras i <ett diskussionskapitel>.
+
+Läromaterialet publicerades i slutändan på en tillhörnade hemsida.
+
+Resten av detta kapitel behandlar de olika stegen i den kapitelvisa processen mer i detalj. Det behandlar också publicering på hemsidan i närmare detalj.
+
 
 \end{draft}
 
@@ -63,6 +61,11 @@ intressant att ha med som VARFÖR man tog beslutet?
 TODO: Hur hjälpte det senare Åke mötet? Med vad?
 
 \begin{draft}
+
+De områden som behandlas i läromaterialet kan klassificieras som antingen \textit{grundläggande} eller \textit{komposita}. Ett grundläggande område är ett område som inte bygger på något tidigare område. Ett exempel är vektorer. Ett komposit område är ett område som bygger på andra områden. Ett exempel är lutande plan, som använder sig av vektorer.
+
+\subsection{Grundläggande områden}
+
   Först kontaktades Åke Fäldt, som är examinator för kursen TIF085,
   Fysik för Ingenjörer. Åke befrågades om vilka områden han tycker att
   studenter verkar ha svårt för, och svarade att studenter i allmänhet
@@ -107,6 +110,9 @@ TODO: Hur hjälpte det senare Åke mötet? Med vad?
   svårt för.
 
   \begin{binge}
+  
+  \subsection{Komosita områden}
+  
     När en mängd av de fristående, grundläggande områdena var
     fädigimplementerade så formulerades mer tillämpade områden i form
     av problemmängder. De tillämpade fysikproblemen krävde ofta bruk
@@ -157,7 +163,7 @@ TODO: Nåt om hur områdesvalen speglas i strukturen av läromaterialet?
 
   TODO: Förbättra
 
-  \subsection{Skriva DSL för områden}
+  \subsection{Implementation av }
 
   \begin{draft}
     Av de områden som selekterats för projektet, valde varje gruppmedlem

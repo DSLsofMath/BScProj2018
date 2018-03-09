@@ -4,9 +4,9 @@
 
 \section{Bakgrund}
 
-\begin{binge}
+\begin{draft}
 % Varför
-På civilingenjörsprogrammet Datateknik på Chalmers ingår fysikkursen
+På civilingenjörsprogrammet Datateknik på Chalmers ingår den obligatoriska fysikkursen
 \textit{Fysik för ingenjörer}. Tentastatistiken för denna kurs är
 inte jättebra\cite{tentastatistik}. Vi
 tror att många studenter på datateknik (``datateknologer'') finner denna kurs
@@ -37,7 +37,7 @@ för matematiker, där den grundläggande idéen bakom kursen är:
 \end{center}
 
 Konkret så presenterar kursen matematik så som derivator, komplexa
-tal och matriser ur ett funktionellt programmeringsperspektiv i
+tal och matriser ur ett funktionellt programmeringsperspektiv i det funktionella programmeringsspråket  %Förklara funktionellt programmeringspersp.
 Haskell. Dessa för studenterna bekanta verktyg används för att lösa
 matematiska problem så som modellering av syntax, evaluering till
 semantiska värden och datorassisterad bevisföring.
@@ -49,7 +49,7 @@ Prof.\ Geral Sussman och Prof.\ Jack Wisdom bl.a. år
 Denna kurs på avancerad nivå studerar de fundamentala principerna av klassisk
 mekanik med hjälp av beräkningsidéer för att precist formulera principerna av
 mekanik, med början i Lagranges ekvationer och avslut i
-perturbationsteori. I kursen används boken ``Structure and
+perturbationsteori (teori för approximationer av matematiska lösningar). I kursen används boken ``Structure and %nämna referens till boken?
 Interpretation of Classical Mechanics'' av Sussman, Wisdom och Mayer,
 vilken förklarar fysikaliska fenomen genom att visa datorprogram för att
 simulera dem, skrivna i språket Scheme.\cite{SICM}
@@ -63,17 +63,16 @@ utveckling av läromaterial med tillhörande programmeringskod,
 uppgifter och lösningar, som komplement till existerande kurser i
 signallära.\cite{kandidat2016}
 
-Vår tanke med detta kandidatarbete är att, likt premissen bakom DSLsofMath
-och kandidatarbetet från 2016, med hjälp av ett bekant verktyg
-som Haskell angripa fysik på ett sådant sätt att ämnet blir både
+Vår tanke med detta kandidatarbete är att, likt premissen bakom kursen DSLsofMath
+och kandidatarbetet från 2016, angripa fysik på ett sådant sätt att ämnet blir både
 intressant och roligt för datateknologer, och därmed förhoppningvis
 också enklare. Med hjälp av domänspecifika språk skrivna i Haskell för att
-modellera fysik, i.e.\ samma pedagogiska verktyg som används inom
+modellera fysik, d.v.s.\ samma pedagogiska verktyg som används inom           %refererar vi till haskell eller learn you a haskell eller annat?
 datakurser, tror vi att kopplingen mellan fysikkursen och
 datateknikprogrammet kan göras tydligare och lärandet kan underlättas.
 Förhoppningen är att bl.a.\ det kraftfulla typsystemet i Haskell ska
 hjälpa studenter att bygga mentala modeller som är korrekta och inte
-bygger på felaktiga intuitioner.
+bygger på felaktig intuition och antaganden.
 
 % Relevant för
 Projektet är relevant för datateknologer som läser en fysikkurs. Men
@@ -90,7 +89,10 @@ domän. Språket kan användas för att enklare uttrycka saker inom
 domänen, till exempel Newtons andra lag $F=m \cdot a$ än vad som är
 möjligt inom generella (programmerings) språk. För vidare läsning
 rekommenderas \textit{DSL for the Uninitiated}.\cite{DSLU}
-\end{binge}
+\end{draft}
+
+% Flytta en del från bakgrund till syfte? 
+%
 
 \section{Rapportens syfte}
 
@@ -121,8 +123,8 @@ områden inom fysik. Den tillhörande brödtexten är menad att beskriva både D
 samt kopplingen mellan dem.
 \fi
 % Annan formulering från nån annanstans
-Målet med projektet är att skapa domänspecifika språk för fysik samt ett   %Målet med...
-tillhörande läromaterial. Läromaterialets syfte är att beskriva fysiken och  %Läromaterialets syfte är ...
+Målet med projektet är att skapa domänspecifika språk för fysik samt ett   
+tillhörande läromaterial. Läromaterialets syfte är att beskriva fysiken och
 dess koppling till de domänspecifika språken projektgruppen utvecklat. Förhoppningen är att väcka intresse
 för fysik hos datateknologer genom att presentera fysik från ett annat
 perspektiv.
@@ -134,18 +136,17 @@ skall vara offentligt tillgänglig.
 
 \section{Avgränsningar}
 
-\begin{binge}
-
-Att börjar med mekanik o.s.v.
-
-Att inte gör en ordentlig undersökning med testgrupp.
+\begin{draft}
 
 Läromaterialet begränsar sig till att enbart beskriva en del områden inom fysik som ingår i kursen Fysik för ingenjöer. Denna avgränsningen valdes dells för att det är den fysik gruppmedlemmarnas kunskaper begränsar sig till, samt att det är den nämda kursen detta projekt kan bli mest relevant för, då kursen är en del av datastudenternas obligatoriska utbildning.
 
 %TODO: PaJa: Jag tror att det i praktiken är en hel del tillämpad matematik inbäddat i kursen också, och det kan vara värt att nämna.
-\textit{Fysik för ingenjörer} behandlar grunderna inom de tre områdena mekanik (inklusive stelkroppsmekanik), termodynamik och vågrörelselära. Vi har valt att i första hand prioritera mekanik, vilket även innefattar tillämpad matematik i form av Euklidisk geometri och infinitesimalkalkyl. Senare, i mån av tid, har vi valt att även behandla termodynamik och vågrörelselära. Dessutom kommer de områden datateknologer haft svårt för prioriteras. Även om projekets direkta syfte inte är att förbättra tentastatistiken på \textit{Fysik för ingenjörer}, är vår förhoppning att förståelsen för de svåra delarna ska bli bättre.
+\textit{Fysik för ingenjörer} behandlar grunderna inom de tre områdena mekanik (inklusive stelkroppsmekanik), termodynamik och vågrörelselära. Vi har valt att i första hand prioritera mekanik, vilket även innefattar tillämpad matematik i form av Euklidisk geometri och infinitesimalkalkyl. Dessutom har de områden där datateknologer haft svårigheter prioriterats. I mån av tid har vi valt att behandla termodynamik och vågrörelselära (WE WILL SEE). 
 
-\end{binge}
+ 
+Läromaterialet kommer inte att testas av en testgrupp under projektets gång. Detta ty en sådan undersökning hade krävt omfattande tid, genomgång av återkoppling samt omformning av läromaterialet. Även om projekets direkta syfte inte är att förbättra tentastatistiken på \textit{Fysik för ingenjörer}, är vår förhoppning att förståelsen för de svåra delarna ska bli bättre.
+\end{draft}
+
 
 \section{Frågeställningar}
 

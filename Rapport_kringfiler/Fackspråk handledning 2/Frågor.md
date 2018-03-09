@@ -1,27 +1,21 @@
 
 # Frågor till Fackspråk handledning 2
 
-Om alla frågor inter hinner svaras på är struktur-frågorna de viktigaste (som även råkar vara de längsta).
-
 ## Struktur
 
-- Har vi valt en bra övergripande struktur på rapporten? Det vi skrivit på olika ställen, passar det där?
+- Har vi valt en bra övergripande struktur på rapporten? Det vi skrivit på olika ställen, passar det där? Är avsnitten i en bra ordning?
 
 - Är "projektets mål" så som det är tänkt att se ut? Svaret på den andra frågan är av diskuterande karaktär. Hur ska vi tänka kring det?
 
-- Bör vi presentera vad ett DSL är tidigare än vad vi gjort, eftersom mycket i inledningen handlar om det? Var i så fall, och hur påverkas resten av teori-kapitlet?
-  - En möjlig lösning kanske är att vara lite vagare tidigt (att målet bara ska vara fysik ur funktionellt programmeringsperspektiv, och sedan efter DSL presenterats, specifiera mer). Är det verkligen en bra lösning?
+- Vi har problem med hur metod-kapitlet ska se ut. I en rapport vars syfte var t.ex. "Förbättras förståelsen av en kursbok om den innehåller roliga bilder?" skulle metod-kapitlet innehålla hur man skapat två separata böcker (en med bilder, en utan), på vad för studenter man testat på, hur man jämför förståelsen m.m.
 
-- Var ska det står varför man valde en viss teknik? (Ex Haskell till DSLs) Under teorin eller nån annanstans?
+Men denna rapport handlar om skapandaet av ett läromaterial. Det finns ingen studie att reproducera.
 
-- Vi behöver hjälp med bakgrunden. Två motstridiga krav:
-  - Tidigt veta vad projektet går ut på.
-  - Presentera det som behövs först, dvs DSLsofMath-kursen och fysikkursen, men då dröjer det så länge till ovanstående punkt.
-  Blir den trattformad om man presenterar relaterade arbeten *efter* att vi presenterat vad vi ska göra i projektet?
+I metod kan man då skriva arbetsprocessen i allmänhet såg ut (den loopande cykel som beskrivs i kapitel 4). Är detta rimligt? Vad kan man annars skriva?
 
-- DSL:er i inledningen, framåtreferens
+- Vi har gjort två försök med metodkapitlet (kapitel 3 och 4). Vilken ser vettigast ut? Ingen är helt färdig.
 
-- Är det intressant att i metod skriva om build-skript m.m.
+- Är det intressant att i metod skriva om väldigt tekniska detaljer, t.ex. det build-skript vi använder för att generera hemsidan?
 
 ## Utseende
 

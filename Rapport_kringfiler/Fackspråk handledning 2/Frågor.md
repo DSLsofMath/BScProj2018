@@ -19,6 +19,10 @@ Om alla frågor inter hinner svaras på är struktur-frågorna de viktigaste (so
   - Presentera det som behövs först, dvs DSLsofMath-kursen och fysikkursen, men då dröjer det så länge till ovanstående punkt.
   Blir den trattformad om man presenterar relaterade arbeten *efter* att vi presenterat vad vi ska göra i projektet?
 
+- DSL:er i inledningen, framåtreferens
+
+- Är det intressant att i metod skriva om build-skript m.m.
+
 ## Utseende
 
 - Ska vi ha sammanfattning och abstract? I vilken ordning och ska båda ha nyckelord då?

@@ -10,7 +10,7 @@ import Data.List
 
 import Dimensions.ValueLevel
 
------------------------------------------------------------
+------------------------------------------------------------
 
 -- Generator for arbitrary value-level dimensions
 genDim :: Gen Dim
@@ -53,7 +53,7 @@ prop_divOne d = d `div` one == d
 prop_mulDivInv d1 d2 = d1 `mul` d2 == 
   d1 `div` (one `div` d2)
 
------------------------------------------------------------
+------------------------------------------------------------
 
 -- Property: pretty-printed has correct of a dimension
 prop_correctDim :: Integer -> Dim -> Bool

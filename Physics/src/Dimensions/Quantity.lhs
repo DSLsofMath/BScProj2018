@@ -12,7 +12,8 @@ We'll now create a data type for quantities and combine dimensions on value-leve
 > {-# LANGUAGE TypeOperators #-}
 
 > module Dimensions.Quantity
-> ( length
+> ( Quantity
+> , length
 > , mass
 > , time
 > , current

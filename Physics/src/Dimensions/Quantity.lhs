@@ -190,7 +190,17 @@ Let's implement the arithmetic operations on `Quantity`. Basically it's all abou
 
 For all operations on quantities, one does the operation on the value and, in the case of multiplication and division, on the dimensions separetly. For addition and subtraction the in-dimensions must be the same. Nothing then happens with the dimension.
 
-How does one perform operations such as `sin` on a quantity with a *potential* dimensions? The answer is that the quantity must be dimensionless, and with the dimension nothing happens. For the follwing functions, the quantites must be dimensionless.
+How does one perform operations such as `sin` on a quantity with a *potential* dimensions? The answer is that the quantity must be dimensionless, and with the dimension nothing happens. 
+
+Why is that, one might wonder. Every function can be written as a power series. For $sin$ the series looks like
+
+\begin{align}
+  sin(x) = x - \frac{x^3}{3!} + \frac{x^5}{5!} - ...
+\end{align}
+
+The dimension of *every* term must be the same. The only way for that to be case is if the input $x$ is dimensionless. Then so will the output.
+
+The other functions can be written as similar power series and we will see on those too that the input and output must be dimensionless.
 
 < sinq :: (Floating v) => Quantity One v -> Quantity One v
 < sinq (Quantity dl v) = Quantity d1 (sin v)

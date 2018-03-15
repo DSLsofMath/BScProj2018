@@ -122,6 +122,14 @@ Let's implement multiplication and division on type-level. After such an operati
 >       'Dim (le1-le2) (ma1-ma2) (ti1-ti2) (cu1-cu2)
 >         (te1-te2) (su1-su2) (lu1-lu2)
 
+**Exercise.** Implement a type-level function for raising a dimension to the power of some integer.
+
+**Solution.**
+
+< type family Power (d :: Dim) (n :: TypeInt) where
+<   Power ('Dim le ma ti cu te su lu) n =
+<     'Dim (le*n) (ma*n) (ti*n) (cu*n) (te*n) (su*n) (lu*n)
+
 Now types for dimensions can be created by combining exisiting types, much like we did for values in the previous chapter.
 
 **Exercise.** Create types for velocity, area, force and impulse.

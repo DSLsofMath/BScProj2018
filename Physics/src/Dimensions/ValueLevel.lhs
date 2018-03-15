@@ -57,9 +57,9 @@ Noticed how we used "m" (for metre) for implicitly refering to the dimension "le
 
 **Solution.**
 
-< acceleration = Dim 1 0 (-2) 0 0 0 0
-< area         = Dim 2 0 0    0 0 0 0
-< charge       = Dim 0 0 1    1 0 0 0
+> acceleration = Dim 1 0 (-2) 0 0 0 0
+> area         = Dim 2 0 0    0 0 0 0
+> charge       = Dim 0 0 1    1 0 0 0
 
 Multiplication and division
 ---------------------------
@@ -81,7 +81,7 @@ Dimensions can be multiplied and divided. Velocity is, as we just saw, a divisio
 It's now possible to construct dimensions in the following fashion.
 
 > velocity' = length `div` time
-> area      = length `mul` length
+> area'     = length `mul` length
 > force     = mass   `mul` acceleration
 > momentum  = force  `mul` time
 
@@ -114,7 +114,7 @@ The purpose of value-level dimensions is to be able to print 'em nicely. So let'
 >   | null negStrs = posStr
 >   | otherwise    = posStr ++ "/" ++ negStr'
 >   where
->     paired  = [("me",le), ("kg",ma), ("s",ti), ("A",cu),
+>     paired  = [("m",le), ("kg",ma), ("s",ti), ("A",cu),
 >                ("K",te), ("mol",su), ("cd",lu)]
 >     pos     = filter (\(_, exp) -> exp >  0) paired
 >     neg     = filter (\(_, exp) -> exp <  0) paired

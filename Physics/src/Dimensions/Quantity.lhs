@@ -10,9 +10,10 @@ We'll now create a data type for quantities and combine dimensions on value-leve
 > {-# LANGUAGE TypeFamilies #-}
 > {-# LANGUAGE UndecidableInstances #-}
 > {-# LANGUAGE TypeOperators #-}
+> {-# LANGUAGE FlexibleInstances #-}
 
 > module Dimensions.Quantity
-> ( Quantity(..) -- TODO: Skriv om detta.
+> ( Quantity(..) -- TODO: Skriv om detta. Har med tester att göra.
 > , length
 > , mass
 > , time
@@ -73,7 +74,7 @@ Both the type constructor and the value constructor have the same name `Quantity
 
 The left-hand-side type constructor (that happens to take no arguments) and the right-hand-side value constructor have the same name.
 
-How does all this tie together? First the *type* is decided, for instance
+Okay, so how does all this tie together? First the *type* is decided, for instance
 
 < type ExampleType = Quantity T.Length Double
 
@@ -83,6 +84,13 @@ then a *value* of that type is created
 < exampleValue = Quantity V.length 5.3
 
 Note that the `Quantity` data type has both value-level and type-level dimensions. As previosuly mentioned, value-level in order to print prettily and type-level to only permit legal operations.
+
+**Exercise.** Create a data type which have two type-level dimensions, always use `Rational` as the value-holding type (the role of `v`) but which has no value-level dimensions.
+
+**Solution.**
+
+< data Quantity' (d1 :: T.Dim) (d2 :: T.Dim) where
+<   Quantity' :: Rational -> Rational -> Quantity' d1 d2
 
 A taste of types
 ----------------
@@ -98,7 +106,7 @@ The type is interpreted as follows: two values of type `Quantity d v` is the inp
 
 The type of the function forces the inputs to have the same dimensions. For this reason, the dimension on value-level doesn't matter on one of the arguments, because they will be the same. (It's possible to create values where the dimensions on value-level and type-level don't match. We'll come back to this later.)
 
-`Quantity d v` in the type and `Quantity d v1` as a value pattern shoudln't be confused. The first `d` is a type variable, holding the type-level dimension while the second `d` is a (value) variable holding the value-level dimension. Similary, the first `v` is a type variable holding the type of values (e.g. `Double`) and the second `v` holds the actual value.
+`Quantity d v` in the type and `Quantity d v1` as a value pattern shouldn't be confused. The first `d` is a type variable, holding the type-level dimension while the second `d` is a (value) variable holding the value-level dimension. Similary, the first `v` is a type variable holding the type of values (e.g. `Double`) and the second `v` holds the actual value.
 
 Multiplication is
 
@@ -110,7 +118,11 @@ Multiplication is
 
 The type has the following interpretation: two valus of type `Quantity dx v` is input, where `dx` are two types representing (potentially different) dimensions. As output, a value of type `Quantity` is returned. The type in the `Quantity` will be the type that is the product of the two dimensions in.
 
-Now on to some example values.
+**Exercise.** Implement subtraction and division.
+
+**Solution.** Hold on cowboy! Not so fast. We'll come back later to subtraction and division, so check your solution then.
+
+Now on to some example values and types.
 
 > width :: Quantity T.Length Double
 > width = Quantity V.length 0.5
@@ -125,12 +137,51 @@ The following example shows that during a multiplication, the types will change,
 > area :: Quantity Area Double
 > area = quantityMul width height
 
+< ghci> width
+< 0.5 m
+< ghci> :t width
+< width :: Quantity Length Double
+< ghci> area
+< 0.15 m^2
+< ghci> :t area
+< area
+<  :: Quantity
+<       ('Dim
+<          'Numeric.NumType.DK.Integers.Pos2 -- The interesting line
+<          'Numeric.NumType.DK.Integers.Zero
+<          'Numeric.NumType.DK.Integers.Zero
+<          'Numeric.NumType.DK.Integers.Zero
+<          'Numeric.NumType.DK.Integers.Zero
+<          'Numeric.NumType.DK.Integers.Zero
+<          'Numeric.NumType.DK.Integers.Zero)
+<       Double
+
+Which is the same as `Area`.
+
 Having type-level dimensions is used below, to enforce at compile-time that only allowed operations are performed.
 
 < -- Doesn't even compile
 < weird = quantityAdd width area
 
 If the dimensions only were value-level, this error would be noticed only at run-time.
+
+**Exercise.** What is the volume of a cuboid with sides $1.2\ m$, $0.4\ m$ and $1.9\ m$? Create values for the involved quantities. Use `Float` instead of `Double`.
+
+**Solution.**
+
+> side1 :: Quantity Length Float
+> side1 = Quantity V.length 1.2
+
+> side2 :: Quantity Length Float
+> side2 = Quantity V.length 0.4
+
+> side3 :: Quantity Length Float
+> side3 = Quantity V.length 1.9
+
+> type Volume = Length `Mul` (Length `Mul` Length)
+
+> volume :: Quantity Volume Float
+> volume = quantityMul side1 (quantityMul side2 side3)
 
 Pretty-printer
 --------------
@@ -153,6 +204,10 @@ It's useful to be able to compare quantities. Perhaps one wants to know which of
 
 > instance (Eq v) => Eq (Quantity d v) where
 >   (==) = quantityEq
+
+**Exercise.** Make `Quantity` an instance of `Ord`.
+
+**Solution.**
 
 > quantityCompare :: (Ord v) => Quantity d v -> 
 >                               Quantity d v -> Ordering
@@ -201,7 +256,7 @@ Why is that, one might wonder. Every function can be written as a power series. 
 
 The dimension of *every* term must be the same. The only way for that to be case is if the input $x$ is dimensionless. Then so will the output.
 
-The other functions can be written as similar power series and we will see on those too that the input and output must be dimensionless.
+The other functions can be written as similar power series and we'll see on those too that the input and output must be dimensionless.
 
 < sinq :: (Floating v) => Quantity One v -> Quantity One v
 < sinq (Quantity dl v) = Quantity d1 (sin v)
@@ -233,9 +288,43 @@ which isn't compatible with `Quantity` since multiplication with `Quantity` has 
 < (*#) :: (Num v) => Quantity d1 v -> Quantity d2 v ->
 <                    Quantity (d1 `Mul` d2) v
 
-The input here may actually be of *different* types, and the output has a type depending on the types of the input. However, the *kind* of the inputs and output are the same, namely `Quantity`. We'll just have to live with not being able to make `Quantity` a `Num`-instance.
+The input here may actually be of *different* types, and the output has a type depending on the types of the input. However, the *kind* of the inputs and output are the same:, namely `Quantity`. We'll just have to live with not being able to make `Quantity` a `Num`-instance.
 
-However, operations with only scalars (type `One`) has types compatible with `Num`. Therefore a possibility would've been to make `Quantity One` a `Num`-instance.
+However, operations with only scalars (type `One`) has types compatible with `Num`.
+
+**Exercise.** However, `Quantity One` has compatible types. Make it an instance of `Num`, `Fractional`, `Floating` and `Functor`.
+
+**Solution.**
+
+> instance (Num v) => Num (Quantity One v) where
+>   (+) = (+#)
+>   (-) = (-#)
+>   (*) = (*#)
+>   abs = qmap abs
+>   signum = qmap signum
+>   fromInteger n = Quantity V.one (fromInteger n)
+
+> instance (Fractional v) => Fractional (Quantity One v) where
+>   (/) = (/#)
+>   fromRational r = Quantity V.one (fromRational r)
+
+> instance (Floating v) => Floating (Quantity One v) where
+>   pi    = Quantity V.one pi
+>   exp   = expq
+>   log   = logq
+>   sin   = sinq
+>   cos   = cosq
+>   asin  = asinq
+>   acos  = acosq
+>   atan  = atanq
+>   sinh  = qmap sinh
+>   cosh  = qmap cosh
+>   asinh = qmap asinh
+>   acosh = qmap acosh
+>   atanh = qmap atanh
+
+> instance Functor (Quantity One) where
+>   fmap = qmap
 
 Syntactic sugar
 ---------------

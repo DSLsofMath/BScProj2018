@@ -44,6 +44,19 @@ main img {
   width: 100%;
 }
 
+.float-img-left, .float-img-right {
+  width: 35%;
+  border: none;
+}
+
+.float-img-right {
+  float: right;
+}
+
+.float-img-left {
+  float: left;
+}
+
 figcaption {
   font-size: 70%;
   text-align: center;

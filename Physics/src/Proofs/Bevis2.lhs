@@ -21,7 +21,7 @@ När uttryck moddas, så är det likheter som nyttjas.
 
 För den sistnämnda, ha både funktion och Equals-värde. Även equalsElim: tar värde och likhet, ger andra värdet.
 
-Fast kanske bäst att bara ha transitivitet. 
+Fast kanske bäst att bara ha transitivitet.
 
 Ekvationer Oskar haft i åtanke
 ------------------------------

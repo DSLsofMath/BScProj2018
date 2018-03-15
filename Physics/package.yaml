@@ -22,9 +22,10 @@ description: Please see the README on Github at <https://github.com/githubuser/P
 dependencies:
 - base >= 4.7 && < 5
 - Hatlab
-- numtype-dk
 - containers
 - pretty-tree
+- QuickCheck
+- numtype-dk
 
 library:
   source-dirs: src

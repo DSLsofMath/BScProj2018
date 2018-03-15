@@ -102,10 +102,10 @@ The purpose of value-level dimensions is to be able to print 'em nicely. So let'
 >     pos     = filter (\(_, exp) -> exp >  0) paired
 >     neg     = filter (\(_, exp) -> exp <  0) paired
 >     neg'    = map (\(d, exp) -> (d, -exp)) neg
-> 
+>
 >     f (u,1) = u
 >     f (u,n) = u ++ "^" ++ show n
-> 
+>
 >     posStrs = map f pos
 >     negStrs = map f neg'
 >     posStr  = if null pos

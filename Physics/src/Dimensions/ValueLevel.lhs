@@ -48,11 +48,18 @@ Each field denotes the exponent for the corresponding base dimension. If the exp
 > luminosity  = Dim 0 0 0 0 0 0 1
 
 > velocity     = Dim 1 0 (-1) 0 0 0 0
-> acceleration = Dim 1 0 (-2) 0 0 0 0
 
 Velocity is $m/s$ or equivalently $m^1*s^{ -1 }$. This explains why the exponents are as above.
 
 Noticed how we used "m" (for metre) for implicitly refering to the dimension "length"? It's quite natural to work this way.
+
+**Exercise.** Create values for acceleration, area and charge.
+
+**Solution.**
+
+< acceleration = Dim 1 0 (-2) 0 0 0 0
+< area         = Dim 2 0 0    0 0 0 0
+< charge       = Dim 0 0 1    1 0 0 0
 
 Multiplication and division
 ---------------------------
@@ -63,28 +70,38 @@ Dimensions can be multiplied and divided. Velocity is, as we just saw, a divisio
 > (Dim le1 ma1 ti1 cu1 te1 su1 lu1) `mul` (Dim le2 ma2 ti2 cu2 te2 su2 lu2) =
 >   Dim (le1+le2) (ma1+ma2) (ti1+ti2) (cu1+cu2) (te1+te2) (su1+su2) (lu1+lu2)
 
+**Exercise.** Implement a function for dividing two dimensions.
+
+**Solution.**
+
 > div :: Dim -> Dim -> Dim
 > (Dim le1 ma1 ti1 cu1 te1 su1 lu1) `div` (Dim le2 ma2 ti2 cu2 te2 su2 lu2) =
 >   Dim (le1-le2) (ma1-ma2) (ti1-ti2) (cu1-cu2) (te1-te2) (su1-su2) (lu1-lu2)
 
-It's now possible to construct dimensions in the following way.
+It's now possible to construct dimensions in the following fashion.
 
 > velocity' = length `div` time
 > area      = length `mul` length
 > force     = mass   `mul` acceleration
 > momentum  = force  `mul` time
 
-A dimension we so far haven't mentioned is the *scalar*, which shows up when working with, for example, coefficients of friction. It's dimensionless since it arises from division of two equal dimensions. The case of coefficients of friction
+A dimension we so far haven't mentioned is the *scalar*, which shows up when working with, for example, coefficients of friction. It's dimensionless since it arises from division of two equal dimensions. The case of coefficients of friction looks like
 
 \begin{align}
   F_{friction} = \mu * F_{normal} \iff \mu = \frac{F_{friction}}{F_{normal}}
 \end{align}
 
-> one  = force `div` force
-> one' = Dim 0 0 0 0 0 0 0
+**Exercise.** Create two values, which represent the scalar. They should of course have the same value, but be created in two different ways. One by writing the exponents explicitly. One by dividing two equal dimensions.
+
+**Solution.**
+
+> one  = Dim 0 0 0 0 0 0 0
+> one' = force `div` force
 
 Pretty-printer
 --------------
+
+![A not so pretty printer](Printer.png){.float-img-left}
 
 The purpose of value-level dimensions is to be able to print 'em nicely. So let's create a pretty-printer.
 

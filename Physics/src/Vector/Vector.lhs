@@ -359,10 +359,10 @@ are the magnitudes of the vectors.
 
 So our function for calculating the cross product becomes:
 
-\begin{code}
+\begin{spec}
 crossProd :: Vector3 -> Vector3 -> Vector3
 crossProd a b = (magnitude a) * (magnitude b)
-\end{code}
+\end{spec}
 
 \begin{spec}
 crossProd :: Vector3 -> Vector3 -> Vector3

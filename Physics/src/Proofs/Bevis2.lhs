@@ -1,6 +1,5 @@
-\begin{code}
-module Proofs.Bevis2 where
-\end{code}
+
+> module Proofs.Bevis2 where
 
 Oskars anteckningar
 -------------------

@@ -1,0 +1,88 @@
+% CREATED BY DAVID FRISK, 2016
+
+\chapter{Teori}
+
+\section{Domänspecifika språk}
+\begin{draft}
+  Ett domänspecifikt programmeringsspråk är ett språk som är avgränsat till ett
+  specifikt domän. Detta domän kan ta många former, det kan vara ett språk för
+  att formatera text på en hemsida (HTML), det kan vara ett språk för att
+  interagera med en databas (SQL), ett språk för ett beskriva hur karaktärer ser
+  ut (typsnitt). Användningsområden för dessa språk är väldigt smala men
+  detta smala fokus gör det möjligt att utveckla ett rikt och lättanvändligt
+  språk för just detta område. 
+
+  Motsatsen till ett domänspecifikt språk är ett generellt språk (C, Java,
+  Python) som är turingkompletta, vilket betyder att det kan uttrycka alla
+  beräkningsbara problem i dem och även lösa dem givet tillräckligt med tid och
+  minnestillgångar.\todo{referns} Begränsningen med dessa generella språk är just deras egen
+  generaliserbarhet, eftersom de har stöd för alla typer av beräkningar så blir
+  både läsbarheten och användarvänligheten lidande.
+  
+  Ett domänspecifikt språk kan antingen implementeras som ett fristående språk
+  eller bäddas in i ett redan existerande språk. De domänspecifika språk som
+  utvecklats inom detta projekt är inbäddade i språket \textit{Haskell}.
+\end{draft}
+
+\begin{binge}
+VARFÖR BLIR DET ENKLARE? 
+\end{binge}
+
+\section{Haskell och funktionell programmering}
+
+\begin{draft}
+  Haskell är ett funktionellt programmeringsspråk som lämpar sig bra för att
+  implementera ett domänspecifikt språk i. Anledningen till detta är den lätthet
+  som man kan skapa nya datatyper och klasser för att representera grundstenarna
+  i det nya språk, och även dess mönstermatchning som gör det möjligt att på
+  enkelt sätt bryta isär komplexa datatyper för evaluering.
+\end{draft}
+
+\section{Syntaxträd och deras evaluering}
+
+\textbf{???Osäker på om detta avsnitt är nödvändigt???}
+
+
+
+Ett typexempel på ett domänspecifkt språk är ett syntaxträd för algebraisk uttryck, här kodat i Haskell.
+
+\begin{figure}
+  \begin{lstlisting}
+  data Expr = Expr :+: Expr
+            | Expr :*: Expr
+            | Const Double
+            | VarX
+
+  exempel = (Const 7.0 :+: VarX) :*: ((VarX :+: Const 10.0)
+            :*: VarX)
+  \end{lstlisting}
+  \caption{Bild!?}
+  \label{fig:syntax_exempel}
+\end{figure}
+
+I detta exempel visar hur uttrycket $(7+x)*((x+10)*x)$ kodas.
+
+Ha med en bild på detta.
+
+!!!Plus förklaring om evaluering!
+
+
+\section{Fysik vi behandlar och Fysik för ingenjörer}
+
+\begin{draft}
+  \emph{Fysik för ingenjörer} är en obligatorisk kurs för studenterna på det
+  datatekniska programmet. Kursen täcker grundläggande fysikområden såsom
+  mekanik, termodynamik och vågrörelselära. Det ingår även en del tillämpad
+  matematik såsom vektorer och differentialkalkyl. Dessa områden ämnas att
+  täckas in av de domänspecifika språken och det tillhörande läromaterialet.
+\end{draft}
+
+\section{Hemsidan}
+\todo{Ha beskrivning av individuella teknologier}
+\begin{draft}
+  Programfilerna har skrivits i ett språk som kallas \textit{Literate Kaskell}
+  som kombinerar vanlig Haskell-kod med brödtext till något som kan tolkas av en
+  kompilator som två separata saker. \textit{Pandoc} är ett program som används
+  för att generera html-filer med läromaterialet som är den slutgiltiga produkt
+  som finns tillgänglig på hemsidan.
+\end{draft}

@@ -97,7 +97,7 @@ The purpose of value-level dimensions is to be able to print 'em nicely. So let'
 >   | null negStrs = posStr
 >   | otherwise    = posStr ++ "/" ++ negStr'
 >   where
->     paired  = [("m",le), ("kg",ma), ("s",ti), ("A",cu),
+>     paired  = [("me",le), ("kg",ma), ("s",ti), ("A",cu),
 >                ("K",te), ("mol",su), ("cd",lu)]
 >     pos     = filter (\(_, exp) -> exp >  0) paired
 >     neg     = filter (\(_, exp) -> exp <  0) paired

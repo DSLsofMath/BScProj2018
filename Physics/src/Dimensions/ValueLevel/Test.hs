@@ -61,7 +61,7 @@ prop_correctDim i d = prop_correctDim' (i `mod` 7) d (show d)
 
 prop_correctDim' :: Integer -> Dim -> String -> Bool
 prop_correctDim' 0 (Dim le ma ti cu te su lu) str =
-  prop_correctDim'' le "m" str
+  prop_correctDim'' le "me" str
 prop_correctDim' 1 (Dim le ma ti cu te su lu) str =
   prop_correctDim'' ma "kg" str
 prop_correctDim' 2 (Dim le ma ti cu te su lu) str =
@@ -77,13 +77,51 @@ prop_correctDim' 6 (Dim le ma ti cu te su lu) str =
 
 prop_correctDim'' :: Integer -> String -> String -> Bool
 prop_correctDim'' exp unit str
-  | exp == 0  = not $ isInfixOf unit str
-  | exp == 1  = isInfixOf unit num
-  | exp == -1 = isInfixOf unit den
-  | exp > 1   = isInfixOf (unit ++ "^" ++ show exp) num
-  | exp < -1  = isInfixOf (unit ++ "^" ++ show (abs exp)) den
+  | exp == 0  = occursNever unit  num && 
+                occursNever unit  den
+  | exp == 1  = occursOnce  unit  num &&
+                occursNever unit' num && 
+                occursNever unit  den
+  | exp == -1 = occursOnce  unit  den &&
+                occursNever unit  num
+  | exp > 1   = occursOnce  unit' num &&
+                occursNever unit  den
+  | exp < -1  = occursOnce  unit' den &&
+                occursNever unit  num
+  | otherwise = True
   where
     num = takeWhile(/='/') str
     den = dropWhile(/='/') str
+    unit' = unit ++ "^" ++ (show (abs exp))
 
 -- TODO: Check that it only occurs once.
+
+-- kg^2 (eller dylikt) ska finns exakt en gång i rätt nivå
+-- och inte finns alls i fel nivå.
+
+-- Exatcly once. Not more or less
+occursOnce :: (Eq a) => [a] -> [a] -> Bool
+occursOnce a = (==1) . numOccurs a
+
+occursNever :: (Eq a) => [a] -> [a] -> Bool
+occursNever a = (==0) . numOccurs a
+
+-- How many times the first list occurs in the second one
+numOccurs :: (Eq a) => [a] -> [a] -> Int
+numOccurs subList list = len $ filter (==subList) sg
+  where
+    sg = subGroups (len subList) list
+
+-- Groups the list into lists of the specified length
+subGroups :: Int -> [a] -> [[a]]
+subGroups n _
+  | n < 1 = error "Groups must be at least 1 big"
+subGroups _ [] = []
+subGroups n list@(_:rest)
+  | n > len list = []
+  | otherwise    = (take n list):(subGroups n rest)
+
+-- Length of a list
+len :: [a] -> Int
+len []     = 0
+len (x:xs) = 1 + len xs

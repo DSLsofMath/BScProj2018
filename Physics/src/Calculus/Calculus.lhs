@@ -64,7 +64,7 @@ The syntax tree of an expression
 >           | Expr :$ Expr       -- Function application
 >   deriving Eq
 
-QuickCheck
+Quentin Quickly Querys Queer Qubits
 -----------
 
 > genConstructor :: Gen (Expr -> Expr -> Expr)
@@ -81,6 +81,7 @@ QuickCheck
 > --genConcat (e:es) = genConstructor >>= (\con -> genConcat es >>= (\bigE -> return $ con e bigE))
 
 > instance Arbitrary Expr where
+>   -- Maybe set the max length explicitly
 >   arbitrary = listOf genExpr >>= genConcat
 
 A `const` and `id` function could be useful. We can describe them like this:
@@ -215,7 +216,6 @@ Substitution function to instantiate expression for environment
 > subst env (a :* b) = subst env a :* subst env b
 > subst env (a :/ b) = subst env a :/ subst env b
 > subst env (a :. b) = subst env a :. subst env b
-> -- TODO Why not: fromMaybe (Var s) (lookup s env) ?
 > subst env (Var s) = case lookup s env of
 >     Just e  -> e
 >     Nothing -> Var s

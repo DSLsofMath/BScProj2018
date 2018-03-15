@@ -64,6 +64,25 @@ The syntax tree of an expression
 >           | Expr :$ Expr       -- Function application
 >   deriving Eq
 
+QuickCheck
+-----------
+
+> genConstructor :: Gen (Expr -> Expr -> Expr)
+> genConstructor = elements [(:+), (:-), (:*), (:/)]
+
+> genConst :: Gen Expr
+> genConst = Const <$> arbitrary
+
+> genExpr :: Gen Expr
+> genExpr = genConstructor <*> genConst <*> genConst
+
+> genConcat :: [Expr] -> Gen Expr
+> genConcat = foldr (\e -> (<*>) (genConstructor <*> pure e)) genConst
+> --genConcat (e:es) = genConstructor >>= (\con -> genConcat es >>= (\bigE -> return $ con e bigE))
+
+> instance Arbitrary Expr where
+>   arbitrary = listOf genExpr >>= genConcat
+
 A `const` and `id` function could be useful. We can describe them like this:
 
 > const' c = Lambda "x" (Const c)

@@ -1,4 +1,4 @@
-Introduction
+What is calculus?
 ======================================================================
 
 TODO: Move relevant stuff out of the general structures/eval to their
@@ -19,35 +19,80 @@ TODO: Improve DSLs a bit? I don't like the `Expr` tree very much.
 
 TODO: Have someone critique this
 
-Calculus is cool
+Plain equations where all values are of the same dimension are all
+fine and well.  The importance of being able to solve basic problems
+like ``If Jenny has 22 meters, and Richard has 18 meters: how many
+meters do they have together?'' cannot be understated, but they're not
+especially fun!
 
-Differences, derivatives, and integrals
+``An unstoppable car has an unchanging velocity of 141.622272
+km/h. How many kilometers has it droven in after a day?''. To solve
+more interesting problems like this, we need calculus.
 
-Data type definitions and general lambda calculus stuff
+Calculus is the study of stuff that continuously change over time (or
+some other continuous variable). For example, a distance that changes
+over time is equivalent to a speed or a velocity, depending on how
+many dimensions you have, and a volume that changes as a length
+changes does not have a name, as far as I know.
+
+There are two major branches of calculus, differential calculus and
+integral calculus. Differential calculus is all about those rates of
+changes and graph slopes.  Differences, differentials, derivatives,
+and the like. Integral calculus, on the other hand, is all about
+accumulation and areas. Sums, integrals, and such.
+
+In this chapter we'll expore the syntax of diffences, the problem with
+differentials, symbolic differentiation, numeric and symbolic
+integration, and some applied problem solving.
+
+
+
+Boring boilerplate
 ----------------------------------------------------------------------
 
-This extension will be used later to allow string literals to be implicitly
+Firstly, let's get the boring stuff out of the way!
+
+This extension will be used later to allow haskell string literals to be implicitly
 typed as Expr.
 
 > {-# LANGUAGE OverloadedStrings #-}
 
-Fun imports
+This is our module!
 
 > module Calculus.Calculus where
+
+Important imports!
+
 > import Data.Maybe
 > import Data.List
 > import Data.String
 > import Control.Exception
 
-Simple graph plotting library
+This import is especially interesting.
+[Hatlab](https://github.com/DSLsofMath/Hatlab) is a very simple graph
+plotting library that we can use to draw pretty graphs of our
+functions, derivatives, and integrals later!
 
 > import Hatlab.Plot
 
-A real number. Double is mostly an adequate representation
+
+
+Data type definitions and lambda calculus
+----------------------------------------------------------------------
+
+Real numbers are real important, and we will use them a lot in this
+module.  For simplicitys sake we'll just use a `Double`, but important
+to remember is that `Double`s are if finite precision, and rounding
+errors may occur.
 
 > type RealNum = Double
 
-The syntax tree of an expression
+This is the core syntax tree of our language of calculus. Note that in
+this syntax, a lambda (aka. anonymous function or mapping) is
+considered an expression, just as a real number consant is.
+
+TODO: Add integral constructor to `Expr`. Will also need eval, derive,
+and integrate case.
 
 > data Expr = Const RealNum      -- Real constant
 >           | Expr :+ Expr       -- Plus (Addition)

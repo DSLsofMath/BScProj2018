@@ -1,7 +1,5 @@
 % CREATED BY DAVID FRISK, 2016
 
-\usepackage[super]{natbib}
-
 \usepackage{xcolor}  % Setting text color
 
 \newenvironment{binge} {
@@ -11,6 +9,10 @@
 \newenvironment{draft} {
     \color{blue}
 }
+
+% Radavstånd i listor
+\usepackage{enumitem}
+\setlist{noitemsep}
 
 % BASIC SETTINGS
 \usepackage{moreverb}								% List settings
@@ -28,6 +30,8 @@
 \numberwithin{figure}{chapter}						% Numbering order for figures
 \numberwithin{table}{chapter}						% Numbering order for tables
 \usepackage{listings}								% Enables source code listings
+\lstset{language=Haskell}
+\lstset{frame=single}
 \usepackage{chemfig}								% Chemical structures
 \usepackage[margin=1in]{geometry}			% Page margin lengths			
 \usepackage{eso-pic}								% Create cover page background
@@ -36,8 +40,12 @@
 	\parbox[b][\paperheight]{\paperwidth}{
 	\centering
 	\includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{#3}}}}
-\usepackage{float} 									% Enables object position enforcement using [H]
-\usepackage{parskip}								% Enables vertical spaces correctly 
+
+% Enables object position enforcement using [H]
+\usepackage{float}
+
+% Enables vertical spaces correctly 
+\usepackage{parskip} 
 
 \setlength{\parskip}{\baselineskip}
 

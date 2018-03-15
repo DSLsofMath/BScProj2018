@@ -34,6 +34,14 @@ def render_lhs(lhs_filepath):
                   "--mathjax"
     ]).decode("utf8")
 
+def has_image_ext(filename):
+    _, ext = os.path.splitext(filename)
+    return ext in [".png", ".jpg", ".jpeg", ".gif", ".svg"]
+
+def copy_images(source_dir, dest_dir):
+    images = [path for path in os.listdir(source_dir) if has_image_ext(path)]
+    for image in images:
+        shutil.copy(os.path.join(source_dir, image), dest_dir)
 
 def build_sections(sources):
     chapter_templ = open_template("chapter")
@@ -49,7 +57,8 @@ def build_sections(sources):
             next_chap_href = "../{}/{}.html".format(next_section, next_chap_name)
         if not os.path.exists(section):
             os.makedirs(section)
-        content = render_lhs("../../" + chapter_source)
+        chapter_path = "../../" + chapter_source
+        content = render_lhs(chapter_path)
         chapter = apply_template(
             chapter_templ,
             {
@@ -61,6 +70,7 @@ def build_sections(sources):
             })
         out_path = "{}/{}.html".format(section, chapter_name)
         write_string_to_file(chapter, out_path)
+        copy_images(os.path.dirname(chapter_path), section)
         prev_chap_href = "../" + out_path
         prev_chap_name = chapter_name
 
@@ -84,6 +94,7 @@ sources = [
         ("Value-level dimensions", "Physics/src/Dimensions/ValueLevel.lhs"),
         ("Type-level dimensions", "Physics/src/Dimensions/TypeLevel.lhs"),
         ("Quantities", "Physics/src/Dimensions/Quantity.lhs"),
+        ("Usage", "Physics/src/Dimensions/Usage.lhs"),
     ]),
     ("Vectors", [
         ("Vector", "Physics/src/Vector/Vector.lhs")

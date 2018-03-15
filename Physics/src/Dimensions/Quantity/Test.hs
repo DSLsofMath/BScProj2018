@@ -31,10 +31,14 @@ instance Arbitrary Q where
 prop_addCommutative :: Q -> Q -> Bool
 prop_addCommutative q1 q2 = (q1 +# q2) == (q2 +# q1)
 
+-- TODO: move isZero to the main module, not the testing one.
+isZero :: (Num v, Eq v) => Quantity One v -> Bool
+isZero x = (fromInteger 0) # one == x
+
 -- Property: multiplication and divsion cancel each other out
 prop_mulDivCancel :: Q -> Q -> Property
-prop_mulDivCancel q1 q2 = (q1 /= (fromInteger 0) # one)
-  ==> (q1 *# q2) /# q1 == q2
+prop_mulDivCancel q1 q2 =
+  not (isZero q1)  ==>  (q1 *# q2) /# q1 == q2
 
 -- Property: syntactic sugar is correct
 prop_sugar :: Rational -> Q -> Bool

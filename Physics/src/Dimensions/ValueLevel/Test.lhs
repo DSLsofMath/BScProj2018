@@ -2,6 +2,8 @@
 Testing of value-level dimensions
 =================================
 
+![Both you, me and dimensions need to obey the laws](Laws.png){.float-img-left}
+
 For operations on dimensions, there are a number of laws which should hold. We will here test that the value-level dimensions obey them. One way is to use `QuickCheck`, which produces lots o' random test cases.
 
 > module Dimensions.ValueLevel.Test

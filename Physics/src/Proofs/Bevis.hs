@@ -1,5 +1,7 @@
+module Proofs.Bevis where
 
---Bevis av "dom där fyra" kinematiska reglerna. Ha som axiom vanliga regler för algebra.
+{-
+-- Bevis av "dom där fyra" kinematiska reglerna. Ha som axiom vanliga regler för algebra.
 
 -- Börjar med a = dv/dt och a konstant
 -- Bevisa att deltaV = a*deltaT
@@ -35,7 +37,7 @@ mulCom = undefined
 mulUpDiv :: Equals (Div a b) c -> Equals a (Mul c b)
 mulUpDiv = undefined
 
--- En differential av någonting. En infinitesimal bit av 
+-- En differential av någonting. En infinitesimal bit av
 -- något vid en obestämd tidpunkt.
 
 data Diff a
@@ -78,7 +80,7 @@ bothSideOp = undefined
 
 -}
 
-mulWithOne :: 
+-- mulWithOne ::
 
 s3 :: Equals (Integ (Diff v)) (Integ (Mul a (Diff t)))
 s3 = bothSideInteg s2
@@ -116,3 +118,4 @@ s5 = transitivity s4 integConstant
 -- Integ k dx = k * Integ 1 dx
 -- Integ 1 dx = x + C
 -- Integ x dx = 0,5x^2 + C
+-}

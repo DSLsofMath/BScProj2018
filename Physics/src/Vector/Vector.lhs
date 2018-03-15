@@ -1,4 +1,4 @@
-> module Vector where
+> module Vector.Vector where
 
 Vectors in two dimensions.
 -----------------------------------------------------------
@@ -11,7 +11,7 @@ type Scalar = Double
 
 A vector is a quantity that has both a magnitude and a direction. For instance
 the \textit{velocity} of a moving body involves its speed (magnitude) and the
-direction of motion. 
+direction of motion.
 
 We cen represent the direction of a vector in two dimensions using its $x$ and
 $y$ coordinates, which are both scalars. The direction is then given by the
@@ -19,11 +19,11 @@ angle between these coordinates and the origin (0,0).
 \begin{code}
 data Vector2 = V2 Scalar Scalar
 \end{code}
- 
+
 The magnitude of the vector is it's length. We can calculate this using
 Pythagorean theorem:
 \begin{equation}
-  x^2 + y^2 = mag^2 
+  x^2 + y^2 = mag^2
 \end{equation}
 
 In haskell this would be:
@@ -130,12 +130,12 @@ adding them together. Let's create the vector (5 x, 3 y) using this approach.
 
 ```shell
   *Vector> add (scale 5 unitX) (scale 3 unitY)
-  (5.0 x, 3.0 y) 
+  (5.0 x, 3.0 y)
 ```
 
 In order to check that this vector is actually equal to the vector created using
 the contructor \textit{V2} we need to make our vector an instance of
-\textit{Eq}. 
+\textit{Eq}.
 
 \begin{code}
 instance Eq Vector2 where
@@ -153,7 +153,7 @@ Let's try it out:
 ![](http://i.imgur.com/GMCn5mi.png)
 
 We have one final important operation left to define for vectors in two
-dimensions, the dot product. The formula is quite simple: 
+dimensions, the dot product. The formula is quite simple:
 \begin{equation}
   \vec{a} \cdot \vec{b} = a_x \cdot b_x + a_y \cdot b_y
 \end{equation}
@@ -200,17 +200,17 @@ worseCart = V2 5 3
 
 Let's see this in action.
 ```
-*Vector> magnitude cart == magnitude worseCart 
+*Vector> magnitude cart == magnitude worseCart
 True
 *Vector> dotProd dashPanel cart
 50.0
-*Vector> dotProd dashPanel worseCart 
+*Vector> dotProd dashPanel worseCart
 30.0
 ```
 
 We talked a lot about angles between vectors but we havn't used it in our code,
 so lets make a function which calculates the angle of a vector. The formula is
-as follows: 
+as follows:
 %TODO
 \textbf{Insert picture of angle of triangle here}
 
@@ -359,10 +359,10 @@ are the magnitudes of the vectors.
 
 So our function for calculating the cross product becomes:
 
-\begin{code}
+\begin{spec}
 crossProd :: Vector3 -> Vector3 -> Vector3
 crossProd a b = (magnitude a) * (magnitude b)
-\end{code}
+\end{spec}
 
 \begin{spec}
 crossProd :: Vector3 -> Vector3 -> Vector3
@@ -373,11 +373,11 @@ crossProd (V3 x y z) (V3 x' y' z') = V3 (y*z' - z*y') -- X
 
 % lift :: Vector2 -> Vector3
 % lift (V2 x y) = V3 x y 0
- 
-% 
+
+%
 % prop_crossProd :: Vector3 -> Bool
 % prop_crossProd v = (crossProd v v) == 0
-% 
+%
 % -- | TODO
 % -- | ~Laws~
 % -- | Langrange's formula: a x (b x c) = b(a * c) - c(a * b)
@@ -432,4 +432,3 @@ instance Ord Vector3 where
 instance Eq Vector3 where
   (V3 x y z) == (V3 x' y' z') = x == x' && y == y' && z == z'
 \end{code}
-

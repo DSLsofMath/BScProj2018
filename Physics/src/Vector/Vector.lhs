@@ -31,10 +31,8 @@ Pythagorean theorem:
 \end{equation}
 
 In haskell this would be:
-\begin{spec}
-magnitude :: Vector2 -> Scalar
-magnitude (V2 x y) = sqrt (x^2 + y^2)
-\end{spec}
+< magnitude :: Vector2 -> Scalar
+< magnitude (V2 x y) = sqrt (x^2 + y^2)
 
 And now we can calulate the magnitude of a vector in two dimensions:
 ```
@@ -114,10 +112,8 @@ We can also multiply a vector by a scalar. This is also done componentwise.
 We'll call this scaling a vector. So we could make double a vector by
 multiplying it with $2.0$ and halving it by multiplying it with $0.5$.
 
-\begin{spec}
-scale :: Scalar -> Vector2 -> Vector2
-scale factor (V2 x y) = V2 (factor * x) (factor * y)
-\end{spec}
+< scale :: Scalar -> Vector2 -> Vector2
+< scale factor (V2 x y) = V2 (factor * x) (factor * y)
 
 Combining this with the unit vectors:
 
@@ -141,11 +137,8 @@ In order to check that this vector is actually equal to the vector created using
 the contructor \textit{V2} we need to make our vector an instance of
 \textit{Eq}.
 
-\begin{spec}
-instance Eq Vector2 where
-  (V2 x1 y1) == (V2 x2 y2) = (x1 == x2) && (y1 == y2)
-\end{spec}
-
+< instance Eq Vector2 where
+<   (V2 x1 y1) == (V2 x2 y2) = (x1 == x2) && (y1 == y2)
 
 Let's try it out:
 
@@ -165,10 +158,8 @@ dimensions, the dot product. The formula is quite simple:
 
 And our function simply becomes:
 
-\begin{spec}
-dotProd :: Vector2 -> Vector2 -> Scalar
-dotProd (V2 ax ay) (V2 bx by) = ax * bx + ay * by
-\end{spec}
+< dotProd :: Vector2 -> Vector2 -> Scalar
+< dotProd (V2 ax ay) (V2 bx by) = ax * bx + ay * by
 
 But this doesn't give us any intuition about what it means to take the dot
 product between vectors. The common interpretation is "geometric projection",
@@ -278,18 +269,14 @@ their components, applying some function to them (+/-) and then packing them up
 as a new vector. This is very similar to the Haskell function \textit{zipWith}
 which works over lists instead of vectors.
 
-\begin{spec}
-zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
-\end{spec}
+< zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
 
 When we're multiplying with a scalar we again unpack the vector and then apply
 mulitiplication with a factor to each component before packing it up again.
 This is quite similar to the Haskell function \textit{map}, which again works
 over lists.
 
-\begin{spec}
-map :: (a -> b) -> [a] -> [b]
-\end{spec}
+< map :: (a -> b) -> [a] -> [b]
 
 When calculating the magnitude of a vector we first unpack the vector and then
 apply $^2$ to each component of the vector. This is doable with aformentioned
@@ -351,9 +338,7 @@ dotProd :: Vector vec => vec -> vec -> Scalar
 dotProd v1 v2 = vfold (+) $ vzipWith (*) v1 v2
 \end{code}
 
-Text needed herererere
------------
-\begin{code}
+\begin{spec}
 angleBetween ::Vector vec => vec -> vec -> Scalar
 angleBetween a b = acos $ numerator / denominator
   where
@@ -362,7 +347,8 @@ angleBetween a b = acos $ numerator / denominator
 
 dotProd' :: Vector vec => vec -> vec -> Scalar
 dotProd' a b = magnitude a * magnitude b * cos (angleBetween a b)
-\end{code}
+\end{spec}
+
 Cross Product
 ---------------------------------
 
@@ -376,13 +362,15 @@ are the magnitudes of the vectors.
 
 So our function for calculating the cross product becomes:
 
-\begin{spec}
-crossProd' :: Vector3 -> Vector3 -> Vector3
-crossProd' a b = (magnitude a) * (magnitude b) * sin (angleBetween a b)
-  where
-    angleBetween :: (Vector vec) => vec -> vec -> Scalar
-    angleBetween v1 v2 = acos ((dotProd v1 v2) / ((magnitude v1) * (magnitude v2)))
-\end{spec}
+TODO: Generate normal vector as well. Codify right hand rule
+
+< crossProd :: Vector3 -> Vector3 -> Vector3
+< crossProd a b = (magnitude a) * (magnitude b) * sin (angleBetween a b)
+<   where
+<     angleBetween :: (Vector vec) => vec -> vec -> Scalar
+<     angleBetween v1 v2 = acos ((dotProd v1 v2) / ((magnitude v1) * (magnitude v2)))
+
+Working cross product using matrix rules.
 
 \begin{code}
 crossProd :: Vector3 -> Vector3 -> Vector3
@@ -391,32 +379,21 @@ crossProd (V3 x y z) (V3 x' y' z') = V3 (y*z' - z*y') -- X
                                         (x*y' - y*x') -- Z
 \end{code}
 
-% lift :: Vector2 -> Vector3
-% lift (V2 x y) = V3 x y 0
-
-% Lrigth
-% prop_crossProd :: Vector3 -> Bool
-% prop_crossProd v = (crossProd v v) == 0
-%
-% -- | TODO
-% -- | ~Laws~
-% -- | Langrange's formula: a x (b x c) = b(a * c) - c(a * b)
-% -- | Cross product is anticommutative
-% -- | Jacobi identity: a x (b x c) + b x (c x a) + c x (a x b) = 0
-
 Quickcheck!
 --------------------------------
 
 There are certain laws or preperties that vectors adher to, for example the
 jacobi identity:
+
 \begin{equation}
  \vec{a} \times (\vec{b} \times \vec{c}) + \vec{b} \times (\vec{c} \times
  \vec{a}) + \vec{c} \times (\vec{a} \times \vec{b}) = 0
 \end{equation}
+
 Or that the cross product is anticommutative. We can't actually prove these in a
 meaningful way without a whole bunch of packages and pragmas, but we can
-quickcheck them. But to do that we need to be able to generate vectors, so must
-make out vectors an instance of \textit{Arbitrary}.
+quickcheck them. But to do that we need to be able to generate vectors, so let's
+make our vectors an instance of \textit{Arbitrary}.
 
 We do this by generating arbitrary scalars and then constructing vectors with
 them.
@@ -472,15 +449,15 @@ ghci> quickCheck prop_AssociativityAddition
 (0.3492200657348603 x, 0.10861834028920295 y, 0.45838513657221946 z)
 ```
 
-This is strange because the laws should always be correct. But this error stems
-from the fact that we're using a computer and that using doubles (Scalar) will
-introduce approximation errors. We can fix this by relaxing our instance for
-\textit{Eq} and only requiring the comonents of the vectors to be approximately
-equal.
+This is very strange since the laws should always be correct. But this error
+stems from the fact that we're using a computer and that using doubles (Scalar)
+will introduce approximation errors. We can fix this by relaxing our instance
+for \textit{Eq} and only requiring the components of the vectors to be
+approximately equal.
 
 \begin{code}
 eps :: Double
-eps = 1 * (10 ** (-6))
+eps = 1 * (10 ** (-5))
 
 instance Eq Vector2 where
   (V2 x1 y1) == (V2 x2 y2) = xCheck && yCheck

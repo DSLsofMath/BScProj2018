@@ -7,7 +7,7 @@ Testing of value-level dimensions
 For operations on dimensions, there are a number of laws which should hold. We will here test that the value-level dimensions obey them. One way is to use `QuickCheck`, which produces lots o' random test cases.
 
 > module Dimensions.ValueLevel.Test
-> (
+> ( runTests
 > )
 > where
 
@@ -117,7 +117,7 @@ prop_correctDim i d = prop_correctDim' (i `mod` 7) d (show d)
 
 prop_correctDim' :: Integer -> Dim -> String -> Bool
 prop_correctDim' 0 (Dim le ma ti cu te su lu) str =
-  prop_correctDim'' le "me" str
+  prop_correctDim'' le "m" str
 prop_correctDim' 1 (Dim le ma ti cu te su lu) str =
   prop_correctDim'' ma "kg" str
 prop_correctDim' 2 (Dim le ma ti cu te su lu) str =
@@ -189,4 +189,17 @@ This project uses `Stack`. One part of `Stack` is continous testing, and for it 
 
 > runTests :: IO ()
 > runTests = do
->   putStrLn "temp"
+>   putStrLn "Dimensions value-level: multiplication commutative"
+>   quickCheck prop_mulCommutative
+>   putStrLn "Dimensions value-level: multiplication associative"
+>   quickCheck prop_mulAssociative
+>   putStrLn "Dimensions value-level: `one` is unit for multiplication"
+>   quickCheck prop_mulOneUnit
+>   putStrLn "Dimensions value-level: dividing by a division brings up the lowest denominator"
+>   quickCheck prop_divTwice
+>   putStrLn "Dimensions value-level: multiplication and divison cancel each other out"
+>   quickCheck prop_mulDivCancel
+>   putStrLn "Dimensions value-level: dividing by `one` does nothing"
+>   quickCheck prop_divOne
+>   putStrLn "Dimensions value-level: multiplication by x is the same as dividing by the inverse of x"
+>   quickCheck prop_mulDivInv

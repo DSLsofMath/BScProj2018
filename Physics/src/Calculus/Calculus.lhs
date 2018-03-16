@@ -1,4 +1,4 @@
-Introduction
+What is calculus?
 ======================================================================
 
 TODO: Move relevant stuff out of the general structures/eval to their
@@ -19,35 +19,81 @@ TODO: Improve DSLs a bit? I don't like the `Expr` tree very much.
 
 TODO: Have someone critique this
 
-Calculus is cool
+Plain equations where all values are of the same dimension are all
+fine and well.  The importance of being able to solve basic problems
+like ``If Jenny has 22 meters, and Richard has 18 meters: how many
+meters do they have together?'' cannot be understated, but they're not
+especially fun!
 
-Differences, derivatives, and integrals
+``An unstoppable car has an unchanging velocity of 141.622272
+km/h. How many kilometers has it droven in after a day?''. To solve
+more interesting problems like this, we need calculus.
 
-Data type definitions and general lambda calculus stuff
+Calculus is the study of stuff that continuously change over time (or
+some other continuous variable). For example, a distance that changes
+over time is equivalent to a speed or a velocity, depending on how
+many dimensions you have, and a volume that changes as a length
+changes does not have a name, as far as I know.
+
+There are two major branches of calculus, differential calculus and
+integral calculus. Differential calculus is all about those rates of
+changes and graph slopes.  Differences, differentials, derivatives,
+and the like. Integral calculus, on the other hand, is all about
+accumulation and areas. Sums, integrals, and such.
+
+In this chapter we'll expore the syntax of diffences, the problem with
+differentials, symbolic differentiation, numeric and symbolic
+integration, and some applied problem solving.
+
+
+
+Boring boilerplate
 ----------------------------------------------------------------------
 
-This extension will be used later to allow string literals to be implicitly
+Firstly, let's get the boring stuff out of the way!
+
+This extension will be used later to allow haskell string literals to be implicitly
 typed as Expr.
 
 > {-# LANGUAGE OverloadedStrings #-}
 
-Fun imports
+This is our module!
 
 > module Calculus.Calculus where
+
+Important imports!
+
 > import Data.Maybe
 > import Data.List
 > import Data.String
 > import Control.Exception
+> import Test.QuickCheck
 
-Simple graph plotting library
+This import is especially interesting.
+[Hatlab](https://github.com/DSLsofMath/Hatlab) is a very simple graph
+plotting library that we can use to draw pretty graphs of our
+functions, derivatives, and integrals later!
 
 > import Hatlab.Plot
 
-A real number. Double is mostly an adequate representation
+
+
+Data type definitions and lambda calculus
+----------------------------------------------------------------------
+
+Real numbers are real important, and we will use them a lot in this
+module.  For simplicitys sake we'll just use a `Double`, but important
+to remember is that `Double`s are if finite precision, and rounding
+errors may occur.
 
 > type RealNum = Double
 
-The syntax tree of an expression
+This is the core syntax tree of our language of calculus. Note that in
+this syntax, a lambda (aka. anonymous function or mapping) is
+considered an expression, just as a real number consant is.
+
+TODO: Add integral constructor to `Expr`. Will also need eval, derive,
+and integrate case.
 
 > data Expr = Const RealNum      -- Real constant
 >           | Expr :+ Expr       -- Plus (Addition)
@@ -62,6 +108,26 @@ The syntax tree of an expression
 >           | D Expr             -- Derivative, like "f'"
 >           | Expr :$ Expr       -- Function application
 >   deriving Eq
+
+Quentin Quickly Querys Queer Qubits
+-----------
+
+> genConstructor :: Gen (Expr -> Expr -> Expr)
+> genConstructor = elements [(:+), (:-), (:*), (:/)]
+
+> genConst :: Gen Expr
+> genConst = Const <$> arbitrary
+
+> genExpr :: Gen Expr
+> genExpr = genConstructor <*> genConst <*> genConst
+
+> genConcat :: [Expr] -> Gen Expr
+> genConcat = foldr (\e -> (<*>) (genConstructor <*> pure e)) genConst
+> --genConcat (e:es) = genConstructor >>= (\con -> genConcat es >>= (\bigE -> return $ con e bigE))
+
+> instance Arbitrary Expr where
+>   -- Maybe set the max length explicitly
+>   arbitrary = listOf genExpr >>= genConcat
 
 A `const` and `id` function could be useful. We can describe them like this:
 
@@ -131,7 +197,7 @@ which is equivalent to
 > eval env (a :- b) = evalBinop env a b (:-) (-)
 > eval env (a :* b) = evalBinop env a b (:*) (*)
 > eval env (a :/ b) = evalBinop env a b (:/) (/)
-> eval env (f :. g) = eval env (Lambda "_x" (f :$ (g :$ ("_x"))))
+> eval env (f :. g) = eval env (Lambda "_x" (f :$ (g :$ "_x")))
 > eval env (Var s) =
 >     eval env (fromMaybe (error ("Variable "++s++" is not in environment: "++show env))
 >                         (lookup s env))
@@ -146,11 +212,11 @@ which is equivalent to
 > eval env (Func "asin") = FuncVal asin
 > eval env (Func "acos") = FuncVal acos
 > eval env (Func "atan") = FuncVal atan
-> eval env (f :$ arg) = case (eval env f) of
+> eval env (f :$ arg) = case eval env f of
 >     LambdaVal p b -> eval [(p, subst env arg)] b
 >     FuncVal f     -> RealVal (f (valToReal (eval env arg)))
 >     _             -> error "Not a function"
-> eval env (Delta x) = LambdaVal "_a" (Lambda "_b" ((x' :$ ("_b")) - (x' :$ ("_a"))))
+> eval env (Delta x) = LambdaVal "_a" (Lambda "_b" ((x' :$ "_b") - (x' :$ "_a")))
 >   where x' = subst env x
 > eval env (D f) = eval env (simplify (derive f))
 
@@ -164,8 +230,8 @@ A nice definition for function (addition/subtraction/...) that works for
 differentials: $f + g = h$ where $h(x) = f(x) + g(x)$
 
 >     (LambdaVal p1 b1, LambdaVal p2 b2) ->
->         LambdaVal "_x" ((cons ((Lambda p1 b1) :$ ("_x"))
->                               ((Lambda p2 b2) :$ ("_x"))))
+>         LambdaVal "_x" (cons (Lambda p1 b1 :$ "_x")
+>                              (Lambda p2 b2 :$ "_x"))
 
 The semantic value of an evaluation. Can either be a real number, a haskell function, or a lambda(?)
 TODO: Should a lambda really be returnable here? Kinda makes sense, kinda doesn't...
@@ -195,9 +261,9 @@ Substitution function to instantiate expression for environment
 > subst env (a :* b) = subst env a :* subst env b
 > subst env (a :/ b) = subst env a :/ subst env b
 > subst env (a :. b) = subst env a :. subst env b
-> subst env (Var s) = case (lookup s env) of
+> subst env (Var s) = case lookup s env of
 >     Just e  -> e
->     Nothing -> (Var s)
+>     Nothing -> Var s
 > subst env (Lambda p b) = Lambda p (subst env b)
 > subst env (f :$ arg) = subst env f :$ subst env arg
 > subst env (Delta x) = Delta (subst env x)
@@ -281,11 +347,11 @@ Verification/proof/test
 Examples
 ----------------------------------------------------------------------
 
-> x = Lambda "t" ("t" :* (Const 5))
+> x = Lambda "t" ("t" :* Const 5)
 > t = id'
 > vAvg = Lambda "x" (Delta "x" :/ Delta t)
 > vAvgX = vAvg :$ x
-> v = eval [] (vAvgX :$ (Const 0) :$ (Const 10))
+> v = eval [] (vAvgX :$ Const 0 :$ Const 10)
 
 Derivatives
 ======================================================================
@@ -423,7 +489,7 @@ Difficult to read some of these derivatives. Let's simplify
 > simplify (Const a :- Const b) = Const (a - b)
 > simplify (Const a :- b) = Const a :- simplify b
 > simplify (a :- Const b) = simplify (Const (0-b) :+ a)
-> simplify (Lambda p b) = (Lambda p (simplify b))
+> simplify (Lambda p b) = Lambda p (simplify b)
 > simplify e = e
 
 Verification/proof/test
@@ -437,7 +503,7 @@ Examples
 > idE = Lambda "_x" "_x"
 
 > dF = simplify . derive
-> dE = simplify . (flip deriveEx) "x"
+> dE = simplify . flip deriveEx "x"
 
 > test_simplify1 = (==) (simplify ("x" + "x"))
 >                       (2 * "x")
@@ -834,8 +900,8 @@ And so, we implement exactly that
 >        then let _A = integrateEx a v 0
 >             in _A / b + integrateEx (_A * (derive b / (b^2))) v 0 + Const c
 >        else integrateEx simplified v c
-> integrateEx e@(f :$ (Const a)) v c = e * Var v + Const c
-> integrateEx e@(f :$ (Var u)) v c | v == u    = integrate f c :$ Var v
+> integrateEx e@(f :$ Const a) v c = e * Var v + Const c
+> integrateEx e@(f :$ Var u) v c | v == u    = integrate f c :$ Var v
 >                                  | otherwise = e * Var v + Const c
 > integrateEx _ _ _ = undefined
 

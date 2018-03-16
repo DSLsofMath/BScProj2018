@@ -14,6 +14,10 @@
 \newpage
 \input{include/frontmatter/Abstract}
 
+% SAMMANFATTNING
+\newpage
+\input{include/frontmatter/Sammanfattning}
+
 % ACKNOWLEDGEMENTS
 \newpage
 \input{include/frontmatter/Acknowledgements}
@@ -38,15 +42,15 @@
 \cleardoublepage
 \setcounter{page}{1}
 \pagenumbering{arabic}			% Arabic numbering starting from 1 (one)
-\setlength{\parskip}{0pt plus 1pt}
+\setlength{\parskip}{\baselineskip}
 
 \input{include/Introduktion}
-
-\input{include/Syfte}
 
 \input{include/Teori}
 
 \input{include/Metod}
+
+\input{include/Metod2}
 
 \input{include/Resultat}
 
@@ -59,7 +63,7 @@
 % REFERENCES / BIBLIOGRAPHY
 \cleardoublepage
 \addcontentsline{toc}{chapter}{Bibliography}
-\bibliographystyle{plain}
+\bibliographystyle{ieeetran}
 \bibliography{include/backmatter/referenser}
 
 % APPENDICES

@@ -11,7 +11,7 @@ alpha = 30
 cf = 1
 
 enh_normal :: Double -> Vector2
-enh_normal a = V2 (sin a) (cos a)
+enh_normal a = V2 (-(sin a)) (cos a)
 
 f_l_ :: Vector2 -> Angle -> Vector2
 f_l_ fa a = scale ((magnitude fa) * (cos a)) (enh_normal a)

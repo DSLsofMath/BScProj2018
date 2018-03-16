@@ -182,24 +182,24 @@ len :: [a] -> Int
 len []     = 0
 len (x:xs) = 1 + len xs
 
-Testing techniqalities
-----------------------
+Integrating tests with Stack
+----------------------------
 
 This project uses `Stack`. One part of `Stack` is continous testing, and for it to work on the tests we developed here, the following functions is needed.
 
 > runTests :: IO ()
 > runTests = do
->   putStrLn "Dimensions value-level: multiplication commutative"
+>   putStrLn "Dimensions value-level: Multiplication commutative"
 >   quickCheck prop_mulCommutative
->   putStrLn "Dimensions value-level: multiplication associative"
+>   putStrLn "Dimensions value-level: ;ultiplication associative"
 >   quickCheck prop_mulAssociative
 >   putStrLn "Dimensions value-level: `one` is unit for multiplication"
 >   quickCheck prop_mulOneUnit
->   putStrLn "Dimensions value-level: dividing by a division brings up the lowest denominator"
+>   putStrLn "Dimensions value-level: Dividing by a division brings up the lowest denominator"
 >   quickCheck prop_divTwice
->   putStrLn "Dimensions value-level: multiplication and divison cancel each other out"
+>   putStrLn "Dimensions value-level: Multiplication and divison cancel each other out"
 >   quickCheck prop_mulDivCancel
->   putStrLn "Dimensions value-level: dividing by `one` does nothing"
+>   putStrLn "Dimensions value-level: Dividing by `one` does nothing"
 >   quickCheck prop_divOne
->   putStrLn "Dimensions value-level: multiplication by x is the same as dividing by the inverse of x"
+>   putStrLn "Dimensions value-level: Multiplication by x is the same as dividing by the inverse of x"
 >   quickCheck prop_mulDivInv

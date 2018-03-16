@@ -13,7 +13,7 @@ We'll now create a data type for quantities and combine dimensions on value-leve
 > {-# LANGUAGE FlexibleInstances #-}
 
 > module Dimensions.Quantity
-> ( Quantity(..) -- TODO: Skriv om detta. Har med tester att göra.
+> ( Quantity
 > , length
 > , mass
 > , time
@@ -26,6 +26,8 @@ We'll now create a data type for quantities and combine dimensions on value-leve
 > , acceleration
 > , force
 > , momentum
+> , (~=)
+> , isZero
 > , (#)
 > , (+#)
 > , (-#)
@@ -218,6 +220,17 @@ It's useful to be able to compare quantities. Perhaps one wants to know which of
 
 > instance (Ord v) => Ord (Quantity d v) where
 >   compare = quantityCompare
+
+We often use `Double` as the value holding type. Doing exact comparsions isn't always possible to due rounding errors. Therefore, we'll create a `~=` function for testing if two quantities are almost equal.
+
+> infixl 4 ~=
+> (~=) :: Quantity d Double -> Quantity d Double -> Bool
+> (Quantity _ v1) ~= (Quantity _ v2) = abs (v1-v2) < 0.001
+
+Testing if a quantity is zero is something which might be a common operation. So we define it here.
+
+> isZero :: (Num v, Eq v) => Quantity d v -> Bool
+> isZero (Quantity _ v) =  v == 0
 
 Arithmetic on quantities
 ------------------------
@@ -420,6 +433,8 @@ TODO: Dessa har alla Double som värdetyp. Hur förhindra det? Explicita typsign
 
 Just for convenience sake we'll define a bunch of common composite dimensions. Erm, *you'll* define.
 
+---
+
 **Exericse.** Define pre-made values for velocity, acceleration, force, momentum and energy.
 
 **Solution.**
@@ -429,6 +444,8 @@ Just for convenience sake we'll define a bunch of common composite dimensions. E
 > force        = mass     *# acceleration
 > momentum     = force    *# time
 > energy       = force    *# length
+
+---
 
 Alternative sugar with support for units
 ----------------------------------------

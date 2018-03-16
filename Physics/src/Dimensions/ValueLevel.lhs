@@ -35,7 +35,7 @@ A dimension can be seen as a product of the base dimensions, with an individual 
 >                Integer -- Temperature
 >                Integer -- Substance
 >                Integer -- Luminosity
->            deriving (Eq)
+>   deriving (Eq)
 
 Each field denotes the exponent for the corresponding base dimension. If the exponent is `0`, the base dimension is not part of the dimension. Some examples should clarify.
 
@@ -119,10 +119,10 @@ The purpose of value-level dimensions is to be able to print 'em nicely. So let'
 >     pos     = filter (\(_, exp) -> exp >  0) paired
 >     neg     = filter (\(_, exp) -> exp <  0) paired
 >     neg'    = map (\(d, exp) -> (d, -exp)) neg
-> 
+>
 >     f (u,1) = u
 >     f (u,n) = u ++ "^" ++ show n
-> 
+>
 >     posStrs = map f pos
 >     negStrs = map f neg'
 >     posStr  = if null pos

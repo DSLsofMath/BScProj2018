@@ -40,8 +40,12 @@ We'll now create a data type for quantities and combine dimensions on value-leve
 > , atanq
 > , expq
 > , logq
+> , qmap'
+> , qfold
+> , lift
 > )
 > where
+
 
 > import qualified Dimensions.ValueLevel as V
 > import           Dimensions.TypeLevel  as T
@@ -51,6 +55,9 @@ First we create the data type for quantities.
 
 > data Quantity (d :: T.Dim) (v :: *) where
 >   Quantity :: V.Dim -> v -> Quantity d v
+
+> lift :: Quantity dim a -> a
+> lift (Quantity _ v) = v
 
 `data Quantity` creates a *type constructor*. Which means it takes two *types* (of certain *kinds*) to create another *type* (of a certain *kind*). For comparsion, here's a *value constructor* which takes two *values* (of certain *types*) as input to create another *value* (of a certain *type*).
 
@@ -112,10 +119,10 @@ The type of the function forces the inputs to have the same dimensions. For this
 
 Multiplication is
 
-> quantityMul :: (Num v) => Quantity d1 v -> 
->                           Quantity d2 v ->             
+> quantityMul :: (Num v) => Quantity d1 v ->
+>                           Quantity d2 v ->
 >                           Quantity (d1 `Mul` d2) v
-> quantityMul (Quantity d1 v1) (Quantity d2 v2) = 
+> quantityMul (Quantity d1 v1) (Quantity d2 v2) =
 >   Quantity (d1 `V.mul` d2) (v1*v2)
 
 The type has the following interpretation: two valus of type `Quantity dx v` is input, where `dx` are two types representing (potentially different) dimensions. As output, a value of type `Quantity` is returned. The type in the `Quantity` will be the type that is the product of the two dimensions in.
@@ -238,12 +245,12 @@ Arithmetic on quantities
 Let's implement the arithmetic operations on `Quantity`. Basically it's all about creating functions with the correct type-level dimensions.
 
 > infixl 6 +#
-> (+#) :: (Num v) => Quantity d v -> Quantity d v -> 
+> (+#) :: (Num v) => Quantity d v -> Quantity d v ->
 >                    Quantity d v
 > (+#) = quantityAdd
 
 > infixl 6 -#
-> (-#) :: (Num v) => Quantity d v -> Quantity d v -> 
+> (-#) :: (Num v) => Quantity d v -> Quantity d v ->
 >                    Quantity d v
 > (Quantity d v1) -# (Quantity _ v2) = Quantity d (v1-v2)
 
@@ -253,7 +260,7 @@ Let's implement the arithmetic operations on `Quantity`. Basically it's all abou
 > (*#) = quantityMul
 
 > infixl 7 /#
-> (/#) :: (Fractional  v) => Quantity d1 v -> 
+> (/#) :: (Fractional  v) => Quantity d1 v ->
 >                            Quantity d2 v ->
 >                            Quantity (d1 `Div` d2) v
 > (Quantity d1 v1) /# (Quantity d2 v2) =
@@ -261,7 +268,7 @@ Let's implement the arithmetic operations on `Quantity`. Basically it's all abou
 
 For all operations on quantities, one does the operation on the value and, in the case of multiplication and division, on the dimensions separetly. For addition and subtraction the in-dimensions must be the same. Nothing then happens with the dimension.
 
-How does one perform operations such as `sin` on a quantity with a *potential* dimensions? The answer is that the quantity must be dimensionless, and with the dimension nothing happens. 
+How does one perform operations such as `sin` on a quantity with a *potential* dimensions? The answer is that the quantity must be dimensionless, and with the dimension nothing happens.
 
 Why is that, one might wonder. Every function can be written as a power series. For $sin$ the series looks like
 
@@ -275,7 +282,7 @@ The other functions can be written as similar power series and we'll see on thos
 
 < sinq :: (Floating v) => Quantity One v -> Quantity One v
 < sinq (Quantity dl v) = Quantity d1 (sin v)
-< 
+<
 < cosq :: (Floating v) => Quantity One v -> Quantity One v
 < cosq (Quantity dl v) = Quantity d1 (cos v)
 
@@ -283,6 +290,12 @@ We quickly realize a pattern, so let's generalize a bit.
 
 > qmap :: (a -> b) -> Quantity One a -> Quantity One b
 > qmap f (Quantity d1 v) = Quantity d1 (f v)
+
+> qmap' :: (a -> b) -> Quantity dim a -> Quantity dim b
+> qmap' f (Quantity d v) = Quantity d (f v)
+
+> qfold :: (a -> a -> b) -> Quantity dim a -> Quantity dim a -> Quantity dim b
+> qfold f (Quantity d v1) (Quantity _ v2) = Quantity d (f v1 v2)
 
 > sinq, cosq, asinq, acosq, atanq, expq, logq :: (Floating v) =>
 >   Quantity One v -> Quantity One v

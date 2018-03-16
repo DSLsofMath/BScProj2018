@@ -1,0 +1,38 @@
+
+Vektorer:
+    flygande fåglar (vind, flaxfrekvens, resultant)
+
+    Mekanik som lådor o krafter
+
+Calculus:
+    Integrering o deriveringar:
+        medelhastigher, sträcka över tid
+        
+
+rnd:
+    modul som fungerar som api?
+        hittills har vi haft mer enkla exempel (på ekvationsnivå eller enkla lösningsförslag där ekvationerna visas)
+
+    jag vill ha:
+        frilägg objekt
+        objekts krafter
+        räkna ut vald grej
+        (antaligen ap-svårt ;D)
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+

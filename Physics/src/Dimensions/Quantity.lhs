@@ -85,7 +85,7 @@ then a *value* of that type is created
 
 Note that the `Quantity` data type has both value-level and type-level dimensions. As previosuly mentioned, value-level in order to print prettily and type-level to only permit legal operations.
 
-**Exercise.** Create a data type which have two type-level dimensions, always use `Rational` as the value-holding type (the role of `v`) but which has no value-level dimensions.
+**Exercise.** Create a data type which has two type-level dimensions, always use `Rational` as the value-holding type (the role of `v`) but which has no value-level dimensions.
 
 **Solution.**
 
@@ -119,6 +119,8 @@ Multiplication is
 The type has the following interpretation: two valus of type `Quantity dx v` is input, where `dx` are two types representing (potentially different) dimensions. As output, a value of type `Quantity` is returned. The type in the `Quantity` will be the type that is the product of the two dimensions in.
 
 **Exercise.** Implement subtraction and division.
+
+![Are you a cowboy?](Cowboy.png){.float-img-right}
 
 **Solution.** Hold on cowboy! Not so fast. We'll come back later to subtraction and division, so check your solution then.
 
@@ -345,25 +347,29 @@ To solve these two problems we will introduce some syntactic sugar. First some p
 
 > length :: (Num v) => Quantity Length v
 > length = Quantity V.length 0
-> 
+
 > mass :: (Num v) => Quantity Mass v
 > mass = Quantity V.mass 0
-> 
+
 > time :: (Num v) => Quantity Time v
 > time = Quantity V.time 0
-> 
+
+**Exercise.** Do the rest.
+
+**Solution.**
+
 > current :: (Num v) => Quantity Current v
 > current = Quantity V.current 0
-> 
+
 > temperature :: (Num v) => Quantity Temperature v
 > temperature = Quantity V.temperature 0
-> 
+
 > substance :: (Num v) => Quantity Substance v
 > substance = Quantity V.substance 0
-> 
+
 > luminosity :: (Num v) => Quantity Luminosity v
 > luminosity = Quantity V.luminosity 0
-> 
+
 > one :: (Num v) => Quantity One v
 > one = Quantity V.one 0
 
@@ -382,7 +388,7 @@ The intended usage of the function is the following
 
 To create a `Quantity` with a certain value (here `5`) and a certain dimension (here `length`), you write as above and get the correct dimension on both value-level and type-level.
 
-`length`, `mass` and so on are just dummy-values with the correct dimension (on both value-level and type-level) in order to easier create `Quantity` values. Any value with the correct dimension on both levels can be used as the right hand argument.
+`length`, `mass` and so on are just dummy-values with the correct dimension (on both value-level and type-level) in order to easier create `Quantity` values. Any value with the correct dimension on both levels can be used as the right hand side argument.
 
 < ghci> let otherPersonsDistance = 10 # length
 < ghci> let myDistance = 5 # otherPersonsDistance
@@ -410,19 +416,32 @@ New dimensions are created "on demand". Furthermore
 
 it's possible to use the sugar from before on user-defined dimensions.
 
-TODO: Dessa har alla Double som värdetyp. Hur förhindra det? Explicita typsignaturer löser det, men man vill inte att "användaren" ska *behöva* och *få* göra det för att behålla den tidigare nämnda invarianten.
+TODO: Dessa har alla Double som värdetyp. Hur förhindra det? Explicita typsignaturer löser det, men man vill inte att "användaren" ska behöva göra det varje gång.
 
-Just for convenience sake we'll define a bunch of common composite dimensions.
+Just for convenience sake we'll define a bunch of common composite dimensions. Erm, *you'll* define.
+
+**Exericse.** Define pre-made values for velocity, acceleration, force, momentum and energy.
+
+**Solution.**
 
 > velocity     = length   /# time
 > acceleration = velocity /# time
 > force        = mass     *# acceleration
 > momentum     = force    *# time
+> energy       = force    *# length
 
 Alternative sugar with support for units
 ----------------------------------------
 
-One way to add support for non SI-units (at least for input) would be to modify the sugar from above in the following way.
+**Exercise.** Using the idea of the previous sugar, it's possible to add support for non-SI units (at least for input), by using multiplication on some pre-made values. Define an operator and pre-made values to do this. It should work as follows.
+
+< ghci> let distance = 5 `op` mile
+< ghci> :t distance
+< distance :: Quantity Length Double
+< ghci> distance
+< 8046.72 m
+
+**Solution.**
 
 > metre = 1 # length
 > kilometre = 1000 # length
@@ -499,14 +518,13 @@ Whoops! That's not a good operation. Luckily the compiler caught it.
 Conclusion
 ----------
 
-Okay, so you've read a whole lot of text by now. But in order to really learn anything, you need to practise with some exercises. Some suggestions are
+Okay, so you've read a whole lot of text by now. But in order to really learn anything, you need to practise with some additional exercises. Some suggestions are
 
-- Implementing first value-level dimensions, then type-level dimensions and last quantites by yourself, without looking too much at this text.
-- Making `Quantity` a `Num`, `Fractional`, `Floating` and `Functor` instance.
-- Extending the `Quantity` data type here by adding support for prefixes and non-SI-units.
-- Ditching the separate implementations of value-level and type-level, and only use one with `Data.Proxy`.
+- Implement first value-level dimensions, then type-level dimensions and last quantites by yourself, without looking too much at this text.
 - Implement a power function.
 - Implement a square-root function. The regular square-root function in Haskell uses `exp` and `log`, which only work on `Quantity One`. But taking the the square-root of e.g. an area should be possible.
+- Extending the `Quantity` data type here by adding support for prefixes and non-SI-units.
+- Ditching the separate implementations of value-level and type-level, and only use one with `Data.Proxy`.
 
 After reading this text and doing some exercies, we hope you've learnt
 

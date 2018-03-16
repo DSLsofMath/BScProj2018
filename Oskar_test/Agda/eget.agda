@@ -12,5 +12,10 @@ data Nat : Set where
 data _+_ (A : Set) (B : Set) : Set where
   add : A -> B -> A + B
 
+-- Equal if equal
 data _==_ : Nat -> Nat -> Set where
-  addCom : {n : Nat} -> (n + n) == (n + n)
+  refl : {n : Nat} -> n == n
+
+sym : {a b : Nat} -> (a == b) -> (b == a)
+sym refl = refl
+

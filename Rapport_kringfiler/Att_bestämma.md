@@ -7,3 +7,4 @@
 - Ska målet vara att göra en hemsida och så säger vi varför i etik, eller, ska målet vara att göra ett roligt läromaterial och i metod säger vi att vi för att göra det roligt gör en hemsida och där säger varför?
 - Hur detaljerat om build-script ska vi skriva?
 - Var etiken ska stå
+- Kapitelrubriker: ska de vara ett ord eller lite längre som nämbdes under en föreläsning?

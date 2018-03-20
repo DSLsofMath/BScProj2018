@@ -1,0 +1,6 @@
+
+Dimensions kräver Test.QuickCheck och Numeric.NumType.DK.Integers.
+
+De kan installeras med cabal. 
+
+Kör `cabal install QuickCheck` och `cabal install numtype-dk`.

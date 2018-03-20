@@ -1,2 +1,10 @@
+
+import Vector.Vector as V
+import Dimensions.ValueLevel.Test as DVL
+import Dimensions.Quantity.Test as DQ
+
 main :: IO ()
-main = putStrLn "Test suite not yet implemented"
+main = do
+  V.runTests
+  DVL.runTests
+  DQ.runTests

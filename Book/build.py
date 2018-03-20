@@ -92,8 +92,12 @@ sources = [
     ("Dimensions", [
         ("Introduction", "Physics/src/Dimensions/Intro.lhs"),
         ("Value-level dimensions", "Physics/src/Dimensions/ValueLevel.lhs"),
+        ("Testing of value-level dimensions",
+        "Physics/src/Dimensions/ValueLevel/Test.lhs"),
         ("Type-level dimensions", "Physics/src/Dimensions/TypeLevel.lhs"),
         ("Quantities", "Physics/src/Dimensions/Quantity.lhs"),
+        ("Testing of Quantity",
+        "Physics/src/Dimensions/Quantity/Test.lhs"),
         ("Usage", "Physics/src/Dimensions/Usage.lhs"),
     ]),
     ("Vectors", [

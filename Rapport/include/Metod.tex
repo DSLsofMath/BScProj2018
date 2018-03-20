@@ -46,223 +46,137 @@ Denna skapandeprocess kan delas upp i två axlar: en utefter kapitel och en utef
 
 Även om detta sätt att dela upp processen är översiktlig är den inte helt verklighetstrogen. I praktiken fanns det överlapp mellan olika delar, både med avseende på kapitel och fas. Det här illustereras i figur \ref{fig:oversiktB}. Där ser man att selektionen av områden skedde för flera kapitel samtidigt. Detta då arbtetet med att hitta områden ofta gav flera områden samtidigt. I figuren ser man också att implementation av domänspecifika språk och skrivande av brödtext skedde samtidigt.
 
-De tre följande avsnitten beskriver i mer detalj hur selektionen, implementationen och skriandet såg ut.
+De tre följande avsnitten beskriver i mer detalj hur de tre faserna selektion, implementation och skriande såg ut. Det är viktigt att då minnas att, som nämndes ovan, att det finns överlapp både mellan faserna och mellan kapitlena.
 
-\subsection{Selektion}
+\subsection{Selektion av fysikaliska områden att behandla}
+\label{sec:selektion}
 
+Ett domänspecifikt språk modellerar ett specifikt och avgränsat område. Därför var det naturligt att söka och tänka i termer av avgränsade områden inom fysiken. För att mer konkret hitta områden att behandla kontaktades Åke Fäldt, examinator för \textit{Fysik för ingenjörer}, samt så studerades fysikkursens bok, \textit{Univeristy Physics}.
 
-De områden som behandlas i läromaterialet kan klassificieras som antingen \textit{grundläggande} eller \textit{komposita}. Ett grundläggande område är ett område som inte bygger på något tidigare område. Ett exempel är vektorer. Ett komposit område är ett område som bygger på andra områden. Ett exempel är lutande plan, som använder sig av vektorer.
+Fäldt befrågades om vilka områden han i allmänhet tycker studenter verkar ha svårt för. Detta för att i enlighet med projektets mål börja med de, för studenterna, problematiska områdena. Enligt Fäldt är ett allmänt problem att egna mentala modeller för problem är felaktiga eftersom studenter ofta tar genvägar, som inte bygger på saker man är säker gäller. En annan erfarenhet från honom är att så länge första raden i en uppgiftslösning är rätt, så är resten också rätt. Med andra ord, har studenten väl identifierat vilken typ av problem det rör sig om brukar det inte vara några svårigheter att lösa uppgiften.
+
+Med hjälp av insikterna från Fäldt drogs två slutsatser. Den första slutsatsen var att matematisk analys var ett område värt att behandla i detalj. Den andra slutsatsen var att genom att ge struktur till olika typer av problem kan det förhoppningsvis kunna underlätta för studenter att lära sig identifiera vilken typ av uppgift de handskas med.
+
+En inledande selektion gjordes för att hitta mer specifika områden att arbeta. Detta gjordes genom att studerade kursboken \textit{University Physics}. Speciellt av intresse var de kapitel som behandlade mekanik (i enlighet med projektets mål att börja med mekanik), matematisk analys samt de kapitel som använde sig av en specifik syntax. Domänspecifik syntax var av intresse att finna då en betydlig del av domänspecifika språk är modellering av just syntaxen. Även områden som projektgruppen fann personligen intressanta, och områden som inte var av direkt intresse, men som utgjorde en viktig beståndsdel av mer intressanta områden, valdes ut. \todo{mer konkret}.
+
+Allteftersom arbetet fortskred blev det tydligt att det fanns en distinktion mellan \textit{grundläggande} och \textit{komposita} områden. De grundläggande områdena är fristående, lade grunden till mer komplexa områden och är i sig (dimensioner undantaget) inte av direkt intresse för fysik. De krävs däremot som ett bakomliggande matematiskt ramverk till de komposita områdena. \todo{Här börjar det dra sig mot resultat-karaktär...} De komposita områdena skiljer sig genom att vara närmare fysiken, vara av tillämpad natur och bygga vidare på mer underliggande koncept. Ett exempel är rörelseproblem som kan använda sig av både matematisk analys och dimensioner.
 
 \subsubsection{Grundläggande områden}
 
-  Först kontaktades Åke Fäldt, som är examinator för kursen TIF085,
-  Fysik för Ingenjörer. Åke befrågades om vilka områden han tycker att
-  studenter verkar ha svårt för, och svarade att studenter i allmänhet
-  verkar ha svårt för att sätta upp egna, mentala modeller för många
-  problem och koncept. ``Man tar genvägar (som ofta är fel) och bygger
-  inte från det som man är säker på gäller'' skrev han, och han pekade
-  ut infinitesimalkalkyl som ett speciellt svårt område:
-  ``Infinitesimalkalkyl är ju en av hörnpelarna i fysiken och
-  studenterna har trots att de har läst ganska mycket matematik
-  jättesvårt att använda detta på verkliga system''.
+Grundläggande områden hittades främst genom den tidigare nämnda inledande selektionen (se avsnitt \ref{sec:selektion}). Det omvända förhållandet gäller också. Den inledande selektionen gav främst grundläggande områden.
 
-  För att identifiera mer specifika ämnesområden att arbeta med,
-  studerades kursboken *Univeristy Physics*. Speciellt av intresse var
-  kapitel som berörde saker som Åke Fäldt tidigare pekat ut som svåra,
-  och kapitel som använde sig av specifik syntax. Domänspecifik syntax
-  var av intresse att finna, då en betydlig del av domänspecifika språk
-  är modellering av just syntaxen. Även områden som projektgruppen fann
-  personligen intressanta, och områden som inte var av direkt intresse,
-  men som utgjorde en kritisk beståndsdel av mer intressanta områden,
-  valdes ut.
+Fler grundläggande områden har hittats efterhand. Avslutande av den inledande selektionen innebar alltså inget stopp för sökandet av grundläggande områden, även om de flesta redan hittats. Fler grundläggande områden hittades bland annat även genom att studera kursmaterialet som tillhörde \textit{Fysik för ingenjörer}.
 
-  De valda grundområdena definierades sådana att de var fristående, i
-  så god mån som möjligt, för att kunna arbetas med parallellt. De
-  områden som valdes ut blev: Vektorer, Enheter, och Matematisk
-  analys.
+Sökandet i kursboken och kursmaterialet gav viktiga kunskaper om områden att behandla. Men minst lika viktiga var de experiment som gjordes för att se huruvida ett område lämpade sig till att göra ett domänspecifikt språk av. När områden kodades upp till domänspecifika språk var det långt ifrån alla gånger det kunde göras på en meningsfullt sätt. De områden som inte gick fick skrotas eller behandlas annorlunda (se avsnitt \ref{sec:selektion_komposit}). Förenklat sagt var de områden som innehöll tydliga ''data och operationer'' väl lämpade att göra domänspecifika språk av. Lämpligheten hos olika områden diskuteras utförligare i avsnitt \ref{sec:lampligt}.
 
-  Vektorer eftersom det är en viktig grundsten i mekanik. Alla krafter,
-  hastigheter, och accelerationer, betraktas oftast som vektorer i
-  planet eller rymden, och dessa är alla fundamental element i
-  mekanik.
+När grundläggande områden valdes ut definerades de så att det i största möjliga utsträckning var fristående. Detta för att kunna arbteas med parallellt. De grundläggande områden som under projekets gång valdes ut blev vektorer, dimensioner, matematisk analys och bevis. OCH FLER
 
-  Enheter eftersom det är viktigt för studenter att förstå sig på hur
-  dimensioner påverkas av algebraiska operationer. Det kan också vara
-  hjälpsamt att kunna utföra automatisk, datorassisterad
-  dimensionsanalys på ens beräkningar.
+\textit{Vektorer} eftersom det är en viktig grundsten i mekanik. Alla krafter, hastigheter och accelerationer betraktas oftast som vektorer i planet eller rymden, och dessa är alla fundamentala element i mekanik.\todo{Vilken mekanik}
 
-  Analys eftersom alla koncept i klassisk mekanik är relaterade genom
-  matematisk analys. Mer specifikt används differenser för att beskriva
-  medelrörelse, och infinitesimalkalkyl för att beskriva
-  momentanrörelser. Vidare var infinitesimalkalkyl just det område som
-  Åke Fäldt pekade ut som speciellt viktigt, och något som studenter har
-  svårt för.
+\textit{Dimensioner} eftersom det är viktigt för studenter att förstå sig på hur dimensioner påverkas av algebraiska operationer. Det kan också vara hjälpsamt att kunna utföra automatisk, datorassisterad dimensionsanalys på ens beräkningar.
 
+\textit{Matematisk analys} eftersom alla koncept i klassisk mekanik är relaterade genom matematisk analys. Mer specifikt används differenser för att beskriva medelrörelse, och infinitesimalkalkyl för att beskriva momentanrörelser. Vidare var infinitesimalkalkyl just det område som Fäldt pekade ut som speciellt viktigt och något som studenter har svårt för.
 
+\textit{Bevis} eftersom det ger en insikt i hur de formler man använder faktiskt uppstår. För att genomföra bevis krävs också att formler och beteckningar görs rigorösa, vilket ger en bättre förståelse till dem.
+
+OCH FLER
   
-  \subsubsection{Komosita områden}
-  
-    När en mängd av de fristående, grundläggande områdena var
-    fädigimplementerade så formulerades mer tillämpade områden i form
-    av problemmängder. De tillämpade fysikproblemen krävde ofta bruk
-    av flera olika DSL för att lösa. Exempelvis kan ett rörelseproblem
-    använda sig av både differentialkalkyl och dimensionsanalys.  Till
-    dessa områden skrevs därför komposita DSL som kombinerade en mängd
-    grundläggande DSL för att bättre kunna beskriva problemdomänen.
+\subsubsection{Komposita områden}
+\label{sec:selektion_komposit}
 
-    De tillämpade områdena var inte lika lätthanterliga som de
-    grundläggande områdena. Det var sällan uppenbart hur komposita DSL
-    skulle skrivas och appliceras, och vissa områden visade sig vara
-    olämpade att skriva DSL för. Vidare motivation av varför vissa
-    områden var mindre lämpade för den sortens DSL som skrevs finnes
-    under Diskussionskapitlet. (TODO: Fast en kort motivation här med
-    kanske?). Detta medförde att experimentering med DSL
-    implementation var ett viktigt steg i processen att selektera lämpliga
-    tillämpade områden, då experimenteringen kunde visa hurvida ett område
-    var lämpat att skriva DSL för eller inte. TODO: oj vad hände med
-    denna meningen, jag är trött.
+Komposita områden uppstod då det framgick att inte alla områden var lämpliga att göra domänspecifika språk av (se avsnitt \ref{sec:lampligt}). Lösningen blev därför att tillämpa domänspecifika språk från de grundläggande områdena.
 
+Ett sätt komposita områden hittades var därmed som ett resultat av sökandet och experimenterandet med grundläggande områden. Ett annat sätt var att även komposita områden söktes direkt efter. Då användes precis som tidigare främst kursboken och kursmaterialet tillhörande \textit{Fysik för ingenjörer}. Komposita områden inkluderades för att täcka områden med mer direkt koppling till fysik. Till exempel har lutande plan en mer direkt koppling än vad analys har.
 
-  De komposita områden som valdes ut blev: Momentan- och
-  medel-rörelse, TODO: Mer, etc.
+SKA VI HA MED DESSA?
+
+De komposita områden som valdes ut blev: momentan- och medelrörelse OCH FLER.
 
   Momentan- och medel-rörelse eftersom de direkt utgör en stor delmängd
-  av alla problem inom mekanik på den aktuella nivån. Väldigt många av
+  av alla problem inom mekanik i \textit{Fysik för ingenjörer}. Väldigt många av
   de uppgifter studenter lär sig lösa inom mekanik är
   sträcka/hastighet/acceleration/kraft problem. Hur lång tid tar det att åka en
   sträcka om man har en viss medelhastighet? Om ett objekt med massa $m$
   påverkas av en kraft som varierar enligt $sin(t)$, vad är då
   momentanhastigheten vid $t=10$?
+  
+OCH FLER
+
+\subsection{Implementation av DSL för områdena}
+
+Implementationen av ett domänspecifikt språk till ett område började alltid med experimentering. Även om en del experiment redan gjorts i selektionsfsen behövdes mer göras. Det finns ingen absolut kanonisk form att skriva ett domänspecifikt språk på, framförallt inte för fysik. Experimentering var därför viktigt för att finna lämpliga representationer av syntax och andra element av domänspecifika språk.
+
+Vad som ansågs vara en bra, eller åtminstone tillräckligt bra, representation var i huvudsak baserat på gruppmedlemmarns intuition om Haskell och diskussion med handledaren. Implementationerna skulle vara både naturliga, i den mening att de gick att använda smidigt rent tekniskt. Men de skulle även vara lättförståliga. Den progamtekniskt elegantaste implementationen användes därför inte alltid.\todo{Mer om detta ''bra'' behövs nog. Tänkte vi ens så mycket på detta?} I praktiken var de slutgiltiga implementationerna oftast också de minsta implementationerna, med avseende på bland annat antal kodrader.
+
+De olika områdena krävde i varierande mån inläsning och studering av Haskell, Agda, fysik, matematik och domänspecifika språk. Till exempel krävde kapitlet om dimensioner inläsning om typnivå-programmering i Haskell. För att kunna implementera bevis bra studerades Agda.
+
+HÄR BEHÖVER JAG HJÄLP ATT EXPANDERA JOHANS STYCKEN
+
+I allmänhet implementerades DSL i Haskell som en kombination av
+syntaxträd, funktioner för att manipulera dessa träd, och
+evalueringsfunktioner till någon slags semantisk domän. Komposita
+DSL var istället mer TODO: beskrivning. Varje DSL, grundläggande och
+komposit, parades även ihop med en mängd fysikproblem att appliceras
+på, sådant att läsaren ska få förståelse för hur DSLen kan brukas
+utöver hur de implementeras.
+
+HUR DETALJERAT SKA NEDANSTÅENDE VARA? FRÅGA PATRIK OCKSÅ
+
+Syntax analyserades och modellerades i syntaxträd. För vissa områden
+(enheter?) definierades även ett semantiskt värde som representerade
+en slags kanonisk form.
+
+För vektorer gjordes ...
+
+För enheter gjordes ...
+
+För analys gjordes ...
+
+För annat gjordes ...
 
 
-TODO: Nåt om hur områdesvalen speglas i strukturen av läromaterialet?
+TESTER!!!
 
+KOMPOSITA ASPEKTER
 
-  \subsection{Implementation av DSL för områdena}
+Till de komposita områdena implementerades inga domänspecifika språk. Istället användes de tidigare språken som skapats för de grundläggande områdena. SKRIV MER HÄR NÄR VI GJORT NÅGRA KOMPOSITA
 
+Importera DSLerna för varandra för att göra mer komplicerade grejer.
 
-    Det första steget vid implementering av ett DSL var alltid
-    experimentering. Det finns ingen absolut, kanonisk metod att skriva
-    ett DSL på, speciellt för specifik fysik, så experimentering var
-    viktigt för att finna lämpliga representationer av syntax och andra
-    element av DSL.
+Eller, \emph{Bruk av de mer fundamentala/teoretiska DSLerna för att
+  angripa områden av mer ``tillämpad'' natur (såsom Krafter, Arbete,
+  etc) )}(?)
 
+\subsection{Skriva lärotext}
 
-  TODO: Förbättra
+I samband med att ett område implementerades skrevs brödtext till det. Till en början skrevs brödtext som fokuserade på att förklara programkoden. Detta var ofta ett naturligt val. Det var viktigt att programkoden gick att förstå innan kopplingar till matematik och fysik kunde förklaras. Det var nämligen brödtext av det slaget som skrevs senare. Avslutningsvis skrevs inledning och avslutning till kapitlet.
 
-    Av de områden som selekterats för projektet, valde varje gruppmedlem
-    varsitt område att arbeta med. Från experimentering fanns syntaxträd
-    och funktioner som väl kunde representerade matematiken och andra
-    koncept inom området. Kraven för vad som ansågs som en bra
-    representation var i huvudsak baserade på intuitionen hos
-    gruppmedlemmarna som erfarna haskell-programmerare, och i viss mån
-    individuellt definierade för varje gruppmedlem. I praktiken var de
-    slutgiltiga implementationerna oftast också de minsta
-    implementationerna, med avseende på bl.a. antal kodrader.
+Generellt under skrivningen av brödtexten togs det hänsyn till ARCS som presenterats i avsnitt \ref{sec:arcs}. TODO: skriv mer här när vet om ARCS.
 
-    TODO: Stycket om ``vår intuition som erfarna haskell-programmerare''
-    lät lite pretentiöst. Annat ordval? ``vår intuition som studenter
-    som läst DSLsofMath kursen"?''
+Lättsamt språk o en gnutta humor för att hålla kvar
+uppmärksamhet. Relaterat till Attention i ARCS modellen (2016
+använde den. Såg vettig ut).
 
-    Alla områden krävde i varierande mån inläsning och studering av
-    Haskell, Agda, fysik, matematik, och DSL. Till exempel krävde
-    enhets-DSLet inläsning om ett gäng Haskell-extensions och
-    typnivå-programmering. För att kunna bevisa korrekthet i beteende
-    för vissa DSL studerades även Agda.
+TODO: Expandera. Vad exakt använder vi för didaktisk metod? Samma
+som appliceras i Learn You a Haskell, mer eller mindre. Fånga
+uppmärksamhet med lite humor och lättsamhet etc.
 
-    I allmänhet implementerades DSL i Haskell som en kombination av
-    syntaxträd, funktioner för att manipulera dessa träd, och
-    evalueringsfunktioner till någon slags semantisk domän. Komposita
-    DSL var istället mer TODO: beskrivning. Varje DSL, grundläggande och
-    komposit, parades även ihop med en mängd fysikproblem att appliceras
-    på, sådant att läsaren ska få förståelse för hur DSLen kan brukas
-    utöver hur de implementeras.
+Brödtexten och programkoden skrevs sammanvävt i samma fil, i \textit{Literate Haskell}, se avsnitt \ref{sec:lhs}. Literat programmering passade bra ihop med hur läromaterialet skulle se ut då bägge betonade det jämnbördiga förhållandet mellan progamkod och förklaringar. För att läromaterialet skulle vara lättförståeligt var det också viktigt att presentera materialet i den ordning som en mänsklig läsare, och inte datorn, tyckte var enklast.\todo{I Quantity så är detta tydligt. Då gjordes en ''taste of types'' tidigt för att läsaren skulle förstå Quantity bättre, innan massa detaljer gicks in på. Frågan är dock om detta ska gås in på i rapporten?}
 
-    TODO: Vi bevisade/försökte bevisa grejer med. Skriv om att DSL i
-    allmänhet hade bevis eller tester för att verifiera korrekthet.
+TODO: Motivera varför vi valde Markdown istället för LaTeX i LHS filerna. Är detta viktigt att ha med?
 
+KOMPOSITA ASPEKTER
 
-  Syntax analyserades och modellerades i syntaxträd. För vissa områden
-  (enheter?) definierades även ett semantiskt värde som representerade
-  en slags kanonisk form.
+Vari vi visar att DSLerna både är praktiskt användbara, likt Wolfram
+Alpha, och att implementationen+applikationen hjälper oss förstå
+mekanik i allmänhet och probleminstanserna i synnerhet.
 
-  För vektorer gjordes ...
-
-  För enheter gjordes ...
-
-  För analys gjordes ...
-
-  För annat gjordes ...
-
-  Komposita:
-
-  Importera DSLerna för varandra för att göra mer komplicerade grejer.
-
-  Eller, \emph{Bruk av de mer fundamentala/teoretiska DSLerna för att
-    angripa områden av mer ``tillämpad'' natur (såsom Krafter, Arbete,
-    etc) )}(?)
-
-  !! Områden/moduler soom bygger vidare på redan implementerade områden.
-
-  stack, git kan säkert passa här för att beskriva hur vi samarbetade
-  med sammanfogningen.
-
-
-
-
-  \subsection{Skriva lärotext}
-
-  En massa bra och fina didaktiska metoder användes för att skriva
-  riktigt fin lärotext. Texten skrevs i LHS format, vilket innebar att
-  beskrivande text alltid finns i samband med koden den har att göra
-  med.
-
-  TODO: Referera till Donald knuth och literate programming. Literate
-  programming som ``paradigm'' känns relevant för hur vi skriver
-  lärotext.
-
-  TODO: Motivera varför vi valde LHS
-
-  TODO: Motivera varför vi valde hemsida istället för PDF.
-
-  TODO: Motivera varför vi valde Markdown istället för LaTeX i LHS
-  filerna.
-
-  Didaktik/språk/utlärningsmetod:
-
-  Lättsamt språk o en gnutta humor för att hålla kvar
-  uppmärksamhet. Relaterat till Attention i ARCS modellen (2016
-  använde den. Såg vettig ut).
-
-  TODO: Expandera. Vad exakt använder vi för didaktisk metod? Samma
-  som appliceras i Learn You a Haskell, mer eller mindre. Fånga
-  uppmärksamhet med lite humor och lättsamhet etc.
-
-  Skriva lärotext till DSL:
-
-  När en modul DSL var färdigimplementerad, ofta med nödtorftiga
-  kodkommentarer, skrevs brödtext som förklarade kod-delen. Detta
-  efterföljande steg för att förstå koden är viktigt, och är ett krav
-  för att man ska kunna skriva en förklaring (och förstå den) om
-  kopplingen till fysik.
-
-  Vidare skrevs brödtexten som sammankopplade DSL och fysik. När
-  själva koden var på plats skrevs hur den relaterar till och
-  modellera fysik. I slutändan skrevs också inledning och avslutning
-  till kapitlet.
-
-  Skriva läromaterial för hur DSL appliceras för problemlösning:
-
-  Vari vi visar att DSLerna både är praktiskt användbara, likt Wolfram
-  Alpha, och att implementationen+applikationen hjälper oss förstå
-  mekanik i allmänhet och probleminstanserna i synnerhet.
-
-
-
-  \section{Sammanställning, presentation, och publicering}
+\section{Sammanställning, presentation, och publicering}
 
   Läromaterialet publiceras på en internethemsida, varpå man kan läsa
   allt o ha skoj.
+
+TODO: Ska vi ha i målet att vi ska göra en hemsida istället för PDF, och sedan säga varför i diskussion om etik?
 
   \subsection{Beskrivning}
 

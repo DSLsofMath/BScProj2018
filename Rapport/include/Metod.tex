@@ -12,59 +12,48 @@
 % Metoddelen skrivs nästan alltid i dåtid (imperfekt) och ofta används
 % passiv form för att beskriva forskningsaktiviteter.
 
-\chapter{Metod/Genomförande: Beskrivning av konstruktionen av läromaterialet}
-
-% TODO: Är det intressant att ha med HUR vi, genom research, kom fram
-% till att göra en specifik sak och varför den är bra?
-%
-% E.g. "Genom att läsa i bok A om område B så kom vi fram till att vi
-% ska applicera metod C för att lösa problem D. Enligt bok A är metod
-% C bra därför att ..."
-% vs.
-% "Vi valde att lösa problem D genom att applicera metod C. Metod C är
-% bra därför att ...[ev. källhänvisning]."
-
-TODO: Nånting om hur processen såg ut, lite mer meta. I.e. hur
-arbetade vi i allmänhet? Scrum, vattenfall? Med issue-tracker, med
-jira? Versionshantering? Etc.
-
-\begin{draft}
-
-Läromaterialet består av ett antal kapitel som vardera behandlar ett fysikaliskt område. Skapandet av läromaterialet har skett \textit{kapitelvis}. För varje kapitel har en process följts. Denna process illustreras i figur \ref{fig:hejhejhej}.
-
-  \begin{figure}[h]
-    \includegraphics[width=\linewidth]{figure/hejhejhej.jpg}
-    \caption{Översikt över processen med att skapa kapitlena i läromaterialet.}
-    \label{fig:hejhejhej}
-  \end{figure}
-
-Som figur \ref{fig:hejhejhej} visar så bestod processen med att skapa ett kapitel av tre steg. Det första steget var att välja ett fysikaliskt område att behandla. Den andra steget var att implemenetera ett DSL för området. Det tredje steget var att skriva förklarande brödtext till det området.
-
-Figuren visar också att, beroende på utfallet i implementationssteget, så antingen skrotas ett område eller gås vidare med. Huruvida området är lämpligt diskuteras i <ett diskussionskapitel>.
-
-Läromaterialet publicerades i slutändan på en tillhörnade hemsida.
-
-Resten av detta kapitel behandlar de olika stegen i den kapitelvisa processen mer i detalj. Det behandlar också publicering på hemsidan i närmare detalj.
-
-
-\end{draft}
-
-TODO: Sektion om våra litteraturstudier? Känns lite skumt att ha,
-men 2016 hade. Litteratur är väl bara intressant att ha med som
-refens när man refererar till fakta eller motiverar ett val? Själva
-studieprocessen, i.e. HUR man nådde beslutet, är väl inte alls lika
-intressant att ha med som VARFÖR man tog beslutet?
+\chapter{Genomförande: Konstruktion av läromaterial, skapande av hemsida och utvärdering med testgrupp}
 
 \begin{binge}
-\section{Selektion av arbetsområden}
 
-TODO: Hur hjälpte det senare Åke mötet? Med vad?
+Projektets genomförande har bestått av tre delar. Den första delen var konstruktionen av själva läromaterialet. Den andra delen var skapandet av hemsidan läromaterialet publicerats på. Den tredje delen var utvärdering av läromaterialet med en testgrupp.
 
-\begin{draft}
+Konstruktionen av läromaterialet har varit den största delen och har även fortgått genom hela projektets gång. När läromaterialet var halvvägs färdigt skapades en hemsida dit läromaterialet publicerats. Publiceringen skedde sedan dess löpande. I slutet av projektet gjordes utvärderingen, där en testgrupp fick svara på frågor om vad de tyckte om läromaterialet.
+
+\section{Konstruktion av läromaterialet}
+
+Läromaterialet består av ett antal kapitel som vardera behandlar separata fysikaliska områden. Skapande av varje kapitel skedde därför till största delen fristående från andra kapitel. Skapande av alla kapitel bestod i sin tur av tre faser, som såg likadana ut för alla kapitel. Dessa faser var selektion av område, implementation av domänspecifika språk för området samt skrivande av brödtext till området.
+
+Denna skapandeprocess kan delas upp i två axlar: en utefter kapitel och en utefter fas. Det här illustreras i figur \ref{fig:oversiktA}. Figuren visar att varje kombination av kapitel och fas är en del i projektet som arbetades med.
+
+\begin{figure}[tph]
+    \centering
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{figure/oversiktA.jpg}
+        \caption{Delarna visas distinkta och var för sig.}
+        \label{fig:oversiktA}
+    \end{subfigure}%
+    ~ 
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{figure/oversiktB.jpg}
+        \caption{Delarna visas med gränsöverskridande överlapp.}
+        \label{fig:oversiktB}
+    \end{subfigure}
+    \caption{Översikt över hur skapandeprocessen av läromaterialet såg ut. Processen kan delas upp utefter två axlar: kapitel och fas. Varje kombination är en del som arbetats med.}
+\end{figure}
+
+Även om detta sätt att dela upp processen är översiktlig är den inte helt verklighetstrogen. I praktiken fanns det överlapp mellan olika delar, både med avseende på kapitel och fas. Det här illustereras i figur \ref{fig:oversiktB}. Där ser man att selektionen av områden skedde för flera kapitel samtidigt. Detta då arbtetet med att hitta områden ofta gav flera områden samtidigt. I figuren ser man också att implementation av domänspecifika språk och skrivande av brödtext skedde samtidigt.
+
+De tre följande avsnitten beskriver i mer detalj hur selektionen, implementationen och skriandet såg ut.
+
+\subsection{Selektion}
+
 
 De områden som behandlas i läromaterialet kan klassificieras som antingen \textit{grundläggande} eller \textit{komposita}. Ett grundläggande område är ett område som inte bygger på något tidigare område. Ett exempel är vektorer. Ett komposit område är ett område som bygger på andra områden. Ett exempel är lutande plan, som använder sig av vektorer.
 
-\subsection{Grundläggande områden}
+\subsubsection{Grundläggande områden}
 
   Först kontaktades Åke Fäldt, som är examinator för kursen TIF085,
   Fysik för Ingenjörer. Åke befrågades om vilka områden han tycker att
@@ -109,9 +98,9 @@ De områden som behandlas i läromaterialet kan klassificieras som antingen \tex
   Åke Fäldt pekade ut som speciellt viktigt, och något som studenter har
   svårt för.
 
-  \begin{binge}
+
   
-  \subsection{Komosita områden}
+  \subsubsection{Komosita områden}
   
     När en mängd av de fristående, grundläggande områdena var
     fädigimplementerade så formulerades mer tillämpade områden i form
@@ -132,7 +121,7 @@ De områden som behandlas i läromaterialet kan klassificieras som antingen \tex
     tillämpade områden, då experimenteringen kunde visa hurvida ett område
     var lämpat att skriva DSL för eller inte. TODO: oj vad hände med
     denna meningen, jag är trött.
-  \end{binge}
+
 
   De komposita områden som valdes ut blev: Momentan- och
   medel-rörelse, TODO: Mer, etc.
@@ -144,28 +133,23 @@ De områden som behandlas i läromaterialet kan klassificieras som antingen \tex
   sträcka om man har en viss medelhastighet? Om ett objekt med massa $m$
   påverkas av en kraft som varierar enligt $sin(t)$, vad är då
   momentanhastigheten vid $t=10$?
-\end{draft}
+
 
 TODO: Nåt om hur områdesvalen speglas i strukturen av läromaterialet?
 
-\end{binge}
 
-\begin{binge}
-  \section{Implementation av DSL för områdena}
+  \subsection{Implementation av DSL för områdena}
 
-  \begin{draft}
+
     Det första steget vid implementering av ett DSL var alltid
     experimentering. Det finns ingen absolut, kanonisk metod att skriva
     ett DSL på, speciellt för specifik fysik, så experimentering var
     viktigt för att finna lämpliga representationer av syntax och andra
     element av DSL.
-  \end{draft}
+
 
   TODO: Förbättra
 
-  \subsection{Implementation av }
-
-  \begin{draft}
     Av de områden som selekterats för projektet, valde varje gruppmedlem
     varsitt område att arbeta med. Från experimentering fanns syntaxträd
     och funktioner som väl kunde representerade matematiken och andra
@@ -196,7 +180,7 @@ TODO: Nåt om hur områdesvalen speglas i strukturen av läromaterialet?
 
     TODO: Vi bevisade/försökte bevisa grejer med. Skriv om att DSL i
     allmänhet hade bevis eller tester för att verifiera korrekthet.
-  \end{draft}
+
 
   Syntax analyserades och modellerades i syntaxträd. För vissa områden
   (enheter?) definierades även ett semantiskt värde som representerade
@@ -210,7 +194,7 @@ TODO: Nåt om hur områdesvalen speglas i strukturen av läromaterialet?
 
   För annat gjordes ...
 
-  \subsection{Komposita områden}
+  Komposita:
 
   Importera DSLerna för varandra för att göra mer komplicerade grejer.
 
@@ -223,10 +207,10 @@ TODO: Nåt om hur områdesvalen speglas i strukturen av läromaterialet?
   stack, git kan säkert passa här för att beskriva hur vi samarbetade
   med sammanfogningen.
 
-\end{binge}
 
-\begin{binge}
-  \section{Skriva lärotext}
+
+
+  \subsection{Skriva lärotext}
 
   En massa bra och fina didaktiska metoder användes för att skriva
   riktigt fin lärotext. Texten skrevs i LHS format, vilket innebar att
@@ -244,7 +228,7 @@ TODO: Nåt om hur områdesvalen speglas i strukturen av läromaterialet?
   TODO: Motivera varför vi valde Markdown istället för LaTeX i LHS
   filerna.
 
-  \subsection{Didaktik/språk/utlärningsmetod}
+  Didaktik/språk/utlärningsmetod:
 
   Lättsamt språk o en gnutta humor för att hålla kvar
   uppmärksamhet. Relaterat till Attention i ARCS modellen (2016
@@ -254,7 +238,7 @@ TODO: Nåt om hur områdesvalen speglas i strukturen av läromaterialet?
   som appliceras i Learn You a Haskell, mer eller mindre. Fånga
   uppmärksamhet med lite humor och lättsamhet etc.
 
-  \subsection{Skriva lärotext till DSL}
+  Skriva lärotext till DSL:
 
   När en modul DSL var färdigimplementerad, ofta med nödtorftiga
   kodkommentarer, skrevs brödtext som förklarade kod-delen. Detta
@@ -267,14 +251,14 @@ TODO: Nåt om hur områdesvalen speglas i strukturen av läromaterialet?
   modellera fysik. I slutändan skrevs också inledning och avslutning
   till kapitlet.
 
-  \subsection{Skriva läromaterial för hur DSL appliceras för problemlösning}
+  Skriva läromaterial för hur DSL appliceras för problemlösning:
 
   Vari vi visar att DSLerna både är praktiskt användbara, likt Wolfram
   Alpha, och att implementationen+applikationen hjälper oss förstå
   mekanik i allmänhet och probleminstanserna i synnerhet.
-\end{binge}
 
-\begin{binge}
+
+
   \section{Sammanställning, presentation, och publicering}
 
   Läromaterialet publiceras på en internethemsida, varpå man kan läsa
@@ -310,9 +294,7 @@ TODO: Nåt om hur områdesvalen speglas i strukturen av läromaterialet?
   kanske vara lättare/roligare att lära sig om sidan är fin och
   lättläst? Att javascript inte krävs gör att sidan kan visas ordentligt
   även om man sitter i U-land med dålig/gammal/billig telefon.
-\end{binge}
 
-\begin{binge}
   \section{Test och återkoppling}
 
   % Återkoppling från examinator (NAD): "Nils Anders Danielsson <nad@cse.gu.se>

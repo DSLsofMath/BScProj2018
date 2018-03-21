@@ -143,6 +143,8 @@ to single variable expressions, which can be represented as
 compositions of unary functions, and define the arithmeric operators
 for the functions instead.
 
+$$f OP g = x \mapsto (f(x) OP g(x))$$
+
 >     | FunExpr :+ FunExpr
 >     | FunExpr :- FunExpr
 >     | FunExpr :* FunExpr
@@ -293,86 +295,64 @@ generated expressions in complexity.
 
 
 
+TODO: Move to after differentiation and integration and all that.
+      Begin by just doing all syntactical stuff, and then end the chapter
+      with evaluation, visualization, and testing.
 The value of evaluation
 ----------------------------------------------------------------------
 
+What comes after construction of function expressions? Well, using them of course!
+
+One way of using a function expression is to evaluate it, and use it
+just as you would a normal Haskell function. To do this, we need to
+write an evaluator.
+
+An evaluator simply takes a syntactic representation and returns the
+semantic value, i.e. `eval :: SYNTAX -> SEMANTICS`.
+
+In the case of our calculus language:
+
+> eval :: FunExpr -> (RealNum -> RealNum)
+
+To then evaluate a `FunExpr` is not very complicated. The elementary
+functions and the `Id` function are simply substituted for their
+Haskell counterparts.
+
+> eval Exp = exp
+> eval Log = log
+> eval Sin = sin
+> eval Cos = cos
+> eval Asin = asin
+> eval Acos = acos
+> eval Id = id
+
+`Const` is evaluated according to the definition $const(c) = x \mapsto c$
+
+> eval (Const c) = \x -> c
+
+How to evaluate arithmetic operations on functions may not be as
+obvious, but we just implement them as they were defined earlier in
+the chapter.
+
+> eval (f :+ g) = \x -> (eval f x + eval g x)
+> eval (f :- g) = \x -> (eval f x - eval g x)
+> eval (f :* g) = \x -> (eval f x * eval g x)
+> eval (f :/ g) = \x -> (eval f x / eval g x)
+
+Function composition is similarly evaluated according to the earlier definition
+
+> eval (f :. g) = \x -> eval f (eval g x)
+
 > {-
 
-> avg (y1, x1) (y2, x2) = (y2 - y1) / (x2 - x1)
-
-is equivalent to
-
-> avg' y x t1 t2 = ((y :$ t2) - (y :$ t1)) / ((x :$ t2) - (x :$ t1))
-
-which is equivalent to
-
-> avg'' y x = Delta y / Delta x
-
-`eval` evaluates an expression. Converts from syntactic domain to semantic domain.
-
-> eval :: [(String, Expr)] -> Expr -> Val
-> eval env (Const x) = RealVal x
-> eval env (a :+ b) = evalBinop env a b (:+) (+)
-> eval env (a :- b) = evalBinop env a b (:-) (-)
-> eval env (a :* b) = evalBinop env a b (:*) (*)
-> eval env (a :/ b) = evalBinop env a b (:/) (/)
-> eval env (f :. g) = eval env (Lambda "_x" (f :$ (g :$ "_x")))
-> eval env (Var s) =
->     eval env (fromMaybe (error ("Variable "++s++" is not in environment: "++show env))
->                         (lookup s env))
-> eval env (Lambda p b) = LambdaVal p (subst env b)
-> eval env (Func "negate") = FuncVal negate
-> eval env (Func "abs") = FuncVal abs
-> eval env (Func "signum") = FuncVal signum
-> eval env (Func "log") = FuncVal log
-> eval env (Func "exp") = FuncVal exp
-> eval env (Func "cos") = FuncVal cos
-> eval env (Func "sin") = FuncVal sin
-> eval env (Func "asin") = FuncVal asin
-> eval env (Func "acos") = FuncVal acos
-> eval env (Func "atan") = FuncVal atan
-> eval env (f :$ arg) = case eval env f of
->     LambdaVal p b -> eval [(p, subst env arg)] b
->     FuncVal f     -> RealVal (f (valToReal (eval env arg)))
->     _             -> error "Not a function"
+>   show (Delta h f) = "(delta_" ++ showReal h ++ " " ++ show f ++ ")"
+>   show (D f) = "(D " ++ show f ++ ")"
+>   show (I c f) = "(I at " ++ show c ++ " for " ++ show f ++ ")"
+>
 > eval env (Delta x) = LambdaVal "_a" (Lambda "_b" ((x' :$ "_b") - (x' :$ "_a")))
 >   where x' = subst env x
 > eval env (D f) = eval env (simplify (derive f))
 
-> evalBinop env a b cons op = case (eval env a, eval env b) of
-
-Arithmetic on real numbers is just as normal
-
->     (RealVal a', RealVal b') -> RealVal (a' `op` b')
-
-A nice definition for function (addition/subtraction/...) that works for
-differentials: $f + g = h$ where $h(x) = f(x) + g(x)$
-
->     (LambdaVal p1 b1, LambdaVal p2 b2) ->
->         LambdaVal "_x" (cons (Lambda p1 b1 :$ "_x")
->                              (Lambda p2 b2 :$ "_x"))
-
-The semantic value of an evaluation. Can either be a real number, a haskell function, or a lambda(?)
-TODO: Should a lambda really be returnable here? Kinda makes sense, kinda doesn't...
-
-TODO: LambdaVal is pointless. Express as FuncVal, where an `eval` happens in the body.
-
-> data Val = RealVal RealNum
->          | LambdaVal String Expr
->          | FuncVal (RealNum -> RealNum)
-
-Helper functions to improve ergonomics of evaluation
-
-> valToReal (RealVal x) = x
-
-> valToFunc (FuncVal f) = f
-> valToFunc (LambdaVal p b) = \x -> valToReal (eval [(p, Const x)] b)
-
-> evalReal :: [(String, Expr)] -> Expr -> RealNum
-> evalReal env e = valToReal (eval env e)
-
-> evalF :: [(String, Expr)] -> Expr -> (RealNum -> RealNum)
-> evalF env e = valToFunc (eval env e)
 
 Substitution function to instantiate expression for environment
 

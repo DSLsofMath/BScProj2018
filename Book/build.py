@@ -105,15 +105,7 @@ sources = [
     ]),
     ("Calculus", [
         ("Calculus", "Physics/src/Calculus/Calculus.lhs"),
-    ]),
-    ("Calculus", [
-        ("Calculus", "Physics/src/Calculus/Calculus.lhs"),
-    ]),
-    ("Testtt", [
-        ("Test", "Physics/src/Calculus/Calculus.lhs"),
     ])
-
-
 ]
 
 if not os.path.exists("build"):

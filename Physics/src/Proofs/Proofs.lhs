@@ -27,9 +27,39 @@ Bevisen sker i Haskell mha av Curry Howard korrespondensen. Den säger att påst
 Rigorösa namn
 -------------
 
+Vi börjar med att rigoröst definera alla ingående namn i kinematikens trevliga värld. I Haskell ska vi koda upp saker, och de mest grundläggande saken är uttryck, och det mest grundläggande uttrycket är namnen vi här presenterar. Vi börjar skriva
+
+< data Expr = ...
+
+Vi ska ha *påståenden* som säger si och så om uttryck. Eftersom påståenden är typer måste även *olika* uttryck vara typer. Det löses av att tillägget `DataKinds` används.
+
+Vi ska även koda upp *likheter* mellan uttryck. Till det använder vi nedanstående GADT.
+
+> data Equal (a :: Expr) (b :: Expr) where
+
+
+Vardan denna komplexa och skumma grej? Jo, det är så här att en *likhet* gäller mellan två uttryck. Och uttryck är en typ av sorten `Expr`. Så vi vill tvinga `Equal x y` typen att `x` och `y` ska vara just uttryck, och inte vad som helst.
+
+En grundläggande likhet är
+
+>   Refl :: Equal c c
+
+HÄR ÄR JAG NU
+
+
+
+Nå, låt oss komma till själva fysiken.
+
 ![Overview](Overview.png)
 
 Vi tänker i termer av en låda som förflyttar sig längs en axel. Den har olika positioner vi olika tidpunkter. Därför blir $x(t)$, $v(t)$ och $a(t)$ lådans *aktuella* position, hastighet respektive acceleration vid *en viss* tidpunkt $t$. $t$ är ett "tidsindex" som pekar ut en viss tidpunkt.
+
+Vi kodar upp tid och funktionerna
+
+> data Expr = T
+>           | Xfun
+>           | Vfun
+>           | Afun
 
 Det här med "final", "initial" och "0" syftar på *specifika* tidpunkter i ett experiment. Initialt och 0 på den initiala tidpunkten och final på den slutgiltiga tidpunkten. Dessa är *fixa* tidpunkter. Bara $f$ och $i$ brukar anges för att syfta på det finala respektive initiala *tillståndet*. I praktiken blir dom t.ex. initial hastighet beroende på vilken storhet man snackar om.
 
@@ -43,6 +73,7 @@ Detta ger följande definerande samband.
   v_f &= v(t_f) \\
   v_i &= v(t_i) = v_0 \\
 \end{align}
+
 
 Varför är inte accelerationen med? Jo, för dessa fyra formler uttnyttjar att accelerationen är konstant. Är $a$ konstant? Vad syftar ens bara $a$ på? I detta sammanhanget menar man mer explcit att 
 
@@ -71,6 +102,10 @@ Nu när alla namn på saker och ting rigoröst blivit definerade, och även samb
 
 
 
+------------------------------
+
+
+
 
 
 En typ av sort Equal x y är ett bevis och ett värde är då beviset
@@ -79,19 +114,19 @@ Men det som är Equal mellan är uttryck. Detta behöver man skilja åt, så kan
 
 Används som typ
 
-> data Expr = Div Expr Expr
->           | Mul Expr Expr
->           | A
->           | V
->           | T
+< data Expr = Div Expr Expr
+<           | Mul Expr Expr
+<           | A
+<           | V
+<           | T
 
-> data Equal (a :: Expr) (b :: Expr) where
->   Refl :: Equal c c
->   Avg :: Equal A (Div V T)
+< data Equal (a :: Expr) (b :: Expr) where
+<   Refl :: Equal c c
+<   Avg :: Equal A (Div V T)
 
-> x = Refl
-> y = Avg
-> z = Refl :: (Equal V V)
+< x = Refl
+< y = Avg
+< z = Refl :: (Equal V V)
 
 "Ekvivalens" mellan två uttryck ska inte gå. Behöver kanske ha sort för bevis. Bevis här är bara att likheter gäller.
 
@@ -100,18 +135,19 @@ Används som typ
 > --  Self :: Eqvi c c -- x implies x
 > --  MulUpDiv :: Eqvi (Equal a (Div b c)) (Equal (Mul a c) b)
 
-> data Eqvi a b where
->   Self :: Eqvi c c -- x implies x
->   MulUpDiv :: Eqvi (Equal a (Div b c)) (Equal (Mul a c) b)
+< data Eqvi a b where
+<   Self :: Eqvi c c -- x implies x
+<   MulUpDiv :: Eqvi (Equal a (Div b c)) (Equal (Mul a c) b)
 
-> -- Tar en ekivalens, och dessa ena premiss, 
-> -- och skapar dess konsekvens
-> transform :: a -> Eqvi a b -> b
-> transform = undefined
+< -- Tar en ekivalens, och dessa ena premiss, 
+< -- och skapar dess konsekvens
+< transform :: a -> Eqvi a b -> b
+< transform = undefined
 
 
 > reflexive :: Equal a a
 > reflexive = Refl
+
 
 > symetric :: Equal a b -> Equal b a
 > symetric Refl = Refl
@@ -122,9 +158,9 @@ Används som typ
 > -- ?
 
 
-> -- Axiom
-> s0 :: Equal A (Div V T)
-> s0 = Avg
+< -- Axiom
+< s0 :: Equal A (Div V T)
+< s0 = Avg
 
-> s1 :: Equal (Mul A T) V
-> s1 = transform s0 MulUpDiv
+< s1 :: Equal (Mul A T) V
+< s1 = transform s0 MulUpDiv

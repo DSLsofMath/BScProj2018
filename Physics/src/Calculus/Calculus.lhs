@@ -52,8 +52,9 @@ Boring boilerplate
 
 Firstly, let's get the boring stuff out of the way!
 
-This extension will be used later to allow haskell string literals to be implicitly
-typed as Expr.
+Later on, to make our syntax tree nicer to create, we will want string
+literals to automatically be interpreted as variables in our
+language. This is made possible by the `OverloadedStrings` extension!
 
 > {-# LANGUAGE OverloadedStrings #-}
 
@@ -78,39 +79,114 @@ functions, derivatives, and integrals later!
 
 
 
-Data type definitions and lambda calculus
+Semantics, syntax, and lambda calculus
 ----------------------------------------------------------------------
 
-Real numbers are real important, and we will use them a lot in this
-module.  For simplicitys sake we'll just use a `Double`, but important
-to remember is that `Double`s are if finite precision, and rounding
-errors may occur.
+What is a value in calculus? What kind of values do functions in
+calculus operate on and produce?
+
+Let's look at derivatives to get an idea of what the semantic values of calculus are.
+
+$$D(x^2) = 2x$$
+
+$$D(f(x)) = f'(x)$$
+
+Hmm, these examples left me more confused than before. The
+differentiation function seems to take an expression as an argument,
+and return the derived expression, with regards to a variable. But
+what is an expression represented as a semantic value? It's not a
+number yet, the variable in the body needs to be substituted first in
+order for the expression to be computable. Is it some kind of function
+then? Well, yes it is! If we reinterpret the differentiation
+expressions above, it makes more sense.
+
+$$D(x^2) = 2x \text{ with regards to } x$$
+
+Is really equivalent to
+
+$$D(x \mapsto x^2) = x \mapsto 2x$$
+
+or
+
+$$D(square) = double$$.
+
+So the type of unary real functions seems like a great fit for a
+semantic value for calculus, and it is! Great! But... how do we
+represent a real number in Haskell? There is no `Real` type to
+use. Well, for simplicitys sake we can just say that a real number is
+basically the same as a `Double`, and it is (basically). The problem
+with `Double` is that it's of finite precision, so rounding errors may
+occur. We'll have to keep that in mind when doing calculations!
 
 > type RealNum = Double
+>
+> -- The type of the semantic value of calculus is the unary real function
+> --   RealNum -> RealNum
 
-This is the core syntax tree of our language of calculus. Note that in
-this syntax, a lambda (aka. anonymous function or mapping) is
-considered an expression, just as a real number consant is.
+Now, to the syntax. We've concluded that real functions are really
+what calculus is all about, so let's model them.
 
-TODO: Add integral constructor to `Expr`. Will also need eval, derive,
-and integrate case.
+> data FunExp
 
-> data Expr = Const RealNum      -- Real constant
->           | Expr :+ Expr       -- Plus (Addition)
->           | Expr :- Expr       -- Minus (Subtraction)
->           | Expr :* Expr       -- Times (Multiplication)
->           | Expr :/ Expr       -- Divided by (Division)
->           | Expr :. Expr       -- Composition (After, o)
->           | Var String         -- Variable
->           | Func String        -- Builtin function
->           | Lambda String Expr -- Lambda function
->           | Delta Expr         -- Difference, like "Δx"
->           | D Expr             -- Derivative, like "f'"
->           | Expr :$ Expr       -- Function application
+First of all, there's the elementary functions. We can't have them all, but we'll put in all the fun ones.
+
+>     = Exp
+>     | Log
+>     | Sin
+>     | Cos
+>     | Asin
+>     | Acos
+
+Then, there are the arithmetic operators. "But wait", you say, "Aren't
+arithmetic operators used to combine expressions, not functions?". I
+hear you, Billy, but we will do it anyways. We could make a `Lambda`
+constructor for "VAR $\mapsto$ EXPR" expressions and define the
+arithmetic operators for the expression type, but this would all make
+our language much more complicated! Instead, we'll restrain ourselves
+to single variable expressions, which can be represented as
+compositions of unary functions, and define the arithmeric operators
+for the functions instead.
+
+>     | FunExp :+ FunExp
+>     | FunExp :- FunExp
+>     | FunExp :* FunExp
+>     | FunExp :/ FunExp
+
+And then theres that single variable. As everything is a function
+expression, the function that best represents "just a variable" would be $x \mapsto x$,
+which is the same as the $id$ function.
+
+>     | Id
+
+In a similar vein, the constant function. $const c = x \mapsto c$
+
+>     | Const RealNum
+
+Then theres function composition. If you didn't already know it, it can be defined as
+
+$$f . g = x \mapsto f(g(x))$$
+
+>     | FunExp :. FunExp
+
+Finally, the real heroes: The functions of difference, differentiation,
+and integration! They will be well explored later. But for now, we
+define the syntax for them as
+
+>     | Delta RealNum FunExp -- Difference, like $\Delta_h f$
+>     | D FunExpr            -- Derivative, like $D(f)$ or $\frac{df(x)}{dx}
+>     | I RealNum FunExpr    -- Indefinite integral with constant, like $\int f = F + C$ or $\int f(x) dx = x \mapsto F(x) + C$
 >   deriving Eq
 
-Quentin Quickly Querys Queer Qubits
------------
+Nice! This syntax tree will allow us to do symbolically (at the syntax
+level) what we otherwise would have to do numerically (at the
+semantics level).
+
+
+
+Lul so arbitrary
+---------------------------------------------
+
+TODO: Move this section somewhere else
 
 > genConstructor :: Gen (Expr -> Expr -> Expr)
 > genConstructor = elements [(:+), (:-), (:*), (:/)]
@@ -129,39 +205,12 @@ Quentin Quickly Querys Queer Qubits
 >   -- Maybe set the max length explicitly
 >   arbitrary = listOf genExpr >>= genConcat
 
-A `const` and `id` function could be useful. We can describe them like this:
 
-> const' c = Lambda "x" (Const c)
->
-> id' = Lambda "x" "x"
 
-We implement Num, Fractal, Floating, and IsString for Expr to make it nicer to use
+Showing off
+---------------------------------------------
 
-> instance Num Expr where
->       a + b = a :+ b
->       a - b = a :- b
->       a * b = a :* b
->       abs e = Func "abs" :$ e
->       signum e = Func "signum" :$ e
->       fromInteger = Const . fromInteger
-
-> instance Fractional Expr where
->       a / b = a :/ b
->       fromRational = Const . fromRational
-
-> instance Floating Expr where
->     pi = Const pi
->     exp e = Func "exp" :$ e
->     log e = Func "log" :$ e
->     sin e = Func "sin" :$ e
->     cos e = Func "cos" :$ e
->     asin e = Func "asin" :$ e
->     acos e = Func "acos" :$ e
->     atan e = Func "atan" :$ e
->     sinh = undefined; cosh = undefined; asinh = undefined; acosh = undefined; atanh = undefined;
-
-> instance IsString Expr where
->     fromString = Var
+Our function expressions are nice and all, but they're not very readable.
 
 We want to be able to print our expressions in a human-readable format
 
@@ -235,6 +284,8 @@ differentials: $f + g = h$ where $h(x) = f(x) + g(x)$
 
 The semantic value of an evaluation. Can either be a real number, a haskell function, or a lambda(?)
 TODO: Should a lambda really be returnable here? Kinda makes sense, kinda doesn't...
+
+TODO: LambdaVal is pointless. Express as FuncVal, where an `eval` happens in the body.
 
 > data Val = RealVal RealNum
 >          | LambdaVal String Expr

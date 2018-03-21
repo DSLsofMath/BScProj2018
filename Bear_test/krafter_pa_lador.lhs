@@ -1,31 +1,31 @@
 
--- Vill använda vectors
-import Vector
--- Alla vektorer är i Newton
+> import Vector
 
--- Allt annat i Quantity.
+Alla vektorer är i Newton
 
-fg = V2 0 10
-m = 2
-alpha = 30
+Allt annat i Quantity.
 
-enh_normal :: Double -> Vector2
-enh_normal a = V2 ((sin a)) (cos a)
-
-f_l_ :: Vector2 -> Angle -> Vector2
-f_l_ fa a = scale ((magnitude fa) * (cos a)) (enh_normal a)
-
-fn :: Vector2 -> Angle -> Vector2
-fn fa a = negate (f_l_ fa a)
+> fg = V2 0 (-10)
+> m = 2
+> alpha = 30
+> 
+> enh_normal :: Double -> Vector2
+> enh_normal a = V2 (cos a) (sin a)
+> 
+> f_l_ :: Vector2 -> Angle -> Vector2
+> f_l_ fa a = scale ((magnitude fa) * (cos a)) (enh_normal (a-(pi/2)))
+> 
+> fn :: Vector2 -> Angle -> Vector2
+> fn fa a = negate (f_l_ fa a)
 
 -- Friktionsfritt plan:
 
 
 
-fr :: Vector2 -> Angle -> Vector2
-fr fa a = (fn fa a) + fa
+> fr :: Vector2 -> Angle -> Vector2
+> fr fa a = (fn fa a) + fa
 
-{-| Tester:
+ Tester:
 *Main> fr (V2 0 10) 0
 (0.0 x, 0.0 y)                                  Good:   Inge lutning - står still.
 *Main> fr (V2 0 (-10)) 0
@@ -44,14 +44,14 @@ fr fa a = (fn fa a) + fa
 
 *Main> fr (V2 0 10) (pi/6)
 (-4.330127018922193 x, 2.499999999999999 y)
--}
 
 
--- Friktionskonstant - i rörelse:
-us = 0.5
-uk = 0.4
+Friktionskonstant - i rörelse:
 
-type FricConst = Double
+> us = 0.5
+> uk = 0.4
+
+> type FricConst = Double
 
 -- friktionen 
 --  friks = Fn * us,    us = friktion statisk
@@ -59,40 +59,46 @@ type FricConst = Double
 -- 
 --  Vi har normalkraften, o beh bara konstanterna.
 --  Speed har inget att göra med N för friktion? Dock gäller F*m = Nm = work = J = bugatti bränner däck.
-motscalar :: FricConst -> Vector2 -> Scalar
-motscalar u f = u * (magnitude f)
+
+> motscalar :: FricConst -> Vector2 -> Scalar
+> motscalar u f = u * (magnitude f)
 
 -- Från en rörelse eller vekt, fixa komplementet
 
-enh_vekt :: Vector2 -> Vector2
-enh_vekt v  | magnitude v == 0 = (V2 0 0)
-            | otherwise = scale (1 / (magnitude v)) v
-
-
-motkrafts :: FricConst -> Scalar -> Vector2 -> Vector2
-motkrafts u s v = scale (u * s) (negate (enh_vekt v))
-
-motkraftv :: FricConst -> Vector2 -> Vector2 -> Vector2
-motkraftv u n v = scale (u * (magnitude n)) (negate (enh_vekt v))
+> enh_vekt :: Vector2 -> Vector2
+> enh_vekt v  | magnitude v == 0 = (V2 0 0)
+>             | otherwise = scale (1 / (magnitude v)) v
+> 
+> 
+> motkrafts :: FricConst -> Scalar -> Vector2 -> Vector2
+> motkrafts u s v = scale (u * s) (negate (enh_vekt v))
+> 
+> motkraftv :: FricConst -> Vector2 -> Vector2 -> Vector2
+> motkraftv u n v = scale (u * (magnitude n)) (negate (enh_vekt v))
 
 -- Nu ska vi bara summera
 
-fru :: Vector2 -> Angle -> FricConst -> Vector2
-fru fa a u = (fr fa a) + (motkraftv u (fn fa a) (fr fa a))
+> fru :: Vector2 -> Angle -> FricConst -> Vector2
+> fru fa a u = (fr fa a) + (motkraftv u (fn fa a) (fr fa a))
+> 
+> fru' :: Vector2 -> Angle -> FricConst -> Vector2
+> fru' fa a u = (motkraftv u (fn fa a) (fr fa a))
 
-{-|
+
+
+
 Hmm om jag försöker skala riktningsvektorer till sin enhetsvektor så blir det blub med nollvektorn.
 
-> enh_vekt v = scale (1 / (magnitude v)) v 
+enh_vekt v = scale (1 / (magnitude v)) v 
 $ enh_vekt (V2 0 0)
 (NaN x, NaN y)
 
 Jag skulle anta att enh_vekt bara gäller då (magnitude v) =/= 0.
--}
+
 
 -- Fixed nollvektorn.
 
-{-
+
 *Main> fru fg (pi/4) 0
 (-5.0 x, 4.999999999999999 y)
 *Main> fru fg (pi/4) 1
@@ -121,6 +127,41 @@ Hmm?
 Den statiska friktionen är konstig. Den borde stå still vid låg vinkel o hög friktion.
 
 Jag summerar ju visserligen krafterna, så det är nog något lurt med friktionshanteringen.
--}
+
+
+
+Tester:
+
+fr
+*Main> fr fg (pi/3)
+(-4.330127018922194 x, 7.499999999999999 y)
+*Main> fr fg (pi/6)
+(-4.330127018922193 x, 2.499999999999999 y)
+
+
+fru
+*Main> fru fg (pi/3) 1
+(-1.8301270189221928 x, 3.1698729810778055 y)
+*Main> fru fg (pi/6) 1
+(3.169872981077808 x, -1.8301270189221936 y)
+
+
+
+fru'
+*Main> fru' fg (pi/3) 1
+(2.500000000000001 x, -4.330127018922194 y)
+*Main> fru' fg (pi/6) 1
+(7.500000000000001 x, -4.330127018922193 y
+
+
+
+wtf händer? Hur kan fr ha samma x-vektor för två olika vinklar inom samma kvadrant?
+
+fn
+
+*Main> fn fg (pi/3)
+(-4.330127018922194 x, -2.500000000000001 y)
+*Main> fn fg (pi/6)
+(-4.330127018922193 x, -7.500000000000001 y)
 
 

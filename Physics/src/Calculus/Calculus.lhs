@@ -6,9 +6,7 @@ TODO: Move relevant stuff out of the general structures/eval to their
       Or maybe, first introduce differences et al. separately, and then
       tie them together in a common section of evaluation?
 
-TODO: Good introduction
-
-TODO: Make the text good in general
+TODO: Make the text gooder in general
 
 TODO: Quotes -> good teaching text (especially in Integral secion)
 
@@ -21,12 +19,12 @@ TODO: Have someone critique this
 
 Plain equations where all values are of the same dimension are all
 fine and well.  The importance of being able to solve basic problems
-like ``If Jenny has 22 meters, and Richard has 18 meters: how many
-meters do they have together?'' cannot be understated, but they're not
+like "If Jenny has 22 meters, and Richard has 18 meters: how many
+meters do they have together?" cannot be understated, but they're not
 especially fun!
 
-``An unstoppable car has an unchanging velocity of 141.622272
-km/h. How many kilometers has it droven in after a day?''. To solve
+"An unstoppable car has an unchanging velocity of 141.622272
+km/h. How many kilometers has it droven after a day?". To solve
 more interesting problems like this, we need calculus.
 
 Calculus is the study of stuff that continuously change over time (or
@@ -50,15 +48,7 @@ integration, and some applied problem solving.
 Boring boilerplate
 ----------------------------------------------------------------------
 
-Firstly, let's get the boring stuff out of the way!
-
-Later on, to make our syntax tree nicer to create, we will want string
-literals to automatically be interpreted as variables in our
-language. This is made possible by the `OverloadedStrings` extension!
-
-> {-# LANGUAGE OverloadedStrings #-}
-
-This is our module!
+Firstly, let's get the boring stuff out of the way. This is our module!
 
 > module Calculus.Calculus where
 
@@ -85,11 +75,11 @@ Semantics, syntax, and lambda calculus
 What is a value in calculus? What kind of values do functions in
 calculus operate on and produce?
 
-Let's look at derivatives to get an idea of what the semantic values of calculus are.
+Let's look at derivatives to get an idea of what the semantic value of calculus is.
 
-$$D(x^2) = 2x$$
+$$\frac{d x^2}{dx} = 2x$$
 
-$$D(f(x)) = f'(x)$$
+$$\frac{d f(x)}{dx} = f'(x)$$
 
 Hmm, these examples left me more confused than before. The
 differentiation function seems to take an expression as an argument,
@@ -100,9 +90,13 @@ order for the expression to be computable. Is it some kind of function
 then? Well, yes it is! If we reinterpret the differentiation
 expressions above, it makes more sense.
 
+$$\frac{d x^2}{dx} = 2x$$
+
+can be written as
+
 $$D(x^2) = 2x \text{ with regards to } x$$
 
-Is really equivalent to
+which is really equivalent to
 
 $$D(x \mapsto x^2) = x \mapsto 2x$$
 
@@ -126,9 +120,11 @@ occur. We'll have to keep that in mind when doing calculations!
 Now, to the syntax. We've concluded that real functions are really
 what calculus is all about, so let's model them.
 
-> data FunExp
+> data FunExpr
 
-First of all, there's the elementary functions. We can't have them all, but we'll put in all the fun ones.
+First of all, there's the elementary functions. We can't have them
+all, that would get too repetitive to implement, but we'll put in all
+the fun ones.
 
 >     = Exp
 >     | Log
@@ -141,92 +137,166 @@ Then, there are the arithmetic operators. "But wait", you say, "Aren't
 arithmetic operators used to combine expressions, not functions?". I
 hear you, Billy, but we will do it anyways. We could make a `Lambda`
 constructor for "VAR $\mapsto$ EXPR" expressions and define the
-arithmetic operators for the expression type, but this would all make
+arithmetic operators for the expression type, but this would make
 our language much more complicated! Instead, we'll restrain ourselves
 to single variable expressions, which can be represented as
 compositions of unary functions, and define the arithmeric operators
 for the functions instead.
 
->     | FunExp :+ FunExp
->     | FunExp :- FunExp
->     | FunExp :* FunExp
->     | FunExp :/ FunExp
+>     | FunExpr :+ FunExpr
+>     | FunExpr :- FunExpr
+>     | FunExpr :* FunExpr
+>     | FunExpr :/ FunExpr
 
 And then theres that single variable. As everything is a function
-expression, the function that best represents "just a variable" would be $x \mapsto x$,
-which is the same as the $id$ function.
+expression, the function that best represents "just a variable" would
+be $x \mapsto x$, which is the same as the $id$ function.
 
 >     | Id
 
-In a similar vein, the constant function. $const c = x \mapsto c$
+In a similar vein, the constant function. $const(c) = x \mapsto c$
 
 >     | Const RealNum
 
-Then theres function composition. If you didn't already know it, it can be defined as
+Then theres function composition. If you didn't already know it, it's
+defined as
 
 $$f . g = x \mapsto f(g(x))$$
 
->     | FunExp :. FunExp
+>     | FunExpr :. FunExpr
 
 Finally, the real heroes: The functions of difference, differentiation,
 and integration! They will be well explored later. But for now, we
 define the syntax for them as
 
->     | Delta RealNum FunExp -- Difference, like $\Delta_h f$
->     | D FunExpr            -- Derivative, like $D(f)$ or $\frac{df(x)}{dx}
->     | I RealNum FunExpr    -- Indefinite integral with constant, like $\int f = F + C$ or $\int f(x) dx = x \mapsto F(x) + C$
+>     | Delta RealNum FunExpr
+>     | D FunExpr
+>     | I RealNum FunExpr
+
+Even more finally, we add a `deriving` modifier to automatically allow
+for equality tests between `FunExpr`s.
+
 >   deriving Eq
 
 Nice! This syntax tree will allow us to do symbolically (at the syntax
 level) what we otherwise would have to do numerically (at the
 semantics level).
 
+Before we move on, we just have to fix one thing: the operator
+precedence! If we don't do anything about it, this will happen
 
+< ghci> Id :+ Id :* Id == (Id :+ Id) :* Id
+< True
 
-Lul so arbitrary
----------------------------------------------
+Now this is obviously wrong. *Plus* doesn't come before *times*,
+unless I accidentaly switched timelines in my sleep. To fix this, we
+have to fix the fixity. `infixl` allows us to make an operator
+left-associative, and set the precedence.
 
-TODO: Move this section somewhere else
-
-> genConstructor :: Gen (Expr -> Expr -> Expr)
-> genConstructor = elements [(:+), (:-), (:*), (:/)]
-
-> genConst :: Gen Expr
-> genConst = Const <$> arbitrary
-
-> genExpr :: Gen Expr
-> genExpr = genConstructor <*> genConst <*> genConst
-
-> genConcat :: [Expr] -> Gen Expr
-> genConcat = foldr (\e -> (<*>) (genConstructor <*> pure e)) genConst
-> --genConcat (e:es) = genConstructor >>= (\con -> genConcat es >>= (\bigE -> return $ con e bigE))
-
-> instance Arbitrary Expr where
->   -- Maybe set the max length explicitly
->   arbitrary = listOf genExpr >>= genConcat
+> -- Medium precedence
+> infixl 5 :+
+> infixl 5 :-
+> -- Higher precedence
+> infixl 6 :*
+> infixl 6 :/
+> -- High as a kite
+> infixl 9 :.
 
 
 
-Showing off
----------------------------------------------
+A structure with class
+----------------------------------------------------------------------
 
-Our function expressions are nice and all, but they're not very readable.
+Now that we've defined the basic structure of our language, we can
+instantiate some useful classes. There are two in particular we care
+for: `Show` and `Arbitrary`.
 
-We want to be able to print our expressions in a human-readable format
+Try modifying `FunExpr` to derive `Show`, so that our expressions can be printed.
 
-> instance Show Expr where
->     show (Const x) = show x
->     show (a :+ b) = "(" ++ show a ++ " + " ++ show b ++ ")"
->     show (a :- b) = "(" ++ show a ++ " - " ++ show b ++ ")"
->     show (a :* b) = "(" ++ show a ++ " * " ++ show b ++ ")"
->     show (a :/ b) = "(" ++ show a ++ " / " ++ show b ++ ")"
->     show (f :. g) = "(" ++ show f ++ " ∘ " ++ show g ++ ")"
->     show (Var v) = v
->     show (Func f) = f
->     show (Lambda p b) = "(lamda " ++ p ++ " . " ++ show b ++ ")"
->     show (Delta x) = "(delta " ++ show x ++ ")"
->     show (D e) = "(D " ++ show e ++ ")"
->     show (f :$ e) = "(" ++ show f ++ " " ++ show e ++ ")"
+<   deriving Eq, Show
+
+Consider now how GHCI prints out a function expression we create
+
+< ghci> carAccel = Const 20
+< ghci> carSpeed = Const 50 :+ carAccel :* Id
+< ghci> carPosition = Const 10 :+ carSpeed :* Id
+< ghci> carPosition
+< Const 10.0 :+ (Const 50.0 :+ Const 20.0 :* Id) :* Id
+
+Well that's borderline unreadable. Further, the grokability of a printed expression is very inversely proportional to the size/complexity of the expression, as I'm sure you can imagine.
+
+So if the `Show` is bad, we'll just have to make our own `Show`!
+
+> instance Show FunExpr where
+>   show Exp = "exp"
+>   show Log = "log"
+>   show Sin = "sin"
+>   show Cos = "cos"
+>   show Asin = "asin"
+>   show Acos = "acos"
+>   show (f :+ g) = "(" ++ show f ++ " + " ++ show g ++ ")"
+>   show (f :- g) = "(" ++ show f ++ " - " ++ show g ++ ")"
+>   show (f :* g) = "(" ++ show f ++ " * " ++ show g ++ ")"
+>   show (f :/ g) = "(" ++ show f ++ " / " ++ show g ++ ")"
+>   show Id = "id"
+>   show (Const x) = showReal x
+>   show (f :. g) = "(" ++ show f ++ " . " ++ show g ++ ")"
+>   show (Delta h f) = "(delta_" ++ showReal h ++ " " ++ show f ++ ")"
+>   show (D f) = "(D " ++ show f ++ ")"
+>   show (I c f) = "(I at " ++ show c ++ " for " ++ show f ++ ")"
+>
+> showReal x = if isInt x then show (round x) else show x
+>   where isInt x = x == fromInteger (round x)
+
+Not much to explain here. It's just one way to print our syntax tree
+in a more readable way. What's interesting is how we can now print our
+expressions in a much more human friendly way!
+
+< ghci> carPosition
+< (10 + ((50 + (20 * id)) * id))
+
+Still a bit noisy with all the parens, but much better!
+
+Another class we need to instance for our `FunExpr` is
+`Arbitrary`. This class is associated with the testing library
+*QuickCheck*, and describes how to generate arbitrary values of a type
+for use when testing logical properties with `quickCheck`. For
+example, a property function could be formulated that states that the
+`:*` constructor of `FunExpr` is associative.
+
+The implementation itself is not very interesting. We generate a
+function expression that tends to contain mostly elementary functions,
+arithmetic operations, and a generous dose of constants; with a light
+sprinkle of differences, derivatives, and integrals.
+
+> instance Arbitrary FunExpr where
+>   arbitrary =
+
+`frequency` "chooses one of the given generators, with a weighted
+random distribution". By assigning probabilities of generating certain
+functions more often than others, we can restrain the growth of the
+generated expressions in complexity.
+
+>       frequency
+>         [ (10, genElementary)
+>         , (10, genBinaryOperation)
+>         , (10, return Id)
+>         , (20, fmap Const arbitrary)
+>         , (10, genBinaryApp (:.))
+>         , (5 , genBinaryApp Delta)
+>         , (5 , fmap D arbitrary)
+>         , (5 , genBinaryApp I) ]
+>     where genElementary = elements [Exp, Log, Sin, Cos, Asin, Acos]
+>           genBinaryApp op = fmap (\(f, g) -> f `op` g) arbitrary
+>           genBinaryOperation =     elements [(:+), (:-), (:*), (:/)]
+>                                >>= genBinaryApp
+
+
+
+The value of evaluation
+----------------------------------------------------------------------
+
+> {-
 
 > avg (y1, x1) (y2, x2) = (y2 - y1) / (x2 - x1)
 
@@ -980,3 +1050,5 @@ Integrating to get rid of /t:s.
 cool stuff here in general.
 
 Also, many pretty pictores
+
+> -}

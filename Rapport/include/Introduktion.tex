@@ -23,15 +23,28 @@ tar genvägar som ofta är fel.
 Detta tror projektgruppen skulle kunna lösas med avstamp från kursen ``Domain Specific Languages of
 Mathematics'' (``DSLsofMath'') eller ``Matematikens domänspecifika språk''
 vilket är en valbar kurs på kandidatnivå för studenter på Chalmers och
-Göteborgs Universitet. Domänspecifika språk, kan
+Göteborgs Universitet.
+
+\iffalse
+Domänspecifika språk, kan
 förklaras som ett språk konstruerat för ett specifikt område, d.v.s. en
 domän. Språket kan användas för att enklare uttrycka uttryck inom
 domänen, till exempel Newtons andra lag $F=m \cdot a$, än vad som är
 möjligt inom generella (programmerings) språk. Exemplet ovan kan i ett 
 domänspecifikt språk evalueras enklare m.h.a. ett syntaxträd och mönstermatchning,
 gentemot ett generellt språk där exempelvis en rekursiv swith-case sats skulle kunna användas. 
-Dock med mer overhead\todo{Visa bild på syntaxträd för m * a}. För vidare läsning
-rekommenderas \textit{DSL for the Uninitiated}.\cite{DSLU} Projektgruppen ämnar implementera 
+Dock med mer overhead\todo{Visa bild på syntaxträd för m * a}. 
+\fi
+
+Konkret så presenterar kursen matematik så som derivator, komplexa
+tal och matriser ur ett funktionellt programmeringsperspektiv i det funktionella programmeringsspråket
+Haskell. Dessa för studenterna bekanta verktyg används för att lösa
+matematiska problem så som modellering av syntax, evaluering till
+semantiska värden och datorassisterad bevisföring.
+
+
+För vidare läsning
+rekommenderas \textit{DSL for the Uninitiated}.\cite{DSLU} Projektgruppen ämnar att implementera 
 domänspecifika språk för att beskriva fysik ur en alternativ vinkel.\todo{Ska nämnas en gång tidigt och en gång sammanfattningsvist nedan, eller beskriver vi vad vi ska göra längst upp innan bakgrund?}
 
 I kursen DSLsofMath, var år 2016 var Cezar Ionescu huvudföreläsare, och från 2017 är Patrik Jansson
@@ -47,19 +60,13 @@ datavetenskapliga utbildningen för matematiker, där den grundläggande idéen 
   domänspecifika språk.''\cite{lecture-notes}\cite{tfpie2015} 
 \end{center}
 
-Konkret så presenterar kursen matematik så som derivator, komplexa
-tal och matriser ur ett funktionellt programmeringsperspektiv i det funktionella programmeringsspråket
-Haskell. Dessa för studenterna bekanta verktyg används för att lösa
-matematiska problem så som modellering av syntax, evaluering till
-semantiska värden och datorassisterad bevisföring.
-
 Vi vill alltså med hjälp av domänspecifika språk som vi implementerar presentera fysik ur ett alternativt perspektiv, likt
 på det sättet DSLsofMath presenterar kopplingar mellan matematik och programmering.
 
-Eller:
+En analogi:
 
 Studenterna hade svårt för matte $\rightarrow $ DSLsofMath.\\
-Studenterna har svårt för fysik $\rightarrow $ DSLsofPhysics.
+Studenterna har svårt för fysik $\rightarrow $ Learn you a physics.
 
 
 Angående tidigare forskning och studier, finns även på MIT har en kurs inte helt olik DSLsofMath tidigare givits som berör både

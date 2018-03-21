@@ -14,6 +14,8 @@
 \usepackage{enumitem}
 \setlist{noitemsep}
 
+\usepackage{booktabs}
+
 % BASIC SETTINGS
 \usepackage{moreverb}								% List settings
 \usepackage{textcomp}								% Fonts, symbols etc.
@@ -25,13 +27,15 @@
 \usepackage{amsmath}								% Mathematical expressions (American mathematical society)
 \usepackage{amssymb}								% Mathematical symbols (American mathematical society)
 \usepackage{graphicx}								% Figures
-\usepackage{subfig}									% Enables subfigures
+%\usepackage{subfig}									% Enables subfigures
+\usepackage{subcaption}
 \numberwithin{equation}{chapter}					% Numbering order for equations
 \numberwithin{figure}{chapter}						% Numbering order for figures
 \numberwithin{table}{chapter}						% Numbering order for tables
 \usepackage{listings}								% Enables source code listings
 \lstset{language=Haskell}
 \lstset{frame=single}
+\lstset{breaklines=true}
 \usepackage{chemfig}								% Chemical structures
 \usepackage[margin=1in]{geometry}			% Page margin lengths			
 \usepackage{eso-pic}								% Create cover page background

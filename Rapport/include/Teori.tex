@@ -3,30 +3,30 @@
 \chapter{Teori}
 
 \section{Domänspecifika språk}
+\begin{binge}
+DSL $\Rightarrow$ Modellera syntax.
+\end{binge}
 \begin{draft}
+  \Gls{latex}
   Ett domänspecifikt programmeringsspråk är ett språk som är avgränsat till ett
   specifikt domän. Detta domän kan ta många former, det kan vara ett språk för
   att formatera text på en hemsida (HTML), det kan vara ett språk för att
-  interagera med en databas (SQL), ett språk för ett beskriva hur karaktärer ser
-  ut (typsnitt). Användningsområden för dessa språk är väldigt smala men
-  detta smala fokus gör det möjligt att utveckla ett rikt och lättanvändligt
-  språk för just detta område. 
+  interagera med en databas (SQL), ett språk för ett beskriva hur text ska se
+  ut på en skärm  (typsnitt). Användningsområden för dessa språk är väldigt
+  smala men detta smala fokus gör det möjligt att utveckla ett rikt och
+  lättanvändligt språk för just detta område. 
 
   Motsatsen till ett domänspecifikt språk är ett generellt språk (C, Java,
-  Python) som är turingkompletta, vilket betyder att det kan uttrycka alla
+  Python) vilka är turingkompletta, vilket betyder att det kan uttrycka alla
   beräkningsbara problem i dem och även lösa dem givet tillräckligt med tid och
-  minnestillgångar.\todo{referns} Begränsningen med dessa generella språk är just deras egen
-  generaliserbarhet, eftersom de har stöd för alla typer av beräkningar så blir
-  både läsbarheten och användarvänligheten lidande.
+  \todo{referens} minnestillgångar. Begränsningen med dessa generella språk är
+  just deras egen generaliserbarhet, eftersom de har stöd för alla typer av
+  beräkningar så blir både läsbarheten och användarvänligheten lidande\todo{referens/motivering}.
   
   Ett domänspecifikt språk kan antingen implementeras som ett fristående språk
   eller bäddas in i ett redan existerande språk. De domänspecifika språk som
   utvecklats inom detta projekt är inbäddade i språket \textit{Haskell}.
 \end{draft}
-
-\begin{binge}
-VARFÖR BLIR DET ENKLARE? 
-\end{binge}
 
 \section{Haskell och funktionell programmering}
 
@@ -89,10 +89,21 @@ Ha med en bild på detta.
 
 \section{Litterat programmering och Literate Haskell}
 \label{sec:lhs}
+\begin{draft}
+Litterat programmering (engelska \textit{literate programming}) är ett
+alternativt sätt att programmera som introducerats av Donald Knuth.\cite{knuth}
+Istället för att skriva ett program för en dator, skriver man ett program som
+ska läsas av människor. Det visar sig på följande två sätt.
 
-Litterat programmering (engelska \textit{literate programming}) är ett alternativt sätt att programmera som introducerats av Donald Knuth.\cite{knuth} Istället för att skriva ett program för en dator, skriver man ett program som ska läsas av människor. Det visar sig på följande två sätt.
-
-Det en sättet är att jämfört med traditionella program får dokumentationen en ökad betydelse. I traditionella program är programkoden den viktiga delen. I litterata program däremot är dokumentationen minst lika viktig. Den anänds till att förklara koden, sätta den i relationen till andra delar och så vidare. Detta jämnbördiga förhållande syns konkret genom att titta på hur källkoden är skriven i ett literat program. Det kan till exempel se ut som i figur \ref{fig:litterate_haskell_exempel} där man ser att källkod och text för människor är sammanvävda på ett jämnbördigt sätt, där den ena inte är viktigare än den andra. 
+Det en sättet är att jämfört med traditionella program får dokumentationen en
+ökad betydelse. I traditionella program är programkoden den viktiga delen. I
+litterata program däremot är dokumentationen minst lika viktig. Den anänds till
+att förklara koden, sätta den i relationen till andra delar och så vidare.
+Detta jämnbördiga förhållande syns konkret genom att titta på hur källkoden är
+skriven i ett literat program. Det kan till exempel se ut som i figur
+\ref{fig:litterate_haskell_exempel} där man ser att källkod och text för
+människor är sammanvävda på ett jämnbördigt sätt, där den ena inte är viktigare
+än den andra. 
 
 \begin{figure}[H]
   \begin{lstlisting}[language={}]
@@ -111,9 +122,24 @@ Note that the Quantity data type has both value-level and type-level dimensions.
   \label{fig:litterate_haskell_exempel}
 \end{figure}
 
-Det andra sättet ett litterat program skiljer sig åt är ordningen progamkod står i. Traditionellt används top-down eller bottom-up. Dessa tillvägagånssätt står i kontrast till den som används i litterat programmering, där man betraktar ett program som ett nät av många delar som hänger ihop, utan att de nödvändigvis har en övergripande hierariki som de tradionella metoderna bygger på. Detta uttnyttjas genom att då presentera progamkoden i den ordning som är lättast att förstå för den mänskliga läsaren.
+Det andra sättet ett litterat program skiljer sig åt är ordningen progamkod
+står i. Traditionellt används top-down eller bottom-up. Dessa tillvägagånssätt
+står i kontrast till den som används i litterat programmering, där man
+betraktar ett program som ett nät av många delar som hänger ihop, utan att de
+nödvändigvis har en övergripande hierariki som de tradionella metoderna bygger
+på. Detta uttnyttjas genom att då presentera progamkoden i den ordning som är
+lättast att förstå för den mänskliga läsaren.
 
-Litterate Haskell är literat programmering för Haskell.\cite{litterate_haskell} Att progammera i Litterate Haskell går till på samma sätt som vanlig Haskell, med skillndaden att programkod och text vävs ihop i en och samma fil. Det kan se ut som i figur \ref{fig:litterate_haskell_exempel}. Filen, med tillägget \texttt{.lhs}, går att använda direkt med Haskell-kompilatorn GHC. All text ignoreras och programkoden behandlas som om den tillhörde en vanlig Haskell-fil. \texttt{.lhs}-filen kan också kompileras till material avsett för mäniskor. Det finns flera verktyg som gör det men det som används i detta projekt är \textit{Pandoc}\cite{pandoc}. Med \textit{Pandoc} kan texten märkas up med både \texttt{markdown} (används i projektet) och \texttt{Latex}. Det går att exportera till bland annat HTML och PDF.
-
+Litterate Haskell är literat programmering för Haskell.\cite{litterate_haskell}
+Att progammera i Litterate Haskell går till på samma sätt som vanlig Haskell,
+med skillndaden att programkod och text vävs ihop i en och samma fil. Det kan
+se ut som i figur \ref{fig:litterate_haskell_exempel}. Filen, med tillägget
+\texttt{.lhs}, går att använda direkt med Haskell-kompilatorn GHC. All text
+ignoreras och programkoden behandlas som om den tillhörde en vanlig
+Haskell-fil. \texttt{.lhs}-filen kan också kompileras till material avsett för
+mäniskor. Det finns flera verktyg som gör det men det som används i detta
+projekt är \textit{Pandoc}\cite{pandoc}. Med \textit{Pandoc} kan texten märkas
+up med både \texttt{markdown} (används i projektet) och \texttt{Latex}. Det går
+att exportera till bland annat HTML och PDF.  \end{draft}
 \section{ARCS/didaktik}
 \label{sec:arcs}

@@ -22,9 +22,11 @@ Kan du haskell sedan innan?
 
 Har du gått en kurs i DSL innan?
 
+Har du gått en kurs i fysik innan?
+
 Tyckte du materialet var lättläst?
 
-
+Övrigt:
 
 
 

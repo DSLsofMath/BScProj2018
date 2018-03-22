@@ -1,9 +1,14 @@
 
-> import Vector
+Box on an incline
+=================
+
+> import Vector.Vector
 
 Alla vektorer är i Newton
 
-Allt annat i Quantity.
+
+
+![Lutande plan](lutande_plan.png){.float-img-left}
 
 > fg = V2 0 (-10)
 > m = 2
@@ -18,24 +23,49 @@ Allt annat i Quantity.
 > fn :: Vector2 -> Angle -> Vector2
 > fn fa a = negate (f_l_ fa a)
 
--- Friktionsfritt plan:
+Friktionsfritt plan:
 
 
 
 > fr :: Vector2 -> Angle -> Vector2
 > fr fa a = (fn fa a) + fa
 
- Tester:
+
+** Tester:**
+------------
+
 *Main> fr (V2 0 10) 0
-(0.0 x, 0.0 y)                                  Good:   Inge lutning - står still.
+
+(0.0 x, 0.0 y)                                  
+
+Good:   Inge lutning - står still.
+
+
 *Main> fr (V2 0 (-10)) 0
-(0.0 x, -20.0 y)                                Odd:    Motsatt gravitation ger något underligt? Vi säger fortfarande att normalen är magnituden
+
+(0.0 x, -20.0 y)                                
+
+Odd:    Motsatt gravitation ger något underligt? Vi säger fortfarande att normalen är magnituden
+
+
 *Main> fr (V2 0 10) (pi/2)
-(-6.123233995736766e-16 x, 10.0 y)              Good:   90* lutning - faller med G.
+
+(-6.123233995736766e-16 x, 10.0 y)              
+
+Good:   90* lutning - faller med G.
+
+
 *Main> fr (V2 0 10) (pi/3)
+
 (-4.330127018922194 x, 7.499999999999999 y)     
+
+
 *Main> fr (V2 0 10) (pi/4)
-(-5.0 x, 4.999999999999999 y)                   Good:   45* lutning - 5N både i x och y led. Pyth: 5^2 + 5^2 =/= 10^2
+
+(-5.0 x, 4.999999999999999 y)                   
+
+Good:   45* lutning - 5N både i x och y led. Pyth: 5^2 + 5^2 =/= 10^2
+
                                                         det borde bli:  100 = a^2 + a^2
                                                                         50 = a^2
                                                                         5*sqrt(2) = a
@@ -43,27 +73,36 @@ Allt annat i Quantity.
                                                         och det är det ju. xD
 
 *Main> fr (V2 0 10) (pi/6)
+
 (-4.330127018922193 x, 2.499999999999999 y)
 
 
-Friktionskonstant - i rörelse:
+**Friktionskonstant - i rörelse:**
+
+\begin{align}
+  F_{friction} = \mu * F_{normal} \iff \mu = \frac{F_{friction}}{F_{normal}}
+\end{align}
 
 > us = 0.5
 > uk = 0.4
 
 > type FricConst = Double
 
--- friktionen 
---  friks = Fn * us,    us = friktion statisk
---  frikk = Fn * uk,    uk = friktion kinetisk
--- 
---  Vi har normalkraften, o beh bara konstanterna.
---  Speed har inget att göra med N för friktion? Dock gäller F*m = Nm = work = J = bugatti bränner däck.
+friktionen 
+
+ friks = Fn * us,    us = friktion statisk
+
+ frikk = Fn * uk,    uk = friktion kinetisk
+
+
+Vi har normalkraften, o beh bara konstanterna.
+
+ Speed har inget att göra med N för friktion? Dock gäller F*m = Nm = work = J = bugatti bränner däck.
 
 > motscalar :: FricConst -> Vector2 -> Scalar
 > motscalar u f = u * (magnitude f)
 
--- Från en rörelse eller vekt, fixa komplementet
+Från en rörelse eller vekt, fixa komplementet
 
 > enh_vekt :: Vector2 -> Vector2
 > enh_vekt v  | magnitude v == 0 = (V2 0 0)
@@ -76,7 +115,7 @@ Friktionskonstant - i rörelse:
 > motkraftv :: FricConst -> Vector2 -> Vector2 -> Vector2
 > motkraftv u n v = scale (u * (magnitude n)) (negate (enh_vekt v))
 
--- Nu ska vi bara summera
+Nu ska vi bara summera
 
 > fru :: Vector2 -> Angle -> FricConst -> Vector2
 > fru fa a u = (fr fa a) + (motkraftv u (fn fa a) (fr fa a))
@@ -96,7 +135,7 @@ $ enh_vekt (V2 0 0)
 Jag skulle anta att enh_vekt bara gäller då (magnitude v) =/= 0.
 
 
--- Fixed nollvektorn.
+Fixed nollvektorn.
 
 
 *Main> fru fg (pi/4) 0

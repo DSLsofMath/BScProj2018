@@ -11,12 +11,16 @@ Uppgift 3, tenta 2017-01-13
 > balk_L = 5.0 # length
 > two = 2.0 # one
 
+![Gungbraede](Gungbraede.png){.float-img-left}
+
+
 Direkt implikation:
 
 > balk_left_L = (balk_L /# two) +# d
 > balk_right_L = balk_L -# balk_left_L
 
 Vi vill räkna ut vridmomenten?
+
 Eller snarare ställa upp ekv:
 
 > m1_vrid = m1 *# balk_left_L 
@@ -30,8 +34,11 @@ Eller snarare ställa upp ekv:
 m2_vrid = m2 * x
 
 VL = HL
+
 m1_vrid + balk_L_vrid = m2_vrid + balk_H_vrid
+
 m1_vrid + balk_L_vrid - balk_H_vrid  = m2_vrid
+
 (m1_vrid + balk_L_vrid - balk_H_vrid) / m2  = x
 
 > x = (m1_vrid +# balk_L_vrid -# balk_H_vrid) /# m2

@@ -105,7 +105,13 @@ sources = [
     ]),
     ("Calculus", [
         ("Calculus", "Physics/src/Calculus/Calculus.lhs"),
+    ]),
+    ("Examples", [
+        ("Gungbräda", "Physics/src/Examples/Gungbraeda.lhs"),
+        ("krafter på lådor", "Physics/src/Examples/krafter_pa_lador.lhs"),
+
     ])
+
 ]
 
 if not os.path.exists("build"):

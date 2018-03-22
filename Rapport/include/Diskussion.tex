@@ -5,11 +5,15 @@
 \begin{binge}
 \section{Tillvägagångssättet av skapandet}
 
-Tanke: I metod/teori varför vi valde att just Haskell o.s.v. Beskrivning av vårt iterativa arbetssätt, hur vi sökte i mörkret. Här i diskussion kanske mer varför det var nödvändigt...
+Tanke: I metod/teori varför vi valde att just Haskell o.s.v. Beskrivning av
+vårt iterativa arbetssätt, hur vi sökte i mörkret. Här i diskussion kanske mer
+varför det var nödvändigt...
 
-Annan tanke: antingen separat resultat-kapitel för "misslyckade" försök, som DSL för lutande plan, eller att vi har det här..
+Annan tanke: antingen separat resultat-kapitel för "misslyckade" försök, som
+DSL för lutande plan, eller att vi har det här..
 
-Vi har kanske inte varit så strukturerade, utan bara valt ut något område på måfå som vi kände för, t.ex. valet av termodynmik.
+Vi har kanske inte varit så strukturerade, utan bara valt ut något område på
+måfå som vi kände för, t.ex. valet av termodynmik.
 
 Blev så för svårt att veta vad som DSL lämpligt för.
 
@@ -20,51 +24,100 @@ Kan skriva om misslyckade försök att skapa DSLer för vissa saker. T.ex. lutan
 
 \section{Domänspecifika språk och fysik}
 
+Hur en kombination av domänspecifika språk och fysik ser ut är inget uppenbart. Går det att kombinera de två, och för vilka områden fungerar det bra för? Slutligen, är det lärorikt att presentera fysik ur ett domänspecifikt-språk-perspektiv?
+
+\subsection{Om läromaterialets fokus på matematik och Haskell snarare än fysik}
+
+En stor del av läromaterialets fokus ligger på matematik och Haskell snarare än
+fysik. Detta trots att läromaterialet är tänkt att handla om fysik. Varför är
+det så?
+
+En orsak till att ett stort fokus ligger på matematik är att fysik egentligen
+bara är räkneexempel i matematik. Ta cirkulär centralrörelse som exempel. Att
+beskriva en sådan rörelse hos en kropp görs med hjälp av vektorer och
+matematisk analys. Fysik finns bara som en bakomliggande teori som dikterar
+vilka samband som gäller. Själva räknandet görs sedan med matematik.
+
+Detta är inte hela sanningen. Inom fysik ingår en stor del problemlösning, till
+exempel att sätta upp och hitta krafter i mekanikproblem, utan att någon
+matematik behöver blandas in. Denna typ av fysik är dock svår att göra
+domänspecifika språk av, något som diskuteras djupare i avsnitt
+\ref{sec:lampligt}.
+
+Läromaterialet innehåller även en hel del förklaringar av Haskell-teknisk
+karaktär. Orsaken till detta är tvåfaldigt. För det första
+används avancerade koncept inom Haskell som läsaren inte förväntas kunna sedan
+innan. Ett exempel är typnivå-programmering. För att göra kopplingen mellan
+Haskell och fysik så tydlig som möjlig behövdes fysikaliska dimensioner kunna
+likställas med, och hanteras på samma sätt, som Haskell-typer.
+
+För det andra är läromaterialets syfte inte enbart att lära ut fysik i sig,
+utan även visa hur fysik kan modelleras i domänspecifika språk och dra
+paralleller mellan fysik och domänspecifika språk. Av detta skäl blir det
+naturligt att det ''även'' ägnas en hel del förklaringar åt programkoden.
+Syftet är att väcka intresse för fysik, inte att lära ut fysik. Ett sätt att
+göra det är då att visa dessa paralleller.
+
+Är det rätt eller fel att ha en relativt liten tyngd på fysiken som projekets
+läromaterial har? På den frågan har vi mer än ett svar. Man kan svara ja, med
+hänvisning till de ovanstående skälen att det direkta syftet inte är att lära
+ut fysik utan att väcka intresse. Man kan svara nej, och hävda att de
+domänspecifika språken kan utformas på ett annat sätt som mer direkt
+knyter an till fysikaliska koncept, till exempel ett syntaxträd för
+sammansättningen av ett lutande plans komponenter. Vi tyckte dock det var svårt
+att göra på det sättet, se avsnitt \ref{sec:lampligt}. Detta är dock en
+vidareutvecklingspotential, att undersöka huruvida det går att göra på ett bra
+sätt.
+
+Man kan svara nej på frågan av ett annat skäl också, nämligen att fysiken i sig
+bör vara det främsta fokuset. Detta skulle dock innebära en helt annan form på
+läromaterialet. Vi menar att det skulle vara svårt att väva in domänspecifika
+språk på ett meningsfullt sätt om de samtidigt skulle vara i skymundan. Ett
+läromaterial med större fokus på fysik bör i så fall enbart handla om fysik. En
+utförligare diskussion om detta finns i avsnitt \ref{sec:bara_fysik}.
+
 \subsection{Vad för slags områden är DSLs lämpligt att göra för?}
+\label{sec:lampligt}
 
-Analys känns som ett område där DSLs kan vara lämpligt. Likaså dimensioner och
-vektorer. Vad har dessa gemensamt?
+Under projektets gång gjordes flera experiment för att se hur man kunde göra ett domänspecifikt språk för ett område. Det visade sig att visa områden var lämpligare än andra. Till exempel var analys och vektorer områden som vi ansåg väl lämpade, medan andra som till exempel lutande plan och termodynamik var mindre lämpade.
 
-Gemensamt för de ovanstående är att de är matematiska, har en fix struktur,
-rigoröst hur de fungerar och har "data och operationer".
+Vad har de lämpliga områdena gemensamt? De gemensamma dragen är att de är matematiska, har en fix struktur och består av ''data och operationer''. Tabell \ref{tab:data_och_ops} visar några exempel på områden med sina data och operationer.
 
-Orkar inte göra Latex tabell...
-| DSL / data         | Ex operationer               |
-|--------------------|------------------------------|
-| Dimensioner        | Multiplikation, division     |
-| Vektorer           | Skalärprodukt, vektorprodukt |
-| Analys, funktioner | Derivera, multiplicera       |
+\begin{table}[tph]
+\centering
+\caption{Exempel på data och operationer i några domänspecifika språk.}
+\label{tab:data_och_ops}
+\begin{tabular}{@{}l|l@{}}
+\toprule
+DSL / data & Exempel på operationer \\ \midrule
+Dimensioner & Multiplikation, division \\
+Vektorer & Addition, skalärprodukt \\
+Analys, funktioner & Derivera, multiplicera \\ \bottomrule
+\end{tabular}
+\end{table}
 
-Operationerna på datan resultar också i ny data av samma slag (t.ex.
-vektorprodukt av två vektorer ger en ny vektor)
+Varför gör dessa drag att de är lämpliga att göra domänspecifika språk för? TODO: Matematiska: man modellerar syntaxen
 
-Varför gör detta dem lämpliga att göra DSLs för? För datan har en fix form. Och
-operaion av data blir ny data som evalueras till någon av formerna.
+Den fixa strukturen kombinerat med data och operationer gör det enkelt att modellera med datatyper i Haskell. Datatyper har nämligen också en fix form. Dessutom blir relationen mellan å ena sidan data i fysik och datatyper i Haskell, å andra sidan operationer i fysik och funktioner i Haskell, väldigt tydlig. En operation/funktion resulterar sedan i data av samma slag som innan.
 
-Detta gör DSL till områdena lämpliga ur två synvinklar. Dels enkelt att göra
-det rent praktiskt i Haskell. Dels för att man med DSL:et strukuretat upp och
-tydliggjort all data och operationer som går att göra.
+Denna strukturella likhet gör modellerandet och manipulerandet av data enkel att genomföra rent tekniskt. Men den innebär också en pedagogisk vinst. Genom att ha strukturerat upp fysik tydligt i Haskell blir det förhoppningsvis enklare för läsaren att förstå hur datan hänger ihop rent fysikaliskt.
 
-Skillnad på enkelt att göra rent tekniskt, och vad som är lämpliga DSLs för att
-underlätta förståelsen av något.
+I kontrast till dessa lämpliga områden står mindre lämpliga områden (eller åtminstone som vi inte lyckades göra något bra till). Som nämndes tidigare är termodynamik och lutande plan exempel på mindre lämpliga områden. Vad har dessa områden för gemensamma drag?
 
-\newpage
+Ett gemensamt drag som gör dem svåra att göra domänspecifika språk av är att de består av en samling teoretiska samband. För det lutande planet är det till exempel $a = g * sin(v)$, som illusteras i figur \ref{fig:lutande_plan}.
 
-DSLs var svårare för lutande plan och termodynamik (och problemlösning i
-allmänhet). Vad har dessa gemensamt?
+\begin{figure}[tph]
+  \frame{\includegraphics[width=\linewidth]{figure/lutande_plan.pdf}}
+  \caption{Den variant av lutande plan som referas till i exemplet i texten. $a$ är en lådas acceleration längs med planet, $g$ är tyngdacceleration och $v$ är vinkeln. Friktionen antas vara försumbar.}
+  \label{fig:lutande_plan}
+\end{figure}
 
-Gemensamt för dessa är att det finns teoretiska samband/ekvationer som
-relaterar olika egenskaer i problemet. T.ex. för det lutande planet `a = g *
-sin v` är sambandet mellan `a` och `v` (och `g` som dock är en konstant bara).
-För termodynamik är det att t.ex. samband mellan inre energi, antal atomer i
-gasen och temperaturen.
+Teoretiska samband av det slaget relaterar olika egenskaper i systemet. Visserligen kan man modellera samband och ekvationer som ett domänspecifikt språk, men vi menar att nyttan inte blir stor med det. Det man kan göra är att programmera en ekvationslösare. Men den hade behövt vara både mekanisk och komplex. Den skulle alltså skilja sig drastiskt från hur man löser problem för hand och skulle vara svår att förstå. Alldeles för mycket fokus skulle hamna på algoritmer istället för fysik.
 
-Visst kan man modellera dessa samband. Men vad för nytta gör det?
-Problemlösning handlar om att känna till vilka samband som finns och tillämpa
-dem på olika sätt beroende på uppgift.
+När det kommer till lutande plan och liknande områden är nyckeln att visserligen känna till vilka samband som gäller, men det framförallt att veta när man ska använda dem och hur man tillämpar dem på olika typer av uppgifter. Vi behandlar därför områden som lutande plan genom att lösa exempeluppgifter modellerade i de tidigare domänspecika språk. De tidigare språken tillhandahåller de matematiska verktyg som behövs för att koda upp lösningar av problem.
 
-Man kan ju programmera en ekvationslösare, men den måste vara väldigt mekanisk
-av sig. Gör det kanske inte enklare för en själv att lösa problem.
+
+TODO: Kanske avsluta med att poängtera skillnaderna mellan lämpliga och mindre lämpliga.
 
 Och vad är skillnaden mellan dessa två kategorier av områden?
 
@@ -73,6 +126,7 @@ medan problemlösning som lutande plan har ett gäng samband som man använder
 beroende på behov.
 
 \subsection{Gör DSLs så att fysik blir enklare att förstå?}
+\label{sec:bara_fysik}
 
 Ex med lutande plan: man kan betrakta ett sådant problem som en samling
 ekvationer. Man har några kända värden och med hjälp av ekvationerna ska man
@@ -90,5 +144,33 @@ att göra fysik intressant genom att visa på vad för kopplingar till
 programmering man kan göra, även om områdena vi behandlat inte är direkt de
 områden som man behöver förstå för att klara kursen. Projektet kan ses som ren
 kuriosa som kan vara intressant.
+
+\section{Vidareutvecklingsmöjligheter}
+
+På något sätt DSL (och inte bara tillämpning av andra) för lutande plan, termodynamik osv. Ett DSL för ''fysikaliskt problemlösning'' i sig. Ingen aning hur ett sådant skulle se ut, men skulle säkert vara intressant.
+
+Det finns många områden inom fysik som vi inte täckt in. Finns möjlighet för ett
+annat projekt att ta vid där vi avslutade.
+
+Att göra en ordentlig studie om DSLs+fysik gör fysik enklare.
+
+\section{Etiska aspekter}
+
+Hemsida med grundläggande html, css och frivilligt javascript. Anapassat för små datorskärmar. Även de med 10-tums laptop ska kunna ha LYAP på ena halvan av skärmen och ändå se fullständigt.
+
+Engelska
+
+Roligt
+
+Öppen källkod
+
+TODO: Varför en hemsida istället för PDF i diskussion om etik?
+
+Om Hemsidan: 
+  Det är lite intressant ur pedagogik-aspekten. Kan det
+  kanske vara lättare/roligare att lära sig om sidan är fin och
+  lättläst? Att javascript inte krävs gör att sidan kan visas ordentligt
+  även om man sitter i U-land med dålig/gammal/billig telefon.
+
 
 \end{binge}

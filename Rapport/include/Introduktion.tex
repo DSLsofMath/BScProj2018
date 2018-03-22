@@ -5,9 +5,7 @@
 \section{Bakgrund}
 
 \begin{draft}
-\todo{Vi måste göra något med bakgrunden. Bland annat anpassa efter de kommentarer vi fick i PP.}
 
-% Varför
 På civilingenjörsprogrammet Datateknik på Chalmers ingår den obligatoriska fysikkursen
 \textit{Fysik för ingenjörer}. Tentastatistiken för denna kurs är
 inte jättebra\cite{tentastatistik}. Vi
@@ -22,22 +20,37 @@ intuition och felaktiga antaganden, istället för definitioner och
 bevisade satser som man är säker på gäller. Detta leder till att de
 tar genvägar som ofta är fel.
 
-Sedan våren 2016 har kursen ``Domain Specific Languages of
+Detta tror projektgruppen skulle kunna lösas med avstamp från kursen ``Domain Specific Languages of
 Mathematics'' (``DSLsofMath'') eller ``Matematikens domänspecifika språk''
-givits som en valbar kurs på kandidatnivå för studenter på Chalmers och
+vilket är en valbar kurs på kandidatnivå för studenter på Chalmers och
 Göteborgs Universitet.
 
-För läsaren som inte är insatt i domänspecifika språk, kan det
-förklaras som ett språk konstruerat för ett specifikt område, en
-domän. Språket kan användas för att enklare uttrycka saker inom
+\iffalse
+Domänspecifika språk, kan
+förklaras som ett språk konstruerat för ett specifikt område, d.v.s. en
+domän. Språket kan användas för att enklare uttrycka uttryck inom
 domänen, till exempel Newtons andra lag $F=m \cdot a$, än vad som är
-möjligt inom generella (programmerings) språk. För vidare läsning
-rekommenderas \textit{DSL for the Uninitiated}.\cite{DSLU}
+möjligt inom generella (programmerings) språk. Exemplet ovan kan i ett 
+domänspecifikt språk evalueras enklare m.h.a. ett syntaxträd och mönstermatchning,
+gentemot ett generellt språk där exempelvis en rekursiv swith-case sats skulle kunna användas. 
+Dock med mer overhead\todo{Visa bild på syntaxträd för m * a}. 
+\fi
 
-I kursen DSLsofMath, var år 2016 var Cezar Ionescu huvudföreläsare, och från 2017
-är Patrik Jansson huvudföreläsare. Det direkta målet med kursen är att förbättra den
-matematiska utbildningen för datavetare och den datavetenskapliga utbildningen
-för matematiker, där den grundläggande idéen bakom kursen är: 
+Konkret så presenterar kursen matematik så som derivator, komplexa
+tal och matriser ur ett funktionellt programmeringsperspektiv i det funktionella programmeringsspråket
+Haskell. Dessa för studenterna bekanta verktyg används för att lösa
+matematiska problem så som modellering av syntax, evaluering till
+semantiska värden och datorassisterad bevisföring.
+
+
+För vidare läsning
+rekommenderas \textit{DSL for the Uninitiated}.\cite{DSLU} Projektgruppen ämnar att implementera 
+domänspecifika språk för att beskriva fysik ur en alternativ vinkel.\todo{Ska nämnas en gång tidigt och en gång sammanfattningsvist nedan, eller beskriver vi vad vi ska göra längst upp innan bakgrund?}
+
+I kursen DSLsofMath, var år 2016 var Cezar Ionescu huvudföreläsare, och från 2017 är Patrik Jansson
+huvudföreläsare, vilka har beskrivit avseendet med kursen genom en artikel \cite{tfpie2015}. Det direkta målet 
+med kursen DSLSofMath är att förbättra den matematiska utbildningen för datavetare och den
+datavetenskapliga utbildningen för matematiker, där den grundläggande idéen bakom kursen är: 
 
 \begin{center}
   ``[\dots] att uppmuntra studenterna att närma sig matematiska domäner från ett
@@ -47,13 +60,17 @@ för matematiker, där den grundläggande idéen bakom kursen är:
   domänspecifika språk.''\cite{lecture-notes}\cite{tfpie2015} 
 \end{center}
 
-Konkret så presenterar kursen matematik så som derivator, komplexa
-tal och matriser ur ett funktionellt programmeringsperspektiv i det funktionella programmeringsspråket
-Haskell. Dessa för studenterna bekanta verktyg används för att lösa
-matematiska problem så som modellering av syntax, evaluering till
-semantiska värden och datorassisterad bevisföring.
+Vi vill alltså med hjälp av domänspecifika språk som vi implementerar presentera fysik ur ett alternativt perspektiv, likt
+på det sättet DSLsofMath presenterar kopplingar mellan matematik och programmering. Förhoppningen är att detta ska göra kopplingen mellan datateknikprogrammet och fysik tydligare och därmed underlätta lärandet.
 
-Även på MIT har en kurs inte helt olik DSLsofMath tidigare givits som berör både
+
+En analogi:
+
+Studenterna hade svårt för matte $\rightarrow $ DSLsofMath.\\
+Studenterna har svårt för fysik $\rightarrow $ Learn you a physics.
+
+
+Angående tidigare forskning och studier, finns även på MIT har en kurs inte helt olik DSLsofMath tidigare givits som berör både
 fysik och domänspecifika språk (''DSL'').\ ``Classical Mechanics: A Computational Approach'' gavs av
 Prof.\ Gerald Sussman och Prof.\ Jack Wisdom bl.a. år
 2008.\cite{classical-mechanics-course-mit-2008}
@@ -63,7 +80,7 @@ mekanik, med början i Lagranges ekvationer och avslut i
 perturbationsteori (teori för approximationer av matematiska lösningar). I kursen används boken ``Structure and %nämna referens till boken?
 Interpretation of Classical Mechanics'' av Sussman, Wisdom och Mayer,
 vilken förklarar fysikaliska fenomen genom att visa datorprogram för att
-simulera dem, skrivna i språket Scheme.\cite{SICM}
+simulera dem, skrivna i språket Scheme.\cite{SICM}. Denna typen av kurser ter sig ovanliga, och är, till våran kännedom, den enda kursen bortsett från DSLsofMath på Chalmers som knyter samman matematik, fysik och programmering.
 
 Utöver DSLsofMath-kursen har det även tidigare gjorts ett kandidatarbete om DSL 
 här på Chalmers. Vårterminen 2016 utfördes kandidatarbetet
@@ -76,21 +93,54 @@ signallära.\cite{kandidat2016}
 \end{draft}
 
 % Flytta en del från bakgrund till syfte? 
-%
+% 
 
 \section{Projektets mål}
 
 \begin{draft}
 
 % Annan formulering från nån annanstans
+\iffalse
 Målet med projektet är att skapa domänspecifika språk för fysik samt ett   
 tillhörande läromaterial. Läromaterialets syfte är att beskriva fysiken och
 dess koppling till de domänspecifika språken projektgruppen utvecklat.
 
+Nedan beskrivs hur att vi vill väcka intresse för fysik hos
+datateknologer genom att presentera fysik ur ett annat perspektiv.
+\fi
+
+
+%NYA
+
+Tanken med detta kandidatarbete är att angripa fysik på ett sådant sätt att ämnet blir både roligt och intressant för datastudenter, och därmed förhoppningsvis också enklare. Detta är likt premissen bakom kursen DSLsofMath och kandidatarbetet från 2016, som istället för fysik behandlade matematik respektive signallära.
+
+Mer konkret ska ovanstående göras genom att skapa ett läromaterial. Läromaterialet ska bestå av domänspecifika språk, skrivna i Haskell, som modellerar fysik sammanvävt med förklarande brödtext. Läromaterialet ska i slutändan publiceras på en hemsida och all källkod ska finnas öppet tillgänglig.
+
+En del av målet är också att ta reda på hur en kombination av domänspecifika språk och fysik kan se ut, samt om det finns en pedagogisk nytta i att kombinera dem.
+
+\iffalse
+GAMLA
+
+Vår tanke med detta kandidatarbete är att, likt premissen bakom kursen DSLsofMath
+och kandidatarbetet från 2016, angripa fysik på ett sådant sätt att ämnet blir både
+intressant och roligt för datateknologer, och därmed förhoppningvis
+också enklare. Med hjälp av domänspecifika språk skrivna i Haskell för att
+modellera fysik, d.v.s.\ ett programmeringspråk som används på flera
+datakurser, tror vi att kopplingen mellan fysikkursen och
+datateknikprogrammet kan göras tydligare och lärandet kan underlättas.
+Förhoppningen är att bl.a.\ det kraftfulla typsystemet i Haskell ska
+hjälpa studenter att bygga mentala modeller som är korrekta och inte
+bygger på felaktig intuition eller felaktiga antaganden.
+
 Läromaterialet är menat att i slutändan bestå av en hemsida. Källkoden för projektet
 skall finnas offentligt tillgänglig.
 
-Att ta reda på hur en kombination mellan fysik och domänspecifika språk kan se ut, samt om det finns en pedagogisk nytta.   %Om vi sätter det som mål måste vi underbygga det med studier
+Att ta reda på hur en kombination mellan fysik och domänspecifika språk kan se ut, samt om det finns en pedagogisk nytta.   %Om vi sätter det som mål måste vi underbygga det med studier //B definiera hur stora studier. Vi kanske annars kan ha som mål att det förhoppningsvis är till pedagogisk nytta.
+
+Slutligen är det för oss inte uppenbart hur en kombination av fysik och domänspecifika språk kan se ut,
+vilket är något vi nämner under projektets mål att vi vill undersöka.
+
+\fi
 
 % Vi kanske inte behöver skriva ut alla dessa, men de är ju däremot nyttiga för oss att internt fundera kring för att få stoff att besvara frågeställningen i rapporten.
 %!! Frågor som vi ska både ställa och besvara.
@@ -104,53 +154,21 @@ Att ta reda på hur en kombination mellan fysik och domänspecifika språk kan s
 
 \end{draft}
 
-\section{Syfte}
 %Syfte/Mål
-
-\begin{draft}
-\iffalse
-Nedan beskrivs hur att vi vill väcka intresse för fysik hos
-datateknologer genom att presentera fysik ur ett annat perspektiv.
-\fi
-
-Vår tanke med detta kandidatarbete är att, likt premissen bakom kursen DSLsofMath
-och kandidatarbetet från 2016, angripa fysik på ett sådant sätt att ämnet blir både
-intressant och roligt för datateknologer, och därmed förhoppningvis
-också enklare. Med hjälp av domänspecifika språk skrivna i Haskell för att
-modellera fysik, d.v.s.\ samma pedagogiska verktyg som används inom           %refererar vi till haskell eller learn you a haskell eller annat?
-datakurser, tror vi att kopplingen mellan fysikkursen och
-datateknikprogrammet kan göras tydligare och lärandet kan underlättas.
-Förhoppningen är att bl.a.\ det kraftfulla typsystemet i Haskell ska
-hjälpa studenter att bygga mentala modeller som är korrekta och inte
-bygger på felaktig intuition eller felaktiga antaganden.
-
-Slutligen är det för oss inte uppenbart hur en kombination av fysik och domänspecifika språk kan se ut,
-vilket är något vi nämner under projektets mål att vi vill undersöka.
-
-\end{draft}
-
-\section{Rapportens syfte}
-
-\begin{draft}
-Rapportens syfte är att beskriva utvecklingen av läromaterialet, läromaterialet
-i sig samt den tekniska bakgrund som krävs för att förstå läromaterialet. Vi går in på
-svårigheter projektgruppen stött på under utvecklingen av läromaterialet, vilka områden
-av fysik som lämpat sig väl samt lämpat sig mindre väl för implementering i ett 
-domänspecifikt språk med syfte att tjäna som läromaterial.
-%Ska vi berätta om:
-%    att syftet är att rapporten utgör betygsgrundande material
-%    att belysa hela projektets helhet (nu är det restriktivt till läromaterialet)
-%    Ska vi beskriva vår ursprungsposition? fast det skulle kunna vara mer i bakgrund?  
-
-%Rapportens syfte är att beskriva utförandet av projektarbetet samt utgöra betygsgrundande material för projektgruppen.
-\end{draft}
-
 
 \section{Avgränsningar}
 
 \begin{draft}
 
-\todo{ (Svårt att veta vad som kommer hinnas med.)}
+NYA
+
+Läromaterialet ska begränsa sig till att enbart beskriva de fysikalsika områden som ingår i kursen Fysik för ingenjörer. Denna avgränsning valdes del för att det är den fysik gruppmedlemmarnas kunskapar begränsar sig till, dels för att det är för den kursen detta projekt kan bli mest relevant för, då kursen ingår i datastudenternas obligatoriska kursplan.
+
+Vidare kommer en prioritering av innehållet i Fysik för ingenjörer att göras. Kursen behandlar grunderna inom mekanik (inklusive stelkroppsmekanik), termodynamik och vågrörelselära. Det ingår även en stor mängd tillämpad matematik, exemeplvis infinitesimalkalkyl. I första hand kommer mekaniken behandlas, för att sedan i mån av tid även behandla termodynamik och vågrörelselära. Fokuset kommer också främst att vara på de områden datastudenter haft svårt för.
+
+För att utvärdera den pedagogiska nyttan kommer enbart en informell utvärdering att göras med en testgrupp. Detta då en rigorös undersökning hade krävt mycket tid för att välja lämpliga testgrupper, analysera återkopplingen samt dokumentera testningsförloppet.
+
+GAMLA
 
 Läromaterialet begränsar sig till att enbart beskriva en del områden inom fysik som ingår i kursen Fysik för ingenjöer. Denna avgränsningen valdes dells för att det är den fysik gruppmedlemmarnas kunskaper begränsar sig till, samt att det är den nämda kursen detta projekt kan bli mest relevant för, då kursen är en del av datastudenternas obligatoriska utbildning.
 

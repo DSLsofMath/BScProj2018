@@ -1,0 +1,39 @@
+
+Utvärdering:
+
+
+
+
+
+
+
+Förstod du haskellkoden?
+
+Förstod du fysikexemplena?
+
+Förstod du kopplingen mellan det domänspecifika språket och fysikområdet?
+
+Tyckte du detta var inspirerande sätt för att lära dig fysik?
+
+
+I vilken mån tyckte du att detta lärde dig dsl vs fysik?
+
+Kan du haskell sedan innan?
+
+Har du gått en kurs i DSL innan?
+
+Tyckte du materialet var lättläst?
+
+
+
+
+
+
+
+
+
+
+
+Tack för att du testade läromaterialet.
+
+

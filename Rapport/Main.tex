@@ -4,16 +4,6 @@
 \documentclass[12pt,a4paper,twoside,openright]{report}
 \input{include/settings/Settings}
 
-%\input{include/frontmatter/Glossaries}
-\makeglossaries
- 
-\newglossaryentry{latex}
-{
-        name=latex,
-        description={Is a mark up language specially suited for 
-scientific documents. ORDLISTA I INNEHÅLLSFÖRTECKNING}
-}
-
 \begin{document} 
 
 % COVER PAGE, TITLE PAGE AND IMPRINT PAGE
@@ -46,14 +36,11 @@ scientific documents. ORDLISTA I INNEHÅLLSFÖRTECKNING}
 \cleardoublepage
 \addcontentsline{toc}{chapter}{\listtablename}  
 \listoftables
+
 % Ordlista
 \cleardoublepage
-% \addcontentsline{toc}{chapter}{Ordlista}
-% \input{include/frontmatter/Ordlista}  
-
-\printglossary[type=\acronymtype]
- 
-\printglossary
+\addcontentsline{toc}{chapter}{Ordlista}
+\input{include/frontmatter/Ordlista}  
 
 
 % START OF MAIN DOCUMENT

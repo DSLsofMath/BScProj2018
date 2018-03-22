@@ -5,11 +5,15 @@
 \begin{binge}
 \section{Tillvägagångssättet av skapandet}
 
-Tanke: I metod/teori varför vi valde att just Haskell o.s.v. Beskrivning av vårt iterativa arbetssätt, hur vi sökte i mörkret. Här i diskussion kanske mer varför det var nödvändigt...
+Tanke: I metod/teori varför vi valde att just Haskell o.s.v. Beskrivning av
+vårt iterativa arbetssätt, hur vi sökte i mörkret. Här i diskussion kanske mer
+varför det var nödvändigt...
 
-Annan tanke: antingen separat resultat-kapitel för "misslyckade" försök, som DSL för lutande plan, eller att vi har det här..
+Annan tanke: antingen separat resultat-kapitel för "misslyckade" försök, som
+DSL för lutande plan, eller att vi har det här..
 
-Vi har kanske inte varit så strukturerade, utan bara valt ut något område på måfå som vi kände för, t.ex. valet av termodynmik.
+Vi har kanske inte varit så strukturerade, utan bara valt ut något område på
+måfå som vi kände för, t.ex. valet av termodynmik.
 
 Blev så för svårt att veta vad som DSL lämpligt för.
 
@@ -24,19 +28,53 @@ Hur en kombination av domänspecifika språk och fysik ser ut är inget uppenbar
 
 \subsection{Om läromaterialets fokus på matematik och Haskell snarare än fysik}
 
-En stor del av läromaterialets fokus ligger på matematik och Haskell snarare än fysik. Detta trots att läromaterialet är tänkt att handla om fysik. Varför är det så?
+En stor del av läromaterialets fokus ligger på matematik och Haskell snarare än
+fysik. Detta trots att läromaterialet är tänkt att handla om fysik. Varför är
+det så?
 
-En orsak till att ett stort fokus ligger på matematik är att fysik egentligen bara är räkneexempel i matematik. Ta cirkulär centralrörelse som exempel. Att beskriva en sådan rörelse hos en kropp görs med hjälp av vektorer och matematisk analys. Fysik finns bara som en bakomliggande teori som dikterar vilka samband som gäller. Själva räknandet görs sedan med matematik.
+En orsak till att ett stort fokus ligger på matematik är att fysik egentligen
+bara är räkneexempel i matematik. Ta cirkulär centralrörelse som exempel. Att
+beskriva en sådan rörelse hos en kropp görs med hjälp av vektorer och
+matematisk analys. Fysik finns bara som en bakomliggande teori som dikterar
+vilka samband som gäller. Själva räknandet görs sedan med matematik.
 
-Detta är inte hela sanningen. Inom fysik ingår en stor del problemlösning, till exempel att sätta upp och hitta krafter i mekanikproblem, utan att någon matematik behöver blandas in. Denna typ av fysik är dock svår att göra domänspecifika språk av, något som diskuteras djupare i avsnitt \ref{sec:lampligt}.
+Detta är inte hela sanningen. Inom fysik ingår en stor del problemlösning, till
+exempel att sätta upp och hitta krafter i mekanikproblem, utan att någon
+matematik behöver blandas in. Denna typ av fysik är dock svår att göra
+domänspecifika språk av, något som diskuteras djupare i avsnitt
+\ref{sec:lampligt}.
 
-Läromaterialet innehåller även en hel del förklaringar av Haskell-teknisk karaktär (och även Agda). Orsaken till detta är tvåfaldigt. För det första används avancerade koncept inom Haskell som läsaren inte förväntas kunna sedan innan. Ett exempel är typnivå-programmering. För att göra kopplingen mellan Haskell och fysik så tydlig som möjlig behövdes fysikalaiska dimensioner kunna likställas med, och hanteras på samma sätt, som Haskell-typer.
+Läromaterialet innehåller även en hel del förklaringar av Haskell-teknisk
+karaktär. Orsaken till detta är tvåfaldigt. För det första
+används avancerade koncept inom Haskell som läsaren inte förväntas kunna sedan
+innan. Ett exempel är typnivå-programmering. För att göra kopplingen mellan
+Haskell och fysik så tydlig som möjlig behövdes fysikaliska dimensioner kunna
+likställas med, och hanteras på samma sätt, som Haskell-typer.
 
-För det andra är läromaterialets syfte inte enbart att lära ut fysik i sig, utan även visa hur fysik kan modelleras i domänspecifika språk och dra paralleller mellan fysik och domänspecifika språk. Av detta skäl blir det naturligt att ''även'' progamkod ägnas en hel del förklaringar av. Syftet är att väcka intresse för fysik, inte att lära ut fysik. Ett sätt att göra det är då att visa dessa paralleller.
+För det andra är läromaterialets syfte inte enbart att lära ut fysik i sig,
+utan även visa hur fysik kan modelleras i domänspecifika språk och dra
+paralleller mellan fysik och domänspecifika språk. Av detta skäl blir det
+naturligt att det ''även'' ägnas en hel del förklaringar åt programkoden.
+Syftet är att väcka intresse för fysik, inte att lära ut fysik. Ett sätt att
+göra det är då att visa dessa paralleller.
 
-Är det rätt eller fel att ha en relativt liten tyngd åt fysiken som projekets läromaterial har? Den frågan har mer än ett svar. Man kan svara ja, med hänvisning till de ovanstående skälen att det direkta syftet inte är att lära ut fysik utan väcka intresse. Man kan svara nej, och hävda att de domänspecifika språken kunde ha utformats på ett annat sätt som mer direkt knyter an till fysikaliska koncept, till exempel ett syntaxträd för sammansättningen av ett lutande plans komponenter. Vi tyckte dock det var svårt att göra på det sättet, se avsnitt \ref{sec:lampligt}. Detta är dock en vidareutvecklingspotential, att undersöka huruvida det går att göra på ett bra sätt.
+Är det rätt eller fel att ha en relativt liten tyngd på fysiken som projekets
+läromaterial har? På den frågan har vi mer än ett svar. Man kan svara ja, med
+hänvisning till de ovanstående skälen att det direkta syftet inte är att lära
+ut fysik utan att väcka intresse. Man kan svara nej, och hävda att de
+domänspecifika språken kan utformas på ett annat sätt som mer direkt
+knyter an till fysikaliska koncept, till exempel ett syntaxträd för
+sammansättningen av ett lutande plans komponenter. Vi tyckte dock det var svårt
+att göra på det sättet, se avsnitt \ref{sec:lampligt}. Detta är dock en
+vidareutvecklingspotential, att undersöka huruvida det går att göra på ett bra
+sätt.
 
-Man kan svara nej på frågan av ett annat skäl också, nämligen att fysiken i sig bör vara det främsta fokuset. Detta skulle dock innebära en helt annan form på läromaterialet. Vi menar att det skulle vara svårt att väva in domänspecifika språk på ett meningsfullt sätt om de samtidigt skulle vara i skymundan. Ett läromaterial med större fokus på fysik bör i så fall enbart handla om fysik. En utförligare diskussion om detta finns i avsnitt \ref{sec:bara_fysik}.
+Man kan svara nej på frågan av ett annat skäl också, nämligen att fysiken i sig
+bör vara det främsta fokuset. Detta skulle dock innebära en helt annan form på
+läromaterialet. Vi menar att det skulle vara svårt att väva in domänspecifika
+språk på ett meningsfullt sätt om de samtidigt skulle vara i skymundan. Ett
+läromaterial med större fokus på fysik bör i så fall enbart handla om fysik. En
+utförligare diskussion om detta finns i avsnitt \ref{sec:bara_fysik}.
 
 \subsection{Vad för slags områden är DSLs lämpligt att göra för?}
 \label{sec:lampligt}
@@ -111,9 +149,10 @@ kuriosa som kan vara intressant.
 
 På något sätt DSL (och inte bara tillämpning av andra) för lutande plan, termodynamik osv. Ett DSL för ''fysikaliskt problemlösning'' i sig. Ingen aning hur ett sådant skulle se ut, men skulle säkert vara intressant.
 
-Att göra en ordentlig studie om DSLs+fysik gör fysik enklare.
+Det finns många områden inom fysik som vi inte täckt in. Finns möjlighet för ett
+annat projekt att ta vid där vi avslutade.
 
-mer måste vi väl kunna ändå komma på...
+Att göra en ordentlig studie om DSLs+fysik gör fysik enklare.
 
 \section{Etiska aspekter}
 
@@ -124,5 +163,14 @@ Engelska
 Roligt
 
 Öppen källkod
+
+TODO: Varför en hemsida istället för PDF i diskussion om etik?
+
+Om Hemsidan: 
+  Det är lite intressant ur pedagogik-aspekten. Kan det
+  kanske vara lättare/roligare att lära sig om sidan är fin och
+  lättläst? Att javascript inte krävs gör att sidan kan visas ordentligt
+  även om man sitter i U-land med dålig/gammal/billig telefon.
+
 
 \end{binge}

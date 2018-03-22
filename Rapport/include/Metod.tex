@@ -12,19 +12,45 @@
 % Metoddelen skrivs nästan alltid i dåtid (imperfekt) och ofta används
 % passiv form för att beskriva forskningsaktiviteter.
 
-\chapter{Konstruktionen av läromaterialet, skapandet av hemsidan och utvärderingen med testgruppen}
+\chapter{Metod}
 
 \begin{binge}
 
-Projektets genomförande har bestått av tre delar. Den första delen var konstruktionen av själva läromaterialet. Den andra delen var skapandet av hemsidan läromaterialet publicerats på. Den tredje delen var utvärdering av läromaterialet med en testgrupp.
+Projektets genomförande bestod till störst del av konstruktionen av själa
+läromaterialet, och där ingick skapandet av domänspecifika språk, skapandet av
+den tillhörande lärotexten och publiceringen av denna på en hemsida. Därefter
+följde en mindre del av utvärdering av materialet med en testgrupp.
 
-Konstruktionen av läromaterialet har varit den största delen och har även fortgått genom hela projektets gång. När läromaterialet var halvvägs färdigt skapades en hemsida dit läromaterialet publicerats. Publiceringen skedde sedan dess löpande. I slutet av projektet gjordes utvärderingen, där en testgrupp fick svara på frågor om vad de tyckte om läromaterialet.
+Projektets genomförande har bestått av tre delar. Den första delen var
+konstruktionen av själva läromaterialet. Den andra delen var skapandet av
+hemsidan som läromaterialet har publicerats på. Den tredje delen var
+utvärdering av läromaterialet med en testgrupp.
+
+\begin{center}
+Publicering och testning känns som det är så små delar att det kanske kan slås
+ihop till en slutgiltig del. Eller att testning är en egen del och att
+publicering inbakas i skapandet av läromaterialet.  
+\end{center}
+
+Konstruktionen av läromaterialet har varit den största delen och har även
+fortgått genom hela projektets gång. När läromaterialet var halvvägs färdigt
+skapades en hemsida dit läromaterialet publicerats. Publiceringen skedde sedan
+dess löpande. I slutet av projektet gjordes utvärderingen, där en testgrupp
+fick svara på frågor om vad de tyckte om läromaterialet.
 
 \section{Konstruktion av läromaterialet}
 
-Läromaterialet består av ett antal kapitel som vardera behandlar separata fysikaliska områden. Skapande av varje kapitel skedde därför till största delen fristående från andra kapitel. Skapande av alla kapitel bestod i sin tur av tre faser, som såg likadana ut för alla kapitel. Dessa faser var selektion av område, implementation av domänspecifika språk för området samt skrivande av brödtext till området.
+Läromaterialet består av ett antal kapitel som vardera behandlar separata
+fysikaliska områden \todo{Förklara fysikaliskt område, eller förenkla}.
+Skapande av varje kapitel skedde därför till största delen fristående från
+andra kapitel. Skapande av alla kapitel bestod i sin tur av tre
+faser, som såg likadana ut för alla kapitel. Dessa faser var selektion av
+område, implementation av domänspecifika språk för området samt skrivande av
+lärotext till området.
 
-Denna skapandeprocess kan delas upp i två axlar: en utefter kapitel och en utefter fas. Det här illustreras i figur \ref{fig:oversiktA}. Figuren visar att varje kombination av kapitel och fas är en del i projektet som arbetades med.
+Denna skapandeprocess kan delas upp i två axlar: en utefter kapitel och en
+utefter fas. Det här illustreras i figur \ref{fig:oversiktA}. Figuren visar att
+varje kombination av kapitel och fas är en del i projektet som arbetades med.
 
 \begin{figure}[tph]
     \centering
@@ -38,19 +64,71 @@ Denna skapandeprocess kan delas upp i två axlar: en utefter kapitel och en utef
     \begin{subfigure}[t]{0.5\textwidth}
         \centering
         \frame{\includegraphics[width=0.9\linewidth]{figure/oversiktB.pdf}}
-        \caption{Delarna visas med gränsöverskridande överlapp. Notera att implementation och skrivande \textit{alltid} var överlappande medan selektion \textit{ofta men inte alltid} var det.}
-        \label{fig:oversiktB}
+        \caption{Delarna visas med gränsöverskridande överlapp. Notera att
+        implementation och skrivande \textit{alltid} var överlappande medan
+      selektion \textit{ofta men inte alltid} var det.} \label{fig:oversiktB}
     \end{subfigure}
-    \caption{Översikt över hur skapandeprocessen av läromaterialet såg ut. Processen kan delas upp utefter två axlar: kapitel och fas. Varje kombination är en del som arbetats med och är gråmarkerad.}
-\end{figure}
+    \caption{Översikt över hur skapandeprocessen av läromaterialet såg ut.
+  Processen kan delas upp utefter två axlar: kapitel och fas. Varje kombination
+  är en del som arbetats med och är gråmarkerad.} \end{figure}
 
-Även om detta sätt att dela upp processen är översiktlig är den inte helt verklighetstrogen. I praktiken fanns det överlapp mellan olika delar, både med avseende på kapitel och fas. Det här illustereras i figur \ref{fig:oversiktB}. Där ser man att selektionen av områden skedde för flera kapitel samtidigt. Detta då arbtetet med att hitta områden ofta gav flera områden samtidigt. I figuren ser man också att implementation av domänspecifika språk och skrivande av brödtext skedde samtidigt. Eftersom de i resultatet är sammanvävda är det högst naturligt att processerna med att skapa dem också var sammanvävda.
+Även om detta sätt att dela upp processen är översiktlig är den inte helt
+verklighetstrogen. I praktiken fanns det överlapp mellan olika delar, både med
+avseende på kapitel och fas. Det här illustereras i figur \ref{fig:oversiktB}.
+Där ser man att selektionen av områden skedde för flera kapitel samtidigt.
+Detta då arbtetet med att hitta områden ofta gav flera områden samtidigt. I
+figuren ser man också att implementation av domänspecifika språk och skrivande
+av lärotext skedde samtidigt. Eftersom de i resultatet är sammanvävda är det
+högst naturligt att processerna med att skapa dem också var sammanvävda.
 
-De tre följande avsnitten beskriver i mer detalj hur de tre faserna selektion, implementation och skriande såg ut. Det är viktigt att då minnas att, som nämndes ovan, att det finns överlapp både mellan faserna och mellan kapitlena.
+De tre följande avsnitten beskriver i mer detalj hur de tre faserna selektion,
+implementation och skrivande såg ut. Det är viktigt att minnas att det, som
+nämndes ovan, finns överlapp både mellan faserna och mellan kapitlena.
 
 \subsection{Selektion av fysikaliska områden att behandla}
 \label{sec:selektion}
 
+<<<<<<< HEAD
+Ett domänspecifikt språk modellerar ett specifikt och avgränsat område. Därför
+var det naturligt att söka och tänka i termer av avgränsade områden inom
+fysiken. För att mer konkret hitta områden att behandla kontaktades Åke Fäldt,
+examinator för \textit{Fysik för ingenjörer}, samt så studerades fysikkursens
+bok, \textit{Univeristy Physics}.
+
+Fäldt befrågades om vilka områden han i allmänhet tycker studenter verkar ha
+svårt för. Detta för att i enlighet med projektets mål börja med de, för
+studenterna, problematiska områdena. Enligt Fäldt är ett allmänt problem att
+egna mentala modeller för problem är felaktiga eftersom studenter ofta tar
+genvägar, som inte bygger på saker man är säker gäller. En annan erfarenhet
+från honom är att så länge första raden i en uppgiftslösning är rätt, så är
+resten också rätt. Med andra ord, har studenten väl identifierat vilken typ av
+problem det rör sig om brukar det inte vara några svårigheter att lösa
+uppgiften.
+
+Med hjälp av insikterna från Fäldt drogs två slutsatser. Den första slutsatsen
+var att matematisk analys var ett område värt att behandla i detalj. Den andra
+slutsatsen var att genom att ge struktur till olika typer av problem kan det
+förhoppningsvis kunna underlätta för studenter att lära sig identifiera vilken
+typ av uppgift de handskas med.
+
+En inledande selektion gjordes för att hitta mer specifika områden att arbeta.
+Detta gjordes genom att studerade kursboken \textit{University Physics}.
+Speciellt av intresse var de kapitel som behandlade mekanik (i enlighet med
+projektets mål att börja med mekanik), matematisk analys samt de kapitel som
+använde sig av en specifik syntax. Domänspecifik syntax var av intresse att
+finna då en betydlig del av domänspecifika språk är modellering av just
+syntaxen. Även områden som projektgruppen fann personligen intressanta, 
+valdes ut.
+
+Allteftersom arbetet fortskred blev det tydligt att det fanns en distinktion
+mellan \textit{grundläggande} och \textit{komposita} områden. De grundläggande
+områdena är fristående och lägger grunden till mer komplexa områden och är i sig
+(dimensioner undantaget) inte av direkt intresse för fysik. De krävs däremot
+som ett bakomliggande matematiskt ramverk till de komposita områdena. 
+De komposita områdena skiljer sig genom att vara närmare fysiken, vara av
+tillämpad natur och bygga vidare på mer underliggande koncept. Ett exempel är
+rörelseproblem som använder sig av både matematisk analys och dimensioner.
+=======
 Ett domänspecifikt språk modellerar ett specifikt och avgränsat område. Därför var det naturligt att söka och tänka i termer av avgränsade områden inom fysiken. För att mer konkret hitta områden att behandla togs personlig kontakt med Åke Fäldt, examinator för \textit{Fysik för ingenjörer}, samt så studerades fysikkursens bok, \textit{Univeristy Physics}.
 
 Fäldt befrågades om vilka områden han i allmänhet tycker studenter verkar ha svårt för. Detta för att i enlighet med projektets mål börja med de, för studenterna, problematiska områdena. Enligt Fäldt är ett allmänt problem att egna mentala modeller för problem är felaktiga eftersom studenter ofta tar genvägar, som inte bygger på saker man är säker gäller. En annan erfarenhet från honom är att så länge första raden i en uppgiftslösning är rätt, så är resten också rätt. Med andra ord, har studenten väl identifierat vilken typ av problem det rör sig om brukar det inte vara några svårigheter att lösa uppgiften.
@@ -60,35 +138,77 @@ Med hjälp av insikterna från Fäldt drogs två slutsatser. Den första slutsat
 En inledande selektion gjordes för att hitta mer specifika områden att arbeta. Detta gjordes genom att studerade kursboken \textit{University Physics}. Speciellt av intresse var de kapitel som behandlade mekanik (i enlighet med projektets mål att börja med mekanik), matematisk analys samt de kapitel som använde sig av en specifik syntax. Domänspecifik syntax var av intresse att finna då en betydlig del av domänspecifika språk är modellering av just syntaxen. Även områden som projektgruppen fann personligen intressanta, och områden som inte var av direkt intresse, men som utgjorde en viktig beståndsdel av mer intressanta områden, valdes ut. \todo{mer konkret}.
 
 Allteftersom arbetet fortskred blev det tydligt att det fanns en distinktion mellan \textit{grundläggande} och \textit{komposita} områden. De grundläggande områdena är fristående, lade grunden till mer komplexa områden och är i sig (dimensioner undantaget) inte av direkt intresse för fysik. De krävs däremot som ett bakomliggande matematiskt ramverk till de komposita områdena. \todo{Här börjar det dra sig mot resultat-karaktär...} De komposita områdena skiljer sig genom att vara närmare fysiken, vara av tillämpad natur och bygga vidare på mer underliggande koncept. Ett exempel är rörelseproblem som kan använda sig av både matematisk analys och dimensioner.
+>>>>>>> 9a856cbbc005cb3a45fbcd2503c199069e9399b7
 
 \subsubsection{Grundläggande områden}
 
-Grundläggande områden hittades främst genom den tidigare nämnda inledande selektionen (se avsnitt \ref{sec:selektion}). Det omvända förhållandet gäller också. Den inledande selektionen gav främst grundläggande områden.
+\textbf{Skriv om paragraf nedan}
 
-Fler grundläggande områden har hittats efterhand. Avslutande av den inledande selektionen innebar alltså inget stopp för sökandet av grundläggande områden, även om de flesta redan hittats. Fler grundläggande områden hittades bland annat även genom att studera kursmaterialet som tillhörde \textit{Fysik för ingenjörer}.
+Grundläggande områden hittades främst genom den tidigare nämnda inledande
+selektionen (se avsnitt \ref{sec:selektion}). Det omvända förhållandet gäller
+också. Den inledande selektionen gav främst grundläggande områden. \todo{Det är väl inte omvänt, utan samma sak?}
 
-Sökandet i kursboken och kursmaterialet gav viktiga kunskaper om områden att behandla. Men minst lika viktiga var de experiment som gjordes för att se huruvida ett område lämpade sig till att göra ett domänspecifikt språk av. När områden kodades upp till domänspecifika språk var det långt ifrån alla gånger det kunde göras på en meningsfullt sätt. De områden som inte gick fick skrotas eller behandlas annorlunda (se avsnitt \ref{sec:selektion_komposit}). Förenklat sagt var de områden som innehöll tydliga ''data och operationer'' väl lämpade att göra domänspecifika språk av. Lämpligheten hos olika områden diskuteras utförligare i avsnitt \ref{sec:lampligt}.
+Fler grundläggande områden har hittats efterhand. Avslutande av den inledande
+selektionen innebar alltså inget stopp för sökandet av grundläggande områden,
+även om de flesta redan hittats \todo{Hur vet vi att vi redan har hittat de flesta?}. Fler grundläggande områden hittades bland
+annat även genom att studera kursmaterialet som tillhörde \textit{Fysik för
+ingenjörer}.
 
-När grundläggande områden valdes ut definerades de så att det i största möjliga utsträckning var fristående. Detta för att kunna arbteas med parallellt. De grundläggande områden som under projekets gång valdes ut blev vektorer, dimensioner, matematisk analys och bevis. OCH FLER
+Sökandet i kursboken och kursmaterialet gav viktiga kunskaper om områden att
+behandla. Men minst lika viktiga var de experiment som gjordes för att se
+huruvida ett område lämpade sig till att göra ett domänspecifikt språk av. När
+områden kodades upp till domänspecifika språk var det långt ifrån alla gånger
+det kunde göras på en meningsfullt sätt. De områden som inte gick att
+modelleras fick skrotas eller behandlas annorlunda (se avsnitt
+\ref{sec:selektion_komposit}). Förenklat sagt var de områden som innehöll
+tydliga ''data och operationer'' väl lämpade att för domänspecifika språk.
+Lämpligheten hos olika områden diskuteras utförligare i avsnitt
+\ref{sec:lampligt}.
 
-\textit{Vektorer} eftersom det är en viktig grundsten i mekanik. Alla krafter, hastigheter och accelerationer betraktas oftast som vektorer i planet eller rymden, och dessa är alla fundamentala element i mekanik.\todo{Vilken mekanik}
+När grundläggande områden valdes ut definerades de så att det i största möjliga
+utsträckning var fristående. Detta för att kunna arbteas med parallellt. De
+grundläggande områden som under projekets gång valdes ut blev vektorer,
+dimensioner, matematisk analys och bevis. OCH FLER
 
-\textit{Dimensioner} eftersom det är viktigt för studenter att förstå sig på hur dimensioner påverkas av algebraiska operationer. Det kan också vara hjälpsamt att kunna utföra automatisk, datorassisterad dimensionsanalys på ens beräkningar.
+\textit{Vektorer} eftersom det är en viktig grundsten i mekanik. Alla krafter,
+hastigheter och accelerationer betraktas oftast som vektorer i planet eller
+rymden, och dessa är alla fundamentala element i klassisk mekanik.
 
-\textit{Matematisk analys} eftersom alla koncept i klassisk mekanik är relaterade genom matematisk analys. Mer specifikt används differenser för att beskriva medelrörelse, och infinitesimalkalkyl för att beskriva momentanrörelser. Vidare var infinitesimalkalkyl just det område som Fäldt pekade ut som speciellt viktigt och något som studenter har svårt för.
+\textit{Dimensioner} eftersom det är viktigt för studenter att förstå sig på
+hur dimensioner påverkas av algebraiska operationer. Det kan också vara
+hjälpsamt att kunna utföra automatisk, datorassisterad dimensionsanalys på
+beräkningar.
 
-\textit{Bevis} eftersom det ger en insikt i hur de formler man använder faktiskt uppstår. För att genomföra bevis krävs också att formler och beteckningar görs rigorösa, vilket ger en bättre förståelse till dem.
+\textit{Matematisk analys} eftersom alla koncept i klassisk mekanik är
+relaterade genom matematisk analys. Mer specifikt används differenser för att
+beskriva medelrörelse, och infinitesimalkalkyl för att beskriva
+momentanrörelser. Vidare var infinitesimalkalkyl just det område som Fäldt
+pekade ut som speciellt viktigt och något som studenter har svårt för.
 
-OCH FLER
+\textit{Bevis} eftersom det ger en insikt i hur de formler man använder
+faktiskt uppstår. För att genomföra bevis krävs också att formler och
+beteckningar görs rigorösa, vilket ger en bättre förståelse av dem.
+
+\textbf{OCH FLER}
   
 \subsubsection{Komposita områden}
 \label{sec:selektion_komposit}
 
-Komposita områden uppstod då det framgick att inte alla områden var lämpliga att göra domänspecifika språk av (se avsnitt \ref{sec:lampligt}). Lösningen blev därför att tillämpa domänspecifika språk från de grundläggande områdena.
+Komposita områden uppstod då det framgick att inte alla områden var lämpliga
+att göra domänspecifika språk av (se avsnitt \ref{sec:lampligt}). Eller om
+området var en vidareutveckling och/eller kombination av de grundläggande
+områdena. Lösningen blev därför att tillämpa domänspecifika språk från de
+grundläggande områdena för att modellera dessa.
 
-Ett sätt komposita områden hittades var därmed som ett resultat av sökandet och experimenterandet med grundläggande områden. Ett annat sätt var att även komposita områden söktes direkt efter. Då användes precis som tidigare främst kursboken och kursmaterialet tillhörande \textit{Fysik för ingenjörer}. Komposita områden inkluderades för att täcka områden med mer direkt koppling till fysik. Till exempel har lutande plan en mer direkt koppling än vad analys har.
+Ett sätt komposita områden hittades var därmed som ett resultat av sökandet och
+experimenterandet med grundläggande områden. Ett annat sätt var att även
+komposita områden direkt söktes efter. Då användes precis som tidigare främst
+kursboken och kursmaterialet tillhörande \textit{Fysik för ingenjörer}.
+Komposita områden inkluderades för att täcka områden med mer direkt koppling
+till fysik. Till exempel har lutande plan en mer direkt koppling än vad analys
+har.
 
-SKA VI HA MED DESSA?
+SKA VI HA MED DESSA? 
 
 De komposita områden som valdes ut blev: momentan- och medelrörelse OCH FLER.
 
@@ -104,21 +224,42 @@ OCH FLER
 
 \subsection{Implementation av DSL för områdena}
 
-Implementationen av ett domänspecifikt språk till ett område började alltid med experimentering. Även om en del experiment redan gjorts i selektionsfsen behövdes mer göras. Det finns ingen absolut kanonisk form att skriva ett domänspecifikt språk på, framförallt inte för fysik. Experimentering var därför viktigt för att finna lämpliga representationer av syntax och andra element av domänspecifika språk.
+Implementationen av ett domänspecifikt språk till ett område började alltid med
+experimentering. Även om en del experiment redan gjorts i selektionsfasen
+behövdes mer göras. Det finns ingen absolut kanonisk form \todo{förklara
+kanonisk form} att skriva ett domänspecifikt språk på, framförallt inte för
+fysik \todo{Varför är det framförallt för fysik?}. Experimentering var därför viktigt för att finna
+lämpliga representationer av syntax och andra element av domänspecifika språk.
 
-Vad som ansågs vara en bra, eller åtminstone tillräckligt bra, representation var i huvudsak baserat på gruppmedlemmarns intuition om Haskell och diskussion med handledaren. Implementationerna skulle vara både naturliga, i den mening att de gick att använda smidigt rent tekniskt. Men de skulle även vara lättförståliga. Den progamtekniskt elegantaste implementationen användes därför inte alltid.\todo{Mer om detta ''bra'' behövs nog. Tänkte vi ens så mycket på detta?} I praktiken var de slutgiltiga implementationerna oftast också de minsta implementationerna, med avseende på bland annat antal kodrader.
 
-De olika områdena krävde i varierande mån inläsning och studering av Haskell, Agda, fysik, matematik och domänspecifika språk. Till exempel krävde kapitlet om dimensioner inläsning om typnivå-programmering i Haskell. För att kunna implementera bevis bra studerades Agda.
+Framförallt eftersom vi inte vet hur den kanoniska formen ska se ut, det finns ingen almänn bestämd form. Och det ä också det som är motivationen till vårt projekt. \todo{Utveckla och skriv om}
+
+Vad som ansågs vara en bra, eller åtminstone tillräckligt bra, representation
+var i huvudsak baserat på gruppmedlemmarns intuition om Haskell och diskussion
+med handledaren. Implementationerna skulle vara både naturliga, i den mening
+att de gick att använda smidigt rent tekniskt. Men de skulle även vara
+lättförståliga. Den progamtekniskt elegantaste implementationen användes därför
+inte alltid, utan den mer verbosa versionen föredrogs för att göra
+läromaterialet så lättläst som möjligt. Dock avstod vi inte från de mer
+avancerade funktionerna av Haskell när de var motiverade av materialet som vi
+beskrev, men då alltid med en utömmande förklaring av hur det fungerade och utan
+krav på kunskap om funktion av läsaren.
+
+
+De olika områdena krävde i varierande mån inläsning och studering av Haskell,
+Agda \todo{Vad är Agda?}, fysik, matematik och domänspecifika språk. Till
+exempel krävde kapitlet om dimensioner inläsning om typnivå-programmering i
+Haskell. För att kunna implementera bevis bra studerades Agda.
 
 HÄR BEHÖVER JAG HJÄLP ATT EXPANDERA JOHANS STYCKEN
 
 I allmänhet implementerades DSL i Haskell som en kombination av
 syntaxträd, funktioner för att manipulera dessa träd, och
 evalueringsfunktioner till någon slags semantisk domän. Komposita
-DSL var istället mer TODO: beskrivning. Varje DSL, grundläggande och
-komposit, parades även ihop med en mängd fysikproblem att appliceras
-på, sådant att läsaren ska få förståelse för hur DSLen kan brukas
-utöver hur de implementeras.
+DSL var istället mer \todo{beskrivning}. Varje DSL, grundläggande och
+komposita, parades även ihop med en mängd fysikproblem att appliceras
+på, sådant att läsaren skulle få förståelse för hur DSLen kan brukas
+utöver hur de implementerades.
 
 HUR DETALJERAT SKA NEDANSTÅENDE VARA? FRÅGA PATRIK OCKSÅ
 
@@ -135,7 +276,7 @@ För analys gjordes ...
 För annat gjordes ...
 
 
-TESTER!!!
+TESTER!!! (quickcheck)
 
 KOMPOSITA ASPEKTER
 
@@ -149,11 +290,17 @@ Eller, \emph{Bruk av de mer fundamentala/teoretiska DSLerna för att
 
 \subsection{Skriva lärotext}
 
-I samband med att ett område implementerades skrevs brödtext till det. Till en början skrevs brödtext som fokuserade på att förklara programkoden. Detta var ofta ett naturligt val. Det var viktigt att programkoden gick att förstå innan kopplingar till matematik och fysik kunde förklaras. Det var nämligen brödtext av det slaget som skrevs senare. Avslutningsvis skrevs inledning och avslutning till kapitlet.
+I samband med att ett område implementerades skrevs lärotext till det. Till en
+början skrevs brödtext som fokuserade på att förklara programkoden. Detta var
+ofta ett naturligt val. Det var viktigt att programkoden gick att förstå innan
+kopplingar till matematik och fysik kunde förklaras. Det var nämligen brödtext
+av det slaget som skrevs senare. Avslutningsvis skrevs inledning och avslutning
+till kapitlet.
 
-Generellt under skrivningen av brödtexten togs det hänsyn till ARCS som presenterats i avsnitt \ref{sec:arcs}. TODO: skriv mer här när vet om ARCS.
+Generellt under skrivningen av lärotext togs det hänsyn till ARCS som
+presenterats i avsnitt \ref{sec:arcs}. TODO: skriv mer här när vet om ARCS.
 
-Lättsamt språk o en gnutta humor för att hålla kvar
+Lättsamt språk och en gnutta humor för att hålla kvar
 uppmärksamhet. Relaterat till Attention i ARCS modellen (2016
 använde den. Såg vettig ut).
 
@@ -161,9 +308,17 @@ TODO: Expandera. Vad exakt använder vi för didaktisk metod? Samma
 som appliceras i Learn You a Haskell, mer eller mindre. Fånga
 uppmärksamhet med lite humor och lättsamhet etc.
 
-Brödtexten och programkoden skrevs sammanvävt i samma fil, i \textit{Literate Haskell}, se avsnitt \ref{sec:lhs}. Literat programmering passade bra ihop med hur läromaterialet skulle se ut då bägge betonade det jämnbördiga förhållandet mellan progamkod och förklaringar. För att läromaterialet skulle vara lättförståeligt var det också viktigt att presentera materialet i den ordning som en mänsklig läsare, och inte datorn, tyckte var enklast.\todo{I Quantity så är detta tydligt. Då gjordes en ''taste of types'' tidigt för att läsaren skulle förstå Quantity bättre, innan massa detaljer gicks in på. Frågan är dock om detta ska gås in på i rapporten?}
+Brödtexten och programkoden skrevs sammanvävt i samma fil, i \textit{Literate
+Haskell}, se avsnitt \ref{sec:lhs}. Literat programmering passade bra ihop med
+hur läromaterialet skulle se ut då det bägge betonade det jämnbördiga förhållandet
+mellan progamkod och förklaringar. För att läromaterialet skulle vara
+lättförståeligt var det också viktigt att presentera materialet i den ordning
+som en mänsklig läsare, och inte datorn, tyckte var enklast.\todo{I Quantity så
+är detta tydligt. Då gjordes en ''taste of types'' tidigt för att läsaren
+skulle förstå Quantity bättre, innan massa detaljer gicks in på. Frågan är dock
+om detta ska gås in på i rapporten?}
 
-TODO: Motivera varför vi valde Markdown istället för LaTeX i LHS filerna. Är detta viktigt att ha med?
+TODO: Skriva om övningar. 
 
 KOMPOSITA ASPEKTER
 
@@ -176,15 +331,15 @@ mekanik i allmänhet och probleminstanserna i synnerhet.
   Läromaterialet publiceras på en internethemsida, varpå man kan läsa
   allt o ha skoj.
 
-TODO: Ska vi ha i målet att vi ska göra en hemsida istället för PDF, och sedan säga varför i diskussion om etik?
+  TODO: Slå ihop underrubriker till ett stycke.
 
   \subsection{Beskrivning}
 
-  Ett build-script hämtar .lhs källfilerna, i vilka brödtexten är
+  Ett build-script hämtar .lhs källfilerna, i vilka lärotexten är
   skriven med markdown. Rendrar med pandoc, och sätter in lite
   navigationselement etc. med hjälp av eget templating-system. Manuellt
   läggs sedan stoffet på gh-pages branchen för att automatiskt visas på
-  dslsofmath.github.io/BScProj2018.
+  dslsofmath.github.io/BScProj2018. \todo{Förklara templating, rendrar, branch}
 
   Obs: Medan bygget är scriptat så är inte publiceringen det, och
   ingenting genereras/publiceras automatiskt kontinuerligt. Måste köra
@@ -199,15 +354,9 @@ TODO: Ska vi ha i målet att vi ska göra en hemsida istället för PDF, och sed
 
   \subsection{Hemsidan}
 
-  Nåt om design, läslighet, grafik(?), navigation, avsiktligt undvikande
+  TODO: Nåt om design, läslighet, grafik(?), navigation, avsiktligt undvikande
   av javascript, etc.
 
-  Tänker lite samma med denna sektion som ovan. Har ju ingenting med
-  varken matte eller DSL att göra i sig, så kanske inte så intressant?
-  Samtidigt är det kanske lite intressant ur pedagogik-aspekten. Kan det
-  kanske vara lättare/roligare att lära sig om sidan är fin och
-  lättläst? Att javascript inte krävs gör att sidan kan visas ordentligt
-  även om man sitter i U-land med dålig/gammal/billig telefon.
 
   \section{Test och återkoppling}
 

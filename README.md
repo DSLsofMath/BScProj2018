@@ -21,11 +21,11 @@ Medlemmar: Oskar, Erik, Daniel, Björn, Johan
 
 ## Kvar på rapporten
 
-Skriv om du arbetar på en av punkterna och ta bort den när den är klar.
+Skriv om du arbetar på en av punkterna och det kommer ta lång tid (så att ingen annan arbetar samtidigt). Ta bort den när den är klar.
 
 - Teori
     - Didaktik
-    - DSL+syntaxträd
+    - DSL+syntaxträd **Oskar**
 - Metod
     - Utvärdering
     - Implementation komposita

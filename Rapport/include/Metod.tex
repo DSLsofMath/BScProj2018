@@ -201,7 +201,6 @@ kanonisk form} att skriva ett domänspecifikt språk på, framförallt inte för
 fysik \todo{Varför är det framförallt för fysik?}. Experimentering var därför viktigt för att finna
 lämpliga representationer av syntax och andra element av domänspecifika språk.
 
-
 Framförallt eftersom vi inte vet hur den kanoniska formen ska se ut, det finns
 ingen almänn bestämd form. Och det är också det som är motivationen till vårt
 projekt. \todo{Utveckla och skriv om}
@@ -245,8 +244,9 @@ För analys gjordes ...
 
 För annat gjordes ...
 
+Efter att ett domänspecifikt språk implementerats skrevs tester till det. Det som var intressant att testa var olika lagar som skulle gälla. Eftersom de domänspecifika språk modellerade matematik var det matamatiska lagar som skulle gälla. Ett exempel är att vektoraddition skulle vara kommutativ.
 
-TESTER!!! (quickcheck) \todo{Skriv}
+Testerna gjordes med hjälp av \textit{QuickCheck}. QuickCheck är ett testningsverktyg i Haskell som genererar många och slumpmässiga testfall. Att lagarna gällde för de domänspecifika språken verifierades med andra ord genom testa för många exempelvärden. Inga bevis av att lagarna gällde gjordes.
 
 \textbf{Saker som vi väntar en stund med att skriva}
 
@@ -263,10 +263,10 @@ Eller, \emph{Bruk av de mer fundamentala/teoretiska DSLerna för att
 \subsection{Skriva lärotext}
 
 I samband med att ett område implementerades skrevs lärotext till det. Till en
-början skrevs brödtext som fokuserade på att förklara programkoden. Detta var
+början skrevs lärotext som fokuserade på att förklara programkoden. Detta var
 ofta ett naturligt val \todo{Varför var det naturligt?}. Det var viktigt att
 programkoden gick att förstå innan kopplingar till matematik och fysik kunde
-förklaras. Det var nämligen brödtext av det slaget som skrevs senare.
+förklaras. Det var nämligen lärotext av det slaget som skrevs senare.
 Avslutningsvis skrevs inledning och avslutning till kapitlet.
 
 Generellt under skrivningen av lärotext togs det hänsyn till ARCS som
@@ -282,7 +282,7 @@ TODO: Expandera. Vad exakt använder vi för didaktisk metod? Samma
 som appliceras i Learn You a Haskell, mer eller mindre. Fånga
 uppmärksamhet med lite humor och lättsamhet etc.
 
-Brödtexten och programkoden skrevs sammanvävt i samma fil, i \textit{Literate
+Lärotexten och programkoden skrevs sammanvävt i samma fil, i \textit{Literate
 Haskell}, se avsnitt~\ref{sec:lhs}. Literat programmering passade bra ihop med
 hur läromaterialet skulle se ut då det betonade det jämnbördiga förhållandet
 mellan programkod och förklaringar. För att läromaterialet skulle vara

@@ -1,26 +1,22 @@
 
-Utvärdering:
+Vi har gjort ett läromaterial som kombinerar fysik och domänspecifika språk i Haskell. Det finns på tinyurl.com/learnyouaphysics . Läs ett eller flera kapitel du tycker verkar vara intressanta och svara på frågorna nedan.
 
 
 
 
-
-
-
-Förstod du haskellkoden?
+Förstod du Haskellkoden?
 
 Förstod du fysikexemplena?
 
-Förstod du kopplingen mellan det domänspecifika språket och fysikområdet?
+Förstod du kopplingen mellan kapitlets domänspecifika språk och fysikområdet?
 
-Tyckte du detta var inspirerande sätt för att lära dig fysik?
+Tyckte du detta var ett inspirerande sätt för att lära dig fysik?
 
+I vilken mån tyckte du att detta lärde dig om domänspecifika språk VS fysik?
 
-I vilken mån tyckte du att detta lärde dig dsl vs fysik?
+Kan du Haskell sedan innan?
 
-Kan du haskell sedan innan?
-
-Har du gått en kurs i DSL innan?
+Har du gått en kurs i domänspecifika språk innan?
 
 Har du gått en kurs i fysik innan?
 

@@ -208,7 +208,6 @@ kanonisk form} att skriva ett domänspecifikt språk på, framförallt inte för
 fysik \todo{Varför är det framförallt för fysik?}. Experimentering var därför viktigt för att finna
 lämpliga representationer av syntax och andra element av domänspecifika språk.
 
-
 Framförallt eftersom vi inte vet hur den kanoniska formen ska se ut, det finns
 ingen almänn bestämd form. Och det är också det som är motivationen till vårt
 projekt. \todo{Utveckla och skriv om}
@@ -252,8 +251,9 @@ För analys gjordes ...
 
 För annat gjordes ...
 
+Efter att ett domänspecifikt språk implementerats skrevs tester till det. Det som var intressant att testa var olika lagar som skulle gälla. Eftersom de domänspecifika språk modellerade matematik var det matamatiska lagar som skulle gälla. Ett exempel är att vektoraddition skulle vara kommutativ.
 
-TESTER!!! (quickcheck) \todo{Skriv}
+Testerna gjordes med hjälp av \textit{QuickCheck}. QuickCheck är ett testningsverktyg i Haskell som genererar många och slumpmässiga testfall. Att lagarna gällde för de domänspecifika språken verifierades med andra ord genom testa för många exempelvärden. Inga bevis av att lagarna gällde gjordes.
 
 \textbf{Saker som vi väntar en stund med att skriva}
 

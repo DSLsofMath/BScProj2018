@@ -38,6 +38,5 @@ Skriv om du arbetar på en av punkterna och det kommer ta lång tid (så att ing
 - Diskussion
     - Expandera DSL+fysik gör att fysik enklare
     - Expandera Vårt tillvägagångssätt
-    - Expandera Etik
-    - Expandera Vidareutvecklingsmöjligheter
+    - Etik: om roligt och hemsidan som gör pedagogik enklare
     - Expandera Om vi tyckte läromaterialet blev bra

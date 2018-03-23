@@ -18,9 +18,40 @@ Domänspecifika språk är vanligt förekommande i programmeringssammanhang. HTM
 
 Motsatsen till ett domänspecifikt språk är ett generellt språk. I vardagen är naturliga språk som svenska och engelska generella medan ryttar-begreppen ovan är domänspecifika. Likt i vardagen finns det generella programmeringsspråk som C++ och Java. Dessa är turingkompletta, vilket betyder att det kan uttrycka alla beräkningsbara problem i dem och även lösa dem givet tillräckligt med tid och \todo{referens} minnestillgångar. Begränsningen med dessa generella språk är just deras egen generaliserbarhet, eftersom de har stöd för alla typer av beräkningar så blir både läsbarheten och användarvänligheten lidande\todo{referens/motivering}.
 
-Inte färdigt än...
+Ett typexempel på ett domänspecifikt språk är ett \textit{syntaxträd}. Det exemplifieras här med ett syntaxträd för grundläggande matematiska uttryck, kodat i Haskell. Det visas i figur \ref{fig:syntax_exempel}.
 
+\begin{figure}[tph]
+  \begin{lstlisting}
+data Expr = Expr :+: Expr
+          | Expr :*: Expr
+          | Const Double
+  \end{lstlisting}
+  \caption{Ett syntaxträd i Haskell. Detta är ett exempel på ett litet domänspecifikt språk.}
+  \label{fig:syntax_exempel}
+\end{figure}
 
+Ett syntaxträd innehåller \textit{datakonstruktorer} för att representera \textit{löv} (ändpunkter) och \textit{förgreningar}. I detta exempel är \texttt{:+:} och \texttt{:*:} förgreningar. Med hjälp av dem kan man uttrycka summan respektive produkten av två \textit{andra} uttryck. \texttt{Const} är ett löv. Det är här en konstant som man ej kan bygga vidare på.
+
+Med datakonstruktorerna kan man konstruera värden i språket. Ett exempelvärde från det tidigare syntaxträdet visas i figur \ref{fig:syntax_exempel_varde}.
+
+\begin{figure}[tph]
+  \begin{lstlisting}
+value = Const 7 :*: (Const 3 :+: Const 10)
+  \end{lstlisting}
+  \caption{Ett exemeplvärde ur det tidigare syntaxträdet. Detta modellerar det matematiska uttrycket $7 * (3 + 10)$}
+  \label{fig:syntax_exempel_varde}
+\end{figure}
+
+Figur \ref{fig:syntax_exempel_varde} visar hur det matematiska uttrycket $7 * (3 + 10)$ modelleras. Konstruktorn \texttt{:*:} får som sina två argument uttrycken \texttt{Const 7} och \texttt{Const 3 :+: Const 10}. Det är alltså en produkt av två deluttryck. Syntaxträd brukar illusteras med just träddiagram. Detta exempelvärde illustreras i figur \ref{fig:syntax_exempel_bild}.
+
+\begin{figure}[tph]
+  \centering
+  \includegraphics[width=0.4\linewidth]{figure/syntax_exempel_bild.png}
+  \caption{Exempelvärde från syntaxträdet illustrerat i ett träddiagram.}
+  \label{fig:syntax_exempel_bild} 
+\end{figure}
+
+Ett domänspecifikt språk kan antingen implementeras som ett fristående språk eller bäddas in i ett redan existerande språk. De domänspecifika språk som   utvecklats inom detta projekt är inbäddade i språket Haskell.
 
 GAMLA
 
@@ -63,19 +94,7 @@ Ska kanske slås ihop med DSL-avsnittet, då syntaxträd är ett så bra exempel
 
 Ett typexempel på ett domänspecifkt språk är ett syntaxträd för algebraisk uttryck, här kodat i Haskell.
 
-\begin{figure}
-  \begin{lstlisting}
-  data Expr = Expr :+: Expr
-            | Expr :*: Expr
-            | Const Double
-            | VarX
 
-  exempel = (Const 7.0 :+: VarX) :*: ((VarX :+: Const 10.0)
-            :*: VarX)
-  \end{lstlisting}
-  \caption{Bild!?}
-  \label{fig:syntax_exempel}
-\end{figure}
 
 I detta exempel visar hur uttrycket $(7+x)*((x+10)*x)$ kodas.
 

@@ -35,7 +35,6 @@ Skriv om du arbetar på en av punkterna och ta bort den när den är klar.
     - Lärotext övningar
     - Hemsidan
 - Resultat
-    - Övningar
     - Utvärdering
 - Diskussion
     - Expandera DSL+fysik gör att fysik enklare

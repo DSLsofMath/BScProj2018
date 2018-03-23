@@ -67,13 +67,13 @@ De tre följande avsnitten beskriver i detalj hur de tre faserna, val,
 implementation och skrivande såg ut. Det är viktigt att minnas att det, som
 nämndes ovan, finns överlapp mellan både faserna och kapitlena.
 
-\subsection{Val av områden att behandla}\label{sec:selektion}
+\subsection{Val av områden att behandla}\label{sec:valet}
 
 Ett domänspecifikt språk modellerar ett specifikt och avgränsat område. Därför
 var det naturligt att söka och tänka i termer av avgränsade områden inom
 fysiken. För att mer konkret hitta områden att behandla kontaktades Åke Fäldt,
-examinator för \textit{Fysik för ingenjörer}, samt att studera fysikkursens
-bok, \textit{Univeristy Physics}.
+examinator för \textit{Fysik för ingenjörer}\todo{Ref?}, samt att studera fysikkursens
+bok, \textit{Univeristy Physics}\todo{Ref?}.
 
 Fäldt befrågades om vilka områden han i allmänhet anser studenter har
 svårt för. Detta för att i enlighet med projektets mål börja med de, för
@@ -92,7 +92,7 @@ förhoppningsvis underlätta för studenter att lära sig att identifiera vilken
 typ av uppgift de handskas med.
 
 Ett inledande val gjordes för att hitta mer specifika områden att arbeta.
-Detta genom att studerade kursboken \textit{University Physics}\todo{Ref?}.
+Detta genom att studerade kursboken \textit{University Physics}.
 Speciellt av intresse var de kapitel som behandlade mekanik (i enlighet med
 projektets mål att börja med klassisk mekanik), matematisk analys samt de
 kapitel som använde sig av en specifik syntax \todo{Syntax?}. Domänspecifik
@@ -103,9 +103,9 @@ valdes ut.
 
 Allteftersom arbetet fortskred blev det tydligt att det fanns en distinktion
 mellan \textit{grundläggande} och \textit{komposita} områden.  Där de
-grunläggande områdena var områden som inte var beroende på andra delar inom fysiken
+grundläggande områdena var områden som inte var beroende på andra delar inom fysiken
 utan kunde implementeras helt fristående från varandra. Till skillnad från de
-komposita områdena vilka byggde vidare på de grundläggande områdena och andra
+komposita områdena vilka byggde vidare på de grundläggande områdena och/eller andra
 komposita områden.
 
 \end{draft}
@@ -114,29 +114,28 @@ komposita områden.
 
 \begin{binge}
 
-\textbf{Skriv om paragraf nedan}
+\textbf{Fortfarande inte helt nöjd med detta avsnitt, känns som att det kan vara
+lite otydligt och upprepande}
 
-Grundläggande områden hittades främst genom den tidigare nämnda inledande
-selektionen (se avsnitt~\ref{sec:selektion}). Det omvända förhållandet gäller
-också. Den inledande selektionen gav främst grundläggande områden. \todo{Det är
-väl inte omvänt, utan samma sak?}
+Grundläggande områden hittades främst genom det tidigare nämnda inledande
+valet av områden (se avsnitt~\ref{sec:valet}). Detta eftersom litteraturen som
+studerades började med just dessa områden för att sedan bygga vidare på dem i
+mer avancerade kapitel.
 
-Fler grundläggande områden har hittats i efterhand. Avslutande av den inledande
-selektionen innebar alltså inget stopp för sökandet av grundläggande områden,
-även om de flesta redan hittats \todo{Hur vet vi att vi redan har hittat de
-flesta?}. Fler grundläggande områden hittades bland annat även genom att
-studera kursmaterialet som tillhörde \textit{Fysik för ingenjörer}.
+Fler grundläggande områden har också hittats i efterhand. Avslutande av den
+inledande inläsningen innebar alltså inget stopp av sökandet av grundläggande
+områden, även om de flesta redan hittats. Fler grundläggande områden hittades
+bland annat även genom att studera kursmaterialet som tillhörde \textit{Fysik
+för ingenjörer}.
 
 Sökandet i kursboken och kursmaterialet gav viktiga kunskaper om områden att
 behandla. Men minst lika viktiga var de experiment som gjordes för att se
-huruvida ett område lämpade sig till att göra ett domänspecifikt språk av. När
-områden kodades upp till domänspecifika språk var det långt ifrån alla gånger
-det kunde göras på en meningsfullt sätt \todo{Vad betyder meningsfullt?}. De
-områden som inte gick att modellera fick skrotas eller behandlas annorlunda
-(se ''Komposita områden'' nedan). Förenklat sagt var de områden som
-innehöll tydliga data och operationer väl lämpade att för domänspecifika
-språk. Lämpligheten hos olika områden diskuteras utförligare i
-avsnitt~\ref{sec:lampligt}.
+huruvida ett område lämpade sig som ett grundläggande område. De områden som inte
+lämpade sig fick istället behandlas annorlunda (se `Komposita områden'' nedan). 
+
+Förenklat sagt var de områden som innehöll tydlig data och tydliga operationer väl
+lämpade som ett grundläggande område. Lämpligheten hos olika områden diskuteras
+utförligare i avsnitt~\ref{sec:lampligt}.
 
 När de grundläggande områdena valdes ut definerades de så att det i största möjliga
 utsträckning var fristående. Detta för att kunna arbetas med parallellt. De
@@ -144,15 +143,17 @@ grundläggande områdena som under projekets gång valdes ut blev bevis,
 dimensioner, matematisk analys och vektorer. 
 
 \textbf{OCH FLER?}
+\end{binge}
 
+\begin{draft}
 \textit{Bevis} eftersom det ger en insikt i hur de formler man använder
 faktiskt uppstår. För att genomföra bevis krävs också att formler och
 beteckningar görs rigorösa, vilket ger en bättre förståelse av dem.
 
 \textit{Dimensioner} eftersom det är viktigt för studenter att förstå sig på
-hur dimensioner påverkas av algebraiska operationer \todo{Varför är det
-viktigt?}. Det kan också vara hjälpsamt att kunna utföra automatisk,
-datorassisterad dimensionsanalys på beräkningar.
+hur dimensioner påverkas av algebraiska operationer. Det kan också vara
+hjälpsamt att kunna utföra automatisk, datorassisterad dimensionsanalys på
+beräkningar.
 
 \textit{Matematisk analys} eftersom alla koncept i klassisk mekanik är
 relaterade genom matematisk analys. Mer specifikt används differenser för att
@@ -160,61 +161,67 @@ beskriva medelrörelse, och infinitesimalkalkyl för att beskriva
 momentanrörelser. Vidare var infinitesimalkalkyl just det område som Fäldt
 pekade ut som speciellt viktigt och något som studenter har svårt för.
 
-\textit{Vektorer} eftersom det är en viktig grundsten inom mekanik. Alla krafter,
-hastigheter och accelerationer betraktas som vektorer i planet eller
-rummet, och dessa är alla fundamentala element inom klassisk mekanik.
+\textit{Vektorer} eftersom det är en viktig grundsten inom den klassiska
+mekaniken. Alla krafter, hastigheter och accelerationer betraktas som vektorer i
+planet eller rummet, och dessa är alla fundamentala element inom klassisk
+mekanik.
+\end{draft}
 
-\textbf{OCH FLER}
+\begin{binge}
+\textbf{OCH FLER?}
+\end{binge}
   
 \subsubsection*{Komposita områden}
-
-Komposita områden uppstod då det framgick att inte alla områden var lämpliga
-att göra domänspecifika språk av (se avsnitt~\ref{sec:lampligt}). Eller om
-området var en vidareutveckling och/eller kombination av de grundläggande
-områdena. Lösningen blev därför att tillämpa domänspecifika språk från de
-grundläggande områdena för att modellera dessa.
+\begin{draft}
+Komposita områden identifierades då det framgick att området var en
+vidareutveckling och/eller kombination av redan behandlade områden. Lösningen
+blev därför att tillämpa redan skrivna domänspecifika språk för att modellera
+dessa.
 
 Ett sätt som komposita områden hittades var därmed som ett resultat av sökandet och
 experimenterandet med grundläggande områden. Ett annat sätt var att även
-komposita områden direkt söktes efter. Då användes precis som tidigare främst
-kursboken och kursmaterialet tillhörande \textit{Fysik för ingenjörer}.
-Komposita områden inkluderades för att täcka områden med mer direkt koppling
-till fysik. Till exempel har lutande plan en mer direkt koppling än vad analys
-har.
+komposita områden direkt söktes efter. Då användes precis som tidigare nämnts
+främst kursboken och kursmaterialet tillhörande \textit{Fysik för ingenjörer}.
+\end{draft}
+\begin{binge}
+\textbf{Är detta tydligt nog?} 
 
-\textbf{Skriv om som ett exempel på ett kompositområde}
-
-Momentan- och medel-rörelse eftersom de direkt utgör en stor delmängd
-av alla problem inom mekanik i \textit{Fysik för ingenjörer}. Väldigt många av
-de uppgifter studenter lär sig lösa inom mekanik är
-sträcka/hastighet/acceleration/kraft problem. Hur lång tid tar det att åka en
-sträcka om man har en viss medelhastighet? Om ett objekt med massa $m$
-påverkas av en kraft som varierar enligt $sin(t)$, vad är då
-momentanhastigheten vid $t=10$?
+Ett exempel på ett komposit område är momentan- och medel-rörelse eftersom det
+direkt utgör en stor delmängd av alla problem inom mekanik i \textit{Fysik för
+ingenjörer}. Väldigt många av de uppgifter studenter lär sig lösa inom mekanik
+är sträcka/hastighet/acceleration/kraft problem. Hur lång tid tar det att åka
+en sträcka om man har en viss medelhastighet? Om ett objekt med massa $m$
+påverkas av en kraft som varierar enligt $\sin(t)$, vad är då
+momentanhastigheten vid $t=10$? Detta är en kombination av det grundläggande
+området som behandlar vektorer och området som behandlar matematisk analys.
+\end{binge}
 
 \subsection{Implementation av DSL för områdena}
+\begin{binge}
+\textbf{FRÅGA: Är det tydligt vad som menas med experimentering?}
 
-Implementationen av ett domänspecifikt språk till ett område började alltid med
-experimentering. Även om en del experiment redan gjorts i selektionsfasen
-behövdes mer göras. Det finns ingen absolut kanonisk form \todo{förklara
-kanonisk form} att skriva ett domänspecifikt språk på, framförallt inte för
-fysik \todo{Varför är det framförallt för fysik?}. Experimentering var därför viktigt för att finna
-lämpliga representationer av syntax och andra element av domänspecifika språk.
+Implementationen av ett domänspecifikt språk till ett område inleddes med
+experimentering. Även om en del experiment redan gjorts under urvalsfasen 
+behövdes mer göras \todo{Motivera eller diskutera}. Det finns ingen absolut
+kanonisk form \todo{förklara kanonisk form} att skriva ett domänspecifikt språk
+på, framförallt inte för fysik \todo{Varför är det framförallt för fysik?}.
+Experimentering var därför viktigt för att finna lämpliga representationer av
+syntax och andra element av domänspecifika språk.
 
 Framförallt eftersom vi inte vet hur den kanoniska formen ska se ut, det finns
 ingen almänn bestämd form. Och det är också det som är motivationen till vårt
-projekt. \todo{Utveckla och skriv om}
+projekt. Nåt om paperet. \todo{Utveckla och skriv om}
 
 Vad som ansågs vara en bra, eller åtminstone tillräckligt bra, representation
 var i huvudsak baserat på gruppmedlemmarnas intuition om Haskell och diskussion
-med handledaren. Implementationerna skulle vara både naturliga, i den mening
-att de gick att använda smidigt rent tekniskt. Men de skulle även vara
-lättförståliga. Den progamtekniskt elegantaste implementationen användes därför
-inte alltid, utan den mer verbosa versionen föredrogs för att göra
-läromaterialet så lättläst som möjligt. Dock avstod vi inte från de mer
-avancerade funktionerna i Haskell när de var motiverade av materialet som vi
-beskrev, men då alltid med en utömmande förklaring av hur det fungerade och utan
-krav på tidigare kunskap hos läsaren.
+inom gruppen och med handledaren. Implementationerna skulle vara både
+naturliga, i den mening att de gick att använda smidigt rent tekniskt. Men de
+skulle även vara lättförståliga. Den progamtekniskt elegantaste
+implementationen användes därför inte alltid, utan den mer verbosa versionen
+föredrogs för att göra läromaterialet så lättläst som möjligt. Dock avstod vi
+inte från de mer avancerade funktionerna i Haskell när de var motiverade av
+materialet som vi beskrev, men då alltid med en utömmande förklaring av hur det
+fungerade och utan krav på tidigare kunskap hos läsaren.
 
 De olika områdena krävde i varierande mån inläsning och studering av Haskell,
 fysik, matematik och domänspecifika språk. Till exempel krävde kapitlet om
@@ -230,7 +237,9 @@ parades även ihop med en mängd fysikproblem att appliceras på, sådant att
 läsaren skulle få förståelse för hur DSLen kan brukas utöver hur de
 implementerades.
 
-HUR DETALJERAT SKA NEDANSTÅENDE VARA? FRÅGA PATRIK OCKSÅ
+\textbf{TODO: En generell beskrivning av implementation}
+
+\textbf{TODO: Ett specifikt exempel på implementation}
 
 Syntax analyserades och modellerades i syntaxträd. För vissa områden
 (enheter?) definierades även ett semantiskt värde som representerade
@@ -262,9 +271,9 @@ Eller, \emph{Bruk av de mer fundamentala/teoretiska DSLerna för att
 
 \subsection{Skriva lärotext}
 
-I samband med att ett område implementerades skrevs lärotext till det. Till en
-början skrevs lärotext som fokuserade på att förklara programkoden. Detta var
-ofta ett naturligt val \todo{Varför var det naturligt?}. Det var viktigt att
+I samband med att ett område implementerades skrevs också den tillhörande
+lärotexten. Till en början skrevs lärotext som fokuserade på att förklara
+programkoden. Detta var ett naturligt val eftersom det var viktigt att
 programkoden gick att förstå innan kopplingar till matematik och fysik kunde
 förklaras. Det var nämligen lärotext av det slaget som skrevs senare.
 Avslutningsvis skrevs inledning och avslutning till kapitlet.

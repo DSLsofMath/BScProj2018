@@ -1,53 +1,66 @@
-Uppgift 3, tenta 2017-01-13
+Task 3, exam 2017-01-13
 
 > import Dimensions.TypeLevel
 > import Dimensions.Quantity
 > import Prelude hiding (length)
 
-> balk_M = 1.0 # mass
+> beam_M = 1.0 # mass
 > m1 = 2.0 # mass
 > m2 = 5.0 # mass
 > d = 0.75 # length
-> balk_L = 5.0 # length
+> beam_L = 5.0 # length
 > two = 2.0 # one
 
 ![Gungbraede](Gungbraede.png){.float-img-left}
 
+The goal is to achive balance on the teeter, by adjusting the distance x.
+The force on the teeter from a weight is proportional to the weights distance from the anchor point. 
 
-Direkt implikation:
+The beam's density is equally distributed.
 
-> balk_left_L = (balk_L /# two) +# d
-> balk_right_L = balk_L -# balk_left_L
+\begin{align}
+  F_{torque} = mass \cdot length
+\end{align} 
 
-Vi vill räkna ut vridmomenten?
+Direct implication:
 
-Eller snarare ställa upp ekv:
+> beam_left_L = (beam_L /# two) +# d        -- Beam's left part length
+> beam_right_L = beam_L -# beam_left_L      -- Beam's right part length
 
-> m1_vrid = m1 *# balk_left_L 
+We want to balance out the torques, and for that we need to setup some equations.
 
-> balk_L_vrid = ((balk_left_L /# balk_L) *# balk_M) *# (balk_left_L /# two)
+> m1_torque = m1 *# beam_left_L             -- m1 torque
+
+> -- The beams internal torque, based on the parts length and mass
+> beam_L_torque = ((beam_left_L /# beam_L) *# beam_M) *# (beam_left_L /# two)
+
+> beam_H_torque = ((beam_right_L /# beam_L) *# beam_M) *# (beam_right_L /# two)
 
 
-> balk_H_vrid = ((balk_right_L /# balk_L) *# balk_M) *# (balk_right_L /# two)
+m2_torque = m2 * x
 
 
-m2_vrid = m2 * x
+The two parts should balance out:
 
-VL = HL
+\begin{align}
+    left-hand side = right-hand side
+\end{align}
 
-m1_vrid + balk_L_vrid = m2_vrid + balk_H_vrid
+m1_torque + beam_L_torque = m2_torque + beam_H_torque
 
-m1_vrid + balk_L_vrid - balk_H_vrid  = m2_vrid
+m1_torque + beam_L_torque - beam_H_torque  = m2_torque
 
-(m1_vrid + balk_L_vrid - balk_H_vrid) / m2  = x
+(m1_torque + beam_L_torque - beam_H_torque) / m2  = x
 
-> x = (m1_vrid +# balk_L_vrid -# balk_H_vrid) /# m2
+> x = (m1_torque +# beam_L_torque -# beam_H_torque) /# m2
 
-säkerhetskoll:
+Security check:
 
-> m2_vrid = m2 *# x
+Is 0 < x < L/2 - d?
 
-> vL = m1_vrid +# balk_L_vrid
-> hL = m2_vrid +# balk_H_vrid
+> m2_torque = m2 *# x
+
+> vL = m1_torque +# beam_L_torque
+> hL = m2_torque +# beam_H_torque
 
 

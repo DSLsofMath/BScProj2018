@@ -23,14 +23,20 @@ introducera innehåll av detta slag i till exempel fysikkursen.
 
 \begin{draft}
 
+%TODO: Se FysikKod nedan
 På civilingenjörsprogrammet Datateknik på Chalmers ingår den obligatoriska fysikkursen
-\textit{Fysik för ingenjörer}. Tentastatistiken för denna kurs är
+\textit{Fysik för ingenjörer}.
+%TODO: För diffust: vad menar ni med "inte jättebra"? Det tar 3-4 klick att hitta statistiken som en del av ett stort kalkylark och där tappar ni nog de flesta innan de egentligen vet vad ni menar. Skriv om ordningen så att "tredjedel" kommer närmare länken + kanske en footnote som ger konkreta siffror för de senaste tre åren eller så.
+Tentastatistiken för denna kurs är
 inte jättebra\cite{tentastatistik}. Vi
 tror att många studenter på datateknik (``datateknologer'') finner denna kurs
 svår eller ointressant, och att detta leder till att ungefär en
 tredjedel av kursdeltagarna får underkänt på tentamen.
 
-Examinatorn för kursen ``Fysik för ingenjörer, TIF085 (2016)'' Åke Fäldt, tycker
+%TODO: Kursen "introduceras" (minst) två gånger med olika mycket detaljer (se även ovan). Red ut detta.
+Examinatorn för kursen ``Fysik för ingenjörer, TIF085 (2016)'' Åke Fäldt,
+%TODO: Jag är inte övertygad om att detta hör till "bakgrund" egentligen. Se också till att det är tydligt vad som är hans, resp. er, åsikt.
+tycker
 att studenter i allmänhet verkar ha svårt för att sätta upp egna
 modeller. De baserar sina mentala modeller helt eller delvis på
 intuition och felaktiga antaganden, istället för definitioner och
@@ -43,6 +49,7 @@ vilket är en valbar kurs på kandidatnivå för studenter på Chalmers och
 Göteborgs Universitet.
 
 \iffalse
+%TODO: Varför ligger den här texten här om den ändå är osynlig?
 Domänspecifika språk, kan
 förklaras som ett språk konstruerat för ett specifikt område, d.v.s. en
 domän. Språket kan användas för att enklare uttrycka uttryck inom
@@ -53,15 +60,20 @@ gentemot ett generellt språk där exempelvis en rekursiv swith-case sats skulle
 Dock med mer overhead\todo{Visa bild på syntaxträd för m * a}.
 \fi
 
-Konkret så presenterar kursen matematik så som derivator, komplexa
-tal och matriser ur ett funktionellt programmeringsperspektiv i det funktionella programmeringsspråket
+Konkret så presenterar kursen DSLsofMath matematik så som derivator, komplexa
+tal och matriser ur ett
+%TODO: skriv om för att undvika upprepningen
+funktionellt programmeringsperspektiv i det funktionella programmeringsspråket
 Haskell. Dessa för studenterna bekanta verktyg används för att lösa
 matematiska problem så som modellering av syntax, evaluering till
-semantiska värden och datorassisterad bevisföring.
+semantiska värden och
+%TODO: jag känner inte riktigt igen "datorassisterad bevisföring" från kursen?
+datorassisterad bevisföring.
 
 
+%TODO: Denna paragraf verkar inte riktigt passa in här, mitt i DSLsofMath-beskrivning?
 För vidare läsning
-rekommenderas \textit{DSL for the Uninitiated}.\cite{DSLU} Projektgruppen ämnar att implementera
+rekommenderas \textit{DSL for the Uninitiated} \cite{DSLU}. Projektgruppen ämnar att implementera
 domänspecifika språk för att beskriva fysik ur en alternativ vinkel.\todo{Ska nämnas en gång tidigt och en gång sammanfattningsvist nedan, eller beskriver vi vad vi ska göra längst upp innan bakgrund?}
 
 I kursen DSLsofMath, var år 2016 var Cezar Ionescu huvudföreläsare, och från 2017 är Patrik Jansson
@@ -77,16 +89,19 @@ datavetenskapliga utbildningen för matematiker, där den grundläggande idéen 
   domänspecifika språk.''\cite{lecture-notes}\cite{tfpie2015}
 \end{center}
 
+%TODO: "alltså" verkar inte stämma med texten i närheten?
 Vi vill alltså med hjälp av domänspecifika språk som vi implementerar presentera fysik ur ett alternativt perspektiv, likt
 på det sättet DSLsofMath presenterar kopplingar mellan matematik och programmering. Förhoppningen är att detta ska göra kopplingen mellan datateknikprogrammet och fysik tydligare och därmed underlätta lärandet.
 
 
+%PaJa:Trevligt!
 En analogi:
 
 Studenterna hade svårt för matte $\rightarrow $ DSLsofMath.\\
 Studenterna har svårt för fysik $\rightarrow $ Learn you a physics.
 
 
+%TODO: Se över gramatiken
 Angående tidigare forskning och studier, finns även på MIT har en kurs inte helt olik DSLsofMath tidigare givits som berör både
 fysik och domänspecifika språk (''DSL'').\ ``Classical Mechanics: A Computational Approach'' gavs av
 Prof.\ Gerald Sussman och Prof.\ Jack Wisdom bl.a. år
@@ -94,10 +109,12 @@ Prof.\ Gerald Sussman och Prof.\ Jack Wisdom bl.a. år
 Denna kurs på avancerad nivå studerar de fundamentala principerna av klassisk
 mekanik med hjälp av beräkningsidéer för att precist formulera principerna av
 mekanik, med början i Lagranges ekvationer och avslut i
-perturbationsteori (teori för approximationer av matematiska lösningar). I kursen används boken ``Structure and %nämna referens till boken?
+perturbationsteori (teori för approximationer av matematiska lösningar). I kursen används boken ``Structure and %nämna referens till boken? TODO: ja
 Interpretation of Classical Mechanics'' av Sussman, Wisdom och Mayer,
 vilken förklarar fysikaliska fenomen genom att visa datorprogram för att
-simulera dem, skrivna i språket Scheme.\cite{SICM}. Denna typen av kurser ter sig ovanliga, och är, till våran kännedom, den enda kursen bortsett från DSLsofMath på Chalmers som knyter samman matematik, fysik och programmering.
+simulera dem, skrivna i språket Scheme.\cite{SICM}.
+%TODO: "\cite" ska vara _i_ meningen, inte efter punkten. Och inte precis efter "Scheme" (där skulle ev. en länk till språket Scheme passa, men behövs inte här), utan precis där författarna anges. Och författarna är det bättre att låta datorn fylla i själv med \citeauthor eller \citelong eller liknande.
+Denna typ av kurser ter sig ovanliga, och är, till vår kännedom, den enda kursen bortsett från DSLsofMath på Chalmers som knyter samman matematik, fysik och programmering.
 
 Utöver DSLsofMath-kursen har det även tidigare gjorts ett kandidatarbete om DSL
 här på Chalmers. Vårterminen 2016 utfördes kandidatarbetet
@@ -130,7 +147,7 @@ En del av målet är också att ta reda på hur en kombination av domänspecifik
 
 Läromaterialet ska begränsa sig till att enbart beskriva de fysikalsika områden som ingår i kursen Fysik för ingenjörer. Denna avgränsning valdes dels för att det är den fysik gruppmedlemmarnas kunskapar begränsar sig till, dels för att det är för den kursen detta projekt kan bli mest relevant för, då kursen ingår i datastudenternas obligatoriska kursplan.
 
-Vidare kommer en prioritering av innehållet i Fysik för ingenjörer att göras. Kursen behandlar grunderna inom klassisk mekanik, termodynamik och vågrörelselära. Det ingår även en stor mängd tillämpad matematik, exemeplvis differentilkalkyl. I första hand kommer mekaniken behandlas, för att sedan i mån av tid även behandla termodynamik och vågrörelselära. Fokuset kommer också att vara på de områden datastudenter haft svårt för.
+Vidare kommer en prioritering av innehållet i Fysik för ingenjörer att göras. Kursen behandlar grunderna inom klassisk mekanik, termodynamik och vågrörelselära. Det ingår även en stor mängd tillämpad matematik, exempelvis differentilkalkyl. I första hand kommer mekaniken behandlas, för att sedan i mån av tid även behandla termodynamik och vågrörelselära. Fokuset kommer också att vara på de områden datastudenter haft svårt för.
 
 För att utvärdera den pedagogiska nyttan kommer enbart en informell utvärdering att göras. Detta då en rigorös undersökning hade krävt mycket tid för att välja lämpliga testgrupper, analysera återkopplingen samt dokumentera testningsförloppet.
 

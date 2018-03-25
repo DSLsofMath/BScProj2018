@@ -39,7 +39,7 @@ Med datakonstruktorerna kan man konstruera värden i språket. Ett exempelvärde
   \begin{lstlisting}
 value = Const 7 :*: (Const 3 :+: Const 10)
   \end{lstlisting}
-  \caption{Ett exemeplvärde ur det tidigare syntaxträdet. Detta modellerar det matematiska uttrycket $7 * (3 + 10)$}
+  \caption{Ett exempelvärde ur det tidigare syntaxträdet. Detta modellerar det matematiska uttrycket $7 * (3 + 10)$}
   \label{fig:syntax_exempel_varde}
 \end{figure}
 
@@ -77,7 +77,7 @@ GAMLA
   utvecklats inom detta projekt är inbäddade i språket \textit{Haskell}.
 \end{draft}
 
-\section{Det funktionella programmeringssråket Haskell}
+\section{Det funktionella programmeringsspråket Haskell}
 
 \begin{binge}
   Haskell är ett funktionellt programmeringsspråk som lämpar sig bra för att
@@ -102,6 +102,7 @@ I detta exempel visar hur uttrycket $(7+x)*((x+10)*x)$ kodas.
 Ha med en bild på detta.
 
 !!!Plus förklaring om evaluering!
+
 
 
 
@@ -139,6 +140,7 @@ Note that the Quantity data type has both value-level and type-level dimensions.
   \caption{Ett exempel på hur en källfil till litterat programmering kan se ut. Exemplet är Litterate Haskell. Rader som börjar med \texttt{<} markerar att det är progamkod, medan rader utan markerar att det är text för människor.}
   \label{fig:litterate_haskell_exempel}
 \end{figure}
+%TODO: programraderna brukar väl börja med ">" inte "<"?
 
 Det andra sättet ett litterat program skiljer sig åt är ordningen progamkod
 står i. Traditionellt används top-down eller bottom-up. Dessa tillvägagånssätt
@@ -159,8 +161,11 @@ mäniskor. Det finns flera verktyg som gör det men det som används i detta
 projekt är \textit{Pandoc}\cite{pandoc}. Med \textit{Pandoc} kan texten märkas
 up med både \texttt{markdown} (används i projektet) och \texttt{Latex}. Det går
 att exportera till bland annat HTML och PDF.  \end{draft}
+
 \section{ARCS/didaktik}
 \label{sec:arcs}
+% TODO: använd inte förkortningen i rubriken.
+
 
 \begin{binge}
 

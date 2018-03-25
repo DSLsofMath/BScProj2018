@@ -1,3 +1,4 @@
+%TODO: Perhaps remove or add clarification
 % CREATED BY DAVID FRISK, 2016
 
 \chapter{Teori}
@@ -48,7 +49,7 @@ Figur \ref{fig:syntax_exempel_varde} visar hur det matematiska uttrycket $7 * (3
   \centering
   \includegraphics[width=0.4\linewidth]{figure/syntax_exempel_bild.png}
   \caption{Exempelvärde från syntaxträdet illustrerat i ett träddiagram.}
-  \label{fig:syntax_exempel_bild} 
+  \label{fig:syntax_exempel_bild}
 \end{figure}
 
 Ett domänspecifikt språk kan antingen implementeras som ett fristående språk eller bäddas in i ett redan existerande språk. De domänspecifika språk som   utvecklats inom detta projekt är inbäddade i språket Haskell.
@@ -62,7 +63,7 @@ GAMLA
   interagera med en databas (SQL), ett språk för ett beskriva hur text ska se
   ut på en skärm  (typsnitt). Användningsområden för dessa språk är väldigt
   smala men detta smala fokus gör det möjligt att utveckla ett rikt och
-  lättanvändligt språk för just detta område. 
+  lättanvändligt språk för just detta område.
 
   Motsatsen till ett domänspecifikt språk är ett generellt språk (C, Java,
   Python) vilka är turingkompletta, vilket betyder att det kan uttrycka alla
@@ -70,7 +71,7 @@ GAMLA
   \todo{referens} minnestillgångar. Begränsningen med dessa generella språk är
   just deras egen generaliserbarhet, eftersom de har stöd för alla typer av
   beräkningar så blir både läsbarheten och användarvänligheten lidande\todo{referens/motivering}.
-  
+
   Ett domänspecifikt språk kan antingen implementeras som ett fristående språk
   eller bäddas in i ett redan existerande språk. De domänspecifika språk som
   utvecklats inom detta projekt är inbäddade i språket \textit{Haskell}.
@@ -84,7 +85,7 @@ GAMLA
   som man kan skapa nya datatyper och klasser för att representera grundstenarna
   i det nya språk, och även dess mönstermatchning som gör det möjligt att på
   enkelt sätt bryta isär komplexa datatyper för evaluering.
-  
+
   TODO: Visa exempel på detta
 \end{binge}
 
@@ -120,7 +121,7 @@ Detta jämnbördiga förhållande syns konkret genom att titta på hur källkode
 skriven i ett literat program. Det kan till exempel se ut som i figur
 \ref{fig:litterate_haskell_exempel} där man ser att källkod och text för
 människor är sammanvävda på ett jämnbördigt sätt, där den ena inte är viktigare
-än den andra. 
+än den andra.
 
 \begin{figure}[tph]
   \begin{lstlisting}[language={}]

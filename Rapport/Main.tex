@@ -4,7 +4,7 @@
 \documentclass[12pt,a4paper,twoside,openright]{report}
 \input{include/settings/Settings}
 
-\begin{document} 
+\begin{document}
 
 % COVER PAGE, TITLE PAGE AND IMPRINT PAGE
 \pagenumbering{roman}			% Roman numbering (starting with i (one)) until first main chapter
@@ -29,17 +29,17 @@
 % OTHER FRONTMATTER
 % List of figures (add to table of contents)
 \cleardoublepage
-\addcontentsline{toc}{chapter}{\listfigurename} 
+\addcontentsline{toc}{chapter}{\listfigurename}
 \listoffigures
 % List of tables (add to table of contents)
 \cleardoublepage
-\addcontentsline{toc}{chapter}{\listtablename}  
+\addcontentsline{toc}{chapter}{\listtablename}
 \listoftables
 
 % Ordlista
 \cleardoublepage
 \addcontentsline{toc}{chapter}{Ordlista}
-\input{include/frontmatter/Ordlista}  
+\input{include/frontmatter/Ordlista}
 
 % START OF MAIN DOCUMENT
 \cleardoublepage
@@ -63,7 +63,7 @@
 % REFERENCES / BIBLIOGRAPHY
 \cleardoublepage
 \addcontentsline{toc}{chapter}{Bibliography}
-\bibliographystyle{ieeetran}
+\bibliographystyle{include/IEEEtran}
 \bibliography{include/backmatter/referenser}
 
 % APPENDICES

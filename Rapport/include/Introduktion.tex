@@ -28,48 +28,31 @@ På civilingenjörsprogrammet Datateknik på Chalmers ingår den obligatoriska f
 \textit{Fysik för ingenjörer}.
 %TODO: För diffust: vad menar ni med "inte jättebra"? Det tar 3-4 klick att hitta statistiken som en del av ett stort kalkylark och där tappar ni nog de flesta innan de egentligen vet vad ni menar. Skriv om ordningen så att "tredjedel" kommer närmare länken + kanske en footnote som ger konkreta siffror för de senaste tre åren eller så.
 Tentastatistiken för denna kurs är
-inte jättebra\cite{tentastatistik}. Vi
+problematisk.\footnote{Andel underkänt på ordinarie tentamen från läsår 2014 till 2017: 34\%, 76\%, 18\%, 57\%. }\cite{tentastatistik}. Vi
 tror att många studenter på datateknik (``datateknologer'') finner denna kurs
-svår eller ointressant, och att detta leder till att ungefär en
-tredjedel av kursdeltagarna får underkänt på tentamen.
+svår eller ointressant, och att detta leder till att en betydande andel får underkänt på tentamen.
 
-%TODO: Kursen "introduceras" (minst) två gånger med olika mycket detaljer (se även ovan). Red ut detta.
-Examinatorn för kursen ``Fysik för ingenjörer, TIF085 (2016)'' Åke Fäldt,
+Kursens examinator Åke Fäldt menar att..:
 %TODO: Jag är inte övertygad om att detta hör till "bakgrund" egentligen. Se också till att det är tydligt vad som är hans, resp. er, åsikt.
-tycker
-att studenter i allmänhet verkar ha svårt för att sätta upp egna
+
+\begin{quote}
+``..studenter i allmänhet verkar ha svårt för att sätta upp egna
 modeller. De baserar sina mentala modeller helt eller delvis på
 intuition och felaktiga antaganden, istället för definitioner och
 bevisade satser som man är säker på gäller. Detta leder till att de
-tar genvägar som ofta är fel.
+tar genvägar som ofta är fel."
+\end{quote}
 
 Detta tror projektgruppen skulle kunna lösas med avstamp från kursen ``Domain Specific Languages of
 Mathematics'' (``DSLsofMath'') eller ``Matematikens domänspecifika språk''
 vilket är en valbar kurs på kandidatnivå för studenter på Chalmers och
 Göteborgs Universitet.
 
-\iffalse
-%TODO: Varför ligger den här texten här om den ändå är osynlig?
-Domänspecifika språk, kan
-förklaras som ett språk konstruerat för ett specifikt område, d.v.s. en
-domän. Språket kan användas för att enklare uttrycka uttryck inom
-domänen, till exempel Newtons andra lag $F=m \cdot a$, än vad som är
-möjligt inom generella (programmerings) språk. Exemplet ovan kan i ett
-domänspecifikt språk evalueras enklare m.h.a. ett syntaxträd och mönstermatchning,
-gentemot ett generellt språk där exempelvis en rekursiv swith-case sats skulle kunna användas.
-Dock med mer overhead\todo{Visa bild på syntaxträd för m * a}.
-\fi
 
 Konkret så presenterar kursen DSLsofMath matematik så som derivator, komplexa
 tal och matriser ur ett
-%TODO: skriv om för att undvika upprepningen
 funktionellt programmeringsperspektiv i det funktionella programmeringsspråket
-Haskell. Dessa för studenterna bekanta verktyg används för att lösa
-matematiska problem så som modellering av syntax, evaluering till
-semantiska värden och
-%TODO: jag känner inte riktigt igen "datorassisterad bevisföring" från kursen?
-datorassisterad bevisföring.
-
+Haskell. Dessa för studenterna bekanta begrepp och verktyg från tidigare kurser.
 
 %TODO: Denna paragraf verkar inte riktigt passa in här, mitt i DSLsofMath-beskrivning?
 För vidare läsning
@@ -102,18 +85,18 @@ Studenterna har svårt för fysik $\rightarrow $ Learn you a physics.
 
 
 %TODO: Se över gramatiken
-Angående tidigare forskning och studier, finns även på MIT har en kurs inte helt olik DSLsofMath tidigare givits som berör både
+Angående tidigare forskning och studier har en kurs på MIT, inte helt olik DSLsofMath, tidigare givits som berör både
 fysik och domänspecifika språk (''DSL'').\ ``Classical Mechanics: A Computational Approach'' gavs av
 Prof.\ Gerald Sussman och Prof.\ Jack Wisdom bl.a. år
 2008.\cite{classical-mechanics-course-mit-2008}
 Denna kurs på avancerad nivå studerar de fundamentala principerna av klassisk
 mekanik med hjälp av beräkningsidéer för att precist formulera principerna av
 mekanik, med början i Lagranges ekvationer och avslut i
-perturbationsteori (teori för approximationer av matematiska lösningar). I kursen används boken ``Structure and %nämna referens till boken? TODO: ja
-Interpretation of Classical Mechanics'' av Sussman, Wisdom och Mayer,
+perturbationsteori (teori för approximationer av matematiska lösningar). I kursen används boken ``Structure and
+Interpretation of Classical Mechanics'' av Sussman, Wisdom och Mayer \cite{SICM},
 vilken förklarar fysikaliska fenomen genom att visa datorprogram för att
-simulera dem, skrivna i språket Scheme.\cite{SICM}.
-%TODO: "\cite" ska vara _i_ meningen, inte efter punkten. Och inte precis efter "Scheme" (där skulle ev. en länk till språket Scheme passa, men behövs inte här), utan precis där författarna anges. Och författarna är det bättre att låta datorn fylla i själv med \citeauthor eller \citelong eller liknande.
+simulera dem, skrivna i språket Scheme.
+%TODO: Författarna är det bättre att låta datorn fylla i själv med \citeauthor eller \citelong eller liknande.
 Denna typ av kurser ter sig ovanliga, och är, till vår kännedom, den enda kursen bortsett från DSLsofMath på Chalmers som knyter samman matematik, fysik och programmering.
 
 Utöver DSLsofMath-kursen har det även tidigare gjorts ett kandidatarbete om DSL
@@ -126,8 +109,6 @@ uppgifter och lösningar, som komplement till existerande kurser i
 signallära.\cite{kandidat2016}
 \end{draft}
 
-% Flytta en del från bakgrund till syfte?
-%
 
 \section{Projektets mål}
 

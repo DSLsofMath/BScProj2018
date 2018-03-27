@@ -6,9 +6,7 @@ TODO: Move relevant stuff out of the general structures/eval to their
       Or maybe, first introduce differences et al. separately, and then
       tie them together in a common section of evaluation?
 
-TODO: Good introduction
-
-TODO: Make the text good in general
+TODO: Make the text gooder in general
 
 TODO: Quotes -> good teaching text (especially in Integral secion)
 
@@ -21,12 +19,12 @@ TODO: Have someone critique this
 
 Plain equations where all values are of the same dimension are all
 fine and well.  The importance of being able to solve basic problems
-like ``If Jenny has 22 meters, and Richard has 18 meters: how many
-meters do they have together?'' cannot be understated, but they're not
+like "If Jenny has 22 meters, and Richard has 18 meters: how many
+meters do they have together?" cannot be understated, but they're not
 especially fun!
 
-``An unstoppable car has an unchanging velocity of 141.622272
-km/h. How many kilometers has it droven in after a day?''. To solve
+"An unstoppable car has an unchanging velocity of 141.622272
+km/h. How many kilometers has it droven after a day?". To solve
 more interesting problems like this, we need calculus.
 
 Calculus is the study of stuff that continuously change over time (or
@@ -50,14 +48,7 @@ integration, and some applied problem solving.
 Boring boilerplate
 ----------------------------------------------------------------------
 
-Firstly, let's get the boring stuff out of the way!
-
-This extension will be used later to allow haskell string literals to be implicitly
-typed as Expr.
-
-> {-# LANGUAGE OverloadedStrings #-}
-
-This is our module!
+Firstly, let's get the boring stuff out of the way. This is our module!
 
 > module Calculus.Calculus where
 
@@ -78,236 +69,270 @@ functions, derivatives, and integrals later!
 
 
 
-Data type definitions and lambda calculus
+Semantics, syntax, and lambda calculus
 ----------------------------------------------------------------------
 
-Real numbers are real important, and we will use them a lot in this
-module.  For simplicitys sake we'll just use a `Double`, but important
-to remember is that `Double`s are if finite precision, and rounding
-errors may occur.
+What is a value in calculus? What kind of values do functions in
+calculus operate on and produce?
+
+Let's look at derivatives to get an idea of what the semantic value of calculus is.
+
+$$\frac{d x^2}{dx} = 2x$$
+
+$$\frac{d f(x)}{dx} = f'(x)$$
+
+Hmm, these examples left me more confused than before. The
+differentiation function seems to take an expression as an argument,
+and return the derived expression, with regards to a variable. But
+what is an expression represented as a semantic value? It's not a
+number yet, the variable in the body needs to be substituted first in
+order for the expression to be computable. Is it some kind of function
+then? Well, yes it is! If we reinterpret the differentiation
+expressions above, it makes more sense.
+
+$$\frac{d x^2}{dx} = 2x$$
+
+can be written as
+
+$$D(x^2) = 2x \text{ with regards to } x$$
+
+which is really equivalent to
+
+$$D(x \mapsto x^2) = x \mapsto 2x$$
+
+or
+
+$$D(square) = double$$.
+
+So the type of unary real functions seems like a great fit for a
+semantic value for calculus, and it is! Great! But... how do we
+represent a real number in Haskell? There is no `Real` type to
+use. Well, for simplicitys sake we can just say that a real number is
+basically the same as a `Double`, and it is (basically). The problem
+with `Double` is that it's of finite precision, so rounding errors may
+occur. We'll have to keep that in mind when doing calculations!
 
 > type RealNum = Double
+>
+> -- The type of the semantic value of calculus is the unary real function
+> --   RealNum -> RealNum
 
-This is the core syntax tree of our language of calculus. Note that in
-this syntax, a lambda (aka. anonymous function or mapping) is
-considered an expression, just as a real number consant is.
+Now, to the syntax. We've concluded that real functions are really
+what calculus is all about, so let's model them.
 
-TODO: Add integral constructor to `Expr`. Will also need eval, derive,
-and integrate case.
+> data FunExpr
 
-> data Expr = Const RealNum      -- Real constant
->           | Expr :+ Expr       -- Plus (Addition)
->           | Expr :- Expr       -- Minus (Subtraction)
->           | Expr :* Expr       -- Times (Multiplication)
->           | Expr :/ Expr       -- Divided by (Division)
->           | Expr :. Expr       -- Composition (After, o)
->           | Var String         -- Variable
->           | Func String        -- Builtin function
->           | Lambda String Expr -- Lambda function
->           | Delta Expr         -- Difference, like "Δx"
->           | D Expr             -- Derivative, like "f'"
->           | Expr :$ Expr       -- Function application
+First of all, there's the elementary functions. We can't have them
+all, that would get too repetitive to implement, but we'll put in all
+the fun ones.
+
+>     = Exp
+>     | Log
+>     | Sin
+>     | Cos
+>     | Asin
+>     | Acos
+
+Then, there are the arithmetic operators. "But wait", you say, "Aren't
+arithmetic operators used to combine expressions, not functions?". I
+hear you, Billy, but we will do it anyways. We could make a `Lambda`
+constructor for "VAR $\mapsto$ EXPR" expressions and define the
+arithmetic operators for the expression type, but this would make
+our language much more complicated! Instead, we'll restrain ourselves
+to single variable expressions, which can be represented as
+compositions of unary functions, and define the arithmeric operators
+for the functions instead.
+
+$$f \text{ OP } g = x \mapsto (f(x) \text{ OP } g(x))$$
+
+>     | FunExpr :+ FunExpr
+>     | FunExpr :- FunExpr
+>     | FunExpr :* FunExpr
+>     | FunExpr :/ FunExpr
+>     | FunExpr :^ FunExpr
+
+And then theres that single variable. As everything is a function
+expression, the function that best represents "just a variable" would
+be $x \mapsto x$, which is the same as the $id$ function.
+
+>     | Id
+
+In a similar vein, the constant function. $const(c) = x \mapsto c$
+
+>     | Const RealNum
+
+Then theres function composition. If you didn't already know it, it's
+defined as
+
+$$f . g = x \mapsto f(g(x))$$
+
+>     | FunExpr :. FunExpr
+
+Finally, the real heroes: The functions of difference, differentiation,
+and integration! They will be well explored later. But for now, we
+define the syntax for them as
+
+>     | Delta RealNum FunExpr
+>     | D FunExpr
+>     | I RealNum FunExpr
+
+Even more finally, we add a `deriving` modifier to automatically allow
+for equality tests between `FunExpr`s.
+
 >   deriving Eq
 
-Quentin Quickly Querys Queer Qubits
------------
+Nice! This syntax tree will allow us to do symbolically (at the syntax
+level) what we otherwise would have to do numerically (at the
+semantics level).
 
-> genConstructor :: Gen (Expr -> Expr -> Expr)
-> genConstructor = elements [(:+), (:-), (:*), (:/)]
+Before we move on, we just have to fix one thing: the operator
+precedence! If we don't do anything about it, this will happen
 
-Clean verion:
+< ghci> Id :+ Id :* Id == (Id :+ Id) :* Id
+< True
 
-> genConst :: Gen Expr
-> genConst = Const <$> arbitrary
+Now this is obviously wrong. *Plus* doesn't come before *times*,
+unless I accidentaly switched timelines in my sleep. To fix this, we
+have to fix the fixity. `infixl` allows us to make an operator
+left-associative, and set the precedence.
 
-> genExpr :: Gen Expr
-> genExpr = genConstructor <*> genConst <*> genConst
+> -- Medium precedence
+> infixl 6 :+
+> infixl 6 :-
+> -- Higher
+> infixl 7 :*
+> infixl 7 :/
+> -- Higherer
+> infixl 8 :^
+> -- High as a kite
+> infixl 9 :.
 
-> genConcat :: [Expr] -> Gen Expr
-> genConcat = foldr (\e -> (<*>) (genConstructor <*> pure e)) genConst
 
-> instance Arbitrary Expr where
->   -- Maybe set the max length explicitly
->   arbitrary = listOf genExpr >>= genConcat
 
-Readable (but dirty) version:
-< genConst :: Gen Expr
-< genConst = do
-<   num <- arbitrary
-<   return $ Const num
+A structure with class
+----------------------------------------------------------------------
 
-< genExpr :: Gen Expr
-< genExpr = do
-<   con <- genConstructor
-<   a   <- genConst
-<   b   <- genConst
-<   return $ con a b
+Now that we've defined the basic structure of our language, we can
+instantiate some useful classes. There are two in particular we care
+for: `Show` and `Arbitrary`.
 
-< genConcat :: [Expr] -> Gen Expr
-< genConcat [] = genConst
-< genConcat (e:es) = do
-<    con <- genConstructor
-<    bigE <- genConcat es
-<    return $ con e bigE
+Try modifying `FunExpr` to derive `Show`, so that our expressions can be printed.
 
-< instance Arbitrary Expr where
-<   -- Maybe set the max length explicitly
-<   arbitrary = do
-<     expression <- listOf genExpr
-<     genConcat expressions
+<   deriving Eq, Show
 
-A `const` and `id` function could be useful. We can describe them like this:
+Consider now how GHCI prints out a function expression we create
 
-> const' c = Lambda "x" (Const c)
+< ghci> carAccel = Const 20
+< ghci> carSpeed = Const 50 :+ carAccel :* Id
+< ghci> carPosition = Const 10 :+ carSpeed :* Id
+< ghci> carPosition
+< Const 10.0 :+ (Const 50.0 :+ Const 20.0 :* Id) :* Id
+
+Well that's borderline unreadable. Further, the grokability of a printed expression is very inversely proportional to the size/complexity of the expression, as I'm sure you can imagine.
+
+So if the `Show` is bad, we'll just have to make our own `Show`!
+
+> instance Show FunExpr where
+>   show Exp = "exp"
+>   show Log = "log"
+>   show Sin = "sin"
+>   show Cos = "cos"
+>   show Asin = "asin"
+>   show Acos = "acos"
+>   show (f :+ g) = "(" ++ show f ++ " + " ++ show g ++ ")"
+>   show (f :- g) = "(" ++ show f ++ " - " ++ show g ++ ")"
+>   show (f :* g) = "(" ++ show f ++ " * " ++ show g ++ ")"
+>   show (f :/ g) = "(" ++ show f ++ " / " ++ show g ++ ")"
+>   show (f :^ g) = "(" ++ show f ++ "^" ++ show g ++ ")"
+>   show Id = "id"
+>   show (Const x) = showReal x
+>   show (f :. g) = "(" ++ show f ++ " . " ++ show g ++ ")"
+>   show (Delta h f) = "(delta_" ++ showReal h ++ " " ++ show f ++ ")"
+>   show (D f) = "(D " ++ show f ++ ")"
+>   show (I c f) = "(I at " ++ show c ++ " for " ++ show f ++ ")"
 >
-> id' = Lambda "x" "x"
+> showReal x = if isInt x then show (round x) else show x
+>   where isInt x = x == fromInteger (round x)
 
-We implement Num, Fractal, Floating, and IsString for Expr to make it nicer to use
+Not much to explain here. It's just one way to print our syntax tree
+in a more readable way. What's interesting is how we can now print our
+expressions in a much more human friendly way!
 
-> instance Num Expr where
->       a + b = a :+ b
->       a - b = a :- b
->       a * b = a :* b
->       abs e = Func "abs" :$ e
->       signum e = Func "signum" :$ e
->       fromInteger = Const . fromInteger
+< ghci> carPosition
+< (10 + ((50 + (20 * id)) * id))
 
-> instance Fractional Expr where
->       a / b = a :/ b
->       fromRational = Const . fromRational
+Still a bit noisy with all the parens, but much better!
 
-> instance Floating Expr where
->     pi = Const pi
->     exp e = Func "exp" :$ e
->     log e = Func "log" :$ e
->     sin e = Func "sin" :$ e
->     cos e = Func "cos" :$ e
->     asin e = Func "asin" :$ e
->     acos e = Func "acos" :$ e
->     atan e = Func "atan" :$ e
->     sinh = undefined; cosh = undefined; asinh = undefined; acosh = undefined; atanh = undefined;
+Another class we need to instance for our `FunExpr` is
+`Arbitrary`. This class is associated with the testing library
+*QuickCheck*, and describes how to generate arbitrary values of a type
+for use when testing logical properties with `quickCheck`. For
+example, a property function could be formulated that states that the
+`:*` constructor of `FunExpr` is associative.
 
-> instance IsString Expr where
->     fromString = Var
+The implementation itself is not very interesting. We generate a
+function expression that tends to contain mostly elementary functions,
+arithmetic operations, and a generous dose of constants; with a light
+sprinkle of differences, derivatives, and integrals.
 
-We want to be able to print our expressions in a human-readable format
+> instance Arbitrary FunExpr where
+>   arbitrary =
 
-> instance Show Expr where
->     show (Const x) = show x
->     show (a :+ b) = "(" ++ show a ++ " + " ++ show b ++ ")"
->     show (a :- b) = "(" ++ show a ++ " - " ++ show b ++ ")"
->     show (a :* b) = "(" ++ show a ++ " * " ++ show b ++ ")"
->     show (a :/ b) = "(" ++ show a ++ " / " ++ show b ++ ")"
->     show (f :. g) = "(" ++ show f ++ " ∘ " ++ show g ++ ")"
->     show (Var v) = v
->     show (Func f) = f
->     show (Lambda p b) = "(lamda " ++ p ++ " . " ++ show b ++ ")"
->     show (Delta x) = "(delta " ++ show x ++ ")"
->     show (D e) = "(D " ++ show e ++ ")"
->     show (f :$ e) = "(" ++ show f ++ " " ++ show e ++ ")"
+`frequency` "chooses one of the given generators, with a weighted
+random distribution". By assigning probabilities of generating certain
+functions more often than others, we can restrain the growth of the
+generated expressions in complexity.
 
-> avg (y1, x1) (y2, x2) = (y2 - y1) / (x2 - x1)
+>       frequency
+>         [ (10, genElementary)
+>         , (10, genBinaryOperation)
+>         , (10, return Id)
+>         , (20, fmap Const arbitrary)
+>         , (10, genBinaryApp (:.))
+>         , (5 , genBinaryApp Delta)
+>         , (5 , fmap D arbitrary)
+>         , (5 , genBinaryApp I) ]
+>     where genElementary = elements [Exp, Log, Sin, Cos, Asin, Acos]
+>           genBinaryApp op = fmap (\(f, g) -> f `op` g) arbitrary
+>           genBinaryOperation =     elements [(:+), (:-), (:*), (:/), (:^)]
+>                                >>= genBinaryApp
 
-is equivalent to
 
-> avg' y x t1 t2 = ((y :$ t2) - (y :$ t1)) / ((x :$ t2) - (x :$ t1))
 
-which is equivalent to
-
-> avg'' y x = Delta y / Delta x
-
-`eval` evaluates an expression. Converts from syntactic domain to semantic domain.
-
-> eval :: [(String, Expr)] -> Expr -> Val
-> eval env (Const x) = RealVal x
-> eval env (a :+ b) = evalBinop env a b (:+) (+)
-> eval env (a :- b) = evalBinop env a b (:-) (-)
-> eval env (a :* b) = evalBinop env a b (:*) (*)
-> eval env (a :/ b) = evalBinop env a b (:/) (/)
-> eval env (f :. g) = eval env (Lambda "_x" (f :$ (g :$ "_x")))
-> eval env (Var s) =
->     eval env (fromMaybe (error ("Variable "++s++" is not in environment: "++show env))
->                         (lookup s env))
-> eval env (Lambda p b) = LambdaVal p (subst env b)
-> eval env (Func "negate") = FuncVal negate
-> eval env (Func "abs") = FuncVal abs
-> eval env (Func "signum") = FuncVal signum
-> eval env (Func "log") = FuncVal log
-> eval env (Func "exp") = FuncVal exp
-> eval env (Func "cos") = FuncVal cos
-> eval env (Func "sin") = FuncVal sin
-> eval env (Func "asin") = FuncVal asin
-> eval env (Func "acos") = FuncVal acos
-> eval env (Func "atan") = FuncVal atan
-> eval env (f :$ arg) = case eval env f of
->     LambdaVal p b -> eval [(p, subst env arg)] b
->     FuncVal f     -> RealVal (f (valToReal (eval env arg)))
->     _             -> error "Not a function"
-> eval env (Delta x) = LambdaVal "_a" (Lambda "_b" ((x' :$ "_b") - (x' :$ "_a")))
->   where x' = subst env x
-> eval env (D f) = eval env (simplify (derive f))
-
-> evalBinop env a b cons op = case (eval env a, eval env b) of
-
-Arithmetic on real numbers is just as normal
-
->     (RealVal a', RealVal b') -> RealVal (a' `op` b')
-
-A nice definition for function (addition/subtraction/...) that works for
-differentials: $f + g = h$ where $h(x) = f(x) + g(x)$
-
->     (LambdaVal p1 b1, LambdaVal p2 b2) ->
->         LambdaVal "_x" (cons (Lambda p1 b1 :$ "_x")
->                              (Lambda p2 b2 :$ "_x"))
-
-The semantic value of an evaluation. Can either be a real number, a haskell function, or a lambda(?)
-TODO: Should a lambda really be returnable here? Kinda makes sense, kinda doesn't...
-
-> data Val = RealVal RealNum
->          | LambdaVal String Expr
->          | FuncVal (RealNum -> RealNum)
-
-> instance Show Val where
->   show (RealVal n)        = show n
-
-Helper functions to improve ergonomics of evaluation
-
-> valToReal (RealVal x) = x
-
-> valToFunc (FuncVal f) = f
-> valToFunc (LambdaVal p b) = \x -> valToReal (eval [(p, Const x)] b)
-
-> evalReal :: [(String, Expr)] -> Expr -> RealNum
-> evalReal env e = valToReal (eval env e)
-
-> evalF :: [(String, Expr)] -> Expr -> (RealNum -> RealNum)
-> evalF env e = valToFunc (eval env e)
-
-Substitution function to instantiate expression for environment
-
-> subst :: [(String, Expr)] -> Expr -> Expr
-> subst env (a :+ b) = subst env a :+ subst env b
-> subst env (a :- b) = subst env a :- subst env b
-> subst env (a :* b) = subst env a :* subst env b
-> subst env (a :/ b) = subst env a :/ subst env b
-> subst env (a :. b) = subst env a :. subst env b
-> subst env (Var s) = case lookup s env of
->     Just e  -> e
->     Nothing -> Var s
-> subst env (Lambda p b) = Lambda p (subst env b)
-> subst env (f :$ arg) = subst env f :$ subst env arg
-> subst env (Delta x) = Delta (subst env x)
-> subst env (D f) = D (subst env f)
-> subst _ e = e
-
-Differences
+Deep, dark, differences
 ----------------------------------------------------------------------
 
 ![](delta.png "Feel the might if the illum-... the delta!"){.float-img-left}
 
-Differences are used for stuff like average velocity.
+A *difference* is, in it's essence, quite simply the result of
+applying the operation of subtraction to two real number terms.
 
-$$ v_{avg} = \frac{x_2 - x_1}{t_2 - t_1} = \frac{\Delta x}{\Delta t} $$
+$$minuend - subtrahend = difference$$
+
+Nice, great job, we're done here, let's move on.
+
+...
+
+Just kidding, of course there's more to it than that.
+
+In calculus, the term *difference* carries more meaning than
+usual. More than just a subtraction of arbitrary values, differences
+lie at the heart of calculations regarding rate of change, both
+average and instantaneous.
+
+Quotients of differences of functions of the same time describe the
+average rate of change over the time period. For example, an average
+velocity can be described as the difference quotient of difference in
+position divided by difference in time.
+
+$$v_{avg} = \frac{p_2 - p_1}{t_2 - t_1}$$  where $p_n$ is the position
+at time $t_n$.
+
+In the context of calculus, we use a special syntax for differences:
+the delta operator! With this, the previous definition can be
+rewritten as
+
+$$v_{avg} = \frac{p_2 - p_1}{t_2 - t_1} = \frac{\Delta p}{\Delta t}$$.
 
 This is the informal definition of the delta operator used in *University Physics*:
 
@@ -322,100 +347,158 @@ Further, the indices $1,2$ should not be thought of as specific constants,
 but rather arbitrary real number variables identified by these integers.
 Lets call them $a,b$ instead, to make it clear that they are not constants.
 
-$$ \Delta x = x_b - x_a $$
+$$\Delta x = x_b - x_a$$
 
 Now $a,b$ are implicitly bound. We make the binding explicit.
 
 $$ (\Delta x)(a, b) = x_b - x_a $$
 
-% https://en.wikipedia.org/wiki/Finite_difference
+We compare this to the more formal definition of *forward difference*
+on wikipedia:
 
-We compare this to the more formal definition of **forward difference**
-from wikipedia:
+$$\Delta_h[f](x) = f(x + h) - f(x)$$
 
-$$ \Delta_h[f](x) = f(x + h) - f(x) $$
-
-The parameter bindings are a bit all over the place here. To move easily compare
+The parameter bindings are a bit all over the place here. To more easily compare
 to our definition, let's rename $x$ to $a$ and $f$ to $x$, and change the parameter
 declaration syntax:
 
 $$ (\Delta x)(h)(a) = x(a + h) - x(a) $$
 
-This is almost identical to the definition we arrived at earlier, with the
-exception of expressing $b$ as $a + h$. We'll use our own definition hereinafter.
+This is almost identical to the definition we arrived at earlier, with
+the exception of expressing $b$ as $a + h$. Why is this? Well, in
+calculus we mainly use differences to express two things, as mentioned
+previously. Average rate of change and instantaneous rate of change.
 
-We express our definition of $\Delta$ in Haskell:
+Average rate of change is best described as the difference quotient of
+the difference in y-axis value over an interval of x, divided by the
+difference in x-axis value over the same interval.
 
-< delta :: (RealNum -> RealNum) -> RealNum -> RealNum -> RealNum
-< delta x a b = x(b) - x(a)
+$$\frac{y(x_b) - y(x_a)}{x_b - x_a}$$.
 
-or
+In this case, the $x$'s can be at arbitrary points on the axis, as
+long as $b > a$. Therefore, the definition of difference as $(\Delta
+x)(a, b) = x_b - x_a$ seems a good fit. Applied to average velocity, our difference quotient
 
-< delta x = \a -> \b -> x(b) - x(a)
+$$v_{avg} = \frac{\Delta p}{\Delta t}$$
 
-This is a shallow embedding. Let's look at how it's expressed in our
-deep embedding:
+will expand to
 
-This is the representation of the delta operator in the syntax tree.
-The argument will need to be type-checked to ensure that it's a function.
+$$v_{avg}(t_2, t_1) = \frac{(\Delta p)(t_2, t_1)}{(\Delta t)(t_2, t_1)}$$ for $t_2 > t_1$.
 
-<           | Delta Expr         -- Difference, like "Δx"
+Instantaneous rate of change is more complicated. At its heart, it
+too is defined in terms of differences. However, we are no longer
+looking at the average change over an interval delimited by two
+points, but rather the instantaneous change in a single point.
 
-We implement the delta case of the eval function according to the definition
+Of course, you can't have a difference with only one point. You need
+two points to look at how the function value changes between them. But
+what if we make the second point reeeeeeeeealy close to the first?
+That's basically the same as the difference in a single point, for all
+intents and purposes. And so, for instantaneous rate of change, the
+definition of difference as $(\Delta x)(h)(a) = x(a + h) - x(a)$ will
+make more sense, for very small $h$'s. Applied to instantaneous
+velocity, our difference quotient
 
-< eval env (Delta x) =
-<     LambdaVal env
-<               "_a"
-<               (Lambda "_b"
-<                       ((x :$ ("_b")) :- (x :$ ("_a"))))
+$$v_{inst} = \frac{\Delta p}{\Delta t}$$
 
-Verification/proof/test
-----------------------------------------------------------------------
+for very small $\Delta t$, will expand to
 
-???
+$$v_{inst}(h, x) = \frac{(\Delta p)(h, x)}{(\Delta t)(h, x)}$$
 
-Examples
-----------------------------------------------------------------------
+for very small $h$.
 
-> x = Lambda "t" ("t" :* Const 5)
-> t = id'
-> vAvg = Lambda "x" (Delta "x" :/ Delta t)
-> vAvgX = vAvg :$ x
-> v = eval [] (vAvgX :$ Const 0 :$ Const 10)
+As $h$ gets closer to $0$, our approximation of instantaneous rate of
+change gets better.
+
+And so, we have a method of computing average rate of change, and
+instantaneous rate of change (numerically approximatively). In
+Haskell, we can make shallow embeddings for differences in the context
+of rate of change as velocity.
+
+Average velocity is simply
+
+> v_avg pos t2 t1 = (pos(t2) - pos(t1)) / (t2 - t1)
+
+which can be used as
+
+< ghci> v_avg (\x -> 5*x) 10 0
+< 5.0
+
+And instantaneous velocity is
+
+> v_inst pos h t = (pos(t + h) - pos(t)) / ((t + h) - t)
+
+which can be used as
+
+< ghci> carSpeed t = v_inst (\x -> x + sin(x)) 0.00001 t
+< ghci> carSpeedAtPointsInTime = map carSpeed [0, 1, 2, 3]
+< ghci> carSpeedAtPointsInTime
+< [1.9999999999833333,1.5402980985023251,0.5838486169602084,1.0006797790330592e-2]
+
+We'd also like to model one of the versions of the delta operator, finite difference, in our syntax tree. As the semantic value of our calculus language is the unary real function, the difference used for averages doesn't really fit in well, as it's a binary function (two arguments: $t_2$ and $t_1$). Instead, we'll use the version of delta used for instantants, as it only takes a single point in time as an argument (assuming $h$ is already given).
+
+The constructor in our syntax tree is therefore
+
+<     | Delta RealNum FunExpr
+
+where the first argument is $h$, and the second is the function.
+
+
 
 Derivatives
 ======================================================================
 
-Derivatives are used for stuff like instantaneous velocity.
+The *derivative* of a function is, according to wikipedia, "the slope
+of the tangent line to the graph of [a] function at [a] point" and can
+be described as the "instantaneous rate of change", and
+*differentiation* is the method of finding a derivative for a
+function.
 
-$$ v_x = \frac{dx}{dt} = lim_{\Delta t \to 0} \frac{\Delta x}{\Delta t} $$
+...
 
-% https://en.wikipedia.org/wiki/Leibniz%27s_notation
+Wait, didn't we just look at instantaneous rates of changes (blarh my
+tounge is getting tired) in the previous section on differences? Well
+yes, and the difference quotient for a function at a point with a very
+small step $h$ is indeed a good way to numerically approximate the
+derivative of a function. From what we found then, we can derive a
+general expression for instantaneous rate of change
+
+$$\frac{(\Delta f)(h, x)}{(\Delta id)(h, x)} = \frac{f(x + h) - f(x)}{h}$$
+
+for very small $h$.
+
+But what if we don't want just a numerical approximation, but THE
+derivative of a function at any arbitrary point? What if we make $h$ not just very small, but *infinitley* small?
+
+Introducing *infinitesimals*! From the wikipedia entry on *Leibniz's notation*
 
  > In calculus, Leibniz's notation, named in honor of the 17th-century
  > German philosopher and mathematician Gottfried Wilhelm Leibniz,
- > uses the symbols dx and dy to represent infinitely small (or
- > infinitesimal) increments of x and y, respectively, just as Δx and
- > Δy represent finite increments of x and y, respectively.
+ > uses the symbols $dx$ and $dy$ to represent infinitely small (or
+ > infinitesimal) increments of x and y, respectively, just as $\Delta x$ and
+ > $\Delta y$ represent finite increments of x and y, respectively.
 
-We interpret this in mathematical terms:
+So there's a special syntax for differences where the step $h$ is
+infinitely small, and it's called Leibniz's notation. We interpret the
+above quote in mathematical terms:
 
-$$ df = lim_{\Delta f \to 0} \Delta f $$
+$$dx = lim_{\Delta x \to 0} \Delta x$$
 
 such that
 
-$$ \forall y(x), D(y) = \frac{dy}{dx} = \frac{lim_{\Delta y \to 0} \Delta y}
-                                             {lim_{\Delta x \to 0} \Delta x} $$
+$$\forall y(x). D(y) = \frac{dy}{dx} = \frac{lim_{\Delta y \to 0} \Delta y}
+                                            {lim_{\Delta x \to 0} \Delta x}$$
 
-This definition of derivatives is very appealing, as it suggests a very
-simple and intuitive transition from finite differences to infinitesimal
-differentials.
+where $D$ is the function of differentiation.
 
-This concept of infinitesimals is very intuitive, and the ability to manipulate
-differentials algebraically is very useful. However, this concept is generally
-considered too imprecise to be used as the foundation of calculus.
+This definition of derivatives is very appealing, as it suggests a
+very simple and intuitive transition from finite differences to
+infinitesimal differentials. Also, it suggests the possibility of
+manipulating the infinitesimals of the derivative algebraically, which
+might be very useful. However, this concept is generally considered
+too imprecise to be used as the foundation of calculus.
 
-% https://en.wikipedia.org/wiki/Leibniz%27s_notation
+A later section on the same wikipedia entry elaborates a bit:
 
  > Leibniz's concept of infinitesimals, long considered to be too
  > imprecise to be used as a foundation of calculus, was eventually
@@ -424,75 +507,175 @@ considered too imprecise to be used as the foundation of calculus.
  > to stand for the limit of the modern definition. However, in many
  > instances, the symbol did seem to act as an actual quotient would and
  > its usefulness kept it popular even in the face of several competing
- > notations. In the modern rigorous treatment of non-standard calculus,
- > justification can be found to again consider the notation as
- > representing an actual quotient.
+ > notations.
 
-Leibniz's notation definition. Used to be defined as "the quotient of an infinitesimal increment of y by an infinitesimal increment of x":
-
-$$ D(f) = \frac{dy}{dx} = \frac{lim_{\Delta y \to 0} \Delta y}{lim_{\Delta x \to 0} \Delta x} $$
-
-% https://en.wikipedia.org/wiki/Derivative
-
- > The most common approach to turn this intuitive idea into a
- > precise definition is to define the derivative as a limit of
- > difference quotients of real numbers.
+What is then the "right" way to do derivatives? As luck would have it, not much differently than Leibniz's suggested! The intuitive idea can be turned into a precise definition by defining the derivative to be the limit of difference quotients of real numbers. Again, from wikipedia - Leibniz's notation:
 
  > In its modern interpretation, the expression dy/dx should not be read
  > as the division of two quantities dx and dy (as Leibniz had envisioned
  > it); rather, the whole expression should be seen as a single symbol
  > that is shorthand for
+ >
+ > $$D(x) = lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x}$$
 
-$$ D(x) = lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x} $$
-
-which, when $y : \mathbb{R} \to \mathbb{R}$ and $x$ is a real interval
-$\leftrightarrow x$ is the $id$ function for real numbers, is:
+which, when $y$ is a function of $x$, and $x$ is the $id$ function for real numbers (which it is in the case of time), is:
 
 \begin{align*}
-D(x) &= lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x} \\
-     &= a \mapsto lim_{\Delta x \to 0} \frac{(\Delta y)(a, a + \Delta x)}{\Delta x} \\
-     &= a \mapsto lim_{h \to 0} \frac{y(a + (\Delta x)(a, a + h)) - y(a)}{(\Delta x)(a, a + h)} \\
+D(y) &= lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x} \\
+     &= a \mapsto lim_{\Delta x \to 0} \frac{(\Delta y)(\Delta x, a)}{\Delta x} \\
+     &= a \mapsto lim_{h \to 0} \frac{y(a + (\Delta x)(h, a)) - y(a)}{(\Delta x)(h, a)} \\
      &= a \mapsto lim_{h \to 0} \frac{y(a + ((a + h) - a)) - y(a)}{(a + h) - a} \\
      &= a \mapsto lim_{h \to 0} \frac{y(a + h) - y(a)}{h}
 \end{align*}
 
-We add the derivative syntax to the *Expr* syntax tree.
+There, the definition of derivatives! Not to complicated, was it?
 
-<              | D Expr             -- Derivative, like "D(f)" or "f'"
+The differentiation function is represented in our syntax tree as
 
-Here are some derivatives. Proving these is left as an excercise to the reader:
+<     | D FunExpr
 
-% TODO: Higher order functions are discrete. Typecheck to prevent differentiation
-%       of these.
+Very simple!
 
-> derive :: Expr -> Expr
-> derive (f :+ g) = derive f + derive g
-> derive (f :- g) = derive f - derive g
-> derive (f :* g) = derive f * g + f * derive g
-> derive (f :/ g) = (derive f * g - f * derive g) / (g^2)
-> derive (f :. g) = derive g * (derive f :. g)
-> derive (Lambda p b) = Lambda p (deriveEx b p)
-> derive (Func "log") = Lambda "x" (1 / "x")
-> derive (Func "exp") = Func "exp"
-> derive (Func "sin") = Func "cos"
-> derive (Func "cos") = Func "negate" :. Func "sin"
-> derive (Func "asin") = Lambda "x" (1 / sqrt (1 - ("x" * "x")))
-> derive (Func "acos") = Lambda "x" ((-1) / sqrt (1 - ("x" * "x")))
-> derive (Func "negate") = Func "negate"
-> derive _ = undefined
+And so, now what? What was the point of deriving that fancy definition
+for derivatives? Well, now we can derive things symbolically, which
+implies provable 100% perfect accuracy, no numeric approximations!
 
-> deriveEx :: Expr -> String -> Expr
-> deriveEx (Const _) v = 0
-> deriveEx (a :+ b) v = deriveEx a v + deriveEx b v
-> deriveEx (a :- b) v = deriveEx a v - deriveEx b v
-> deriveEx (a :* b) v = deriveEx a v * b + a * deriveEx b v
-> deriveEx (a :/ b) v = (deriveEx a v * b - a * deriveEx b v) / b^2
-> deriveEx (Var u) v | u == v = 1
->                    | otherwise = 0
-> deriveEx (f :$ e) v = deriveEx e v * (derive f :$ e)
-> deriveEx _ _ = undefined
+We define a function to symbolically derive a function
+expression. `derive` takes a function expression, and returns the
+derived function expression.
 
-Difficult to read some of these derivatives. Let's simplify
+> derive :: FunExpr -> FunExpr
+
+Using only the definition of derivatives, we can derive the
+definitions of `derive` for the various constructors in our syntax tree.
+
+For example, how do we derive `f :+ g`? Let's start by doing it
+mathematically.
+
+\begin{align*}
+D(f + g) &= a \mapsto lim_{h \to 0} \frac{(f + g)[a + h] - (f + g)[a]}{h} \\
+         & \text{ \{ Addition of functions \} } \\
+         &= a \mapsto lim_{h \to 0} \frac{f(a + h) + g(a + h) - (f(a) + g(a))}{h} \\
+         &= a \mapsto lim_{h \to 0} \frac{f(a + h) + g(a + h) - f(a) - g(a)}{h} \\
+         &= a \mapsto lim_{h \to 0} (\frac{f(a + h) - f(a)}{h} + \frac{g(a + h) - g(a)}{h}) \\
+         &= a \mapsto ((lim_{h \to 0} \frac{f(a + h) - f(a)}{h}) + (lim_{h \to 0} \frac{g(a + h) - g(a)}{h})) \\
+         &= (a \mapsto lim_{h \to 0} \frac{f(a + h) - f(a)}{h}) + (a \mapsto lim_{h \to 0} \frac{g(a + h) - g(a)}{h}) \\
+         & \text{ \{ Definition of derivative \} } \\
+         &= D(f) + D(g)
+\end{align*}
+
+Oh, it's just the sum of the derivatives of both functions! The
+Haskell implementation is then trivially
+
+> derive (f :+ g) = derive f :+ derive g
+
+Let's do one more, say, $sin$. We will make use of the trigonometric
+identity of sum-to-product
+
+$$\sin \theta - \sin \varphi = 2 \sin\left(\frac{\theta - \varphi}{2}\right) \cos\left(\frac{\theta + \varphi}{2}\right)$$
+
+And the limit
+
+$$\lim_{x \to 0} \frac{sin x}{x} = 1$$
+
+which can be proved using the unit circle and squeeze theorem, but we
+won't do that here.
+
+Then, the differentiation
+
+\begin{align*}
+D(sin) &= a \mapsto lim_{h \to 0} \frac{sin(a + h) - sin(a)}{h} \\
+       & \text{ \{ trig. sum-to-product \} } \\
+       &= a \mapsto lim_{h \to 0} \frac{2 \sin\left(\frac{a + h - a}{2}\right) \cos\left(\frac{a + h + a}{2}\right)}{h} \\
+       &= a \mapsto lim_{h \to 0} \frac{2 \sin\left(\frac{h}{2}\right) \cos\left(\frac{2a + h}{2}\right)}{h} \\
+       &= a \mapsto lim_{h \to 0} \frac{2 \sin\left(\frac{h}{2}\right) \cos\left(\frac{2a + h}{2}\right)}{h} \\
+       &= a \mapsto lim_{h \to 0} \frac{\sin\left(\frac{h}{2}\right)}{\frac{h}{2}} \cos\left(\frac{2a + h}{2}\right)} \\
+       & \text{\{} h \text{ approaches } 0 \text{\}} \\
+       &= a \mapsto 1 \cos\left(\frac{2a + 0}{2}\right) \\
+       &= a \mapsto \cos(a) \\
+       &= \cos \\
+\end{align*}
+
+Again, trivial definition in Haskell
+
+> derive Sin = Cos
+
+I'll leave the proving of the rest of the implementations as an exercise to you.
+
+> derive Exp = Exp
+> derive Log = Const 1 :/ Id
+> derive Cos = Const 0 :- Sin
+> derive Asin = Const 1 :/ (Const 1 :- Id:^(Const 2)):^(Const 0.5)
+> derive Acos = Const 0 :- derive Asin
+> derive (f :- g) = derive f :- derive g
+> derive (f :* g) = derive f :* g :+ f :* derive g
+> derive (f :/ g) = (derive f :* g :- f :* derive g) :/ (g:^(Const 2))
+> derive (f :^ g) = f:^(g :- Const 1) :* (g :* derive f :+ f :* (Log :. f) :* derive g)
+> derive Id = Const 1
+> derive (Const _) = Const 0
+> derive (f :. g) = derive g :* (derive f :. g)
+> derive (Delta h f) = Delta h (derive f)
+> derive (D f) = derive (derive f)
+
+Oh right, I almost forgot: Integrals. How are you supposed to know how
+to derive these bad boys when we haven't even covered them yet! We'll
+prove why this works later, but for now, just know that another name
+for integral is *Antiderivative*...
+
+> derive (I c f) = f
+
+
+
+Keep it simple
+----------------------------------------------------------------------
+
+So we've got our differentiation function, great! Let's try it out by
+finding the derivative for a simple function, like $f(x) = sin(x) +
+x^2$, which should be $f'(x) = cos(x) + 2x$:
+
+< ghci> f = Sin :+ Id:^(Const 2)
+< ghci> derive f
+< (cos + ((id^(2 - 1)) * ((2 * 1) + ((id * (log . id)) * 0))))
+
+Oh... that's not very readable. If we simplify it manually we get that
+the result is indeed as expected
+
+< (cos + ((id^(2 - 1)) * ((2 * 1) + ((id * (log . id)) * 0))))
+< cos + (id^1 * (2 + (id * (log . id) * 0)))
+< cos + (id * (2 + 0))
+< cos + 2*id
+
+But still, we shouldn't have to do that manually! Let's have
+Mr. Computer help us out, by writing a function to simplify
+expressions.
+
+> {-
+> simplify :: FunExpr -> FunExpr
+
+The elementary functions by themselves are already as simple as can
+be, so we don't have to simplify those. When it comes to the
+arithmetic operations, we want to look at the identity and zero
+elements.
+
+> simplify (f :+ g) = case (simplify f, simplify g) of
+>     (Const 0, g') -> g'
+>     (f', Const 0) -> f'
+>     (Const a, Const b) -> Const (a + b)
+>     (f', g') | f' == g' -> simplify (Const 2 :* f')
+>     (a :* f', g') | f' == g' -> simplify (Const (a + 1) :* f')
+>     (f', Const a :* g') | f' == g' -> simplify (Const (a + 1) :* f')
+>     (Const a :* f', Const b :* g') | f' == g' -> simplify (Const (a + b) :* f')
+> simplify (f :- g) =
+> simplify (f :* g) =
+> simplify (f :/ g) =
+> simplify (f :^ g) =
+> simplify Id =
+> simplify (Const x) =
+> simplify (f :. g) =
+> simplify (Delta h f) =
+> simplify (D f) =
+> simplify (I c f) =
+> simplify f = f
 
 > simplify :: Expr -> Expr
 > simplify (Const 0 :* b) = 0
@@ -947,6 +1130,80 @@ TODO: Examples
 
 they go here
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TODO: Move to after differentiation and integration and all that.
+      Begin by just doing all syntactical stuff, and then end the chapter
+      with evaluation, visualization, and testing.
+The value of evaluation
+----------------------------------------------------------------------
+
+What comes after construction of function expressions? Well, using them of course!
+
+One way of using a function expression is to evaluate it, and use it
+just as you would a normal Haskell function. To do this, we need to
+write an evaluator.
+
+An evaluator simply takes a syntactic representation and returns the
+semantic value, i.e. `eval :: SYNTAX -> SEMANTICS`.
+
+In the case of our calculus language:
+
+> eval :: FunExpr -> (RealNum -> RealNum)
+
+To then evaluate a `FunExpr` is not very complicated. The elementary
+functions and the `Id` function are simply substituted for their
+Haskell counterparts.
+
+> eval Exp = exp
+> eval Log = log
+> eval Sin = sin
+> eval Cos = cos
+> eval Asin = asin
+> eval Acos = acos
+> eval Id = id
+
+`Const` is evaluated according to the definition $const(c) = x \mapsto c$
+
+> eval (Const c) = \x -> c
+
+How to evaluate arithmetic operations on functions may not be as
+obvious, but we just implement them as they were defined earlier in
+the chapter.
+
+> eval (f :+ g) = \x -> (eval f x + eval g x)
+> eval (f :- g) = \x -> (eval f x - eval g x)
+> eval (f :* g) = \x -> (eval f x * eval g x)
+> eval (f :/ g) = \x -> (eval f x / eval g x)
+
+Function composition is similarly evaluated according to the earlier definition
+
+> eval (f :. g) = \x -> eval f (eval g x)
+
+TODO: these bad bois
+
+> eval (Delta h f) = undefined
+> -- eval env (Delta x) = LambdaVal "_a" (Lambda "_b" ((x' :$ "_b") - (x' :$ "_a")))
+> --   where x' = subst env x
+> eval (D f) = undefined
+> -- eval env (D f) = eval env (simplify (derive f))
+> eval (I c f) = undefined
+
 TODO: Applying our DSL to solve physics problems!
 ----------------------------------------------------------------------
 
@@ -959,3 +1216,5 @@ Integrating to get rid of /t:s.
 cool stuff here in general.
 
 Also, many pretty pictores
+
+> -}

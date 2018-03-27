@@ -14,9 +14,9 @@ change of the momentum equals the force.
 3: If two bodies exert forces on each other, these forces are equal in
 magnitude and opposite in direction.
 
-> type Time   = Double
-> type Mass   = Expr
-> type VectorE = Vector3 Expr
+> type Time    = Double
+> type Mass    = FunExpr
+> type VectorE = Vector3 FunExpr
 
 
 > data Particle  = P { pos  :: VectorE -- Position as a function of time, unit m
@@ -46,11 +46,11 @@ this is a bit weird
 >     m = mass p
 >     a = acceleration p
 
-> type Energy = Expr
+> type Energy = FunExpr
 
 TODO: Write something here
 
-> square :: VectorE -> Expr
+> square :: VectorE -> FunExpr
 > square v = dotProd v v
 
 1/2 m * v^2
@@ -81,13 +81,60 @@ Let's codify this theorem:
 >     deltaEnergy = (kineticEnergy particle2) - (kineticEnergy particle1)
 >     displacedParticle = P (v2 - v1) m
 
+> -- Test values
+> v1 = V3 (3 :* Id) (2 :* Id) (1 :* Id)
+> v2 = V3 2 2 (5 :* Id)
+> m  = 5
+> p1 = P v1 m
+> p2 = P v2 m
+> dE = (kineticEnergy p2) - (kineticEnergy p1)
+> p3 = P (v2 - v1) m
 
-< instance Show Particle where
-< show particle = "Position: " ++ particlePos  ++ "\n" ++
-<                 "Time: "     ++ particleTime ++ "\n" ++
-<                 "Mass: "     ++ particleMass
-<   where
-<     particlePos  = Prelude.show $ pos particle
-<     particleTime = Prelude.show $ time particle
-<     particleMass = Prelude.show $ mass particle
+If a particles position is defined as a vector representing its displacement
+from some origin O, then its heigh should be x. Or maybe it should be the
+magnitude of the vector, if the gravitational force originates from O. Hmmm
+
+
+This seems so weird since I don't know what the frame of reference is...
+
+> potentialEnergy :: Particle -> Energy
+> potentialEnergy p = undefined
+>   where
+>     m          = mass p
+>     (V3 x _ _) = pos p
+
+\begin{equation}
+  F = G \frac{m_1 m_2}{r^2}
+\end{equation}
+Where *F* is the force, *m1* and *m2* are the masses of the objects interacting,
+*r* is the distance between the centers of the masses and *G* is the
+gravitational constant.
+
+> type Constant = FunExpr
+
+> gravConst :: Constant
+> gravConst = 6.674 * (10 ** (-11))
+
+> lawOfUniversalGravitation :: Particle -> Particle -> FunExpr
+> lawOfUniversalGravitation p1 p2 = gravConst * ((m1 * m2) / r2)
+>   where
+>     m1 = mass p1
+>     m2 = mass p2
+>     r2 = square $ (pos p2) - (pos p1)
+
+> instance Num FunExpr where
+>   (+) = (:+)
+>   (*) = (:*)
+>   (-) = (:-)
+>   fromInteger i = Const (fromInteger i)
+
+> instance Fractional FunExpr where
+>   (/) = (:/)
+>   fromRational r = Const (fromRational r)
+
+> instance Floating FunExpr where
+>   exp a = Exp :. a
+>   log a = Exp :. a
+
+TODO!!!! Fix prettyCan $ lawOfUniversalGravitation p1 p2
 

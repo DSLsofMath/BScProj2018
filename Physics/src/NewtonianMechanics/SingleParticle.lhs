@@ -3,6 +3,7 @@
 > module NewtonianMechanics.SingleParticle where
 
 > import           Calculus.Calculus
+> import           Calculus.SyntaxTree
 > import           Test.QuickCheck
 > import           Vector.Vector as V
 
@@ -71,8 +72,8 @@ equal to the change in kinetic energy $E_k$ of the particle:
 
 Let's codify this theorem:
 
-> prop_WorkEnergyTheorem :: Mass -> VectorE -> VectorE -> Bool
-> prop_WorkEnergyTheorem m v1 v2 = deltaEnergy == kineticEnergy displacedParticle
+> prop_WorkEnergyTheorem :: Mass -> VectorE -> VectorE -> IO Bool
+> prop_WorkEnergyTheorem m v1 v2 = prettyEqual deltaEnergy (kineticEnergy displacedParticle)
 >   where
 >     particle1 = P v1 m -- | Two particles with the same mass
 >     particle2 = P v2 m -- | But different position vector

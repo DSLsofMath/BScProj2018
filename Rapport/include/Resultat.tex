@@ -1,82 +1,99 @@
 
-\chapter{Beskrivning av det resulterande läromaterialet}
+\chapter{Resultat}
+
+\begin{draft}
+
+\section{Läromaterialet}
+
+Läromaterialet blev i slutändan en sammanvävning av domänspecifika språk som
+modellerar fysik, och en lärotext som förklarar kopplingen mellan fysiken och de
+domänspecifika språken. Figur~\ref{fig:smakprov_laromaterial} visar ett kort
+utdrag ur läromaterialet. Där ser man hur domänspecifika språk och lärotext är
+sammanvävda.
+
+\begin{figure}[tph]
+  \includegraphics[width=\linewidth]{figure/smakprov_laromaterial.png}
+  \caption{Ett smakprov över hur det resulterande läromaterialet ser ut.
+           Lärotexten ligger mot den ljusgrå bakgrunden medan det
+           domänspecifika språket ligger mot den
+           mörkgrå.}~\label{fig:smakprov_laromaterial} 
+\end{figure}
+
+I läromaterialet finns även bilder och övningar. Figur~\ref{fig:smakprov_bild_laromaterial} är ett exempel på en bild ur läromaterialet. Notera speciellt den medvetet oseriösa ritningstekniken som är tänkt att vara rolig och muntra upp läsaren. Övningar ligger både i den löpande texten och i slutet av kapitlet. Övningarna i den löpande texten innebär oftast att läsaren ska implementera en liten del av det aktuella domänspecifika språket på egen hand. Det här illustreras i figur~\ref{fig:smakprov_ovning}.
+
+\begin{figure}[tph]
+    \centering
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{figure/smakprov_bild_laromaterial.png}
+        \caption{Exempel på en bild. Bilden visar hur en hund springer och
+                 hoppar upp på en stillastående
+                 vagn.}~\label{fig:smakprov_bild_laromaterial}
+    \end{subfigure}% 
+    ~~~
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{figure/smakprov_ovning.png}
+        \caption{Exempel på en övning. Övningen ligger som en del av den
+                 löpande texten.}~\label{fig:smakprov_ovning}
+    \end{subfigure}
+    \caption{Exempel på en bild och en övning ur läromaterialet.} 
+\end{figure}
+
+Läromataterialet behandlar ett flertal områden inom fysik och matematik.
+Fokuset är på klassisk mekanik samt till det området tillhörande matematik. I
+sin fullständighet är de behandlade områdena:
+
+\begin{itemize}
+  \item Bevis
+  \item Dimensioner
+  \item Matematisk analys
+  \item Vektorer
+  \item Kompositioner och tillämpningar av ovanstående
+\end{itemize}
+
+I \textit{bevis}-kapitlet presenteras bevisföringen med hjälp av Haskells
+typsystem. Det exemplifieras genom att kinematiska formler bevisas.
+
+\textit{Dimensioner} behandlar dimensioner, storheter och enheter inom fysiken.
+Dimensioner införs på typnivå i Haskell för att visa på likheten mellan
+Haskells typsystem och hur man måste förhålla sig till dimensioner inom
+fysiken.
+
+I \textit{matematisk analys} konstrueras ett syntaxträd för algebraiska uttryck
+och funktioner. Därefter implementerades symbolisk derivering och integrering på
+syntaxträdet.
+
+\textit{Vektorer} implementerar vektorer och vektoroperationer i Haskell. Lagar
+som ska gälla för vektorer implementerades och testades.
+
+I läromataterialet finns, förutom de fyra ovanstående grundläggande områdena,
+även tillämpningar av dem på exempelproblem. Till exempel används dimensioner
+till att lösa problem med fritt fall. De tillämpningar som behandlats är
+
+\begin{itemize}
+  \item Gundbräda
+  \item Krafter på lådor
+\end{itemize}
+
+Läromaterialet blev publicerat på en hemsida\cite{LYAP} och all källkod finns
+tillgänglig på projektets GitHub-repository.\cite{LYAP_repo} Texten är skriven
+på engelska.
+
+\end{draft}
 
 \begin{binge}
 
-\section{Lärotexten i sig}
+EXEMPEL PÅ ATT VI ANVÄNDER LITERAT STIL, OM DET SKULLE BEHÖVAS
 
-Läromaterialet blev i slutändan, precis som målet var, en sammanvävning mellan domänspecifika språk som modellerar fysik och brödtext som förklarar både fysiken i sig, men också förklarar de domänspecifika språken.
-
-\begin{figure}
-  \includegraphics[width=\linewidth]{figure/smakprov_laromaterial.png}
-  \caption{Ett smakprov över hur det resulterande läromaterialet ser ut.}
-  \label{fig:smakprov_laromaterial}
-\end{figure}
-
-Figur \ref{fig:smakprov_laromaterial} visar ett smakprov över det resulterande läromaterialet. Som figuren visar är brödtext sammanvävt med Haskell-kod för domänspecifika språk.
-
-Läromataterialet behandlar ett flertal områden inom fysik, samt matematik som används inom fysik. Fokuset är på mekanik samt till det området tillhörande matematik. I sin fullständighet är de behandlade områdena
-
-\begin{itemize}
-  \item Analys
-  \item Bevis
-  \item Dimensioner
-  \item Fysikaliska kroppar
-  \item Vektorer
-\end{itemize}
-
-\textit{Analys} handlar om matematisk analys och bygger upp ett syntaxträd... TODO: kolla mer detaljrikt.
-
-I \textit{Bevis}-kapitlet presenteras bevisföringen med hjälp av Haskells typsystem. Det exemplifieras genom att kinematiska formler bevisas.
-
-\textit{Dimensioner} behandlar dimensioner, storheter och enheter inom fysiken. Dimensioner införs på typnivå i Haskell för att kunna visa på likheten mellan Haskells typsystem och hur man måste förhålla sig till dimensioner inom fysiken.
-
-\textit{Fysikaliska kroppar} vet ej TODO: ta reda på
-
-\textit{Vektorer} vet ej TODO: ta reda på
-
-I läromataterialet finns, förutom de fem ovanstående separata områdena, även tillämpningar av de områdena på exempelproblem. Till exempel används \textit{Dimensioner} till att lösa problem med fritt fall. TODO: fyll på när vet mer om hur tillämpningarna ser ut.
-
-\subsection{Domänspecifika språk}
-
-De domänspecika språken är avgränsade och behandlar separata områden. De är avgränsade för att det är enklare att förstå dem om de är det. Av samma skäl behandlar de separata områden. Om det skulle uppstå behov kan de kombineras istället.
-
-De domänspecifika språken modellerar områden snarare än att vara problemlösare. \textit{Analys} exemplifierar detta väl. Det språket består av ett syntaxträd över algebraiska uttryck samt operationer som derivering och integration. Med hjälp av det kan man modellera uttryck och analytiska operationer på dem. Däremot löser det inte problem åt en. Man kan med andra ord inte mata in en differentialekvation och automatiskt få en lösning.
-
-TODO: Detta kanske passar bättre i diskussion: Hur bra våra moduler blev samt varför de inte är problemlösare utan modellerare istället.
-
-\subsection{Brödtexten}
-
-Brödtexten finns till som ett förklarande komplement till de domänspecifika språken. Texten förklarar dels den bakomliggande fysiken, dels den Haskell-kod som finns. Generellt står förklaring av kod för en stor del av brödtexten. Detta för att det är själva modellerandet som är den stora delen - det är egentligen ganska lite fysik som presenteras. Därav behöver koden en utförlig förklaring. Dessutom används avancerade koncept i Haskell, bland annat typnivå-programmering, som läsaren inte förväntas kunna sedan innan. Av naturliga skäl kräver dessa en längre förklaring.
-
-Texten är skriven på engelska för att komma fler till gagn än om den varit skriven på svenska.
-
-Språket i texten är vardagligt och lättsamt. Detta för att vara en kontrast mot hur kursböcker vanligtvis ser ut.
-
-I brödtexten finns bilder. De har en rolig och medvetet kladdig stil. Syftet är att muntra upp läsaren. Figur \ref{fig:smakprov_bild_laromaterial} är ett exempel på en bild som finns i läromaterielet. Den visar den humoristiska och oseriösa ritningstekniken.
-
-\begin{figure}
-  \includegraphics[width=\linewidth]{figure/smakprov_bild_laromaterial.png}
-  \caption{Exempel på en bild ur läromaterialet. Bilden visar hur en hund springer och hoppar upp på en stillastående vagn. När hunden landat rör sig hunden och vagnen med en ny, gemensam hastighet.}
-  \label{fig:smakprov_bild_laromaterial}
-\end{figure}
-
-Valet att skriva på engelska, den lättsamma stilen och de roliga bilderna har inspirerats av *Learn You a Haskell*. TODO: referens. Läromaterialet är tänkt att vara något liknanden, men för fysik istället för Haskell.
-
-TODO: Blev det en bra text? Kanske ska vara i diskussionen istället
-
-\section{Hemsidan}
-
-Läromaterialet finns tillgängligt på en hemsida, som består av grundläggande HTML, CSS och javascript. På hemsidan finns en innehållsförteckning med klickbara länkar till de olika kapitlen. Hemsidan är öppen för alla och bör fungera i de flesta webläsare. Javascript är inget krav för hemsidan. Matematiska formler visas ändå, om än inte lika tydligt.
-
-\section{Källkod}
-
-En del av projektets mål var att all källkod skulle finnas fritt tillgänglig. Det gör den också. Det finns tillgänglig på internet på projektes GitHub-repository TODO: referens.
-
-Källkoden som finns är all den som använts under projekets gång, både slutversion och alla mellanversioner sedan projekets början. Källkoden är inte bara läromaterialet i sig, utan även kod till hemsidan, rapporter (inklusive denna) och mötesprotokoll.
+I Quantity så är detta tydligt. Då gjordes en `taste of types'' tidigt för att
+läsaren skulle förstå Quantity bättre, innan massa detaljer gicks in på. Frågan
+är dock om detta ska gås in på i rapporten?
 
 \section{Återkoppling från testgrupp}
 
-För att utvärdera huruvida läromaterialet är intressant och hjälpsamt har vi haft en informell återkoppling med en testgrupp. TODO: Skriv mer när vi faktiskt gjort detta.
+För att utvärdera huruvida läromaterialet är intressant och hjälpsamt har vi
+haft en informell återkoppling med en testgrupp. TODO: Skriv mer när vi
+faktiskt gjort detta.
 
 \end{binge}

@@ -23,6 +23,11 @@
     </main>
 
     <footer>
+      <nav>
+        <span>Previous: <a href="{previous-href}">{previous-name}</a></span>
+        <a href="../index.html">Table of contents</a>
+        <span>Next: <a href="{next-href}">{next-name}</a></span>
+      </nav>
       Licensed under the GPL by the Kandidatboisen (2018)
     </footer>
   </body>

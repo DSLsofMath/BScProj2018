@@ -149,6 +149,7 @@ $$f \text{ OP } g = x \mapsto (f(x) \text{ OP } g(x))$$
 >     | FunExpr :- FunExpr
 >     | FunExpr :* FunExpr
 >     | FunExpr :/ FunExpr
+>     | FunExpr :^ FunExpr
 
 And then theres that single variable. As everything is a function
 expression, the function that best represents "just a variable" would
@@ -196,11 +197,13 @@ have to fix the fixity. `infixl` allows us to make an operator
 left-associative, and set the precedence.
 
 > -- Medium precedence
-> infixl 5 :+
-> infixl 5 :-
-> -- Higher precedence
-> infixl 6 :*
-> infixl 6 :/
+> infixl 6 :+
+> infixl 6 :-
+> -- Higher
+> infixl 7 :*
+> infixl 7 :/
+> -- Higherer
+> infixl 8 :^
 > -- High as a kite
 > infixl 9 :.
 
@@ -240,6 +243,7 @@ So if the `Show` is bad, we'll just have to make our own `Show`!
 >   show (f :- g) = "(" ++ show f ++ " - " ++ show g ++ ")"
 >   show (f :* g) = "(" ++ show f ++ " * " ++ show g ++ ")"
 >   show (f :/ g) = "(" ++ show f ++ " / " ++ show g ++ ")"
+>   show (f :^ g) = "(" ++ show f ++ "^" ++ show g ++ ")"
 >   show Id = "id"
 >   show (Const x) = showReal x
 >   show (f :. g) = "(" ++ show f ++ " . " ++ show g ++ ")"
@@ -290,7 +294,7 @@ generated expressions in complexity.
 >         , (5 , genBinaryApp I) ]
 >     where genElementary = elements [Exp, Log, Sin, Cos, Asin, Acos]
 >           genBinaryApp op = fmap (\(f, g) -> f `op` g) arbitrary
->           genBinaryOperation =     elements [(:+), (:-), (:*), (:/)]
+>           genBinaryOperation =     elements [(:+), (:-), (:*), (:/), (:^)]
 >                                >>= genBinaryApp
 
 
@@ -395,11 +399,13 @@ definition of difference as $(\Delta x)(h)(a) = x(a + h) - x(a)$ will
 make more sense, for very small $h$'s. Applied to instantaneous
 velocity, our difference quotient
 
-$v_{inst} = \frac{\Delta p}{\Delta t}$ for very small $\Delta t$
+$$v_{inst} = \frac{\Delta p}{\Delta t}$$
 
-will expand to
+for very small $\Delta t$, will expand to
 
-$v_{inst}(h, x) = \frac{(\Delta p)(h, x)}{(\Delta t)(h, x)}$ for very small $h$.
+$$v_{inst}(h, x) = \frac{(\Delta p)(h, x)}{(\Delta t)(h, x)}$$
+
+for very small $h$.
 
 As $h$ gets closer to $0$, our approximation of instantaneous rate of
 change gets better.
@@ -442,36 +448,57 @@ where the first argument is $h$, and the second is the function.
 Derivatives
 ======================================================================
 
-Derivatives are used for stuff like instantaneous velocity.
+The *derivative* of a function is, according to wikipedia, "the slope
+of the tangent line to the graph of [a] function at [a] point" and can
+be described as the "instantaneous rate of change", and
+*differentiation* is the method of finding a derivative for a
+function.
 
-$$ v_x = \frac{dx}{dt} = lim_{\Delta t \to 0} \frac{\Delta x}{\Delta t} $$
+...
 
-% https://en.wikipedia.org/wiki/Leibniz%27s_notation
+Wait, didn't we just look at instantaneous rates of changes (blarh my
+tounge is getting tired) in the previous section on differences? Well
+yes, and the difference quotient for a function at a point with a very
+small step $h$ is indeed a good way to numerically approximate the
+derivative of a function. From what we found then, we can derive a
+general expression for instantaneous rate of change
+
+$$\frac{(\Delta f)(h, x)}{(\Delta id)(h, x)} = \frac{f(x + h) - f(x)}{h}$$
+
+for very small $h$.
+
+But what if we don't want just a numerical approximation, but THE
+derivative of a function at any arbitrary point? What if we make $h$ not just very small, but *infinitley* small?
+
+Introducing *infinitesimals*! From the wikipedia entry on *Leibniz's notation*
 
  > In calculus, Leibniz's notation, named in honor of the 17th-century
  > German philosopher and mathematician Gottfried Wilhelm Leibniz,
- > uses the symbols dx and dy to represent infinitely small (or
- > infinitesimal) increments of x and y, respectively, just as Δx and
- > Δy represent finite increments of x and y, respectively.
+ > uses the symbols $dx$ and $dy$ to represent infinitely small (or
+ > infinitesimal) increments of x and y, respectively, just as $\Delta x$ and
+ > $\Delta y$ represent finite increments of x and y, respectively.
 
-We interpret this in mathematical terms:
+So there's a special syntax for differences where the step $h$ is
+infinitely small, and it's called Leibniz's notation. We interpret the
+above quote in mathematical terms:
 
-$$ df = lim_{\Delta f \to 0} \Delta f $$
+$$dx = lim_{\Delta x \to 0} \Delta x$$
 
 such that
 
-$$ \forall y(x), D(y) = \frac{dy}{dx} = \frac{lim_{\Delta y \to 0} \Delta y}
-                                             {lim_{\Delta x \to 0} \Delta x} $$
+$$\forall y(x). D(y) = \frac{dy}{dx} = \frac{lim_{\Delta y \to 0} \Delta y}
+                                            {lim_{\Delta x \to 0} \Delta x}$$
 
-This definition of derivatives is very appealing, as it suggests a very
-simple and intuitive transition from finite differences to infinitesimal
-differentials.
+where $D$ is the function of differentiation.
 
-This concept of infinitesimals is very intuitive, and the ability to manipulate
-differentials algebraically is very useful. However, this concept is generally
-considered too imprecise to be used as the foundation of calculus.
+This definition of derivatives is very appealing, as it suggests a
+very simple and intuitive transition from finite differences to
+infinitesimal differentials. Also, it suggests the possibility of
+manipulating the infinitesimals of the derivative algebraically, which
+might be very useful. However, this concept is generally considered
+too imprecise to be used as the foundation of calculus.
 
-% https://en.wikipedia.org/wiki/Leibniz%27s_notation
+A later section on the same wikipedia entry elaborates a bit:
 
  > Leibniz's concept of infinitesimals, long considered to be too
  > imprecise to be used as a foundation of calculus, was eventually
@@ -480,75 +507,175 @@ considered too imprecise to be used as the foundation of calculus.
  > to stand for the limit of the modern definition. However, in many
  > instances, the symbol did seem to act as an actual quotient would and
  > its usefulness kept it popular even in the face of several competing
- > notations. In the modern rigorous treatment of non-standard calculus,
- > justification can be found to again consider the notation as
- > representing an actual quotient.
+ > notations.
 
-Leibniz's notation definition. Used to be defined as "the quotient of an infinitesimal increment of y by an infinitesimal increment of x":
-
-$$ D(f) = \frac{dy}{dx} = \frac{lim_{\Delta y \to 0} \Delta y}{lim_{\Delta x \to 0} \Delta x} $$
-
-% https://en.wikipedia.org/wiki/Derivative
-
- > The most common approach to turn this intuitive idea into a
- > precise definition is to define the derivative as a limit of
- > difference quotients of real numbers.
+What is then the "right" way to do derivatives? As luck would have it, not much differently than Leibniz's suggested! The intuitive idea can be turned into a precise definition by defining the derivative to be the limit of difference quotients of real numbers. Again, from wikipedia - Leibniz's notation:
 
  > In its modern interpretation, the expression dy/dx should not be read
  > as the division of two quantities dx and dy (as Leibniz had envisioned
  > it); rather, the whole expression should be seen as a single symbol
  > that is shorthand for
+ >
+ > $$D(x) = lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x}$$
 
-$$ D(x) = lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x} $$
-
-which, when $y : \mathbb{R} \to \mathbb{R}$ and $x$ is a real interval
-$\leftrightarrow x$ is the $id$ function for real numbers, is:
+which, when $y$ is a function of $x$, and $x$ is the $id$ function for real numbers (which it is in the case of time), is:
 
 \begin{align*}
-D(x) &= lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x} \\
-     &= a \mapsto lim_{\Delta x \to 0} \frac{(\Delta y)(a, a + \Delta x)}{\Delta x} \\
-     &= a \mapsto lim_{h \to 0} \frac{y(a + (\Delta x)(a, a + h)) - y(a)}{(\Delta x)(a, a + h)} \\
+D(y) &= lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x} \\
+     &= a \mapsto lim_{\Delta x \to 0} \frac{(\Delta y)(\Delta x, a)}{\Delta x} \\
+     &= a \mapsto lim_{h \to 0} \frac{y(a + (\Delta x)(h, a)) - y(a)}{(\Delta x)(h, a)} \\
      &= a \mapsto lim_{h \to 0} \frac{y(a + ((a + h) - a)) - y(a)}{(a + h) - a} \\
      &= a \mapsto lim_{h \to 0} \frac{y(a + h) - y(a)}{h}
 \end{align*}
 
-We add the derivative syntax to the *Expr* syntax tree.
+There, the definition of derivatives! Not to complicated, was it?
 
-<              | D Expr             -- Derivative, like "D(f)" or "f'"
+The differentiation function is represented in our syntax tree as
 
-Here are some derivatives. Proving these is left as an excercise to the reader:
+<     | D FunExpr
 
-% TODO: Higher order functions are discrete. Typecheck to prevent differentiation
-%       of these.
+Very simple!
 
-> derive :: Expr -> Expr
-> derive (f :+ g) = derive f + derive g
-> derive (f :- g) = derive f - derive g
-> derive (f :* g) = derive f * g + f * derive g
-> derive (f :/ g) = (derive f * g - f * derive g) / (g^2)
-> derive (f :. g) = derive g * (derive f :. g)
-> derive (Lambda p b) = Lambda p (deriveEx b p)
-> derive (Func "log") = Lambda "x" (1 / "x")
-> derive (Func "exp") = Func "exp"
-> derive (Func "sin") = Func "cos"
-> derive (Func "cos") = Func "negate" :. Func "sin"
-> derive (Func "asin") = Lambda "x" (1 / sqrt (1 - ("x" * "x")))
-> derive (Func "acos") = Lambda "x" ((-1) / sqrt (1 - ("x" * "x")))
-> derive (Func "negate") = Func "negate"
-> derive _ = undefined
+And so, now what? What was the point of deriving that fancy definition
+for derivatives? Well, now we can derive things symbolically, which
+implies provable 100% perfect accuracy, no numeric approximations!
 
-> deriveEx :: Expr -> String -> Expr
-> deriveEx (Const _) v = 0
-> deriveEx (a :+ b) v = deriveEx a v + deriveEx b v
-> deriveEx (a :- b) v = deriveEx a v - deriveEx b v
-> deriveEx (a :* b) v = deriveEx a v * b + a * deriveEx b v
-> deriveEx (a :/ b) v = (deriveEx a v * b - a * deriveEx b v) / b^2
-> deriveEx (Var u) v | u == v = 1
->                    | otherwise = 0
-> deriveEx (f :$ e) v = deriveEx e v * (derive f :$ e)
-> deriveEx _ _ = undefined
+We define a function to symbolically derive a function
+expression. `derive` takes a function expression, and returns the
+derived function expression.
 
-Difficult to read some of these derivatives. Let's simplify
+> derive :: FunExpr -> FunExpr
+
+Using only the definition of derivatives, we can derive the
+definitions of `derive` for the various constructors in our syntax tree.
+
+For example, how do we derive `f :+ g`? Let's start by doing it
+mathematically.
+
+\begin{align*}
+D(f + g) &= a \mapsto lim_{h \to 0} \frac{(f + g)[a + h] - (f + g)[a]}{h} \\
+         & \text{ \{ Addition of functions \} } \\
+         &= a \mapsto lim_{h \to 0} \frac{f(a + h) + g(a + h) - (f(a) + g(a))}{h} \\
+         &= a \mapsto lim_{h \to 0} \frac{f(a + h) + g(a + h) - f(a) - g(a)}{h} \\
+         &= a \mapsto lim_{h \to 0} (\frac{f(a + h) - f(a)}{h} + \frac{g(a + h) - g(a)}{h}) \\
+         &= a \mapsto ((lim_{h \to 0} \frac{f(a + h) - f(a)}{h}) + (lim_{h \to 0} \frac{g(a + h) - g(a)}{h})) \\
+         &= (a \mapsto lim_{h \to 0} \frac{f(a + h) - f(a)}{h}) + (a \mapsto lim_{h \to 0} \frac{g(a + h) - g(a)}{h}) \\
+         & \text{ \{ Definition of derivative \} } \\
+         &= D(f) + D(g)
+\end{align*}
+
+Oh, it's just the sum of the derivatives of both functions! The
+Haskell implementation is then trivially
+
+> derive (f :+ g) = derive f :+ derive g
+
+Let's do one more, say, $sin$. We will make use of the trigonometric
+identity of sum-to-product
+
+$$\sin \theta - \sin \varphi = 2 \sin\left(\frac{\theta - \varphi}{2}\right) \cos\left(\frac{\theta + \varphi}{2}\right)$$
+
+And the limit
+
+$$\lim_{x \to 0} \frac{sin x}{x} = 1$$
+
+which can be proved using the unit circle and squeeze theorem, but we
+won't do that here.
+
+Then, the differentiation
+
+\begin{align*}
+D(sin) &= a \mapsto lim_{h \to 0} \frac{sin(a + h) - sin(a)}{h} \\
+       & \text{ \{ trig. sum-to-product \} } \\
+       &= a \mapsto lim_{h \to 0} \frac{2 \sin\left(\frac{a + h - a}{2}\right) \cos\left(\frac{a + h + a}{2}\right)}{h} \\
+       &= a \mapsto lim_{h \to 0} \frac{2 \sin\left(\frac{h}{2}\right) \cos\left(\frac{2a + h}{2}\right)}{h} \\
+       &= a \mapsto lim_{h \to 0} \frac{2 \sin\left(\frac{h}{2}\right) \cos\left(\frac{2a + h}{2}\right)}{h} \\
+       &= a \mapsto lim_{h \to 0} \frac{\sin\left(\frac{h}{2}\right)}{\frac{h}{2}} \cos\left(\frac{2a + h}{2}\right)} \\
+       & \text{\{} h \text{ approaches } 0 \text{\}} \\
+       &= a \mapsto 1 \cos\left(\frac{2a + 0}{2}\right) \\
+       &= a \mapsto \cos(a) \\
+       &= \cos \\
+\end{align*}
+
+Again, trivial definition in Haskell
+
+> derive Sin = Cos
+
+I'll leave the proving of the rest of the implementations as an exercise to you.
+
+> derive Exp = Exp
+> derive Log = Const 1 :/ Id
+> derive Cos = Const 0 :- Sin
+> derive Asin = Const 1 :/ (Const 1 :- Id:^(Const 2)):^(Const 0.5)
+> derive Acos = Const 0 :- derive Asin
+> derive (f :- g) = derive f :- derive g
+> derive (f :* g) = derive f :* g :+ f :* derive g
+> derive (f :/ g) = (derive f :* g :- f :* derive g) :/ (g:^(Const 2))
+> derive (f :^ g) = f:^(g :- Const 1) :* (g :* derive f :+ f :* (Log :. f) :* derive g)
+> derive Id = Const 1
+> derive (Const _) = Const 0
+> derive (f :. g) = derive g :* (derive f :. g)
+> derive (Delta h f) = Delta h (derive f)
+> derive (D f) = derive (derive f)
+
+Oh right, I almost forgot: Integrals. How are you supposed to know how
+to derive these bad boys when we haven't even covered them yet! We'll
+prove why this works later, but for now, just know that another name
+for integral is *Antiderivative*...
+
+> derive (I c f) = f
+
+
+
+Keep it simple
+----------------------------------------------------------------------
+
+So we've got our differentiation function, great! Let's try it out by
+finding the derivative for a simple function, like $f(x) = sin(x) +
+x^2$, which should be $f'(x) = cos(x) + 2x$:
+
+< ghci> f = Sin :+ Id:^(Const 2)
+< ghci> derive f
+< (cos + ((id^(2 - 1)) * ((2 * 1) + ((id * (log . id)) * 0))))
+
+Oh... that's not very readable. If we simplify it manually we get that
+the result is indeed as expected
+
+< (cos + ((id^(2 - 1)) * ((2 * 1) + ((id * (log . id)) * 0))))
+< cos + (id^1 * (2 + (id * (log . id) * 0)))
+< cos + (id * (2 + 0))
+< cos + 2*id
+
+But still, we shouldn't have to do that manually! Let's have
+Mr. Computer help us out, by writing a function to simplify
+expressions.
+
+> {-
+> simplify :: FunExpr -> FunExpr
+
+The elementary functions by themselves are already as simple as can
+be, so we don't have to simplify those. When it comes to the
+arithmetic operations, we want to look at the identity and zero
+elements.
+
+> simplify (f :+ g) = case (simplify f, simplify g) of
+>     (Const 0, g') -> g'
+>     (f', Const 0) -> f'
+>     (Const a, Const b) -> Const (a + b)
+>     (f', g') | f' == g' -> simplify (Const 2 :* f')
+>     (a :* f', g') | f' == g' -> simplify (Const (a + 1) :* f')
+>     (f', Const a :* g') | f' == g' -> simplify (Const (a + 1) :* f')
+>     (Const a :* f', Const b :* g') | f' == g' -> simplify (Const (a + b) :* f')
+> simplify (f :- g) =
+> simplify (f :* g) =
+> simplify (f :/ g) =
+> simplify (f :^ g) =
+> simplify Id =
+> simplify (Const x) =
+> simplify (f :. g) =
+> simplify (Delta h f) =
+> simplify (D f) =
+> simplify (I c f) =
+> simplify f = f
 
 > simplify :: Expr -> Expr
 > simplify (Const 0 :* b) = 0
@@ -1002,6 +1129,80 @@ TODO: Examples
 ----------------------------------------------------------------------
 
 they go here
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TODO: Move to after differentiation and integration and all that.
+      Begin by just doing all syntactical stuff, and then end the chapter
+      with evaluation, visualization, and testing.
+The value of evaluation
+----------------------------------------------------------------------
+
+What comes after construction of function expressions? Well, using them of course!
+
+One way of using a function expression is to evaluate it, and use it
+just as you would a normal Haskell function. To do this, we need to
+write an evaluator.
+
+An evaluator simply takes a syntactic representation and returns the
+semantic value, i.e. `eval :: SYNTAX -> SEMANTICS`.
+
+In the case of our calculus language:
+
+> eval :: FunExpr -> (RealNum -> RealNum)
+
+To then evaluate a `FunExpr` is not very complicated. The elementary
+functions and the `Id` function are simply substituted for their
+Haskell counterparts.
+
+> eval Exp = exp
+> eval Log = log
+> eval Sin = sin
+> eval Cos = cos
+> eval Asin = asin
+> eval Acos = acos
+> eval Id = id
+
+`Const` is evaluated according to the definition $const(c) = x \mapsto c$
+
+> eval (Const c) = \x -> c
+
+How to evaluate arithmetic operations on functions may not be as
+obvious, but we just implement them as they were defined earlier in
+the chapter.
+
+> eval (f :+ g) = \x -> (eval f x + eval g x)
+> eval (f :- g) = \x -> (eval f x - eval g x)
+> eval (f :* g) = \x -> (eval f x * eval g x)
+> eval (f :/ g) = \x -> (eval f x / eval g x)
+
+Function composition is similarly evaluated according to the earlier definition
+
+> eval (f :. g) = \x -> eval f (eval g x)
+
+TODO: these bad bois
+
+> eval (Delta h f) = undefined
+> -- eval env (Delta x) = LambdaVal "_a" (Lambda "_b" ((x' :$ "_b") - (x' :$ "_a")))
+> --   where x' = subst env x
+> eval (D f) = undefined
+> -- eval env (D f) = eval env (simplify (derive f))
+> eval (I c f) = undefined
 
 TODO: Applying our DSL to solve physics problems!
 ----------------------------------------------------------------------

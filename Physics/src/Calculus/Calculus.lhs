@@ -143,7 +143,7 @@ to single variable expressions, which can be represented as
 compositions of unary functions, and define the arithmeric operators
 for the functions instead.
 
-$$f OP g = x \mapsto (f(x) OP g(x))$$
+$$f \text{ OP } g = x \mapsto (f(x) \text{ OP } g(x))$$
 
 >     | FunExpr :+ FunExpr
 >     | FunExpr :- FunExpr
@@ -295,90 +295,40 @@ generated expressions in complexity.
 
 
 
-TODO: Move to after differentiation and integration and all that.
-      Begin by just doing all syntactical stuff, and then end the chapter
-      with evaluation, visualization, and testing.
-The value of evaluation
-----------------------------------------------------------------------
-
-What comes after construction of function expressions? Well, using them of course!
-
-One way of using a function expression is to evaluate it, and use it
-just as you would a normal Haskell function. To do this, we need to
-write an evaluator.
-
-An evaluator simply takes a syntactic representation and returns the
-semantic value, i.e. `eval :: SYNTAX -> SEMANTICS`.
-
-In the case of our calculus language:
-
-> eval :: FunExpr -> (RealNum -> RealNum)
-
-To then evaluate a `FunExpr` is not very complicated. The elementary
-functions and the `Id` function are simply substituted for their
-Haskell counterparts.
-
-> eval Exp = exp
-> eval Log = log
-> eval Sin = sin
-> eval Cos = cos
-> eval Asin = asin
-> eval Acos = acos
-> eval Id = id
-
-`Const` is evaluated according to the definition $const(c) = x \mapsto c$
-
-> eval (Const c) = \x -> c
-
-How to evaluate arithmetic operations on functions may not be as
-obvious, but we just implement them as they were defined earlier in
-the chapter.
-
-> eval (f :+ g) = \x -> (eval f x + eval g x)
-> eval (f :- g) = \x -> (eval f x - eval g x)
-> eval (f :* g) = \x -> (eval f x * eval g x)
-> eval (f :/ g) = \x -> (eval f x / eval g x)
-
-Function composition is similarly evaluated according to the earlier definition
-
-> eval (f :. g) = \x -> eval f (eval g x)
-
-> {-
-
->   show (Delta h f) = "(delta_" ++ showReal h ++ " " ++ show f ++ ")"
->   show (D f) = "(D " ++ show f ++ ")"
->   show (I c f) = "(I at " ++ show c ++ " for " ++ show f ++ ")"
->
-> eval env (Delta x) = LambdaVal "_a" (Lambda "_b" ((x' :$ "_b") - (x' :$ "_a")))
->   where x' = subst env x
-> eval env (D f) = eval env (simplify (derive f))
-
-
-Substitution function to instantiate expression for environment
-
-> subst :: [(String, Expr)] -> Expr -> Expr
-> subst env (a :+ b) = subst env a :+ subst env b
-> subst env (a :- b) = subst env a :- subst env b
-> subst env (a :* b) = subst env a :* subst env b
-> subst env (a :/ b) = subst env a :/ subst env b
-> subst env (a :. b) = subst env a :. subst env b
-> subst env (Var s) = case lookup s env of
->     Just e  -> e
->     Nothing -> Var s
-> subst env (Lambda p b) = Lambda p (subst env b)
-> subst env (f :$ arg) = subst env f :$ subst env arg
-> subst env (Delta x) = Delta (subst env x)
-> subst env (D f) = D (subst env f)
-> subst _ e = e
-
-Differences
+Deep, dark, differences
 ----------------------------------------------------------------------
 
 ![](delta.png "Feel the might if the illum-... the delta!"){.float-img-left}
 
-Differences are used for stuff like average velocity.
+A *difference* is, in it's essence, quite simply the result of
+applying the operation of subtraction to two real number terms.
 
-$$ v_{avg} = \frac{x_2 - x_1}{t_2 - t_1} = \frac{\Delta x}{\Delta t} $$
+$$minuend - subtrahend = difference$$
+
+Nice, great job, we're done here, let's move on.
+
+...
+
+Just kidding, of course there's more to it than that.
+
+In calculus, the term *difference* carries more meaning than
+usual. More than just a subtraction of arbitrary values, differences
+lie at the heart of calculations regarding rate of change, both
+average and instantaneous.
+
+Quotients of differences of functions of the same time describe the
+average rate of change over the time period. For example, an average
+velocity can be described as the difference quotient of difference in
+position divided by difference in time.
+
+$$v_{avg} = \frac{p_2 - p_1}{t_2 - t_1}$$  where $p_n$ is the position
+at time $t_n$.
+
+In the context of calculus, we use a special syntax for differences:
+the delta operator! With this, the previous definition can be
+rewritten as
+
+$$v_{avg} = \frac{p_2 - p_1}{t_2 - t_1} = \frac{\Delta p}{\Delta t}$$.
 
 This is the informal definition of the delta operator used in *University Physics*:
 
@@ -393,66 +343,101 @@ Further, the indices $1,2$ should not be thought of as specific constants,
 but rather arbitrary real number variables identified by these integers.
 Lets call them $a,b$ instead, to make it clear that they are not constants.
 
-$$ \Delta x = x_b - x_a $$
+$$\Delta x = x_b - x_a$$
 
 Now $a,b$ are implicitly bound. We make the binding explicit.
 
 $$ (\Delta x)(a, b) = x_b - x_a $$
 
-% https://en.wikipedia.org/wiki/Finite_difference
+We compare this to the more formal definition of *forward difference*
+on wikipedia:
 
-We compare this to the more formal definition of **forward difference**
-from wikipedia:
+$$\Delta_h[f](x) = f(x + h) - f(x)$$
 
-$$ \Delta_h[f](x) = f(x + h) - f(x) $$
-
-The parameter bindings are a bit all over the place here. To move easily compare
+The parameter bindings are a bit all over the place here. To more easily compare
 to our definition, let's rename $x$ to $a$ and $f$ to $x$, and change the parameter
 declaration syntax:
 
 $$ (\Delta x)(h)(a) = x(a + h) - x(a) $$
 
-This is almost identical to the definition we arrived at earlier, with the
-exception of expressing $b$ as $a + h$. We'll use our own definition hereinafter.
+This is almost identical to the definition we arrived at earlier, with
+the exception of expressing $b$ as $a + h$. Why is this? Well, in
+calculus we mainly use differences to express two things, as mentioned
+previously. Average rate of change and instantaneous rate of change.
 
-We express our definition of $\Delta$ in Haskell:
+Average rate of change is best described as the difference quotient of
+the difference in y-axis value over an interval of x, divided by the
+difference in x-axis value over the same interval.
 
-< delta :: (RealNum -> RealNum) -> RealNum -> RealNum -> RealNum
-< delta x a b = x(b) - x(a)
+$$\frac{y(x_b) - y(x_a)}{x_b - x_a}$$.
 
-or
+In this case, the $x$'s can be at arbitrary points on the axis, as
+long as $b > a$. Therefore, the definition of difference as $(\Delta
+x)(a, b) = x_b - x_a$ seems a good fit. Applied to average velocity, our difference quotient
 
-< delta x = \a -> \b -> x(b) - x(a)
+$$v_{avg} = \frac{\Delta p}{\Delta t}$$
 
-This is a shallow embedding. Let's look at how it's expressed in our
-deep embedding:
+will expand to
 
-This is the representation of the delta operator in the syntax tree.
-The argument will need to be type-checked to ensure that it's a function.
+$$v_{avg}(t_2, t_1) = \frac{(\Delta p)(t_2, t_1)}{(\Delta t)(t_2, t_1)}$$ for $t_2 > t_1$.
 
-<           | Delta Expr         -- Difference, like "Δx"
+Instantaneous rate of change is more complicated. At its heart, it
+too is defined in terms of differences. However, we are no longer
+looking at the average change over an interval delimited by two
+points, but rather the instantaneous change in a single point.
 
-We implement the delta case of the eval function according to the definition
+Of course, you can't have a difference with only one point. You need
+two points to look at how the function value changes between them. But
+what if we make the second point reeeeeeeeealy close to the first?
+That's basically the same as the difference in a single point, for all
+intents and purposes. And so, for instantaneous rate of change, the
+definition of difference as $(\Delta x)(h)(a) = x(a + h) - x(a)$ will
+make more sense, for very small $h$'s. Applied to instantaneous
+velocity, our difference quotient
 
-< eval env (Delta x) =
-<     LambdaVal env
-<               "_a"
-<               (Lambda "_b"
-<                       ((x :$ ("_b")) :- (x :$ ("_a"))))
+$v_{inst} = \frac{\Delta p}{\Delta t}$ for very small $\Delta t$
 
-Verification/proof/test
-----------------------------------------------------------------------
+will expand to
 
-???
+$v_{inst}(h, x) = \frac{(\Delta p)(h, x)}{(\Delta t)(h, x)}$ for very small $h$.
 
-Examples
-----------------------------------------------------------------------
+As $h$ gets closer to $0$, our approximation of instantaneous rate of
+change gets better.
 
-> x = Lambda "t" ("t" :* Const 5)
-> t = id'
-> vAvg = Lambda "x" (Delta "x" :/ Delta t)
-> vAvgX = vAvg :$ x
-> v = eval [] (vAvgX :$ Const 0 :$ Const 10)
+And so, we have a method of computing average rate of change, and
+instantaneous rate of change (numerically approximatively). In
+Haskell, we can make shallow embeddings for differences in the context
+of rate of change as velocity.
+
+Average velocity is simply
+
+> v_avg pos t2 t1 = (pos(t2) - pos(t1)) / (t2 - t1)
+
+which can be used as
+
+< ghci> v_avg (\x -> 5*x) 10 0
+< 5.0
+
+And instantaneous velocity is
+
+> v_inst pos h t = (pos(t + h) - pos(t)) / ((t + h) - t)
+
+which can be used as
+
+< ghci> carSpeed t = v_inst (\x -> x + sin(x)) 0.00001 t
+< ghci> carSpeedAtPointsInTime = map carSpeed [0, 1, 2, 3]
+< ghci> carSpeedAtPointsInTime
+< [1.9999999999833333,1.5402980985023251,0.5838486169602084,1.0006797790330592e-2]
+
+We'd also like to model one of the versions of the delta operator, finite difference, in our syntax tree. As the semantic value of our calculus language is the unary real function, the difference used for averages doesn't really fit in well, as it's a binary function (two arguments: $t_2$ and $t_1$). Instead, we'll use the version of delta used for instantants, as it only takes a single point in time as an argument (assuming $h$ is already given).
+
+The constructor in our syntax tree is therefore
+
+<     | Delta RealNum FunExpr
+
+where the first argument is $h$, and the second is the function.
+
+
 
 Derivatives
 ======================================================================

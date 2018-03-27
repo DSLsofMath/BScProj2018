@@ -25,7 +25,6 @@ Skriv om du arbetar på en av punkterna och det kommer ta lång tid (så att ing
 
 - Teori
     - Didaktik
-    - DSL+syntaxträd
 - Metod
     - Utvärdering
     - Implementation komposita

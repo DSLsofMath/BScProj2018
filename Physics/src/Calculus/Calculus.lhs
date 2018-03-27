@@ -115,6 +115,8 @@ Quentin Quickly Querys Queer Qubits
 > genConstructor :: Gen (Expr -> Expr -> Expr)
 > genConstructor = elements [(:+), (:-), (:*), (:/)]
 
+Clean verion:
+
 > genConst :: Gen Expr
 > genConst = Const <$> arbitrary
 
@@ -123,11 +125,36 @@ Quentin Quickly Querys Queer Qubits
 
 > genConcat :: [Expr] -> Gen Expr
 > genConcat = foldr (\e -> (<*>) (genConstructor <*> pure e)) genConst
-> --genConcat (e:es) = genConstructor >>= (\con -> genConcat es >>= (\bigE -> return $ con e bigE))
 
 > instance Arbitrary Expr where
 >   -- Maybe set the max length explicitly
 >   arbitrary = listOf genExpr >>= genConcat
+
+Readable (but dirty) version:
+< genConst :: Gen Expr
+< genConst = do
+<   num <- arbitrary
+<   return $ Const num
+
+< genExpr :: Gen Expr
+< genExpr = do
+<   con <- genConstructor
+<   a   <- genConst
+<   b   <- genConst
+<   return $ con a b
+
+< genConcat :: [Expr] -> Gen Expr
+< genConcat [] = genConst
+< genConcat (e:es) = do
+<    con <- genConstructor
+<    bigE <- genConcat es
+<    return $ con e bigE
+
+< instance Arbitrary Expr where
+<   -- Maybe set the max length explicitly
+<   arbitrary = do
+<     expression <- listOf genExpr
+<     genConcat expressions
 
 A `const` and `id` function could be useful. We can describe them like this:
 
@@ -239,6 +266,9 @@ TODO: Should a lambda really be returnable here? Kinda makes sense, kinda doesn'
 > data Val = RealVal RealNum
 >          | LambdaVal String Expr
 >          | FuncVal (RealNum -> RealNum)
+
+> instance Show Val where
+>   show (RealVal n)        = show n
 
 Helper functions to improve ergonomics of evaluation
 

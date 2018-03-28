@@ -6,6 +6,7 @@ Proofs
 > {-# LANGUAGE DataKinds #-}
 > {-# LANGUAGE KindSignatures #-}
 > {-# LANGUAGE TypeOperators #-}
+> {-# LANGUAGE TypeFamilies #-}
 
 > module Proofs.Proofs
 > (
@@ -25,25 +26,14 @@ De gäller om $a$ är konstant. Men vad *exakt* syftar alla namn på? Och vad ha
 
 Bevisen sker i Haskell mha av Curry Howard korrespondensen. Den säger att påståenden är typer och bevis är värden. Det betyder att om man skapar ett värde av en viss typ så har man ett bevis för det påståendet.
 
-Rigorösa namn
--------------
+Rigorösa namn och definerade samband
+------------------------------------
 
-Vi börjar med att rigoröst definera alla ingående namn i kinematikens trevliga värld. I Haskell ska vi koda upp saker, och de mest grundläggande saken är uttryck, och det mest grundläggande uttrycket är namnen vi här presenterar.
-
-Vi ska ha *påståenden* som säger si och så om uttryck. Eftersom påståenden är typer måste även *olika* uttryck vara typer. Det löses av att tillägget `DataKinds` används. `Expr` kommer alltså betraktas som en sort med typer.
+Det första vi ska göra att rigröst definera vad olika namn betyder och hur de hänger ihop.
 
 ![Overview](Overview.png)
 
 Vi tänker i termer av en låda som förflyttar sig längs en axel. Den har olika positioner vi olika tidpunkter. Därför blir $x(t)$, $v(t)$ och $a(t)$ lådans *aktuella* position, hastighet respektive acceleration vid *en viss* tidpunkt $t$. $t$ är ett "tidsindex" som pekar ut en viss tidpunkt.
-
-Vi kodar upp tid och funktionerna
-
-> data Expr = Tfun Expr
->           | Xfun Expr
->           | Vfun Expr
->           | Afun Expr
-
-Det som är funktioner har ett till uttryck som argumentet.
 
 Det här med "final", "initial" och "0" syftar på *specifika* tidpunkter i ett experiment. Initialt och 0 på den initiala tidpunkten och final på den slutgiltiga tidpunkten. Dessa är *fixa* tidpunkter. Bara $f$ och $i$ brukar anges för att syfta på det finala respektive initiala *tillståndet*. I praktiken blir dom t.ex. initial hastighet beroende på vilken storhet man snackar om.
 
@@ -51,22 +41,14 @@ Detta ger följande definerande samband.
 
 \begin{align}
   t_f &= \{\text{Tid vid finalt, när experimentet är slut}\} \\
-  t_i &= \{\text{Tid vid initialt, när experimentet startar}\} = t_0 \\
+  t_i &= \{\text{Tid vid initialt, när experimentet startar}\} = t_0 = 0\\
   x_f &= x(t_f) \\
   x_i &= x(t_i) = x_0 \\
   v_f &= v(t_f) \\
   v_i &= v(t_i) = v_0 \\
 \end{align}
 
->           | Tf
->           | Ti
->           | T0
->           | Xf
->           | Xi
->           | X0
->           | Vf
->           | Vi
->           | V0
+En konvention är att låta $t_i = 0$. Det betyder att experimentets startpunkt blir tidsreferenspunkt.
 
 Varför är inte accelerationen med? Jo, för dessa fyra formler uttnyttjar att accelerationen är konstant. Är $a$ konstant? Vad syftar ens bara $a$ på? I detta sammanhanget menar man mer explcit att 
 
@@ -76,8 +58,6 @@ Varför är inte accelerationen med? Jo, för dessa fyra formler uttnyttjar att 
 
 där $a_{value}$ är ett *värde*, ett tal. Nu när vad accelerationen är har tydliggjorts så förstår man också varför $a_f$ och $a_i$ är relevanta att ha med.
 
->           | Avalue
-
 Hur är det med $\Delta$? Hur ska det tolkas? Defintionen av $\Delta$ är *förändring* i tid/position/hastighet. Förändring mellan vad? Det är ju en differens åtminstone. Differens mellan vad? Ja, det är ofta lite löst definerat. Här tänker vi ge det en tydlig definition, nämligen som skillndaden mellan *aktuell* och *ursprunglig*. Det ger att
 
 \begin{align}
@@ -86,234 +66,276 @@ Hur är det med $\Delta$? Hur ska det tolkas? Defintionen av $\Delta$ är *för�
   (\Delta v)(t) &= v(t) - v_i \\
 \end{align}
 
+$\Delta$ av något blir en funktion av tiden. Vi skrev också $(\Delta x)(t)$ och inte $\Delta x(t)$. Det är tydligare att låta $\Delta$ syfta på differensen i *storheten* i sig, och inte *funktionen* som beskriver storheten.
+
+
+Uppkodning av namnen och sambanden
+----------------------------------
+
+Som vi såg finns det två komponenter: *uttryck* och *likheter mellan uttryck*. Att två uttryck är lika är ett påstående, och likheter behöver alltså vara typer. Därför måste även uttryck vara typer.
+
+Vi börjar med att göra en *sort* med *typer* för uttryck
+
+< data Expr =
+
+Med tillägget `DataKinds` blir detta inte bara en typ med värden, utan även en sort med typer.
+
+Sedan gör vi en *typ* som representerar likhet mellan två andra typer, och dessa typer måste tillhöra sorten `Expr`.
+
+< data Equal (a :: Expr) (b :: Expr) where
+
+**Uttryck**
+
+Vad för slags uttryck finns det? Till att börja med addition, subtraktion, multiplikation och divison olika uttryck.
+
+> data Expr = Expr `Add` Expr
+>           | Expr `Sub` Expr
+>           | Expr `Mul` Expr
+>           | Expr `Div` Expr
+
+En annan typ av uttryck är de symboliska namn som definerades innan. Det är funktionerna som anger position, hastighet och acceleration.
+
+>           | Xfun Expr
+>           | Vfun Expr
+>           | Afun Expr
+
+Dessa typer har ett argument. Det argumentet är ett annat uttryck som är tiden funktionen ska evalueras i.
+
+Vi har även de olika finala och initiala värdena.
+
+>           | X0
+>           | Xi
+>           | Xf
+>           | V0
+>           | Vi
+>           | Vf
+>           | T0
+>           | Ti
+>           | Tf
+
+Här passar vi att flika in några tal vi kommer behöva.
+
+>           | Zero
+
+Vi har värdet på vad accelerationen är
+
+>           | Avalue
+
+Till sist har vi $\Delta$-funktionerna
+
 >           | DeltaTfun Expr
 >           | DeltaXfun Expr
 >           | DeltaVfun Expr
 
-$\Delta$ av något blir en funktion av tiden. Vi skrev också $(\Delta x)(t)$ och inte $\Delta x(t)$. Det är tydligare att låta $\Delta$ syfta på differensen i *storheten* i sig, och inte *funktionen* som beskriver storheten.
+**Definerande likheter**
 
-Nu är symboliska namn introducerade. Men de är inte de enda uttrycken. Vi behöver också aritmetik
+Det var alla uttryck vi behöver. Nu ska vi koda upp de likheter som behövs. Likheterna är av två slag. De som är definerande, alltså anger vad någon symbol betyder samt olika matematiska likheter, t.ex. att addition är kommutativ.
 
->           | Add Expr Expr
->           | Sub Expr Expr
->           | Mul Expr Expr
->           | Div Expr Expr
+> data Equal (x :: Expr) (y :: Expr) where
 
-Nu har vi gjort namn och samband rigorösa, och namn är uppkodade i `Expr`. Dags att koda upp likheter.
+Bland de definerande likheterna har vi de som relaterar initiala och finala lägen.
 
-Men det är så här att likheter ska enbart gälla mellan uttryck. Dvs `Equal` är en typkonstruktor som tar två `Expr`.
+>   Xinitial1 :: Xi `Equal` Xfun Ti
+>   Xinitial2 :: X0 `Equal` Xfun Ti
+>   Xfinal    :: Xf `Equal` Xfun Tf
+>   Vinitial1 :: Vi `Equal` Vfun Ti
+>   Vinitial2 :: V0 `Equal` Vfun Ti
+>   Vfinal    :: Vf `Equal` Vfun Tf
+>   Tinitial  :: Ti `Equal` T0
 
-< data Equal (a :: Expr) (b :: Expr) where
+Vi har även två intressanta likheter när det kommer till accelerationen. Först
 
-Denna rad gör att vi kan skapa typer som anger likheter mellan olika `Expr`. Vi kan t.ex. skriva
+>   AfunCon :: Afun t `Equal` Avalue
 
-< Equal Ti T0
+som säger att funktionen för acceleration, *för alla* `t`, är lika med `Avalue`.
 
-som är påståendet att `Ti` och `T0` är lika. Men vi behöver kunna beivsa det, dvs skapa ett värde av den typen. Då behövs datakonstruktorer till `Equal`-typen.
+Den andra likheten är
 
-En grundläggande liket och därmed ett sätt att skapa värden är
+>   AfunQuo :: Afun t `Equal` (DeltaVfun t `Div` DeltaTfun t)
 
-<   Refl :: Equal c c
+som säger att accelerationen, för alla `t`, är lika med kvoten mellan $(\Delta V)(t)$ och $\Delta T$. Detta gäller eftersom accelerationen är konstant.
 
-som säger att något är lika med sig självt.
+Till sist har vi likheterna som definerar $\Delta$-funktionerna
 
-Det blir så att de datakonstruktorer vi skapar är axiom eftersom de kan skapas från tomma luften.
+>   DeltaXdef :: DeltaXfun t `Equal` (Xfun t `Sub` Xi)
+>   DeltaVdef :: DeltaVfun t `Equal` (Vfun t `Sub` Vi)
+>   DeltaTdef :: DeltaTfun t `Equal` (t `Sub` Ti)
 
-I vanlig bevisföring i datorn så nöjer man sig med detta och bygger allt på det. Men vi fuskar lite och introducerar kraftfulla axiom.
+Okej, *allra* sist har vi konventionen att $t_i = 0$
 
-Utifrån `Refl` som enda axiom kan man bevis allt, men det kräver många steg. Vi utgår från starkare axiom som man "uppenbarligen" vet gäller, t.ex. att addition är kommutativ. Det skulle bli "out of scope" för oss. Vi fokuserar på de bevis som görs i fysiken.
+>   ConvT     :: Ti `Equal` Zero
 
-Vi har dessutom de axiom som ska gälla per definiton. Vi börjar med dom.
+**Matematiska likheter**
 
-Här är enkla definerande likheter mellan symboliska namn.
+Okej, så nu har vi de definerande likheterna. Vi behöver även några matematiska likheter. Man skulle kunna tänka sig att definera *alla* som finns, bara för att det inte ska verka som att vi plockar ut det vi behöver, men det skulle bli väldigt många. Så vi låtsas vara lata och bara definerar några som råkar vara de vi behöver.
 
-<   Tfinal :: Equal Tf (Tfun Tf)
-<   Tinitial :: Equal Ti (Tfun Ti)
-<   Tinitial2 :: Equal Ti T0
-<   Xfinal :: Equal Xf (Xfun Tf)
-<   Xinitial :: Equal Xi (Xfun Ti)
-<   Xinitial2 :: Equal Xi X0
-<   Vfinal :: Equal Vf (Vfun Tf)
-<   Vinitial :: Equal Vi (Vfun Ti)
-<   Vinitial2 :: Equal Vi V0
+Är detta inte fusk? I vanlig bevisföring i datorn nöjer man sig med en enda grundläggande likhet `Refl` och bevisar *allt* utifrån den. Det skulle här vara "out-of-scope". Vi skaffar kraftfulla axiom så att vi kan fokusera på de bevis som görs i fysiken. Axiomen kommer "uppenbarligen" vara rätt.
 
-Och nu delta-funktionerna
+De vi behöver blir...
 
-<   DeltaTeq :: Equal (DeltaTfun t) (Sub (Tfun t) Ti)
-<   DeltaXeq :: Equal (DeltaXfun t) (Sub (Xfun t) Xi)
-<   DeltaVeq :: Equal (DeltaVfun t) (Sub (Vfun t) Vi)
+>   Symmetry     :: a `Equal` b -> b `Equal` a
+>   Transitivity :: a `Equal` b -> b `Equal` c -> a `Equal` c
+>   CongMul      :: a `Equal` b -> (a `Mul` c) `Equal` (b `Mul` c)
+>   MulDiv1      :: ((b `Div` a) `Mul` a) `Equal` b
+>   CongAdd      :: a `Equal` b -> (a `Add` c) `Equal` (b `Add` c)
+>   AddSub1      :: ((b `Sub` a) `Add` a) `Equal` b
+>   Cong         :: a `Equal` b -> (f a) `Equal` (f b)
+>   Cong2        :: (f a b) `Equal` (f a c) -> (f b a) `Equal` (f c a)
+>   Cong3        :: a `Equal` b -> (f a) c `Equal` (f b) c
 
-Och slutligen värdet på accelerationsfunktionen. Den var ju konstant.
+> test :: a `Equal` b -> (('Add c) a) `Equal` (('Add c) b)
+> test = Cong
 
-<   Acceleration :: Equal (Afun t) Avalue
-<   Acceleration2 :: Equal (Afun t) (Div (DeltaVfun t) (DeltaTfun t))
+> --test2 :: a `Equal` b -> ((Add a) c) `Equal` ((Add b) c)
+> --test2 aEb = Cong2 hej
+> --  where
+> --    hej = test aEb
 
-Den första för att accelerationen är konstant. Den andra för att eftersom accelerationen är konstant så är denna kvot samma hela tiden.
+> --hej :: a `Equal` b -> 
 
------
+> type family Flip (f :: Expr -> Expr -> Expr) (b :: Expr) (c :: Expr) where
+>   Flip f b a = f a b
+
+> type Ad a b = Flip Add a b
+
+> --test2 :: a `Equal` b -> ((Add a) c) `Equal` ((Add b) c)
+> --test2 = Cong3
+
+> --test3 :: a `Equal` b -> ((Add c) a) `Equal` ((Add c) b)
+> --test3 = Cong3
+
+> --hej :: (a -> b) -> f a -> f b
+> --hej _ a = a
+
+> congAdd :: a `Equal` b -> (c `Add` a) `Equal` (c `Add` b)
+> congAdd = Cong
+
+> --congMul :: a `Equal` b -> (a `Add` c) `Equal` (b `Add` c)
+> --congMul = Cong2
+
+> hej :: Ti `Equal` T0
+> hej = Tinitial
+
+> hej2 :: ('Add Tf Ti) `Equal` ('Add Tf T0)
+> hej2 = Cong hej
+
+> --hej3 = Cong2 hej2
+
+
+> --test :: f -> a -> f a
+> --test = undefined
+
+Första beviset
+--------------
 
 Vi ska börja med att bevisa
 
 \begin{align}
-  v_f &= v_i + a*t 
+  v_f = v_i + a*t 
+\end{align}
+
+som mer rigoröst bör skrivas som
+
+\begin{align}
+  v_f = v_i + a_{value} * \Delta t
 \end{align}
 
 Vi ska alltså skapa ett värde av följande typ:
 
-> type Proof1 = Vf `Equal` (Vi `Add` (Avalue `Mul` Tf))
+< type Proof1 = Vf `Equal` (Vi `Add` (Avalue `Mul` DeltaTfun))
 
-Två viktiga tolkningar vi gjorde var
-
-- $a$ syftar på det konstanta värde `Avalue`
-- $t$ syfter på tiden i det finala tillståndet
-
-Att accelerationen är konstant var den första inskränkningen. Den andra är att $t_0 = 0$, dvs vi sätter experimenets startpunkt som refrens. TODO: ta med zero som en likhet tidigare.
+Nu kör vi!
 
 **(I)**
 
-Vi utgår ifrån
+Vi börjar med
+
+> afunEdvDdt :: Afun t `Equal` (DeltaVfun t `Div` DeltaTfun t)
+> afunEdvDdt = AfunQuo
 
 \begin{align}
-  a = \frac{(\Delta v)(t)}{\Delta t}
+  a(t) = \frac{(\Delta v)(t)}{(\Delta t)(t)}
 \end{align}
-
-Vi behöver genast två matematiska likheter, nämliligen symmetri och transitivitet
-
-<   Symmetric :: a `Equal` b -> b `Equal` a
-<   Transitive :: a `Equal` b -> b `Equal` c -> a `Equal` c
-
-> s1 :: Avalue `Equal` (DeltaVfun t `Div` DeltaTfun t)
-> s1 = Transitive (Symmetric Acceleration) Acceleration2
 
 **(II)**
 
-Kongruens för division behövs
+Vi använder transitivitet för att relatera kvoten till det aktuella värdet på accelerationen.
 
-<   DivCong1 :: a `Equal` b -> (a `Div` c) `Equal` (b `Div` c)
-<   DivCong2 :: a `Equal` b -> (c `Div` a) `Equal` (c `Div` b)
+> avalEdvDdt :: Avalue `Equal` (DeltaVfun t `Div` DeltaTfun t)
+> avalEdvDdt = afunEaval `Transitivity` afunEdvDdt
+>   where
+>     afunEaval :: Avalue `Equal` Afun t
+>     afunEaval = Symmetry AfunCon
 
-> s2 :: Avalue `Equal` ((Vfun t `Sub` Vi) `Div` DeltaTfun t)
-> s2 = Transitive s1 (DivCong1 DeltaVeq)
-
-> s3 :: Avalue `Equal` ((Vfun t `Sub` Vi) `Div` (Tfun t `Sub` Ti))
-> s3 = Transitive s2 (DivCong2 DeltaTeq)
+\begin{align}
+  a_{value} = \frac{(\Delta v)(t)}{(\Delta t)(t)}
+\end{align}
 
 **(III)**
-OBS t på båda ställen var godtyckligt, men det var *samma* och det är det viktiga.
 
-Likheten för "upp-multiplicering" behövs nu.
+Vi multiplicerar bägge sidor med högerledets kvot
 
-<   MulUpDiv :: a `Equal` (b `Div` c) -> (a `Mul` c) `Equal` b
+> avalMdtEdvDdtMdt :: (Avalue `Mul` DeltaTfun t) `Equal` ((DeltaVfun t `Div` DeltaTfun t) `Mul` DeltaTfun t)
+> avalMdtEdvDdtMdt = CongMul avalEdvDdt
 
-> s4 :: (Avalue `Mul` (Tfun t `Sub` Ti)) `Equal` (Vfun t `Sub` Vi)
-> s4 = MulUpDiv s3
+\begin{align}
+  a_{value} * (\Delta t)(t) = \frac{(\Delta v)(t)}{(\Delta t)(t)} * (\Delta t)(t)
+\end{align}
 
+**(IV)**
+
+Vi förenklarar högerledet
+
+> avalMdtEdv :: (Avalue `Mul` DeltaTfun t) `Equal` DeltaVfun t
+> avalMdtEdv = avalMdtEdvDdtMdt `Transitivity` MulDiv1
+
+\begin{align}
+  a_{value} * (\Delta t)(t) = (\Delta v)(t)
+\end{align}
 
 **(V)**
 
-Likheten `s3` gäller för *alla* `t`. Då gäller den speciellt för `t = Tf`.
+Vi splittrar högerledet
 
-< s4 :: Avalue `Equal` ((Vfun Tf `Sub` Vi) `Div` (Tfun Tf `Sub` Ti))
-< s4 = s3
+> avalMdtEvfSvi :: (Avalue `Mul` DeltaTfun t) `Equal` (Vfun t `Sub` Vi) 
+> avalMdtEvfSvi = avalMdtEdv `Transitivity` DeltaVdef
 
+\begin{align}
+  a_{value} * (\Delta t)(t) = v(t) - v_i
+\end{align}
 
+**(VI)**
 
--------------------
+och flyttar över `Vi`
 
-Här ligger de riktiga definitionerna. Så att i löptexten kan göra lite hipp-som-happ
+> avalMdtAviEvfunSviAvi :: ((Avalue `Mul` DeltaTfun t) `Add` Vi) `Equal` ((Vfun t `Sub` Vi) `Add` Vi)
+> avalMdtAviEvfunSviAvi = CongAdd avalMdtEvfSvi
 
-> data Equal (a :: Expr) (b :: Expr) where
->   Refl :: Equal c c
+> avalMdtAviEvfun :: ((Avalue `Mul` DeltaTfun t) `Add` Vi) `Equal` (Vfun t)
+> avalMdtAviEvfun = avalMdtAviEvfunSviAvi `Transitivity` AddSub1
 
->   Tfinal :: Equal Tf (Tfun Tf)
->   Tinitial :: Equal Ti (Tfun Ti)
->   Tinitial2 :: Equal Ti T0
->   Xfinal :: Equal Xf (Xfun Tf)
->   Xinitial :: Equal Xi (Xfun Ti)
->   Xinitial2 :: Equal Xi X0
->   Vfinal :: Equal Vf (Vfun Tf)
->   Vinitial :: Equal Vi (Vfun Ti)
->   Vinitial2 :: Equal Vi V0
+\begin{align}
+  a_{value} * (\Delta t)(t) + v_i = v(t)
+\end{align}
 
->   DeltaTeq :: Equal (DeltaTfun t) (Sub (Tfun t) Ti)
->   DeltaXeq :: Equal (DeltaXfun t) (Sub (Xfun t) Xi)
->   DeltaVeq :: Equal (DeltaVfun t) (Sub (Vfun t) Vi)
+**(VII)**
 
->   Acceleration :: Equal (Afun t) Avalue
->   Acceleration2 :: Equal (Afun t) (Div (DeltaVfun t) (DeltaTfun t))
+Och slutligen byter sida
 
->   Symmetric :: Equal a b -> Equal b a
->   Transitive :: Equal a b -> Equal b c -> Equal a c
+> vfunEavalMdtAvi :: (Vfun t) `Equal` ((Avalue `Mul` DeltaTfun t) `Add` Vi) 
+> vfunEavalMdtAvi = Symmetry avalMdtAviEvfun
 
->   DivCong1 :: a `Equal` b -> (a `Div` c) `Equal` (b `Div` c)
->   DivCong2 :: a `Equal` b -> (c `Div` a) `Equal` (c `Div` b)
+\begin{align}
+  v(t) = a_{value} * (\Delta t)(t) + v_i
+\end{align}
 
->   MulUpDiv :: a `Equal` (b `Div` c) -> (a `Mul` c) `Equal` b
+Detta är en välbekant formel. Den säger att den aktuella hastighetnen är lika med det konstanta accelerationsvärdet gånger tiden sedan experimentet startade pluss den initiala hastighen. Rimligt va?
 
+Vi ska masera uttrycket lite också.
 
----------------
+**(VIII)**
 
+Först splittras 
 
+Om man uttnyttjar konventionen att $t_i = 0$ får man
 
-------------------------------
-
-
-
-
-
-En typ av sort Equal x y är ett bevis och ett värde är då beviset
-
-Men det som är Equal mellan är uttryck. Detta behöver man skilja åt, så kanske ha sort för uttryck och sort för bevis?
-
-Används som typ
-
-< data Expr = Div Expr Expr
-<           | Mul Expr Expr
-<           | A
-<           | V
-<           | T
-
-< data Equal (a :: Expr) (b :: Expr) where
-<   Refl :: Equal c c
-<   Avg :: Equal A (Div V T)
-
-< x = Refl
-< y = Avg
-< z = Refl :: (Equal V V)
-
-"Ekvivalens" mellan två uttryck ska inte gå. Behöver kanske ha sort för bevis. Bevis här är bara att likheter gäller.
-
-> -- Ett försök att lösa ovanstående
-> --data Eqvi (a :: Equal (x :: Expr) (y :: Expr)) (b :: Equal (p :: Expr) (q :: Expr)) where
-> --  Self :: Eqvi c c -- x implies x
-> --  MulUpDiv :: Eqvi (Equal a (Div b c)) (Equal (Mul a c) b)
-
-< data Eqvi a b where
-<   Self :: Eqvi c c -- x implies x
-<   MulUpDiv :: Eqvi (Equal a (Div b c)) (Equal (Mul a c) b)
-
-< -- Tar en ekivalens, och dessa ena premiss, 
-< -- och skapar dess konsekvens
-< transform :: a -> Eqvi a b -> b
-< transform = undefined
-
-
-< reflexive :: Equal a a
-< reflexive = Refl
-
-
-< symetric :: Equal a b -> Equal b a
-< symetric Refl = Refl
-< -- ?
-
-< transitive :: Equal a b -> Equal b c -> Equal a c
-< transitive Refl Refl = Refl
-< -- ?
-
-
-< -- Axiom
-< s0 :: Equal A (Div V T)
-< s0 = Avg
-
-< s1 :: Equal (Mul A T) V
-< s1 = transform s0 MulUpDiv

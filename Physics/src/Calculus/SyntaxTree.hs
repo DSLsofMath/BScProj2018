@@ -114,7 +114,6 @@ canonify (D e)                = derive e
 -- | Catch all
 canonify (Const x)            = Const x
 canonify Id                   = Id
-canonify Id                   = Id
 canonify e                    = error $ show e
 
 

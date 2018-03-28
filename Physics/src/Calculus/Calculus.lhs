@@ -208,6 +208,26 @@ left-associative, and set the precedence.
 > infixl 9 :.
 
 
+HEJ JOHAN! Vet inte vad du vill ha det här så lägger det bara mitt i ◕ ◡ ◕
+fattas några operationer eftersom jag inte visste hur du ville hantera dem.
+> instance Num FunExpr where
+>   (+) = (:+)
+>   (*) = (:*)
+>   (-) = (:-)
+>   fromInteger i = Const (fromInteger i)
+
+> instance Fractional FunExpr where
+>   (/) = (:/)
+>   fromRational r = Const (fromRational r)
+
+> instance Floating FunExpr where
+>   pi     = Const   pi
+>   exp a  = Exp  :. a
+>   log a  = Log  :. a
+>   sin a  = Sin  :. a
+>   cos a  = Cos  :. a
+>   asin a = Asin :. a
+>   acos a = Acos :. a
 
 A structure with class
 ----------------------------------------------------------------------

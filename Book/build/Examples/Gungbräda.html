@@ -12,10 +12,6 @@
       <a href="../index.html"><h1>Learn You a <span class="physics">Physics</span> for Great Good!</h1></a>
       <h1>&gt;&gt;&gt; WORK IN PROGRESS &lt;&lt;&lt;</h1>
       <nav>
-<<<<<<< HEAD
-	<span>[src: <a href="https://github.com/DSLsofMath/BScProj2018/blob/master/Physics/src/Examples/Gungbraeda.lhs">Examples/Gungbraeda.lhs</a>]</span>
-=======
->>>>>>> 22e5c5e996ce03224326b33d2ef3406554ccd08f
         <span>Previous: <a href="../Calculus/Calculus.html">Calculus</a></span>
         <a href="../index.html">Table of contents</a>
         <span>Next: <a href="../Examples/krafter på lådor.html">krafter på lådor</a></span>
@@ -23,19 +19,6 @@
     </header>
 
     <main>
-<<<<<<< HEAD
-      <div class="sourceCode" id="cb1"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">module</span> <span class="dt">Examples.Gungbraeda</span> <span class="kw">where</span></a></code></pre></div>
-<p>Uppgift 3, tenta 2017-01-13</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">import</span> <span class="dt">Dimensions.TypeLevel</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">import</span> <span class="dt">Dimensions.Quantity</span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">import</span> <span class="dt">Prelude</span> <span class="kw">hiding</span> (length)</a></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" data-line-number="1">balk_M <span class="fu">=</span> <span class="fl">1.0</span> <span class="fu">#</span> mass</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">m1 <span class="fu">=</span> <span class="fl">2.0</span> <span class="fu">#</span> mass</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">m2 <span class="fu">=</span> <span class="fl">5.0</span> <span class="fu">#</span> mass</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">d <span class="fu">=</span> <span class="fl">0.75</span> <span class="fu">#</span> length</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">balk_L <span class="fu">=</span> <span class="fl">5.0</span> <span class="fu">#</span> length</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">two <span class="fu">=</span> <span class="fl">2.0</span> <span class="fu">#</span> one</a></code></pre></div>
-=======
       <p>Uppgift 3, tenta 2017-01-13</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">import</span> <span class="dt">Dimensions.TypeLevel</span></a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">import</span> <span class="dt">Dimensions.Quantity</span></a>
@@ -46,20 +29,10 @@
 <a class="sourceLine" id="cb2-4" data-line-number="4">d <span class="fu">=</span> <span class="fl">0.75</span> <span class="fu">#</span> length</a>
 <a class="sourceLine" id="cb2-5" data-line-number="5">balk_L <span class="fu">=</span> <span class="fl">5.0</span> <span class="fu">#</span> length</a>
 <a class="sourceLine" id="cb2-6" data-line-number="6">two <span class="fu">=</span> <span class="fl">2.0</span> <span class="fu">#</span> one</a></code></pre></div>
->>>>>>> 22e5c5e996ce03224326b33d2ef3406554ccd08f
 <figure>
 <img src="Gungbraede.png" alt="Gungbraede" class="float-img-left" /><figcaption>Gungbraede</figcaption>
 </figure>
 <p>Direkt implikation:</p>
-<<<<<<< HEAD
-<div class="sourceCode" id="cb4"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb4-1" data-line-number="1">balk_left_L <span class="fu">=</span> (balk_L <span class="fu">/#</span> two) <span class="fu">+#</span> d</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">balk_right_L <span class="fu">=</span> balk_L <span class="fu">-#</span> balk_left_L</a></code></pre></div>
-<p>Vi vill räkna ut vridmomenten?</p>
-<p>Eller snarare ställa upp ekv:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb5-1" data-line-number="1">m1_vrid <span class="fu">=</span> m1 <span class="fu">*#</span> balk_left_L </a></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb6-1" data-line-number="1">balk_L_vrid <span class="fu">=</span> ((balk_left_L <span class="fu">/#</span> balk_L) <span class="fu">*#</span> balk_M) <span class="fu">*#</span> (balk_left_L <span class="fu">/#</span> two)</a></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb7-1" data-line-number="1">balk_H_vrid <span class="fu">=</span> ((balk_right_L <span class="fu">/#</span> balk_L) <span class="fu">*#</span> balk_M) <span class="fu">*#</span> (balk_right_L <span class="fu">/#</span> two)</a></code></pre></div>
-=======
 <div class="sourceCode" id="cb3"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" data-line-number="1">balk_left_L <span class="fu">=</span> (balk_L <span class="fu">/#</span> two) <span class="fu">+#</span> d</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">balk_right_L <span class="fu">=</span> balk_L <span class="fu">-#</span> balk_left_L</a></code></pre></div>
 <p>Vi vill räkna ut vridmomenten?</p>
@@ -67,38 +40,20 @@
 <div class="sourceCode" id="cb4"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb4-1" data-line-number="1">m1_vrid <span class="fu">=</span> m1 <span class="fu">*#</span> balk_left_L </a></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb5-1" data-line-number="1">balk_L_vrid <span class="fu">=</span> ((balk_left_L <span class="fu">/#</span> balk_L) <span class="fu">*#</span> balk_M) <span class="fu">*#</span> (balk_left_L <span class="fu">/#</span> two)</a></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb6-1" data-line-number="1">balk_H_vrid <span class="fu">=</span> ((balk_right_L <span class="fu">/#</span> balk_L) <span class="fu">*#</span> balk_M) <span class="fu">*#</span> (balk_right_L <span class="fu">/#</span> two)</a></code></pre></div>
->>>>>>> 22e5c5e996ce03224326b33d2ef3406554ccd08f
 <p>m2_vrid = m2 * x</p>
 <p>VL = HL</p>
 <p>m1_vrid + balk_L_vrid = m2_vrid + balk_H_vrid</p>
 <p>m1_vrid + balk_L_vrid - balk_H_vrid = m2_vrid</p>
 <p>(m1_vrid + balk_L_vrid - balk_H_vrid) / m2 = x</p>
-<<<<<<< HEAD
-<div class="sourceCode" id="cb8"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb8-1" data-line-number="1">x <span class="fu">=</span> (m1_vrid <span class="fu">+#</span> balk_L_vrid <span class="fu">-#</span> balk_H_vrid) <span class="fu">/#</span> m2</a></code></pre></div>
-<p>säkerhetskoll:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb9-1" data-line-number="1">m2_vrid <span class="fu">=</span> m2 <span class="fu">*#</span> x</a></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb10-1" data-line-number="1">vL <span class="fu">=</span> m1_vrid <span class="fu">+#</span> balk_L_vrid</a>
-<a class="sourceLine" id="cb10-2" data-line-number="2">hL <span class="fu">=</span> m2_vrid <span class="fu">+#</span> balk_H_vrid</a></code></pre></div>
-=======
 <div class="sourceCode" id="cb7"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb7-1" data-line-number="1">x <span class="fu">=</span> (m1_vrid <span class="fu">+#</span> balk_L_vrid <span class="fu">-#</span> balk_H_vrid) <span class="fu">/#</span> m2</a></code></pre></div>
 <p>säkerhetskoll:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb8-1" data-line-number="1">m2_vrid <span class="fu">=</span> m2 <span class="fu">*#</span> x</a></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb9-1" data-line-number="1">vL <span class="fu">=</span> m1_vrid <span class="fu">+#</span> balk_L_vrid</a>
 <a class="sourceLine" id="cb9-2" data-line-number="2">hL <span class="fu">=</span> m2_vrid <span class="fu">+#</span> balk_H_vrid</a></code></pre></div>
->>>>>>> 22e5c5e996ce03224326b33d2ef3406554ccd08f
 
     </main>
 
     <footer>
-<<<<<<< HEAD
-      <nav>
-	<span>[src: <a href="https://github.com/DSLsofMath/BScProj2018/blob/master/Physics/src/Examples/Gungbraeda.lhs">Examples/Gungbraeda.lhs</a>]</span>
-        <span>Previous: <a href="../Calculus/Calculus.html">Calculus</a></span>
-        <a href="../index.html">Table of contents</a>
-        <span>Next: <a href="../Examples/krafter på lådor.html">krafter på lådor</a></span>
-      </nav>
-=======
->>>>>>> 22e5c5e996ce03224326b33d2ef3406554ccd08f
       Licensed under the GPL by the Kandidatboisen (2018)
     </footer>
   </body>

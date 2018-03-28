@@ -14,7 +14,7 @@ type Scalar = Double
 \end{code}
 
 A vector is a quantity that has both a magnitude and a direction. For instance
-the \textit{velocity} of a moving body involves its speed (magnitude) and the
+the *velocity* of a moving body involves its speed (magnitude) and the
 direction of motion.
 
 We cen represent the direction of a vector in two dimensions using its $x$ and
@@ -31,6 +31,7 @@ Pythagorean theorem:
 \end{equation}
 
 In haskell this would be:
+
 < magnitude :: Vector2 -> Scalar
 < magnitude (V2 x y) = sqrt (x^2 + y^2)
 
@@ -41,7 +42,7 @@ And now we can calulate the magnitude of a vector in two dimensions:
   7.0710678118654755
 ```
 
-Addition and subtraction of vectors is acamplished using the components of the
+Addition and subtraction of vectors is accomplished using the components of the
 vectors. For instance when adding the forces (vectors) acting on a body we would
 add the components of the forces acting in the $x$ direction and the components
 in the $y$ direction. So our functions for adding and subtracting vectors in two
@@ -57,7 +58,7 @@ sub2 (V2 x1 y1) (V2 x2 y2) = V2 (x1 - x2) (y1 - y2)
 
 But this only works for two vectors. In reality we might be working with several
 hundreds of vectors so it would be useful to add, for instance a list of
-vectors together and get one final vector as a result. We can use \textit{foldr}
+vectors together and get one final vector as a result. We can use *foldr*
 using the zero vector as a starting value.
 to acomplish this.
 \begin{code}
@@ -134,8 +135,8 @@ adding them together. Let's create the vector (5 x, 3 y) using this approach.
 ```
 
 In order to check that this vector is actually equal to the vector created using
-the contructor \textit{V2} we need to make our vector an instance of
-\textit{Eq}.
+the contructor *V2* we need to make our vector an instance of
+*Eq*.
 
 < instance Eq Vector2 where
 <   (V2 x1 y1) == (V2 x2 y2) = (x1 == x2) && (y1 == y2)
@@ -164,8 +165,8 @@ And our function simply becomes:
 But this doesn't give us any intuition about what it means to take the dot
 product between vectors. The common interpretation is "geometric projection",
 but that only makes sense if you already understand the dot product. Let's try
-to give an easier analogy using the dash panels (boost pads) from \textit{Mario
-Kart}. The dash panel is designed to give you boost of speed in a specific
+to give an easier analogy using the dash panels (boost pads) from *Mario
+Kart*. The dash panel is designed to give you boost of speed in a specific
 direction, usually straight forward. So the vector associated with the dash
 panel can be represented with a unit vector multiplied with some factor of
 boost, say 10.
@@ -207,8 +208,10 @@ True
 We talked a lot about angles between vectors but we havn't used it in our code,
 so lets make a function which calculates the angle of a vector. The formula is
 as follows:
-%TODO
-\textbf{Insert picture of angle of triangle here}
+
+> --TODO
+
+**Insert picture of angle of triangle here**
 
 We'll use Doubles to represent the angle.
 \begin{code}
@@ -227,10 +230,6 @@ mkVector mag angle = V2 x y
     x = mag * cos angle
     y = mag * sin angle
 \end{code}
-
-%-- Angle between two vectors
-%angleG :: Vector vec => vec -> vec -> Scalar
-%angleG v1 v2 = (dotProd v1 v2) / ((magnitude v1) * (magnitude v2))
 
 Vectors in three dimensions.
 --------------------------------------
@@ -266,21 +265,21 @@ repeating ourselves.
 
 Addition and subtraction on vectors works by "unpacking" the vectors, taking
 their components, applying some function to them (+/-) and then packing them up
-as a new vector. This is very similar to the Haskell function \textit{zipWith}
+as a new vector. This is very similar to the Haskell function *zipWith*
 which works over lists instead of vectors.
 
 < zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
 
 When we're multiplying with a scalar we again unpack the vector and then apply
 mulitiplication with a factor to each component before packing it up again.
-This is quite similar to the Haskell function \textit{map}, which again works
+This is quite similar to the Haskell function *map*, which again works
 over lists.
 
 < map :: (a -> b) -> [a] -> [b]
 
 When calculating the magnitude of a vector we first unpack the vector and then
 apply $^2$ to each component of the vector. This is doable with aformentioned
-\textit{map}. We then \textit{fold} the components together using $+$ which
+*map*. We then *fold* the components together using $+$ which
 results in a final scalar value. Those of you familliar with functional
 languages will know where I'm going with this, those of you who aren't will
 hopefully understand where I'm going when reading the examples.
@@ -393,7 +392,7 @@ jacobi identity:
 Or that the cross product is anticommutative. We can't actually prove these in a
 meaningful way without a whole bunch of packages and pragmas, but we can
 quickcheck them. But to do that we need to be able to generate vectors, so let's
-make our vectors an instance of \textit{Arbitrary}.
+make our vectors an instance of *Arbitrary*.
 
 We do this by generating arbitrary scalars and then constructing vectors with
 them.
@@ -425,7 +424,7 @@ prop_CommutativityAddition :: Vector3 -> Vector3 -> Bool
 prop_CommutativityAddition v1 v2 = v1 + v2 == v2 + v1
 \end{code}
 
-And we test this in the \textit{repl}.
+And we test this in the *repl*.
 ```
 ghci> quickCheck prop_CommutativityAddition
 +++ OK, passed 100 tests.
@@ -452,7 +451,7 @@ ghci> quickCheck prop_AssociativityAddition
 This is very strange since the laws should always be correct. But this error
 stems from the fact that we're using a computer and that using doubles (Scalar)
 will introduce approximation errors. We can fix this by relaxing our instance
-for \textit{Eq} and only requiring the components of the vectors to be
+for *Eq* and only requiring the components of the vectors to be
 approximately equal.
 
 \begin{code}

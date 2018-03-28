@@ -1,5 +1,3 @@
-> {-# LANGUAGE GADTs #-}
-
 > module NewtonianMechanics.SingleParticle where
 
 > import           Calculus.Calculus
@@ -72,7 +70,7 @@ TODO: Write something here
 Work and energy
 ---------------------
 
-If a constant force $\vec{F}$ is applied to a particle that moves from 
+If a constant force $\vec{F}$ is applied to a particle that moves from
 position $\vec{r_1}$ to $\vec{r_2}$ then the *work* done by the force is defined
 as the dot product of the force and the vector of displacement.
 
@@ -80,7 +78,7 @@ as the dot product of the force and the vector of displacement.
   W = \vec{F} \cdot \Delta \vec{r}
 \end{equation}
 
-where $\Delta \vec{r} = \vec{r_2} - \vec{r_1}$. 
+where $\Delta \vec{r} = \vec{r_2} - \vec{r_1}$.
 
 > kineticEnergy :: Particle -> Energy
 > kineticEnergy p = Const 0.5 * m * v2
@@ -105,7 +103,7 @@ Let's codify this theorem:
 >     particle1 = P v1 m -- | Two particles with the same mass
 >     particle2 = P v2 m -- | But different position vector
 >     -- |          E_k,2                     - E_k,1
->     deltaEnergy = (kineticEnergy particle2) - (kineticEnergy particle1)
+>     deltaEnergy = kineticEnergy particle2 - kineticEnergy particle1
 >     displacedParticle = P (v2 - v1) m
 
 > -- Test values
@@ -114,7 +112,7 @@ Let's codify this theorem:
 > m  = 5
 > p1 = P v1 m
 > p2 = P v2 m
-> dE = (kineticEnergy p2) - (kineticEnergy p1)
+> dE = kineticEnergy p2 - kineticEnergy p1
 > p3 = P (v2 - v1) m
 
 Law of universal gravitation
@@ -122,10 +120,10 @@ Law of universal gravitation
 Newton's law of universal gravitation states that a particle attracts every
 other particle in the universe with a force that is directly proportional to
 the product of their masses, and is inversely proportional to the square
-of the distance between their centers. 
+of the distance between their centers.
 
 This means that every particle with mass attracts every other particle with
-mass by a force pointing along the line intersecting both points. 
+mass by a force pointing along the line intersecting both points.
 
 There is an equation for calculating the magnitude of this force which
 states with math what we stated in words above:
@@ -153,7 +151,7 @@ of particles.
 >   where
 >     m1 = mass p1
 >     m2 = mass p2
->     r2 = square $ (pos p2) - (pos p1)
+>     r2 = square $ pos p2 - pos p1
 
 If a particles position is defined as a vector representing its displacement
 from some origin O, then its heigh should be x. Or maybe it should be the
@@ -168,4 +166,3 @@ This seems so weird since I don't know what the frame of reference is...
 >     (V3 x _ _) = pos p
 
 TODO!!!! Fix prettyCan $ lawOfUniversalGravitation p1 p2
-

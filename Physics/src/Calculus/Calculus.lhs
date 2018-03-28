@@ -210,6 +210,7 @@ left-associative, and set the precedence.
 
 HEJ JOHAN! Vet inte vad du vill ha det här så lägger det bara mitt i ◕ ◡ ◕
 fattas några operationer eftersom jag inte visste hur du ville hantera dem.
+
 > instance Num FunExpr where
 >   (+) = (:+)
 >   (*) = (:*)

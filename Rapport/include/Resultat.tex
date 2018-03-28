@@ -1,37 +1,99 @@
 
 \chapter{Resultat}
 
+\begin{draft}
+
+\section{Läromaterialet}
+
+Läromaterialet blev i slutändan en sammanvävning av domänspecifika språk som
+modellerar fysik, och en lärotext som förklarar kopplingen mellan fysiken och de
+domänspecifika språken. Figur~\ref{fig:smakprov_laromaterial} visar ett kort
+utdrag ur läromaterialet. Där ser man hur domänspecifika språk och lärotext är
+sammanvävda.
+
+\begin{figure}[tph]
+  \includegraphics[width=\linewidth]{figure/smakprov_laromaterial.png}
+  \caption{Ett smakprov över hur det resulterande läromaterialet ser ut.
+           Lärotexten ligger mot den ljusgrå bakgrunden medan det
+           domänspecifika språket ligger mot den
+           mörkgrå.}~\label{fig:smakprov_laromaterial} 
+\end{figure}
+
+I läromaterialet finns även bilder och övningar. Figur~\ref{fig:smakprov_bild_laromaterial} är ett exempel på en bild ur läromaterialet. Notera speciellt den medvetet oseriösa ritningstekniken som är tänkt att vara rolig och muntra upp läsaren. Övningar ligger både i den löpande texten och i slutet av kapitlet. Övningarna i den löpande texten innebär oftast att läsaren ska implementera en liten del av det aktuella domänspecifika språket på egen hand. Det här illustreras i figur~\ref{fig:smakprov_ovning}.
+
+\begin{figure}[tph]
+    \centering
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{figure/smakprov_bild_laromaterial.png}
+        \caption{Exempel på en bild. Bilden visar hur en hund springer och
+                 hoppar upp på en stillastående
+                 vagn.}~\label{fig:smakprov_bild_laromaterial}
+    \end{subfigure}% 
+    ~~~
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{figure/smakprov_ovning.png}
+        \caption{Exempel på en övning. Övningen ligger som en del av den
+                 löpande texten.}~\label{fig:smakprov_ovning}
+    \end{subfigure}
+    \caption{Exempel på en bild och en övning ur läromaterialet.} 
+\end{figure}
+
+Läromataterialet behandlar ett flertal områden inom fysik och matematik.
+Fokuset är på klassisk mekanik samt till det området tillhörande matematik. I
+sin fullständighet är de behandlade områdena:
+
+\begin{itemize}
+  \item Bevis
+  \item Dimensioner
+  \item Matematisk analys
+  \item Vektorer
+  \item Kompositioner och tillämpningar av ovanstående
+\end{itemize}
+
+I \textit{bevis}-kapitlet presenteras bevisföringen med hjälp av Haskells
+typsystem. Det exemplifieras genom att kinematiska formler bevisas.
+
+\textit{Dimensioner} behandlar dimensioner, storheter och enheter inom fysiken.
+Dimensioner införs på typnivå i Haskell för att visa på likheten mellan
+Haskells typsystem och hur man måste förhålla sig till dimensioner inom
+fysiken.
+
+I \textit{matematisk analys} konstrueras ett syntaxträd för algebraiska uttryck
+och funktioner. Därefter implementerades symbolisk derivering och integrering på
+syntaxträdet.
+
+\textit{Vektorer} implementerar vektorer och vektoroperationer i Haskell. Lagar
+som ska gälla för vektorer implementerades och testades.
+
+I läromataterialet finns, förutom de fyra ovanstående grundläggande områdena,
+även tillämpningar av dem på exempelproblem. Till exempel används dimensioner
+till att lösa problem med fritt fall. De tillämpningar som behandlats är
+
+\begin{itemize}
+  \item Gundbräda
+  \item Krafter på lådor
+\end{itemize}
+
+Läromaterialet blev publicerat på en hemsida\cite{LYAP} och all källkod finns
+tillgänglig på projektets GitHub-repository.\cite{LYAP_repo} Texten är skriven
+på engelska.
+
+\end{draft}
+
 \begin{binge}
 
+EXEMPEL PÅ ATT VI ANVÄNDER LITERAT STIL, OM DET SKULLE BEHÖVAS
 
-\section{Läromaterialet (i sig)}
+I Quantity så är detta tydligt. Då gjordes en `taste of types'' tidigt för att
+läsaren skulle förstå Quantity bättre, innan massa detaljer gicks in på. Frågan
+är dock om detta ska gås in på i rapporten?
 
-En kombination av brödtext och DSL:er. De två är sammanvävda där fysik eller relaterad matematik presenters för att sedan modelleras i DSL:er.
+\section{Återkoppling från testgrupp}
 
-Områden som är behandlade är 
-- Dimensioner
-- Vektorer
-- Analys
-- Och mer med tid att vi arbetar vidare...
-
-\subsection{Specifikt om DSL:erna}
-
-Avgränsade DSLer för separata områden. Modellerar olika saker snarare än som en uppgiftslösare.
-
-Vilka moduler skapades och hur bra blev dom.
-
-\subsection{Specifikt om brödtexten}
-
-Lättsamma stilen och de roliga bilderna.
-
-!!Blev en bra text?
-
-\section{Hemsidan}
-
-\section{Något om källkoden i sig?}
-
-\section{Test}
-
-!! Test på kaniner.
+För att utvärdera huruvida läromaterialet är intressant och hjälpsamt har vi
+haft en informell återkoppling med en testgrupp. TODO: Skriv mer när vi
+faktiskt gjort detta.
 
 \end{binge}

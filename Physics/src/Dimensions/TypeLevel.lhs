@@ -6,6 +6,8 @@ We will now implement *type-level* dimensions. What is type-level? When one usua
 
 What's the purpose of type-level dimensions? It's so we'll notice as soon as compile-time if we've written something incorrect. E.g. adding a length and an area is not allowed since they have different dimensions.
 
+![Adding lengths is OK. Adding lengths and areas is not OK.](Lengths_and_area.png)
+
 This implemention is very similar to the value-level one. It would be possible to only have one implementation by using `Data.Proxy`. But it would be trickier. This way is lengthier but easier to understand.
 
 To be able to do type-level programming, we'll need a nice stash of GHC-extensions.
@@ -34,7 +36,7 @@ See the end of the next chapter to read what they do.
 > )
 > where
 
-We'll need to be able to operate on integers on type-level. Instead of implementing it ourselves, we will just import the machinery so we can focus on the physics-part.
+We'll need to be able to operate on integers on the type-level. Instead of implementing it ourselves, we will just import the machinery so we can focus on the physics-part.
 
 > import Numeric.NumType.DK.Integers
 
@@ -82,14 +84,18 @@ This may sound confusing, but the point of this will become clear over time. Let
 > type Substance   = 'Dim Zero Zero Zero Zero Zero Pos1 Zero
 > type Luminosity  = 'Dim Zero Zero Zero Zero Zero Zero Pos1
 
+`'Dim` is used to distinguish between the *type* `Dim` (left-hand-side of the `data Dim` definition) and the *type constructor* `Dim` (right-hand-side of the `data Dim` definition, with `DataKinds`-perspective). `'Dim` refers to the type constructor. Both are created when using `DataKinds`.
+
+`Pos1`, `Neg1` and so on corresponds to `1` and `-1` in the imported package, which operates on type-level integers.
+
+**Exercise.** Create types for velocity, acceleration and the scalar.
+
+**Solution.**
+
 > type Velocity     = 'Dim Pos1 Zero Neg1 Zero Zero Zero Zero
 > type Acceleration = 'Dim Pos1 Zero Neg2 Zero Zero Zero Zero
 
 > type One = 'Dim Zero Zero Zero Zero Zero Zero Zero
-
-`'Dim` is used to distinguish between the *type* `Dim` (left-hand-side of the `data Dim` definition) and the *type constructor* `Dim` (right-hand-side of the `data Dim` definition, with `DataKinds`-perspective). `'Dim` refers to the type constructor. Both are created when using `DataKinds`.
-
-`Pos1`, `Neg1` and so on corresponds to `1` and `-1` in the imported package, which operates on type-level integers.
 
 Multiplication and division
 ---------------------------
@@ -106,7 +112,9 @@ Let's implement multiplication and division on type-level. After such an operati
 - `Mul` is the name of the function.
 - `d1 :: Dim` is read as "the *type* `d1` has *kind* `Dim`".
 
-Division is very similar.
+**Exercise.** As you would suspect, division is very similar, so why don't you try 'n implement it yourself?
+
+**Solution.**
 
 > type family Div (d1 :: Dim) (d2 :: Dim) where
 >   Div ('Dim le1 ma1 ti1 cu1 te1 su1 lu1) 
@@ -114,7 +122,19 @@ Division is very similar.
 >       'Dim (le1-le2) (ma1-ma2) (ti1-ti2) (cu1-cu2)
 >         (te1-te2) (su1-su2) (lu1-lu2)
 
-Let's create some example *types* for dimensions with multiplication and division.
+**Exercise.** Implement a type-level function for raising a dimension to the power of some integer.
+
+**Solution.**
+
+< type family Power (d :: Dim) (n :: TypeInt) where
+<   Power ('Dim le ma ti cu te su lu) n =
+<     'Dim (le*n) (ma*n) (ti*n) (cu*n) (te*n) (su*n) (lu*n)
+
+Now types for dimensions can be created by combining exisiting types, much like we did for values in the previous chapter.
+
+**Exercise.** Create types for velocity, area, force and impulse.
+
+**Solution.**
 
 > type Velocity' = Length `Div` Time
 > type Area      = Length `Mul` Length

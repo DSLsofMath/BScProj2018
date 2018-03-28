@@ -1,10 +1,11 @@
+%TODO: Perhaps remove or add clarification (template created by ..., report by ...)
 % CREATED BY DAVID FRISK, 2017
 
 % IMPORT SETTINGS
 \documentclass[12pt,a4paper,twoside,openright]{report}
 \input{include/settings/Settings}
 
-\begin{document} 
+\begin{document}
 
 % COVER PAGE, TITLE PAGE AND IMPRINT PAGE
 \pagenumbering{roman}			% Roman numbering (starting with i (one)) until first main chapter
@@ -14,10 +15,13 @@
 \newpage
 \input{include/frontmatter/Abstract}
 
+% SAMMANFATTNING
+\newpage
+\input{include/frontmatter/Sammanfattning}
+
 % ACKNOWLEDGEMENTS
 \newpage
 \input{include/frontmatter/Acknowledgements}
-
 
 % TABLE OF CONTENTS
 \newpage
@@ -26,23 +30,25 @@
 % OTHER FRONTMATTER
 % List of figures (add to table of contents)
 \cleardoublepage
-\addcontentsline{toc}{chapter}{\listfigurename} 
+\addcontentsline{toc}{chapter}{\listfigurename}
 \listoffigures
 % List of tables (add to table of contents)
 \cleardoublepage
-\addcontentsline{toc}{chapter}{\listtablename}  
+\addcontentsline{toc}{chapter}{\listtablename}
 \listoftables
 
+% Ordlista
+\cleardoublepage
+\addcontentsline{toc}{chapter}{Ordlista}
+\input{include/frontmatter/Ordlista}
 
 % START OF MAIN DOCUMENT
 \cleardoublepage
 \setcounter{page}{1}
 \pagenumbering{arabic}			% Arabic numbering starting from 1 (one)
-\setlength{\parskip}{0pt plus 1pt}
+\setlength{\parskip}{\baselineskip}
 
 \input{include/Introduktion}
-
-\input{include/Syfte}
 
 \input{include/Teori}
 
@@ -54,12 +60,11 @@
 
 \input{include/Slutsatser}
 
-\input{include/Etik}
 
 % REFERENCES / BIBLIOGRAPHY
 \cleardoublepage
 \addcontentsline{toc}{chapter}{Bibliography}
-\bibliographystyle{plain}
+\bibliographystyle{include/IEEEtran}
 \bibliography{include/backmatter/referenser}
 
 % APPENDICES

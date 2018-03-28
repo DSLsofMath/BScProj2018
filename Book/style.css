@@ -24,9 +24,13 @@ header h1 .physics {
   color: #E2A;
 }
 
-header nav {
+header nav, footer nav {
   display: flex;
   justify-content: space-around;
+}
+
+footer nav {
+  margin-bottom: 15px;
 }
 
 main {
@@ -63,7 +67,7 @@ figcaption {
 }
 
 footer {
-  padding: 30px 30px;
+  padding: 20px 10px;
   text-align: center;
   background-color: #F0F0F0;
 }

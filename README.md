@@ -5,7 +5,7 @@ Medlemmar: Oskar, Erik, Daniel, Björn, Johan
 [Projektbeskrivning](DSLsofMath_andra_kurser.md)
 
 
-# Deadlines
+## Deadlines
 * 9/2  : Inlämning av Planeringsrapport.
 * 27/2 : Halvtidsredovisnin av projektgrupperna ( Muntlig )
 * 2/3  : Egen utvärdering på blankett till handledaren.
@@ -17,3 +17,25 @@ Medlemmar: Oskar, Erik, Daniel, Björn, Johan
 * 22/5 eller 23/5 : Muntliga slutredovisningar och opposition & Avtal om publicering, lämnas in i samband med presentationen
 * 25/5 : Egen utvärdering på blankett till handledaren.
 * 1/6 : Deadline inlämning av slutrapport, elektronisk form, med införande av opponenternas kommentarer.
+
+
+## Kvar på rapporten
+
+Skriv om du arbetar på en av punkterna och det kommer ta lång tid (så att ingen annan arbetar samtidigt). Ta bort den när den är klar.
+
+- Teori
+    - Didaktik
+- Metod
+    - Utvärdering
+    - Implementation komposita
+    - Implementation expandera gemensamma drag
+    - Lärotext didaktik
+    - Lärotext komposita
+    - Hemsidan
+- Resultat
+    - Utvärdering
+- Diskussion
+    - Expandera DSL+fysik gör att fysik enklare
+    - Expandera Vårt tillvägagångssätt
+    - Etik: om roligt och hemsidan som gör pedagogik enklare
+    - Expandera Om vi tyckte läromaterialet blev bra

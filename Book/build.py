@@ -58,6 +58,9 @@ def build_sections(sources):
         if not os.path.exists(section):
             os.makedirs(section)
         chapter_path = "../../" + chapter_source
+        lhs_source_href = "https://github.com/DSLsofMath/BScProj2018/blob/master/{}".format(chapter_source)
+        prefix = "Physics/src/"
+        lhs_source_name = chapter_source[len(prefix):] if chapter_source.startswith(prefix) else chapter_source
         content = render_lhs(chapter_path)
         chapter = apply_template(
             chapter_templ,
@@ -67,6 +70,8 @@ def build_sections(sources):
                 "previous-name": prev_chap_name,
                 "next-href": next_chap_href,
                 "next-name": next_chap_name,
+                "lhs-source-href": lhs_source_href,
+                "lhs-source-name": lhs_source_name,
             })
         out_path = "{}/{}.html".format(section, chapter_name)
         write_string_to_file(chapter, out_path)

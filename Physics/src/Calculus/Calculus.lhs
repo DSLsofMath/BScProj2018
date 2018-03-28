@@ -589,7 +589,7 @@ D(sin) &= a \mapsto lim_{h \to 0} \frac{sin(a + h) - sin(a)}{h} \\
        &= a \mapsto lim_{h \to 0} \frac{2 \sin\left(\frac{a + h - a}{2}\right) \cos\left(\frac{a + h + a}{2}\right)}{h} \\
        &= a \mapsto lim_{h \to 0} \frac{2 \sin\left(\frac{h}{2}\right) \cos\left(\frac{2a + h}{2}\right)}{h} \\
        &= a \mapsto lim_{h \to 0} \frac{2 \sin\left(\frac{h}{2}\right) \cos\left(\frac{2a + h}{2}\right)}{h} \\
-       &= a \mapsto lim_{h \to 0} \frac{\sin\left(\frac{h}{2}\right)}{\frac{h}{2}} \cos\left(\frac{2a + h}{2}\right)} \\
+       &= a \mapsto lim_{h \to 0} \frac{\sin\left(\frac{h}{2}\right)}{\frac{h}{2}} \cos\left(\frac{2a + h}{2}\right) \\
        & \text{\{} h \text{ approaches } 0 \text{\}} \\
        &= a \mapsto 1 \cos\left(\frac{2a + 0}{2}\right) \\
        &= a \mapsto \cos(a) \\
@@ -600,7 +600,7 @@ Again, trivial definition in Haskell
 
 > derive Sin = Cos
 
-I'll leave the proving of the rest of the implementations as an exercise to you.
+I'll leave the proving of the rest of the implementations as an exercise to you, the reader.
 
 > derive Exp = Exp
 > derive Log = Const 1 :/ Id

@@ -729,11 +729,9 @@ With this new function, many expressions become much more readable!
 A sight for sore eyes!
 
 
-OUTDATED STUFF
-======================================================================
-
 
 > {-
+
 
 
 Integrals - An integral part of calculus
@@ -741,68 +739,84 @@ Integrals - An integral part of calculus
 
 ![](integral.png "A snaky integral"){.float-img-right}
 
-Integrals are used in the reversed way as derivatives.
+*Integrals* are functions used to describe area, volume, and
+accumulation in general. The operation of integration is the second
+fundamental operation of calculus, and the inverse of
+differentiation. Whereas derivatives are used to describe the rate of
+change in an instant, integrals are used to describe the accumulation
+of value over time.
 
-$$ x_{traveled} = \int_{t_0}^{t_1} v(t) dt $$
+Recall how we used derivatives before. If we know the distance
+traveled of a car and the time it took, we can use differentiation to
+calculate the velocity. Similarly but reversly, if we know the
+velocity of the car and the time it travels for, we can use
+integration to calculate the distance traveled.
 
-TODO: Describe relationship between between "Definite integrals", "Indefinite integrals", and "Antiderivatives".
+$$ x_{traveled} = \int_{t_0}^{t_1} v(t) dt $$.
 
-The following quotes are cut from [Wikipedia](https://en.wikipedia.org/wiki/Fundamental_theorem_of_calculus).
+Ok, let's dive into this! We need to grok the syntax and find a
+rigorous, modelable definition of what *exactly* an integral is. We
+ask our kind friend Wikipedia for help. From the entry on *Integral*:
 
- > The fundamental theorem of calculus is a theorem that links the
- > concept of differentiating a function with the concept of integrating
- > a function.
+ > Given a function $f$ of a real variable $x$ and an interval $[a, b]$
+ > of the real line, the definite integral
  >
- > The first part of the theorem, sometimes called the first fundamental
- > theorem of calculus, states that one of the antiderivatives (also
- > called indefinite integral), say F, of some function f may be obtained
- > as the integral of f with a variable bound of integration. This
- > implies the existence of antiderivatives for continuous functions.[1]
+ > $$\int_a^b f(x) dx$$
  >
- > Conversely, the second part of the theorem, sometimes called the
- > second fundamental theorem of calculus, states that the integral of a
- > function f over some interval can be computed by using any one, say F,
- > of its infinitely many antiderivatives. This part of the theorem has
- > key practical applications, because explicitly finding the
- > antiderivative of a function by symbolic integration allows for
- > avoiding numerical integration to compute integrals.
-
- > Newton and Leibniz
+ > ![A definite integral of a function can be represented as the signed area of the region bounded by its graph. (C) KSmrq](https://upload.wikimedia.org/wikipedia/commons/9/9f/Integral_example.svg){.float-img-left .img-border}
+ > 
+ > is defined informally as the signed area of the region in the
+ > $xy$-plane that is bounded by the graph of $f$, the $x$-axis
+ > and the vertical lines $x = a$ and $x = b$. The area above the
+ > $x$-axis adds to the total and that below the $x$-axis subtracts
+ > from the total.
  >
- > The major advance in integration came in the 17th century with the
- > independent discovery of the fundamental theorem of calculus by Newton
- > and Leibniz. The theorem demonstrates a connection between integration
- > and differentiation. This connection, combined with the comparative
- > ease of differentiation, can be exploited to calculate integrals. In
- > particular, the fundamental theorem of calculus allows one to solve a
- > much broader class of problems. Equal in importance is the
- > comprehensive mathematical framework that both Newton and Leibniz
- > developed. Given the name infinitesimal calculus, it allowed for
- > precise analysis of functions within continuous domains. This
- > framework eventually became modern calculus, whose notation for
- > integrals is drawn directly from the work of Leibniz.  Formalization
- > While Newton and Leibniz provided a systematic approach to
- > integration, their work lacked a degree of rigour. Bishop Berkeley
- > memorably attacked the vanishing increments used by Newton, calling
- > them "ghosts of departed quantities". Calculus acquired a firmer
- > footing with the development of limits. Integration was first
- > rigorously formalized, using limits, by Riemann. Although all bounded
- > piecewise continuous functions are Riemann-integrable on a bounded
- > interval, subsequently more general functions were
- > considered—particularly in the context of Fourier analysis—to which
- > Riemann's definition does not apply, and Lebesgue formulated a
- > different definition of integral, founded in measure theory (a
- > subfield of real analysis). Other definitions of integral, extending
- > Riemann's and Lebesgue's approaches, were proposed. These approaches
- > based on the real number system are the ones most common today, but
- > alternative approaches exist, such as a definition of integral as the
- > standard part of an infinite Riemann sum, based on the hyperreal
- > number system.
+ > Roughly speaking, the operation of integration is the reverse of
+ > differentiation. For this reason, the term integral may also refer to
+ > the related notion of the antiderivative, a function $F$ whose
+ > derivative is the given function $f$. In this case, it is called an
+ > indefinite integral and is written:
+ >
+ > $$F(x) = \int f(x) dx$$
+
+Ok, so first of all: confusion. Apparently there are two different
+kinds of integrals, *definite integrals* and *indefinite integrals*?
+
+Let's start with defining *indefinite* integrals. *Wikipedia -
+Antiderivative* tells us that the *indefinite* integral, also known as
+the *antiderivative*, of a function $f$ is equal to a differentiable
+function $F$ such that $D(F) = f$. It further tells us that the
+process of finding the antiderivative is called *antidifferentiation*
+or *indefinite integration*.
+
+The same article then brings further clarification
+
+ > Antiderivatives are related to definite integrals through the
+ > fundamental theorem of calculus: the definite integral of a
+ > function over an interval is equal to the difference between the
+ > values of an antiderivative evaluated at the endpoints of the
+ > interval.
+
+Ok, so indefinite integrals are the inverse of derivatives, and
+definite integrals are just the application of an indefinite integral
+to an interval. Good, that doesn't seem to complicated.
 
 
-Newton and Leibniz independently discovered the fundemental theorem of calculus.
-They based their definitions on infinitesimals which, as described above was considered too imprecise.
-Later, Riemann rigorously formalized integration using limits.
+
+TODO: syntax analysis and modeling here
+
+TODO: Also look at numerical computation of integrals
+
+TODO: Then looking at the formal definition of integration to get `integrate`.
+
+
+
+
+The heart of integrals and derivatives, the *fundememntal theorem of
+calculus*, was independently discovered by both Newton and Leibniz.
+They based their definitions on infinitesimals which, as described
+earlier, was considered too imprecise. Later, Riemann rigorously
+formalized integration using limits.
 
  > There are many ways of formally defining an integral, not all of
  > which are equivalent. The differences exist mostly to deal with
@@ -885,7 +899,7 @@ approximation
 
 Here's a pic that shows that smaller $dx$ results in better approximations:
 
-![Riemann sum convergence, (C) KSmrq](https://upload.wikimedia.org/wikipedia/commons/2/2a/Riemann_sum_convergence.png)
+![Riemann sum convergence, (C) KSmrq](https://upload.wikimedia.org/wikipedia/commons/2/2a/Riemann_sum_convergence.png){.img-border}
 
 > integrateApprox f a b dx = sum (fmap area xs)
 >   where xs     = takeWhile (<b) [a + 0*dx, a + 1*dx ..]

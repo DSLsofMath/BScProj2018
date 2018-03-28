@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Learn You a Physics for Great Good!</title>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  </head>
+
+  <body>
+    <header>
+      <a href="../index.html"><h1>Learn You a <span class="physics">Physics</span> for Great Good!</h1></a>
+      <h1>&gt;&gt;&gt; WORK IN PROGRESS &lt;&lt;&lt;</h1>
+      <nav>
+	<span>[src: <a href="https://github.com/DSLsofMath/BScProj2018/blob/master/Physics/src/Dimensions/ValueLevel/Test.lhs">Dimensions/ValueLevel/Test.lhs</a>]</span>
+        <span>Previous: <a href="../Dimensions/Value-level dimensions.html">Value-level dimensions</a></span>
+        <a href="../index.html">Table of contents</a>
+        <span>Next: <a href="../Dimensions/Type-level dimensions.html">Type-level dimensions</a></span>
+      </nav>
+    </header>
+
+    <main>
+      <h1 id="testing-of-value-level-dimensions">Testing of value-level dimensions</h1>
+<figure>
+<img src="Laws.png" alt="Both you, me and dimensions need to obey the laws" class="float-img-left" /><figcaption>Both you, me and dimensions need to obey the laws</figcaption>
+</figure>
+<p>For operations on dimensions, there are a number of laws which should hold. We will here test that the value-level dimensions obey them. One way is to use <code>QuickCheck</code>, which produces lots o’ random test cases.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">module</span> <span class="dt">Dimensions.ValueLevel.Test</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">( runTests</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">where</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">import</span> <span class="dt">Prelude</span> <span class="kw">hiding</span> (length, div)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">import</span> <span class="dt">Test.QuickCheck</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">import</span> <span class="dt">Data.List</span></a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">import</span> <span class="dt">Dimensions.ValueLevel</span></a></code></pre></div>
+<h2 id="generating-arbitrary-dimensions">Generating arbitrary dimensions</h2>
+<p>The first thing one needs in order to use <code>QuickCheck</code> is an instance of <code>Arbitrary</code> for the data type to be used in the tests. In this case it’s <code>Dim</code>.</p>
+<p>An arbitrary example of an <code>Arbitrary</code> instance (get it?) could look like</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">data</span> <span class="dt">IntPair</span> <span class="fu">=</span> <span class="dt">IntPair</span> (<span class="dt">Int</span>, <span class="dt">Int</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="ot">genIntPair ::</span> <span class="dt">Gen</span> <span class="dt">IntPair</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">genIntPair <span class="fu">=</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">  first  <span class="ot">&lt;-</span> arbitrary</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">  second <span class="ot">&lt;-</span> arbitrary</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">  return <span class="fu">$</span> <span class="dt">IntPair</span> (first, second)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">instance</span> <span class="dt">Arbitrary</span> <span class="dt">IntPair</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">  arbitrary <span class="fu">=</span> genIntPair</a></code></pre></div>
+<p><strong>Exercise.</strong> Now try to implement an <code>Arbitrary</code> instance of <code>Dim</code>.</p>
+<p><strong>Solution.</strong> Here’s one way to do it.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="ot">genDim ::</span> <span class="dt">Gen</span> <span class="dt">Dim</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">genDim <span class="fu">=</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">  le <span class="ot">&lt;-</span> arbitrary</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">  ma <span class="ot">&lt;-</span> arbitrary</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">  ti <span class="ot">&lt;-</span> arbitrary</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">  cu <span class="ot">&lt;-</span> arbitrary</a>
+<a class="sourceLine" id="cb7-7" data-line-number="7">  te <span class="ot">&lt;-</span> arbitrary</a>
+<a class="sourceLine" id="cb7-8" data-line-number="8">  su <span class="ot">&lt;-</span> arbitrary</a>
+<a class="sourceLine" id="cb7-9" data-line-number="9">  lu <span class="ot">&lt;-</span> arbitrary</a>
+<a class="sourceLine" id="cb7-10" data-line-number="10">  return (<span class="dt">Dim</span> le ma ti cu te su lu)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">instance</span> <span class="dt">Arbitrary</span> <span class="dt">Dim</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">  arbitrary <span class="fu">=</span> genDim</a></code></pre></div>
+<h2 id="properties-for-operations-on-dimensions">Properties for operations on dimensions</h2>
+<p>Since dimensions are treated just like regular numbers when it comes to multiplication and division, the laws which ought to hold should be pretty clear. It’s the “obvious” laws such as commutativity and so on.</p>
+<p>The laws to test are</p>
+<ul>
+<li>Multiplication is commutative</li>
+<li>Multiplication is associative</li>
+<li><code>one</code> is a unit for multiplication</li>
+<li>Dividing by a division brings up the lowest denominator</li>
+<li>Multiplication and division cancel each other out</li>
+<li>Dividing by <code>one</code> does nothing</li>
+<li>Multiplication by <span class="math inline">\(x\)</span> is the same as dividing by the inverse of <span class="math inline">\(x\)</span>.</li>
+</ul>
+<p>The implementation of the first law looks like</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co">-- Property: multiplication is commutative</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="ot">prop_mulCommutative ::</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">prop_mulCommutative d1 d2 <span class="fu">=</span> d1 <span class="ot">`mul`</span> d2 <span class="fu">==</span> d2 <span class="ot">`mul`</span> d1</a></code></pre></div>
+<p><strong>Excercise.</strong> Implement the rest.</p>
+<p><strong>Solution.</strong> Here’s what the rest could look like.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co">-- Property: multiplication is associative</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="ot">prop_mulAssociative ::</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">prop_mulAssociative d1 d2 d3 <span class="fu">=</span> d1 <span class="ot">`mul`</span> (d2 <span class="ot">`mul`</span> d3) <span class="fu">==</span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"> (d1 <span class="ot">`mul`</span> d2) <span class="ot">`mul`</span> d3</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co">-- Property: `one` is a unit for multiplication</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="ot">prop_mulOneUnit ::</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span> </a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">prop_mulOneUnit d <span class="fu">=</span> d <span class="fu">==</span> one <span class="ot">`mul`</span> d</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co">-- Property: dividing twice results in no change</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="ot">prop_divTwice ::</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3">prop_divTwice d1 d2 <span class="fu">=</span> d1 <span class="ot">`div`</span> (d1 <span class="ot">`div`</span> d2) <span class="fu">==</span> d2</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co">-- Property: multiplication and division cancel each other out</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="ot">prop_mulDivCancel ::</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3">prop_mulDivCancel d1 d2 <span class="fu">=</span> (d1 <span class="ot">`mul`</span> d2) <span class="ot">`div`</span> d1 <span class="fu">==</span> d2</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="co">-- Property: dividing by `one` does noting</span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="ot">prop_divOne ::</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3">prop_divOne d <span class="fu">=</span> d <span class="ot">`div`</span> one <span class="fu">==</span> d</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="co">-- Property: multiplication same as division by inverse</span></a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="ot">prop_mulDivInv ::</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span></a>
+<a class="sourceLine" id="cb15-3" data-line-number="3">prop_mulDivInv d1 d2 <span class="fu">=</span> d1 <span class="ot">`mul`</span> d2 <span class="fu">==</span> </a>
+<a class="sourceLine" id="cb15-4" data-line-number="4">  d1 <span class="ot">`div`</span> (one <span class="ot">`div`</span> d2)</a></code></pre></div>
+<h2 id="testing-the-pretty-printer">Testing the pretty-printer</h2>
+<p>We rely pretty heavily on the pretty-printer. Let’s test it too! We won’t get too ambitious in our testing of it. It’ll be enough to check that if a dimension has a nonzero</p>
+<p>TODO: Do something about the problem of m and mol.</p>
+<p>– Property: pretty-printed has correct of a dimension prop_correctDim :: Integer -&gt; Dim -&gt; Bool prop_correctDim i d = prop_correctDim’ (i <code>mod</code> 7) d (show d)</p>
+<p>prop_correctDim’ :: Integer -&gt; Dim -&gt; String -&gt; Bool prop_correctDim’ 0 (Dim le ma ti cu te su lu) str = prop_correctDim’‘le “m” str prop_correctDim’ 1 (Dim le ma ti cu te su lu) str = prop_correctDim’‘ma “kg” str prop_correctDim’ 2 (Dim le ma ti cu te su lu) str = prop_correctDim’‘ti “s” str prop_correctDim’ 3 (Dim le ma ti cu te su lu) str = prop_correctDim’‘cu “A” str prop_correctDim’ 4 (Dim le ma ti cu te su lu) str = prop_correctDim’‘te “K” str prop_correctDim’ 5 (Dim le ma ti cu te su lu) str = prop_correctDim’‘su “mol” str prop_correctDim’ 6 (Dim le ma ti cu te su lu) str = prop_correctDim’’ lu “cd” str</p>
+<p>prop_correctDim’‘:: Integer -&gt; String -&gt; String -&gt; Bool prop_correctDim’‘exp unit str | exp == 0 = occursNever unit num &amp;&amp; occursNever unit den | exp == 1 = occursOnce unit num &amp;&amp; occursNever unit’ num &amp;&amp; occursNever unit den | exp == -1 = occursOnce unit den &amp;&amp; occursNever unit num | exp &gt; 1 = occursOnce unit’ num &amp;&amp; occursNever unit den | exp &lt; -1 = occursOnce unit’ den &amp;&amp; occursNever unit num | otherwise = True where num = takeWhile(/=‘/’) str den = dropWhile(/=‘/’) str unit’ = unit ++ “^” ++ (show (abs exp))</p>
+<p>– TODO: Check that it only occurs once.</p>
+<p>– kg^2 (eller dylikt) ska finns exakt en gång i rätt nivå – och inte finns alls i fel nivå.</p>
+<p>– Exatcly once. Not more or less occursOnce :: (Eq a) =&gt; [a] -&gt; [a] -&gt; Bool occursOnce a = (==1) . numOccurs a</p>
+<p>occursNever :: (Eq a) =&gt; [a] -&gt; [a] -&gt; Bool occursNever a = (==0) . numOccurs a</p>
+<p>– How many times the first list occurs in the second one numOccurs :: (Eq a) =&gt; [a] -&gt; [a] -&gt; Int numOccurs subList list = len $ filter (==subList) sg where sg = subGroups (len subList) list</p>
+<p>– Groups the list into lists of the specified length subGroups :: Int -&gt; [a] -&gt; [[a]] subGroups n <em> | n &lt; 1 = error “Groups must be at least 1 big” subGroups </em> [] = [] subGroups n list@(_:rest) | n &gt; len list = [] | otherwise = (take n list):(subGroups n rest)</p>
+<p>– Length of a list len :: [a] -&gt; Int len [] = 0 len (x:xs) = 1 + len xs</p>
+<h2 id="integrating-tests-with-stack">Integrating tests with Stack</h2>
+<p>This project uses <code>Stack</code>. One part of <code>Stack</code> is continous testing, and for it to work on the tests we developed here, the following functions is needed.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="ot">runTests ::</span> <span class="dt">IO</span> ()</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">runTests <span class="fu">=</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb16-3" data-line-number="3">  putStrLn <span class="st">&quot;Dimensions value-level: Multiplication commutative&quot;</span></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4">  quickCheck prop_mulCommutative</a>
+<a class="sourceLine" id="cb16-5" data-line-number="5">  putStrLn <span class="st">&quot;Dimensions value-level: ;ultiplication associative&quot;</span></a>
+<a class="sourceLine" id="cb16-6" data-line-number="6">  quickCheck prop_mulAssociative</a>
+<a class="sourceLine" id="cb16-7" data-line-number="7">  putStrLn <span class="st">&quot;Dimensions value-level: `one` is unit for multiplication&quot;</span></a>
+<a class="sourceLine" id="cb16-8" data-line-number="8">  quickCheck prop_mulOneUnit</a>
+<a class="sourceLine" id="cb16-9" data-line-number="9">  putStrLn <span class="st">&quot;Dimensions value-level: Dividing by a division brings up the lowest denominator&quot;</span></a>
+<a class="sourceLine" id="cb16-10" data-line-number="10">  quickCheck prop_divTwice</a>
+<a class="sourceLine" id="cb16-11" data-line-number="11">  putStrLn <span class="st">&quot;Dimensions value-level: Multiplication and divison cancel each other out&quot;</span></a>
+<a class="sourceLine" id="cb16-12" data-line-number="12">  quickCheck prop_mulDivCancel</a>
+<a class="sourceLine" id="cb16-13" data-line-number="13">  putStrLn <span class="st">&quot;Dimensions value-level: Dividing by `one` does nothing&quot;</span></a>
+<a class="sourceLine" id="cb16-14" data-line-number="14">  quickCheck prop_divOne</a>
+<a class="sourceLine" id="cb16-15" data-line-number="15">  putStrLn <span class="st">&quot;Dimensions value-level: Multiplication by x is the same as dividing by the inverse of x&quot;</span></a>
+<a class="sourceLine" id="cb16-16" data-line-number="16">  quickCheck prop_mulDivInv</a></code></pre></div>
+
+    </main>
+
+    <footer>
+      <nav>
+	<span>[src: <a href="https://github.com/DSLsofMath/BScProj2018/blob/master/Physics/src/Dimensions/ValueLevel/Test.lhs">Dimensions/ValueLevel/Test.lhs</a>]</span>
+        <span>Previous: <a href="../Dimensions/Value-level dimensions.html">Value-level dimensions</a></span>
+        <a href="../index.html">Table of contents</a>
+        <span>Next: <a href="../Dimensions/Type-level dimensions.html">Type-level dimensions</a></span>
+      </nav>
+      Licensed under the GPL by the Kandidatboisen (2018)
+    </footer>
+  </body>
+</html>

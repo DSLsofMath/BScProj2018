@@ -106,6 +106,9 @@ sources = [
     ("Calculus", [
         ("Calculus", "Physics/src/Calculus/Calculus.lhs"),
     ]),
+    ("Newtonian Mechanics", [
+        ("Single particle mechanics", "Physics/src/NewtonianMechanics/SingleParticle.lhs")
+    ]),
     ("Examples", [
         ("Gungbräda", "Physics/src/Examples/Gungbraeda.lhs"),
         ("krafter på lådor", "Physics/src/Examples/krafter_pa_lador.lhs"),

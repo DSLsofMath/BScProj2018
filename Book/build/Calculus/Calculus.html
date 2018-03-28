@@ -283,7 +283,7 @@ D(sin) &amp;= a \mapsto lim_{h \to 0} \frac{sin(a + h) - sin(a)}{h} \\
        &amp;= a \mapsto lim_{h \to 0} \frac{2 \sin\left(\frac{a + h - a}{2}\right) \cos\left(\frac{a + h + a}{2}\right)}{h} \\
        &amp;= a \mapsto lim_{h \to 0} \frac{2 \sin\left(\frac{h}{2}\right) \cos\left(\frac{2a + h}{2}\right)}{h} \\
        &amp;= a \mapsto lim_{h \to 0} \frac{2 \sin\left(\frac{h}{2}\right) \cos\left(\frac{2a + h}{2}\right)}{h} \\
-       &amp;= a \mapsto lim_{h \to 0} \frac{\sin\left(\frac{h}{2}\right)}{\frac{h}{2}} \cos\left(\frac{2a + h}{2}\right)} \\
+       &amp;= a \mapsto lim_{h \to 0} \frac{\sin\left(\frac{h}{2}\right)}{\frac{h}{2}} \cos\left(\frac{2a + h}{2}\right) \\
        &amp; \text{\{} h \text{ approaches } 0 \text{\}} \\
        &amp;= a \mapsto 1 \cos\left(\frac{2a + 0}{2}\right) \\
        &amp;= a \mapsto \cos(a) \\
@@ -291,7 +291,7 @@ D(sin) &amp;= a \mapsto lim_{h \to 0} \frac{sin(a + h) - sin(a)}{h} \\
 \end{align*}\]</span>
 <p>Again, trivial definition in Haskell</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb29-1" data-line-number="1">derive <span class="dt">Sin</span> <span class="fu">=</span> <span class="dt">Cos</span></a></code></pre></div>
-<p>I’ll leave the proving of the rest of the implementations as an exercise to you.</p>
+<p>I’ll leave the proving of the rest of the implementations as an exercise to you, the reader.</p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb30-1" data-line-number="1">derive <span class="dt">Exp</span> <span class="fu">=</span> <span class="dt">Exp</span></a>
 <a class="sourceLine" id="cb30-2" data-line-number="2">derive <span class="dt">Log</span> <span class="fu">=</span> <span class="dt">Const</span> <span class="dv">1</span> <span class="fu">:/</span> <span class="dt">Id</span></a>
 <a class="sourceLine" id="cb30-3" data-line-number="3">derive <span class="dt">Cos</span> <span class="fu">=</span> <span class="dt">Const</span> <span class="dv">0</span> <span class="fu">:-</span> <span class="dt">Sin</span></a>

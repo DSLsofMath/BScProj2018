@@ -649,94 +649,92 @@ But still, we shouldn't have to do that manually! Let's have
 Mr. Computer help us out, by writing a function to simplify
 expressions.
 
-> {-
+We'll write a `simplify` function will reduce an expression to a
+simpler, equivalent expression. Sounds good, only... what exactly does
+"simpler" mean? Is $10$ simpler than $2 + 2 * 4$? Well, yes obviously,
+but there are other expressions where this is not the case. For
+example, polynomials have two standard forms. The first is the sum of
+terms, which is appropriate when you want to add or subtract
+polynomials. The other standard form is the product of irreducible
+factors, which is a good fit for when you want to divide polynomials.
+
+So, our `simplify` function will not guarantee that every expression
+is reduced to *its most simple* form, but rather that many expressions
+will be reduced to *a simpler form*. As an exercise, you can implement
+more reduction rules to make expressions simpler to you. For example,
+the trigonometric identities like $sin(\theta + \frac{\pi}{2}) =
+cos(\theta)$.
+
 > simplify :: FunExpr -> FunExpr
 
 The elementary functions by themselves are already as simple as can
 be, so we don't have to simplify those. When it comes to the
-arithmetic operations, we want to look at the identity and zero
-elements.
+arithmetic operations, most interesting is the cases of one operand
+being the identity element.
 
 > simplify (f :+ g) = case (simplify f, simplify g) of
 >     (Const 0, g') -> g'
 >     (f', Const 0) -> f'
 >     (Const a, Const b) -> Const (a + b)
 >     (f', g') | f' == g' -> simplify (Const 2 :* f')
->     (a :* f', g') | f' == g' -> simplify (Const (a + 1) :* f')
+>     (Const a :* f', g') | f' == g' -> simplify (Const (a + 1) :* f')
 >     (f', Const a :* g') | f' == g' -> simplify (Const (a + 1) :* f')
 >     (Const a :* f', Const b :* g') | f' == g' -> simplify (Const (a + b) :* f')
-> simplify (f :- g) =
-> simplify (f :* g) =
-> simplify (f :/ g) =
-> simplify (f :^ g) =
-> simplify Id =
-> simplify (Const x) =
-> simplify (f :. g) =
-> simplify (Delta h f) =
-> simplify (D f) =
-> simplify (I c f) =
+>     (f', g') -> f' :+ g'
+> simplify (f :- g) = case (simplify f, simplify g) of
+>     (f', Const 0 :- g') -> f' :+ g'
+>     (f', Const 0) -> f'
+>     (Const a, Const b) -> if a > b then Const (a - b) else Const 0 :- Const (b - a)
+>     (f', g') | f' == g' -> Const 0
+>     (Const a :* f', g') | f' == g' -> simplify (Const (a - 1) :* f')
+>     (f', Const a :* g') | f' == g' -> Const 0 :- simplify (Const (a - 1) :* f')
+>     (Const a :* f', Const b :* g') | f' == g' -> simplify ((Const a :- Const b) :* f')
+>     (f', g') -> f' :- g'
+> simplify (f :* g) = case (simplify f, simplify g) of
+>     (Const 0, g') -> Const 0
+>     (f', Const 0) -> Const 0
+>     (Const 1, g') -> g'
+>     (f', Const 1) -> f'
+>     (Const a, Const b) -> Const (a * b)
+>     (f', Const c) -> Const c :* f'
+>     (f', g') | f' == g' -> f' :^ Const 2
+>     (Const a :* f', g') -> simplify (Const a :* (f' :* g'))
+>     (f', Const a :* g') -> simplify (Const a :* (f' :* g'))
+>     (f', g') -> f' :* g'
+> simplify (f :/ g) = case (simplify f, simplify g) of
+>     (Const 0, g') -> Const 0
+>     (f', Const 1) -> f'
+>     (f', g') | f' == g' -> Const 1
+>     (f', g') -> f' :/ g'
+> simplify (f :^ g) = case (simplify f, simplify g) of
+>     (f', Const 1) -> f'
+>     (f', g') -> f' :^ g'
+> simplify (f :. g) = case (simplify f, simplify g) of
+>     (Id, g') -> g'
+>     (f', Id) -> f'
+>     (f', g') -> f' :. g'
+> simplify (Delta h f) = Delta h (simplify f)
+> simplify (D f) = D (simplify f)
+> simplify (I c f) = I c (simplify f)
 > simplify f = f
 
-> simplify :: Expr -> Expr
-> simplify (Const 0 :* b) = 0
-> simplify (Const 1 :* b) = simplify b
-> simplify (Const a :* Const b) = Const (a * b)
-> simplify ((Const a :* b) :+ c) | b' == c'  = Const (a + 1) :* b'
->                                | otherwise = (Const a :* b') :+ c'
->   where b' = simplify b
->         c' = simplify c
-> simplify (c :+ (Const a :* b)) = simplify ((Const a :* b) :+ c)
-> simplify (Const a :* b) = Const a :* simplify b
-> simplify (a :* Const b) = simplify (Const b :* a)
-> simplify (a :* b) = simplify a :* simplify b
-> simplify (Const 0 :+ b) = simplify b
-> simplify (Const a :+ Const b) = Const (a + b)
-> simplify (Const a :+ b) = Const a :+ simplify b
-> simplify (a :+ Const b) = simplify (Const b :+ a)
-> simplify (a :+ b) | a' == b'             = simplify (2 * a')
->                   | (a + b) == (a' + b') = a + b
->                   | otherwise            = simplify (a' + b')
->   where a' = simplify a
->         b' = simplify b
-> simplify (Const 0 :- b) = simplify (negate (simplify b))
-> simplify (Const a :- Const b) = Const (a - b)
-> simplify (Const a :- b) = Const a :- simplify b
-> simplify (a :- Const b) = simplify (Const (0-b) :+ a)
-> simplify (Lambda p b) = Lambda p (simplify b)
-> simplify e = e
+With this new function, many expressions become much more readable!
 
-Verification/proof/test
-----------------------------------------------------------------------
+< ghci> f = Sin :+ Id:^(Const 2)
+< ghci> derive f
+< (cos + ((id^(2 - 1)) * ((2 * 1) + ((id * (log . id)) * 0))))
+< ghci> simplify (derive f)
+< (cos + (2 * id))
 
-???
+A sight for sore eyes!
 
-Examples
-----------------------------------------------------------------------
 
-> idE = Lambda "_x" "_x"
+OUTDATED STUFF
+======================================================================
 
-> dF = simplify . derive
-> dE = simplify . flip deriveEx "x"
 
-> test_simplify1 = (==) (simplify ("x" + "x"))
->                       (2 * "x")
-> test_simplify2 = (==) (simplify (((1 + 1) * "x") + ("x" * 1)))
->                       (3 * "x")
-> test_derive1   = (==) (dF (Func "sin" + idE))
->                       (Func "cos" + const' 1)
-> test_derive2   = (==) (dE (sin (sin (Var "x"))))
->                       (cos "x" * cos (sin (Var "x")))
+> {-
 
-Let's plot graphs!
-
-> test_plot1 = let fe = Lambda "x" ("x" * "x")
->                  fe' = dF fe
->                  f = evalF [] fe
->                  f' = evalF [] fe'
->              in plot [Fun f
->                           (show fe),
->                       Fun f'
->                           ("(D " ++ show fe ++ ") = " ++ show fe')]
 
 Integrals - An integral part of calculus
 ======================================================================
@@ -1203,6 +1201,24 @@ TODO: these bad bois
 > eval (D f) = undefined
 > -- eval env (D f) = eval env (simplify (derive f))
 > eval (I c f) = undefined
+
+
+
+TODO: Visualization with Hatlab
+--------------------------------------------------------------------
+Make us of `show` for function names, plot both function, derivative,
+and integral
+
+
+
+TODO: Verification
+---------------------------------------------------------------------
+
+QuickCheck everything. Verify that simplified expressions evaluate to
+equivalent function as original
+
+
+
 
 TODO: Applying our DSL to solve physics problems!
 ----------------------------------------------------------------------

@@ -97,6 +97,9 @@ equal to the change in kinetic energy $E_k$ of the particle:
 
 Let's codify this theorem:
 
+PS: This used to work just fine, but it no longer does since the switch to
+FunExpr. Problem probably lies somewhere in SyntaxTree
+
 > prop_WorkEnergyTheorem :: Mass -> VectorE -> VectorE -> IO Bool
 > prop_WorkEnergyTheorem m v1 v2 = prettyEqual deltaEnergy (kineticEnergy displacedParticle)
 >   where
@@ -108,7 +111,9 @@ Let's codify this theorem:
 
 > -- Test values
 > v1 = V3 (3 :* Id) (2 :* Id) (1 :* Id)
-> v2 = V3 2 2 (5 :* Id)
+> v2 = V3 0 0 (5 :* Id)
+> v3 = V3 0 (3 :* Id) 0 :: VectorE
+> v4 = V3 2 2 2 :: VectorE
 > m  = 5
 > p1 = P v1 m
 > p2 = P v2 m
@@ -136,7 +141,7 @@ objects interacting, *r* is the distance between the centers of the masses and
 *G* is the gravitational constant.
 
 The gravitational constant has been finely approximated through experiments
-and we can state it out code like this:
+and we can state it in our code like this:
 
 > type Constant = FunExpr
 >
@@ -147,22 +152,20 @@ Now we can codify the law of universal gravitation using our definition
 of particles.
 
 > lawOfUniversalGravitation :: Particle -> Particle -> FunExpr
-> lawOfUniversalGravitation p1 p2 = gravConst * ((m1 * m2) / r2)
+> lawOfUniversalGravitation p1 p2 = gravConst * ((m_1 * m_2) / r2)
 >   where
->     m1 = mass p1
->     m2 = mass p2
+>     m_1 = mass p1
+>     m_2 = mass p2
 >     r2 = square $ pos p2 - pos p1
 
 If a particles position is defined as a vector representing its displacement
 from some origin O, then its heigh should be x. Or maybe it should be the
 magnitude of the vector, if the gravitational force originates from O. Hmmm
 
-This seems so weird since I don't know what the frame of reference is...
+This seems weird since I don't know what the frame of reference is...
 
 > potentialEnergy :: Particle -> Energy
 > potentialEnergy p = undefined
 >   where
 >     m          = mass p
 >     (V3 x _ _) = pos p
-
-TODO!!!! Fix prettyCan $ lawOfUniversalGravitation p1 p2

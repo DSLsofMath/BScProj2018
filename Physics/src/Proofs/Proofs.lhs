@@ -182,9 +182,16 @@ De vi behöver blir...
 >   Cong         :: a `Equal` b -> (f a) `Equal` (f b)
 >   Cong2        :: (f a b) `Equal` (f a c) -> (f b a) `Equal` (f c a)
 >   Cong3        :: a `Equal` b -> (f a) c `Equal` (f b) c
+>   Hej          :: a `Equal` b -> ((f a) c) `Equal` ((f b) c)
 
-> test :: a `Equal` b -> (('Add c) a) `Equal` (('Add c) b)
+> test :: a `Equal` b -> (Add c a) `Equal` (Add c b)
 > test = Cong
+
+> --test2 :: a `Equal` b -> (f a c) `Equal` (f b c)
+> --test2 = Hej
+
+> test3 :: a `Equal` b -> ((Add a) c) `Equal` ((Add b) c)
+> test3 = Hej
 
 > --test2 :: a `Equal` b -> ((Add a) c) `Equal` ((Add b) c)
 > --test2 aEb = Cong2 hej
@@ -192,6 +199,9 @@ De vi behöver blir...
 > --    hej = test aEb
 
 > --hej :: a `Equal` b -> 
+
+> skoj :: f a b -> f b a
+> skoj = flip
 
 > type family Flip (f :: Expr -> Expr -> Expr) (b :: Expr) (c :: Expr) where
 >   Flip f b a = f a b

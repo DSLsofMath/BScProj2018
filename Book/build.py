@@ -105,6 +105,7 @@ sources = [
     ]),
     ("Calculus", [
         ("Calculus", "Physics/src/Calculus/Calculus.lhs"),
+        ("Syntax Tree", "Physics/src/Calculus/SyntaxTree.lhs"),
     ]),
     ("Newtonian Mechanics", [
         ("Single particle mechanics", "Physics/src/NewtonianMechanics/SingleParticle.lhs")

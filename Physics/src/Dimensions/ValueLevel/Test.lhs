@@ -1,15 +1,14 @@
 
 Testing of value-level dimensions
 =================================
-  
+
 ![Both you, me and dimensions need to obey the laws](Laws.png){.float-img-left}
 
 For operations on dimensions, there are a number of laws which should hold. We will here test that the value-level dimensions obey them. One way is to use `QuickCheck`, which produces lots o' random test cases.
 
 > module Dimensions.ValueLevel.Test
-> ( runTests
-> )
-> where
+>     ( runTests
+>     ) where
 
 > import Prelude hiding (length, div)
 > import Test.QuickCheck
@@ -63,9 +62,9 @@ The laws to test are
 - Multiplication is commutative
 - Multiplication is associative
 - `one` is a unit for multiplication
-- Dividing by a division brings up the lowest denominator
 - Multiplication and division cancel each other out
 - Dividing by `one` does nothing
+- Dividing by a division brings up the lowest denominator [TODO: strange wording?? Perhaps use a formula instead. (and perhaps use `recip` to simplify?)]
 - Multiplication by $x$ is the same as dividing by the inverse of $x$.
 
 The implementation of the first law looks like
@@ -84,7 +83,7 @@ The implementation of the first law looks like
 >  (d1 `mul` d2) `mul` d3
 
 > -- Property: `one` is a unit for multiplication
-> prop_mulOneUnit :: Dim -> Bool 
+> prop_mulOneUnit :: Dim -> Bool
 > prop_mulOneUnit d = d == one `mul` d
 
 > -- Property: dividing twice results in no change
@@ -101,11 +100,13 @@ The implementation of the first law looks like
 
 > -- Property: multiplication same as division by inverse
 > prop_mulDivInv :: Dim -> Dim -> Bool
-> prop_mulDivInv d1 d2 = d1 `mul` d2 == 
+> prop_mulDivInv d1 d2 = d1 `mul` d2 ==
 >   d1 `div` (one `div` d2)
 
 Testing the pretty-printer
 --------------------------
+
+TODO: It is good that you test it, but I suggest you keep that out of the learning material [perhaps a link to "extra reading"].
 
 We rely pretty heavily on the pretty-printer. Let's test it too! We won't get too ambitious in our testing of it. It'll be enough to check that if a dimension has a nonzero
 
@@ -133,10 +134,10 @@ prop_correctDim' 6 (Dim le ma ti cu te su lu) str =
 
 prop_correctDim'' :: Integer -> String -> String -> Bool
 prop_correctDim'' exp unit str
-  | exp == 0  = occursNever unit  num && 
+  | exp == 0  = occursNever unit  num &&
                 occursNever unit  den
   | exp == 1  = occursOnce  unit  num &&
-                occursNever unit' num && 
+                occursNever unit' num &&
                 occursNever unit  den
   | exp == -1 = occursOnce  unit  den &&
                 occursNever unit  num

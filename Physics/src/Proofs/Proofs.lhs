@@ -8,10 +8,10 @@ Proofs
 > {-# LANGUAGE TypeOperators #-}
 > {-# LANGUAGE TypeFamilies #-}
 
-> module Proofs.Proofs
-> (
-> )
-> where
+> module Proofs.Proofs where
+> --(
+> --)
+> --where
 
 Detta kapitel ska förklara och bevisa fyra grundläggande kinematiska formler. De är som följer
 
@@ -41,14 +41,12 @@ Detta ger följande definerande samband.
 
 \begin{align}
   t_f &= \{\text{Tid vid finalt, när experimentet är slut}\} \\
-  t_i &= \{\text{Tid vid initialt, när experimentet startar}\} = t_0 = 0\\
+  t_i &= \{\text{Tid vid initialt, när experimentet startar}\} = t_0\\
   x_f &= x(t_f) \\
   x_i &= x(t_i) = x_0 \\
   v_f &= v(t_f) \\
   v_i &= v(t_i) = v_0 \\
 \end{align}
-
-En konvention är att låta $t_i = 0$. Det betyder att experimentets startpunkt blir tidsreferenspunkt.
 
 Varför är inte accelerationen med? Jo, för dessa fyra formler uttnyttjar att accelerationen är konstant. Är $a$ konstant? Vad syftar ens bara $a$ på? I detta sammanhanget menar man mer explcit att 
 
@@ -93,6 +91,17 @@ Vad för slags uttryck finns det? Till att börja med addition, subtraktion, mul
 >           | Expr `Mul` Expr
 >           | Expr `Div` Expr
 
+Det är också integration
+
+>           | Integ Expr Expr Expr Expr
+
+där argumenten har följande betydelse
+
+1. Uttryck att integrera
+2. Undre gräns
+3. Övre gräns
+4. Uttryck att integrera map
+
 En annan typ av uttryck är de symboliska namn som definerades innan. Det är funktionerna som anger position, hastighet och acceleration.
 
 >           | Xfun Expr
@@ -115,7 +124,7 @@ Vi har även de olika finala och initiala värdena.
 
 Här passar vi att flika in några tal vi kommer behöva.
 
->           | Zero
+>           | Two
 
 Vi har värdet på vad accelerationen är
 
@@ -155,15 +164,13 @@ Den andra likheten är
 
 som säger att accelerationen, för alla `t`, är lika med kvoten mellan $(\Delta V)(t)$ och $\Delta T$. Detta gäller eftersom accelerationen är konstant.
 
-Till sist har vi likheterna som definerar $\Delta$-funktionerna
+Vi har likheterna som definerar $\Delta$-funktionerna
 
 >   DeltaXdef :: DeltaXfun t `Equal` (Xfun t `Sub` Xi)
 >   DeltaVdef :: DeltaVfun t `Equal` (Vfun t `Sub` Vi)
 >   DeltaTdef :: DeltaTfun t `Equal` (t `Sub` Ti)
 
-Okej, *allra* sist har vi konventionen att $t_i = 0$
 
->   ConvT     :: Ti `Equal` Zero
 
 **Matematiska likheter**
 
@@ -173,67 +180,25 @@ Okej, så nu har vi de definerande likheterna. Vi behöver även några matemati
 
 De vi behöver blir...
 
+Egenskaper hos likhet
+
 >   Symmetry     :: a `Equal` b -> b `Equal` a
 >   Transitivity :: a `Equal` b -> b `Equal` c -> a `Equal` c
->   CongMul      :: a `Equal` b -> (a `Mul` c) `Equal` (b `Mul` c)
->   MulDiv1      :: ((b `Div` a) `Mul` a) `Equal` b
->   CongAdd      :: a `Equal` b -> (a `Add` c) `Equal` (b `Add` c)
->   AddSub1      :: ((b `Sub` a) `Add` a) `Equal` b
->   Cong         :: a `Equal` b -> (f a) `Equal` (f b)
->   Cong2        :: (f a b) `Equal` (f a c) -> (f b a) `Equal` (f c a)
->   Cong3        :: a `Equal` b -> (f a) c `Equal` (f b) c
->   Hej          :: a `Equal` b -> ((f a) c) `Equal` ((f b) c)
 
-> test :: a `Equal` b -> (Add c a) `Equal` (Add c b)
-> test = Cong
+Canceling out
 
-> --test2 :: a `Equal` b -> (f a c) `Equal` (f b c)
-> --test2 = Hej
+>   MulDiv       :: ((b `Div` a) `Mul` a) `Equal` b
+>   AddSub       :: ((b `Sub` a) `Add` a) `Equal` b
 
-> test3 :: a `Equal` b -> ((Add a) c) `Equal` ((Add b) c)
-> test3 = Hej
+Kongruenser
 
-> --test2 :: a `Equal` b -> ((Add a) c) `Equal` ((Add b) c)
-> --test2 aEb = Cong2 hej
-> --  where
-> --    hej = test aEb
+>   CongAddL     :: a `Equal` b -> (a `Add` c) `Equal` (b `Add` c)
+>   CongAddR     :: a `Equal` b -> (c `Add` a) `Equal` (c `Add` b)
+>   CongSubL     :: a `Equal` b -> (a `Sub` c) `Equal` (b `Sub` c)
+>   CongSubR     :: a `Equal` b -> (c `Sub` a) `Equal` (c `Sub` b)
+>   CongMulL     :: a `Equal` b -> (a `Mul` c) `Equal` (b `Mul` c)
+>   CongMulR     :: a `Equal` b -> (c `Mul` a) `Equal` (c `Mul` b)
 
-> --hej :: a `Equal` b -> 
-
-> skoj :: f a b -> f b a
-> skoj = flip
-
-> type family Flip (f :: Expr -> Expr -> Expr) (b :: Expr) (c :: Expr) where
->   Flip f b a = f a b
-
-> type Ad a b = Flip Add a b
-
-> --test2 :: a `Equal` b -> ((Add a) c) `Equal` ((Add b) c)
-> --test2 = Cong3
-
-> --test3 :: a `Equal` b -> ((Add c) a) `Equal` ((Add c) b)
-> --test3 = Cong3
-
-> --hej :: (a -> b) -> f a -> f b
-> --hej _ a = a
-
-> congAdd :: a `Equal` b -> (c `Add` a) `Equal` (c `Add` b)
-> congAdd = Cong
-
-> --congMul :: a `Equal` b -> (a `Add` c) `Equal` (b `Add` c)
-> --congMul = Cong2
-
-> hej :: Ti `Equal` T0
-> hej = Tinitial
-
-> hej2 :: ('Add Tf Ti) `Equal` ('Add Tf T0)
-> hej2 = Cong hej
-
-> --hej3 = Cong2 hej2
-
-
-> --test :: f -> a -> f a
-> --test = undefined
 
 Första beviset
 --------------
@@ -252,7 +217,7 @@ som mer rigoröst bör skrivas som
 
 Vi ska alltså skapa ett värde av följande typ:
 
-< type Proof1 = Vf `Equal` (Vi `Add` (Avalue `Mul` DeltaTfun))
+< type Proof1 = Vf `Equal` (Vi `Add` (Avalue `Mul` DeltaTfun Tf))
 
 Nu kör vi!
 
@@ -286,7 +251,7 @@ Vi använder transitivitet för att relatera kvoten till det aktuella värdet p�
 Vi multiplicerar bägge sidor med högerledets kvot
 
 > avalMdtEdvDdtMdt :: (Avalue `Mul` DeltaTfun t) `Equal` ((DeltaVfun t `Div` DeltaTfun t) `Mul` DeltaTfun t)
-> avalMdtEdvDdtMdt = CongMul avalEdvDdt
+> avalMdtEdvDdtMdt = CongMulL avalEdvDdt
 
 \begin{align}
   a_{value} * (\Delta t)(t) = \frac{(\Delta v)(t)}{(\Delta t)(t)} * (\Delta t)(t)
@@ -297,7 +262,7 @@ Vi multiplicerar bägge sidor med högerledets kvot
 Vi förenklarar högerledet
 
 > avalMdtEdv :: (Avalue `Mul` DeltaTfun t) `Equal` DeltaVfun t
-> avalMdtEdv = avalMdtEdvDdtMdt `Transitivity` MulDiv1
+> avalMdtEdv = avalMdtEdvDdtMdt `Transitivity` MulDiv
 
 \begin{align}
   a_{value} * (\Delta t)(t) = (\Delta v)(t)
@@ -319,10 +284,10 @@ Vi splittrar högerledet
 och flyttar över `Vi`
 
 > avalMdtAviEvfunSviAvi :: ((Avalue `Mul` DeltaTfun t) `Add` Vi) `Equal` ((Vfun t `Sub` Vi) `Add` Vi)
-> avalMdtAviEvfunSviAvi = CongAdd avalMdtEvfSvi
+> avalMdtAviEvfunSviAvi = CongAddL avalMdtEvfSvi
 
 > avalMdtAviEvfun :: ((Avalue `Mul` DeltaTfun t) `Add` Vi) `Equal` (Vfun t)
-> avalMdtAviEvfun = avalMdtAviEvfunSviAvi `Transitivity` AddSub1
+> avalMdtAviEvfun = avalMdtAviEvfunSviAvi `Transitivity` AddSub
 
 \begin{align}
   a_{value} * (\Delta t)(t) + v_i = v(t)
@@ -345,7 +310,98 @@ Vi ska masera uttrycket lite också.
 
 **(VIII)**
 
-Först splittras 
+Vi tänker skaffa ett bevis för den ursprungliga. Det föregående beviset
 
-Om man uttnyttjar konventionen att $t_i = 0$ får man
+< vfunEavalMdtAvi :: (Vfun t) `Equal` ((Avalue `Mul` DeltaTfun t) `Add` Vi)
+
+gäller för *alla* `t`. Då gäller det speciellt för `t = Tf`
+
+> vfuntfEavalMdtfAvi :: (Vfun Tf) `Equal` ((Avalue `Mul` DeltaTfun Tf) `Add` Vi)
+> vfuntfEavalMdtfAvi = vfunEavalMdtAvi
+
+\begin{align}
+  v(t_f) = a_{value} * (\Delta t)(t_f) + v_i
+\end{align}
+
+**(IX)**
+
+Vi ersätter uttryck med definerande likheter. Först för `Vf`
+
+> vfEavalMdtfAvi :: Vf `Equal` ((Avalue `Mul` DeltaTfun Tf) `Add` Vi)
+> vfEavalMdtfAvi = Vfinal `Transitivity` vfuntfEavalMdtfAvi
+
+\begin{align}
+  v_f = a_{value} * (\Delta t)(t_f) + v_i
+\end{align}
+
+eller om man, som man brukar göra, låter $\Delta t$ implicit betyda tidsskillnad mellan finalt och initialt.
+
+\begin{align}
+  v_f = a_{value} * \Delta t + v_i
+\end{align}
+
+**(X)**
+
+och sedan för `DeltaTfun Tf`
+
+> vfEavalMtfStiAvi :: Vf `Equal` ((Avalue `Mul` (Tf `Sub` Ti)) `Add` Vi)
+> vfEavalMtfStiAvi = vfEavalMdtfAvi `Transitivity` x
+>   where
+>     x :: ((c `Mul` (DeltaTfun t)) `Add` d) `Equal` 
+>          ((c `Mul` (t `Sub` Ti)) `Add` d)
+>     x = CongAddL y
+>
+>     y :: (c `Mul` (DeltaTfun t)) `Equal` (c `Mul` (t `Sub` Ti))
+>     y = CongMulR DeltaTdef
+
+\begin{align}
+  v_f = a_{value} * (t_f - t_i) + v_i
+\end{align}
+
+Andra beviset
+-------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

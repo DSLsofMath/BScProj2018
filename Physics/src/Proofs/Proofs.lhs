@@ -41,12 +41,14 @@ Detta ger följande definerande samband.
 
 \begin{align}
   t_f &= \{\text{Tid vid finalt, när experimentet är slut}\} \\
-  t_i &= \{\text{Tid vid initialt, när experimentet startar}\} = t_0\\
+  t_i &= \{\text{Tid vid initialt, när experimentet startar}\} = t_0 = 0\\
   x_f &= x(t_f) \\
   x_i &= x(t_i) = x_0 \\
   v_f &= v(t_f) \\
   v_i &= v(t_i) = v_0 \\
 \end{align}
+
+Man brukar ha som konvention att $t_0 = 0$. Det betyder att experimentets startpunkt sätts som referenstidspunkt.
 
 Varför är inte accelerationen med? Jo, för dessa fyra formler uttnyttjar att accelerationen är konstant. Är $a$ konstant? Vad syftar ens bara $a$ på? I detta sammanhanget menar man mer explcit att 
 
@@ -177,7 +179,8 @@ Bland de definerande likheterna har vi de som relaterar initiala och finala läg
 >   Vinitial1 :: Vi `Equal` Vfun Ti
 >   Vinitial2 :: V0 `Equal` Vfun Ti
 >   Vfinal    :: Vf `Equal` Vfun Tf
->   Tinitial  :: Ti `Equal` T0
+>   Tinitial1 :: Ti `Equal` T0
+>   Tinitial2 :: Ti `Equal` Zero
 
 Vi har även likheten för acceleration
 
@@ -209,6 +212,7 @@ De vi behöver blir...
 
 Egenskaper hos likhet
 
+>   Reflexive    :: a `Equal` a
 >   Symmetry     :: a `Equal` b -> b `Equal` a
 >   Transitivity :: a `Equal` b -> b `Equal` c -> a `Equal` c
 
@@ -227,6 +231,8 @@ Kongruenser
 >   CongMulR     :: a `Equal` b -> (c `Mul` a) `Equal` (c `Mul` b)
 >   CongInteg    :: a `Equal` b -> Integ a x y z `Equal` 
 >                                  Integ b x y z
+>   CongPoly2    :: a2 `Equal` a2' -> PolyFun a0 a1 a2 t `Equal`
+>                                     PolyFun a0 a1 a2' t
 
 Integraler
 
@@ -234,6 +240,23 @@ Integraler
 >                   `Equal`
 >                        ((PolyFun Zero a0 (a1 `Div` Two) u) `Sub`
 >                         (PolyFun Zero a0 (a1 `Div` Two) l))
+
+Identiteter
+
+>   ZeroNum      :: (Zero `Div` a) `Equal` Zero
+>   ZeroMul      :: (Zero `Mul` a) `Equal` Zero
+>   ZeroAddL     :: (Zero `Add` a) `Equal` a
+>   ZeroAddR     :: (a `Add` Zero) `Equal` a
+>   ZeroSub      :: (a `Sub` Zero) `Equal` a
+
+Aritmetik
+
+>   MulDistSub   :: (a `Mul` (b `Sub` c)) `Equal`
+>                   ((a `Mul` b) `Sub` (a `Mul` c))
+
+Polynom
+
+>   PolyEval     :: PolyFun a0 a1 a2 t `Equal` ((a0 `Add` (a1 `Mul` t)) `Add` (a2 `Mul` (t `Mul` t)))
 
 Första beviset
 --------------
@@ -287,19 +310,154 @@ Vi ersätter integralen av acceleration som funktion med acceleration som värde
 
 **(III)**
 
-> s3 :: DeltaVfun t 
+Vi beräknar integralen
+
+> dvEavaltSavalti :: DeltaVfun t 
 >         `Equal` 
 >       ((PolyFun Zero Avalue (Zero `Div` Two) t) 
 >         `Sub` 
 >        (PolyFun Zero Avalue (Zero `Div` Two) Ti))
-> s3 = dvEinaval `Transitivity` IntegEval
+> dvEavaltSavalti = dvEinaval `Transitivity` IntegEval
 
+\begin{align}
+  (\Delta v)(t) = a_{value} * t - a_{value} * t_i
+\end{align}
 
+**(IV)**
 
+Vi ska hyfsa den där likheten lite. Semantiskt blir det dock ingen skillnad från steget innan. Först görs `Zero \`Div\` Two` till `Zero`.
 
+> dvEavaltSavalti1 :: DeltaVfun t 
+>         `Equal` 
+>       ((PolyFun Zero Avalue Zero t) 
+>         `Sub` 
+>        (PolyFun Zero Avalue (Zero `Div` Two) Ti))
+> dvEavaltSavalti1 = dvEavaltSavalti `Transitivity` x
+>   where
+>     x = CongSubL y
+>     y = CongPoly2 ZeroNum
 
+och den andra av dem
 
+> dvEavaltSavalti2 :: DeltaVfun t 
+>         `Equal` 
+>       ((PolyFun Zero Avalue Zero t) 
+>         `Sub` 
+>        (PolyFun Zero Avalue Zero Ti))
+> dvEavaltSavalti2 = dvEavaltSavalti1 `Transitivity` x
+>   where
+>     x ::  (PolyFun Zero Avalue Zero t `Sub` 
+>            PolyFun Zero Avalue (Div Zero Two) Ti)
+>          `Equal`
+>           (PolyFun Zero Avalue Zero t `Sub` 
+>            PolyFun Zero Avalue Zero           Ti)
+>     x = CongSubR y
+>     y = CongPoly2 ZeroNum
 
+**(V)**
+
+Det är ganska uppenbart för oss människor att
+
+\begin{align}
+  0 + a*t + 0*t*t = a*t
+\end{align}
+
+men i datorn måste vi ändå göra det fullständigt. Vi inser att det kommer behöva göras flera gånger och vara väldigt omständigt. Så vi gör en liten generell lemma.
+
+> polyLinear :: PolyFun Zero e Zero t `Equal` (e `Mul` t)
+> polyLinear = p
+>   where
+>     x :: PolyFun Zero e Zero t `Equal` 
+>          ((Zero `Add` (e `Mul` t)) `Add` (Zero `Mul` (t `Mul` t)))
+>     x = PolyEval
+>
+>     y :: PolyFun Zero e Zero t `Equal` 
+>          ((Zero `Add` (e `Mul` t)) `Add` Zero)
+>     y = x `Transitivity` (CongAddR ZeroMul)
+>
+>     z :: PolyFun Zero e Zero t `Equal` (Zero `Add` (e `Mul` t))
+>     z = y `Transitivity` ZeroAddR
+>
+>     p :: PolyFun Zero e Zero t `Equal` (e `Mul` t)
+>     p = z `Transitivity` ZeroAddL
+
+Så... vad ska detta användas på? Jo den ska användas för att förbättra hygienen från det föregående steget.
+
+> dvEavaltSavalti3 :: DeltaVfun t `Equal` ((Avalue `Mul` t) `Sub`
+>                                          (Avalue `Mul` Ti))
+> dvEavaltSavalti3 = y
+>   where
+>     x = dvEavaltSavalti2 `Transitivity` CongSubL polyLinear
+>     y = x                `Transitivity` CongSubR polyLinear
+
+**(VI)**
+
+Nu är vi nästan klara.
+
+> dvEavalMtSti :: DeltaVfun t `Equal` (Avalue `Mul` (t `Sub` Ti))
+> dvEavalMtSti = dvEavaltSavalti3 `Transitivity` 
+>                (Symmetry MulDistSub)
+
+\begin{align}
+  (\Delta v)(t) = a_{value} * (t - t_i)
+\end{align}
+
+**(VII)**
+
+Vi vecklar upp vänsterledet
+
+> vfunSviEavalMtSti :: (Vfun t `Sub` Vi) `Equal` 
+>                      (Avalue `Mul` (t `Sub` Ti))
+> vfunSviEavalMtSti = (Symmetry DeltaVdef) `Transitivity`
+>                     dvEavalMtSti
+
+och flyttar över `Vi`
+
+...
+
+Ah! Vi har inget axiom för det. Vi kan bara addera `Vi` på båda sidor och sedan kancellera det på VL. Låt oss bevisa ett lemma.
+
+> subToAdd :: (a `Sub` b) `Equal` c -> a `Equal` (c `Add` b)
+> subToAdd aSbEc = y
+>   where
+>     --x :: ((a `Sub` b) `Add` b) `Equal` (c `Add` b)
+>     x = CongAddL aSbEc
+>     y = (Symmetry AddSub) `Transitivity` x
+
+Vi nyttjar lemmat
+
+> vfunEavalMtStiAvi :: Vfun t `Equal` ((Avalue `Mul` (t `Sub` Ti)) `Add` Vi)
+> vfunEavalMtStiAvi = subToAdd vfunSviEavalMtSti
+
+\begin{align}
+  v(t) = a_{value} * (t - t_i) + v_i
+\end{align}
+
+**(VIII)**
+
+Vi använder konventionen $t_i = 0$.
+
+> vFunEavalMtAvi :: Vfun t `Equal` ((Avalue `Mul` t) `Add` Vi)
+> vFunEavalMtAvi = vfunEavalMtStiAvi `Transitivity` x
+>   where
+>     x :: ((Avalue `Mul` (Sub t Ti)) `Add` Vi) `Equal` 
+>          ((Avalue `Mul` t         ) `Add` Vi)
+>     x = CongAddL y
+>     y :: (Avalue `Mul` (t `Sub` Ti)) `Equal` 
+>          (Avalue `Mul` t           )
+>     y = CongMulR z
+>     z :: (t `Sub` Ti) `Equal` t
+>     z = r `Transitivity` ZeroSub
+>     q :: (t `Sub` Ti) `Equal` (t `Sub` Ti)
+>     q = Reflexive
+>     r :: (t `Sub` Ti) `Equal` (t `Sub` Zero)
+>     r = q `Transitivity` CongSubR Tinitial2
+
+\begin{align}
+  v(t) = a_{value} * t + v_i
+\end{align}
+
+Phew! Så där. Nu kan vi känna oss nöja med detta första bevis.
 
 
 

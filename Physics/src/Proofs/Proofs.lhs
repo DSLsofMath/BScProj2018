@@ -66,6 +66,17 @@ Hur är det med $\Delta$? Hur ska det tolkas? Defintionen av $\Delta$ är *för�
 
 $\Delta$ av något blir en funktion av tiden. Vi skrev också $(\Delta x)(t)$ och inte $\Delta x(t)$. Det är tydligare att låta $\Delta$ syfta på differensen i *storheten* i sig, och inte *funktionen* som beskriver storheten.
 
+För $\Delta$ finns två andra likheter, nämligen
+
+\begin{align}
+  (\Delta x)(t) &= \int_{t_i}^t v(t) dt \\
+  (\Delta v)(t) &= \int_{t_i}^t a(t) dt \\
+\end{align}
+
+vilket man kan förstå om man tittar på bilden
+
+TODO: bild
+
 
 Uppkodning av namnen och sambanden
 ----------------------------------
@@ -82,7 +93,8 @@ Sedan gör vi en *typ* som representerar likhet mellan två andra typer, och des
 
 < data Equal (a :: Expr) (b :: Expr) where
 
-**Uttryck**
+Uttryck
+-------
 
 Vad för slags uttryck finns det? Till att börja med addition, subtraktion, multiplikation och divison olika uttryck.
 
@@ -100,7 +112,7 @@ där argumenten har följande betydelse
 1. Uttryck att integrera
 2. Undre gräns
 3. Övre gräns
-4. Uttryck att integrera map
+4. Vad som integreras map
 
 En annan typ av uttryck är de symboliska namn som definerades innan. Det är funktionerna som anger position, hastighet och acceleration.
 
@@ -124,6 +136,7 @@ Vi har även de olika finala och initiala värdena.
 
 Här passar vi att flika in några tal vi kommer behöva.
 
+>           | Zero
 >           | Two
 
 Vi har värdet på vad accelerationen är
@@ -136,7 +149,21 @@ Till sist har vi $\Delta$-funktionerna
 >           | DeltaXfun Expr
 >           | DeltaVfun Expr
 
-**Definerande likheter**
+Inte riktigt trots allt. Ett slags *uttryck* är en generell polynomfunktion. Detta för att kunna behandla alla funktioner lika vid integration. Sedan råkar vi bara behöva polynomfunktioner, och inte exempelvis sinus-funktioner.
+
+>           | PolyFun Expr -- a0
+>                     Expr -- a1
+>                     Expr -- a2
+>                     Expr -- t
+
+Är en polynomfunktion som ser ut som
+
+\begin{align}
+  p(t) = a0 + a1 * t + a2 * t^2
+\end{align}
+
+Definerande likheter
+--------------------
 
 Det var alla uttryck vi behöver. Nu ska vi koda upp de likheter som behövs. Likheterna är av två slag. De som är definerande, alltså anger vad någon symbol betyder samt olika matematiska likheter, t.ex. att addition är kommutativ.
 
@@ -152,17 +179,11 @@ Bland de definerande likheterna har vi de som relaterar initiala och finala läg
 >   Vfinal    :: Vf `Equal` Vfun Tf
 >   Tinitial  :: Ti `Equal` T0
 
-Vi har även två intressanta likheter när det kommer till accelerationen. Först
+Vi har även likheten för acceleration
 
->   AfunCon :: Afun t `Equal` Avalue
+>   AfunCon :: Afun t `Equal` PolyFun Avalue Zero Zero t
 
 som säger att funktionen för acceleration, *för alla* `t`, är lika med `Avalue`.
-
-Den andra likheten är
-
->   AfunQuo :: Afun t `Equal` (DeltaVfun t `Div` DeltaTfun t)
-
-som säger att accelerationen, för alla `t`, är lika med kvoten mellan $(\Delta V)(t)$ och $\Delta T$. Detta gäller eftersom accelerationen är konstant.
 
 Vi har likheterna som definerar $\Delta$-funktionerna
 
@@ -170,9 +191,15 @@ Vi har likheterna som definerar $\Delta$-funktionerna
 >   DeltaVdef :: DeltaVfun t `Equal` (Vfun t `Sub` Vi)
 >   DeltaTdef :: DeltaTfun t `Equal` (t `Sub` Ti)
 
+och likheterna som relaterar $\Delta$-funktionerna till integraler
 
+>   DeltaXint :: DeltaXfun t `Equal` Integ (Vfun t') Ti t t'
+>   DeltaVint :: DeltaVfun t `Equal` Integ (Afun t') Ti t t'
 
-**Matematiska likheter**
+**Viktigt:** *alla* funktioner (t.ex. `DeltaXfun` och `Vfun`) behöver kunna uttryckas som en polynomfunktion för att vara explicita. Men bara `Afun` har en likhet med polynomfunktion som axiom. Alla andra är bara relaterade till varandra på olika vis.
+
+Matematiska likheter
+--------------------
 
 Okej, så nu har vi de definerande likheterna. Vi behöver även några matematiska likheter. Man skulle kunna tänka sig att definera *alla* som finns, bara för att det inte ska verka som att vi plockar ut det vi behöver, men det skulle bli väldigt många. Så vi låtsas vara lata och bara definerar några som råkar vara de vi behöver.
 
@@ -198,7 +225,15 @@ Kongruenser
 >   CongSubR     :: a `Equal` b -> (c `Sub` a) `Equal` (c `Sub` b)
 >   CongMulL     :: a `Equal` b -> (a `Mul` c) `Equal` (b `Mul` c)
 >   CongMulR     :: a `Equal` b -> (c `Mul` a) `Equal` (c `Mul` b)
+>   CongInteg    :: a `Equal` b -> Integ a x y z `Equal` 
+>                                  Integ b x y z
 
+Integraler
+
+>   IntegEval    :: Integ (PolyFun a0   a1 Zero           t') l u t'
+>                   `Equal`
+>                        ((PolyFun Zero a0 (a1 `Div` Two) u) `Sub`
+>                         (PolyFun Zero a0 (a1 `Div` Two) l))
 
 Första beviset
 --------------
@@ -212,7 +247,7 @@ Vi ska börja med att bevisa
 som mer rigoröst bör skrivas som
 
 \begin{align}
-  v_f = v_i + a_{value} * \Delta t
+  v_f = v_i + a_{value} * (\Delta t)(t_f)
 \end{align}
 
 Vi ska alltså skapa ett värde av följande typ:
@@ -223,143 +258,47 @@ Nu kör vi!
 
 **(I)**
 
-Vi börjar med
+Vi börjar med två axiom, definerande likhetheter.
 
-> afunEdvDdt :: Afun t `Equal` (DeltaVfun t `Div` DeltaTfun t)
-> afunEdvDdt = AfunQuo
+> afunEaval :: Afun t `Equal` PolyFun Avalue Zero Zero t
+> afunEaval = AfunCon
+
+> dvEinafun :: DeltaVfun t `Equal` Integ (Afun t') Ti t t'
+> dvEinafun = DeltaVint
 
 \begin{align}
-  a(t) = \frac{(\Delta v)(t)}{(\Delta t)(t)}
+  a(t) = a_{value} && (\Delta v)(t) = \int_{t_i}^t a(t) dt
 \end{align}
 
 **(II)**
 
-Vi använder transitivitet för att relatera kvoten till det aktuella värdet på accelerationen.
+Vi ersätter integralen av acceleration som funktion med acceleration som värde.
 
-> avalEdvDdt :: Avalue `Equal` (DeltaVfun t `Div` DeltaTfun t)
-> avalEdvDdt = afunEaval `Transitivity` afunEdvDdt
+> dvEinaval :: DeltaVfun t `Equal` Integ (PolyFun Avalue Zero Zero t') Ti t t'
+> dvEinaval = dvEinafun `Transitivity` x
 >   where
->     afunEaval :: Avalue `Equal` Afun t
->     afunEaval = Symmetry AfunCon
+>     x :: Integ (Afun t) l u t' `Equal` 
+>          Integ (PolyFun Avalue Zero Zero t) l u t'
+>     x = CongInteg afunEaval
 
 \begin{align}
-  a_{value} = \frac{(\Delta v)(t)}{(\Delta t)(t)}
+  (\Delta v)(t) = \int_{t_i}^t a_{value} dt
 \end{align}
 
 **(III)**
 
-Vi multiplicerar bägge sidor med högerledets kvot
+> s3 :: DeltaVfun t 
+>         `Equal` 
+>       ((PolyFun Zero Avalue (Zero `Div` Two) t) 
+>         `Sub` 
+>        (PolyFun Zero Avalue (Zero `Div` Two) Ti))
+> s3 = dvEinaval `Transitivity` IntegEval
 
-> avalMdtEdvDdtMdt :: (Avalue `Mul` DeltaTfun t) `Equal` ((DeltaVfun t `Div` DeltaTfun t) `Mul` DeltaTfun t)
-> avalMdtEdvDdtMdt = CongMulL avalEdvDdt
 
-\begin{align}
-  a_{value} * (\Delta t)(t) = \frac{(\Delta v)(t)}{(\Delta t)(t)} * (\Delta t)(t)
-\end{align}
 
-**(IV)**
 
-Vi förenklarar högerledet
 
-> avalMdtEdv :: (Avalue `Mul` DeltaTfun t) `Equal` DeltaVfun t
-> avalMdtEdv = avalMdtEdvDdtMdt `Transitivity` MulDiv
 
-\begin{align}
-  a_{value} * (\Delta t)(t) = (\Delta v)(t)
-\end{align}
-
-**(V)**
-
-Vi splittrar högerledet
-
-> avalMdtEvfSvi :: (Avalue `Mul` DeltaTfun t) `Equal` (Vfun t `Sub` Vi) 
-> avalMdtEvfSvi = avalMdtEdv `Transitivity` DeltaVdef
-
-\begin{align}
-  a_{value} * (\Delta t)(t) = v(t) - v_i
-\end{align}
-
-**(VI)**
-
-och flyttar över `Vi`
-
-> avalMdtAviEvfunSviAvi :: ((Avalue `Mul` DeltaTfun t) `Add` Vi) `Equal` ((Vfun t `Sub` Vi) `Add` Vi)
-> avalMdtAviEvfunSviAvi = CongAddL avalMdtEvfSvi
-
-> avalMdtAviEvfun :: ((Avalue `Mul` DeltaTfun t) `Add` Vi) `Equal` (Vfun t)
-> avalMdtAviEvfun = avalMdtAviEvfunSviAvi `Transitivity` AddSub
-
-\begin{align}
-  a_{value} * (\Delta t)(t) + v_i = v(t)
-\end{align}
-
-**(VII)**
-
-Och slutligen byter sida
-
-> vfunEavalMdtAvi :: (Vfun t) `Equal` ((Avalue `Mul` DeltaTfun t) `Add` Vi) 
-> vfunEavalMdtAvi = Symmetry avalMdtAviEvfun
-
-\begin{align}
-  v(t) = a_{value} * (\Delta t)(t) + v_i
-\end{align}
-
-Detta är en välbekant formel. Den säger att den aktuella hastighetnen är lika med det konstanta accelerationsvärdet gånger tiden sedan experimentet startade pluss den initiala hastighen. Rimligt va?
-
-Vi ska masera uttrycket lite också.
-
-**(VIII)**
-
-Vi tänker skaffa ett bevis för den ursprungliga. Det föregående beviset
-
-< vfunEavalMdtAvi :: (Vfun t) `Equal` ((Avalue `Mul` DeltaTfun t) `Add` Vi)
-
-gäller för *alla* `t`. Då gäller det speciellt för `t = Tf`
-
-> vfuntfEavalMdtfAvi :: (Vfun Tf) `Equal` ((Avalue `Mul` DeltaTfun Tf) `Add` Vi)
-> vfuntfEavalMdtfAvi = vfunEavalMdtAvi
-
-\begin{align}
-  v(t_f) = a_{value} * (\Delta t)(t_f) + v_i
-\end{align}
-
-**(IX)**
-
-Vi ersätter uttryck med definerande likheter. Först för `Vf`
-
-> vfEavalMdtfAvi :: Vf `Equal` ((Avalue `Mul` DeltaTfun Tf) `Add` Vi)
-> vfEavalMdtfAvi = Vfinal `Transitivity` vfuntfEavalMdtfAvi
-
-\begin{align}
-  v_f = a_{value} * (\Delta t)(t_f) + v_i
-\end{align}
-
-eller om man, som man brukar göra, låter $\Delta t$ implicit betyda tidsskillnad mellan finalt och initialt.
-
-\begin{align}
-  v_f = a_{value} * \Delta t + v_i
-\end{align}
-
-**(X)**
-
-och sedan för `DeltaTfun Tf`
-
-> vfEavalMtfStiAvi :: Vf `Equal` ((Avalue `Mul` (Tf `Sub` Ti)) `Add` Vi)
-> vfEavalMtfStiAvi = vfEavalMdtfAvi `Transitivity` x
->   where
->     x :: ((c `Mul` (DeltaTfun t)) `Add` d) `Equal` 
->          ((c `Mul` (t `Sub` Ti)) `Add` d)
->     x = CongAddL y
->
->     y :: (c `Mul` (DeltaTfun t)) `Equal` (c `Mul` (t `Sub` Ti))
->     y = CongMulR DeltaTdef
-
-\begin{align}
-  v_f = a_{value} * (t_f - t_i) + v_i
-\end{align}
-
-Andra beviset
--------------
 
 
 

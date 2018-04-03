@@ -764,7 +764,7 @@ ask our kind friend Wikipedia for help. From the entry on *Integral*:
  > $$\int_a^b f(x) dx$$
  >
  > ![A definite integral of a function can be represented as the signed area of the region bounded by its graph. (C) KSmrq](https://upload.wikimedia.org/wikipedia/commons/9/9f/Integral_example.svg){.float-img-left .img-border}
- > 
+ >
  > is defined informally as the signed area of the region in the
  > $xy$-plane that is bounded by the graph of $f$, the $x$-axis
  > and the vertical lines $x = a$ and $x = b$. The area above the
@@ -797,13 +797,60 @@ The same article then brings further clarification
  > values of an antiderivative evaluated at the endpoints of the
  > interval.
 
-Ok, so indefinite integrals are the inverse of derivatives, and
-definite integrals are just the application of an indefinite integral
-to an interval. Good, that doesn't seem to complicated.
+So indefinite integrals are the inverse of derivatives, and definite
+integrals are just the application of an indefinite integral to an
+interval. If we look back at the syntax used, this makes sense. $\int
+f(x) dx$ is the indefinite integral. A function not applied to
+anything. $\int_a^b f(x) dx$ is the definite integral. The difference
+of the indefinite integral being applied to the endpoints of the
+interval $[a,b]$.
+
+To simplify a bit, we see that just as with derivatives the $x$'s
+everywhere are just there to confuse us, so we remove them.
+
+$$\int f(x) dx$$
+
+should really just be
+
+$$\int f$$.
+
+Next, the definition of definite integrals implies that we can write
+
+$$\int_a^b f(x) dx$$
+
+as
+
+$$(\int f)[b] - (\int f)[a]$$.
+
+Only one of the two kinds of integral are fit to directly model in the
+syntax tree of our language. As `FunExpr` represents functions, it has
+to be the indefinite integral, which is a function unlike the definite
+integral which is a real value difference.
+
+A thing to note is that while we may sometimes informally speak of the
+indefinite integral as a single unary function like any other, it's
+actually a set of functions, and the meaning of $F(x) = \int f(x) dx$
+is really ambiguous. The reason for this is that for some function
+$f$, there is no single function $F$ such that $D(F) = f$. A
+simple counterexample is
+
+$$D(x \mapsto x + 2) = 1 \text{ and } D(x \mapsto x + 3) = 1$$
+
+The fact that adding a constant to a function does not change the the
+derivative, implies that the indefinite integral of a function is
+really a set of functions where the constant term differs.
+
+$$\int f = \{ F + const C | C \in \mathbb{R} \}$$
+
+We don't want sets though. We want unary real functions (because
+that's our the type of our semantics!). So, we simply say that when
+integrating a function, the constant term must be supplied in order to
+nail the result down to a single function!
+
+<     | I RealNum FunExpr
 
 
 
-TODO: syntax analysis and modeling here
 
 TODO: Also look at numerical computation of integrals
 

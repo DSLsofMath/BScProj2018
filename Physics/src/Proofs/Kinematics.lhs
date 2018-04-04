@@ -4,7 +4,7 @@ WIP
 Kinematics
 ==========
 
-Let's get into some kinematics shall we? In this chaper we'll define the kinematic formulas unambgiously and then encode them in Haskell.
+Let's get into some kinematics, shall we? In this chaper we'll define the kinematic formulas unambgiously and then encode them in Haskell. We'll also begin proving some small lemmas.
 
 > {-# LANGUAGE GADTs #-}
 > {-# LANGUAGE DataKinds #-}
@@ -14,6 +14,8 @@ Let's get into some kinematics shall we? In this chaper we'll define the kinemat
 > module Proofs.Kinematics
 > ( Expr(..)
 > , Equal(..)
+> , zeroAddR
+> , zeroMulR
 > )
 > where
 
@@ -105,7 +107,7 @@ Expressions will be written in the following fashion
 <           | blah
 <           | blahh           
 
-which combined with the `DataKinds` extensions makes `Expr` and *kind* and whatever different expressions we have *types*. Just what we wanted!
+which combined with the `DataKinds` extensions makes `Expr` a *kind* and whatever different expressions we have *types*. Just what we wanted!
 
 Equalities will be written as
 
@@ -121,9 +123,20 @@ Expressions
 We'll begin by creating the expressions we need. For starters, there's addition, subtraction, multiplication and division between *other* expressions.
 
 > data Expr = Expr `Add` Expr
+
+---
+
+**Exercise.**
+
+Add the rest. (Do we think you're stupid? The answer to this exercise is obvious. These trivial exercises serve to keep you awake and alert.)
+
+**Solution.**
+
 >           | Expr `Sub` Expr
 >           | Expr `Mul` Expr
 >           | Expr `Div` Expr
+
+---
 
 The integral of an expression is also an expression.
 
@@ -143,6 +156,15 @@ These types have an argument, since they are *functions*. The argument is anothe
 We also have the different initial and final values.
 
 >           | X0
+
+---
+
+**Exercise.**
+
+Try to remember the remaining 8 values and add them.
+
+**Solution.**
+
 >           | Xi
 >           | Xf
 >           | V0
@@ -151,6 +173,8 @@ We also have the different initial and final values.
 >           | T0
 >           | Ti
 >           | Tf
+
+---
 
 The value of the acceleration is another symbolic name.
 
@@ -177,10 +201,10 @@ And finally, a *polynomial function*
 with the semantic meaning of
 
 \begin{align}
-  p(t) = a0 + a1 * t + a2 * t^2
+  p(t) = a_0 + a_1 * t + a_2 * t^2
 \end{align}
 
-What's the purpose of this? We'll need to evaluate integrals and as we'll se, by only allowing evalution of the one form, we can avoid cheating.
+What's the purpose of this? We'll need to evaluate integrals and as we'll see, by only allowing evalution of this one form, we can avoid cheating.
 
 Defining equalities
 -------------------
@@ -194,11 +218,22 @@ Among the defining equaltities we have those relating the initial and final stat
 >   Xinitial1 :: Xi `Equal` Xfun Ti
 >   Xinitial2 :: X0 `Equal` Xfun Ti
 >   Xfinal    :: Xf `Equal` Xfun Tf
+
+---
+
+**Exercise.**
+
+Add the remaining 5 equalities.
+
+**Solution.**
+
 >   Vinitial1 :: Vi `Equal` Vfun Ti
 >   Vinitial2 :: V0 `Equal` Vfun Ti
 >   Vfinal    :: Vf `Equal` Vfun Tf
 >   Tinitial1 :: Ti `Equal` T0
 >   Tinitial2 :: Ti `Equal` Zero
+
+---
 
 We have the definitions of the $\Delta$-functions
 
@@ -206,10 +241,18 @@ We have the definitions of the $\Delta$-functions
 >   DeltaVdef :: DeltaVfun t `Equal` (Vfun t `Sub` Vi)
 >   DeltaTdef :: DeltaTfun t `Equal` (t `Sub` Ti)
 
-and the relations between the $\Delta$-functions and integrals.
+---
+
+**Exericse.**
+
+Define the relations between the $\Delta$-functions and integrals. If you need to, look in the previous sections for the mathematical relation between the $\Delta$-functions and integrals, and also how `Integ` works.
+
+**Solution.**
 
 >   DeltaXint :: DeltaXfun t `Equal` Integ (Vfun t') Ti t t'
 >   DeltaVint :: DeltaVfun t `Equal` Integ (Afun t') Ti t t'
+
+---
 
 Finally we have the equalitity for the constant acceleration
 
@@ -233,8 +276,6 @@ The language for our proofs will be designed once, and then the proving will sta
 
 To avoid "cheating", the axioms here must be trivially true. That addition is commutative we can agree on. (But we wouldn't agree on that in a discrete mathematics course). That $v(t) = v_i + a * t$ is not trivial here, so this cannot be taken as an axiom.
 
-You can just skim the axioms for now. Once the proving the starts you can go back here and check 'em out in more detail.
-
 The equalities we need are:
 
 **Properties of equality**
@@ -250,7 +291,7 @@ The equalities we need are:
 
 **Congruency**
 
-The basic concept behind concruency is the purity of functions.
+The basic concept behind congruency is the purity of functions.
 
 \begin{align}
   a = b \implies f(a) = f(b)
@@ -259,11 +300,27 @@ The basic concept behind concruency is the purity of functions.
 Here this conecpt is generalized to multi-paramater functions.
 
 >   CongAddL      :: a `Equal` b -> (a `Add` c) `Equal` (b `Add` c)
+
+`CongAddL` says that if the left-hand-side arguments are equal, then adding something to both of them is also equal.
+
+---
+
+**Exercise.**
+
+Add equalities for `CongAddR` and the 4 corresponding ones for subtraction and multiplication as well.
+
+**Solution.**
+
 >   CongAddR      :: a `Equal` b -> (c `Add` a) `Equal` (c `Add` b)
 >   CongSubL      :: a `Equal` b -> (a `Sub` c) `Equal` (b `Sub` c)
 >   CongSubR      :: a `Equal` b -> (c `Sub` a) `Equal` (c `Sub` b)
 >   CongMulL      :: a `Equal` b -> (a `Mul` c) `Equal` (b `Mul` c)
 >   CongMulR      :: a `Equal` b -> (c `Mul` a) `Equal` (c `Mul` b)
+
+---
+
+We also need congurency for integration.
+
 >   CongInteg     :: a `Equal` b -> Integ a x y z `Equal` 
 >                                   Integ b x y z
 
@@ -284,19 +341,44 @@ This equality is the evaluation of an integral of a general first-order polynomi
 
 **Identities**
 
-> -- TODO: Bara L, bevisa R
+---
+
+**Exercise.**
+
+Encode the following identities as equalities in Haskell.
+
+\begin{align}
+  \frac{0}{x} &= x \\
+  0 * x &= 0 \\
+  0 + x &= x \\
+  x - 0 &= x \\
+\end{align}
+
+**Solution.**
+
 >   ZeroNum       :: (Zero `Div` a) `Equal` Zero
->   ZeroMul       :: (Zero `Mul` a) `Equal` Zero
->   ZeroMulR      :: (a `Mul` Zero) `Equal` Zero
+>   ZeroMulL      :: (Zero `Mul` a) `Equal` Zero
 >   ZeroAddL      :: (Zero `Add` a) `Equal` a
->   ZeroAddR      :: (a `Add` Zero) `Equal` a
 >   ZeroSub       :: (a `Sub` Zero) `Equal` a
 
+---
+
 **Artihmetics**
+
+---
+
+**Exercise.**
+
+Encode that multiplication is distrubative over subtraction and that addition and multiplication is commutative as equalities in Haskell.
+
+**Solution.**
 
 >   MulDistSub    :: (a `Mul` (b `Sub` c)) `Equal`
 >                   ((a `Mul` b) `Sub` (a `Mul` c))
 >   AddCom        :: (a `Add` b) `Equal` (b `Add` a)
+>   MulCom        :: (a `Mul` b) `Equal` (b `Mul` a)
+
+---
 
 **Polynomials**
 
@@ -304,7 +386,7 @@ This equality is the evaluation of an integral of a general first-order polynomi
 
 This equality relates the syntactic `PolyFun` to the semantic corresponding expression.
 
-Some small example proofs
+Some small example lemmas
 -------------------------
 
 Before we start on the big proofs, lets prove some small lemmas that will be helpful.
@@ -313,71 +395,165 @@ We have the axiom
 
 < ZeroAddL :: (Zero `Add` a) `Equal` a
 
-which states that adding `Zero` from the left does nothing. We want to prove also that adding `Zero` from the right does nothing as well.
+which states that adding `Zero` from the left does nothing. We want to prove that adding `Zero` from the right does nothing as well. That is, we want the following
 
-We begin by writing the signature of the type, that is, what the statement is.
+< zeroAddR :: (a `Add` Zero) `Equal` a
 
-> zeroAddR :: (a `Add` Zero) `Equal` a
+To do such proofs, it usually useful to use typed holes. That way you can see the types of values you've created. We begin by writing
 
-Now we have to construct a value of that type, that is, construct a proof.
+< zeroAddR :: (a `Add` Zero) `Equal` a
+< zeroAddR = _
+<   where
 
-> zeroAddR = z
->   where
-
-In the `where` clause we'll define some other names.
-
-Very similar to what we want to prove is the axiom
-
-< ZeroAddL :: (Zero `Add` a) `Equal` a
-
-So lets include it and its signature
-
->     x :: (Zero `Add` a) `Equal` a
->     x = ZeroAddL
-
-Our gut-feeling tells us that ``Zero `Add` a`` can be flipped. Between `zeroAddR` and `ZeroAddL` it *is* flipped and indeed, there is an axiom for this flipping.
-
-< AddCom :: (p `Add` q) `Equal` (q `Add` p)
-
-It's valid for *any* `p` and `q`. Let's set `p` to `a` and `q` to `Zero` when typing its signature.
-
->     y :: (a `Add` Zero) `Equal` (Zero `Add` a)
->     y = AddCom
-
-All right, so ``a `Add` Zero`` equals ``Zero `Add` a``, and ``Zero `Add` a`` equals `a`. (This is what `y` and `x` says). Then it makes sense that ``a `Add` Zero`` equals `a`, right? Yes, it does. This is expressed with
-
-< Transitivity :: p `Equal` q -> q `Equal` r -> p `Equal` r
-
-By writing
-
-< y `Transitivity` x
-
-`p`, `q` and `r` are decided in the following fashion
+and reload GHCi. We get
 
 ```
-(a `Add` Zero)          p
+• Found hole: _ :: Equal ('Add a 'Zero) a
+      Where: ‘a’ is a rigid type variable bound by
+               the type signature for:
+                 zeroAddR :: forall (a :: Expr). Equal ('Add a 'Zero) a
+               at Proofs/Kinematics.lhs:322:15
+...
+```
+
+First of all, GHCi types types a bit differently than we do. `Equal ('Add a 'Zero) a` is the same as ``(a `Add` Zero) `Equal` a``. The difference is that we use infix and skip the `'` in front of `Expr`-types. The `'` is a way to explcitily refer to the type and not the value.
+
+All right, so where `_` is a value of type ``(a `Add` Zero) `Equal` a`` should be. Pretty clear. The tricky part is how we get there. One way is to look at the available axioms. Two of interest, that is, a type which look about the same, are
+
+< ZeroAddL      :: (Zero `Add` a) `Equal` a
+
+and
+
+< AddCom        :: (a `Add` b) `Equal` (b `Add` a)
+
+We type two helper values
+
+< zeroAddR :: (a `Add` Zero) `Equal` a
+< zeroAddR = _
+<   where
+<     x = ZeroAddL
+<     y = AddCom
+
+and reload GHCi.
+
+```
+    • Relevant bindings include
+        x :: forall (a :: Expr). Equal ('Add 'Zero a) a
+          (bound at Proofs/Kinematics.lhs:352:7)
+        y :: forall (a :: Expr) (b :: Expr). Equal ('Add a b) ('Add b a)
+          (bound at Proofs/Kinematics.lhs:353:7)
+        zeroAddR :: Equal ('Add a 'Zero) a
+          (bound at Proofs/Kinematics.lhs:350:3)
+```
+
+Let's write the types of `x` and `y` explicitily. That way it's easier to keep track of the proof.
+
+< zeroAddR :: (a `Add` Zero) `Equal` a
+< zeroAddR = _
+<   where
+<     x :: (Zero `Add` a) `Equal` a
+<     x = ZeroAddL
+<     y :: (a `Add` b) `Equal` (b `Add` a)
+<     y = AddCom
+
+If we reload we should get the same message *and no error*. That way we know our written signatures are correct.
+
+Based on the involved signatures, it kinda looks like `y` should be specialized a bit. A qualified guess
+
+< zeroAddR :: (a `Add` Zero) `Equal` a
+< zeroAddR = _
+<   where
+<     x :: (Zero `Add` a) `Equal` a
+<     x = ZeroAddL
+<     y :: (a `Add` Zero) `Equal` (Zero `Add` a)
+<     y = AddCom
+
+If we reload GHCi, the signature of `y` has changed accordingly
+
+```
+y :: forall (a :: Expr). Equal ('Add a 'Zero) ('Add 'Zero a)
+```
+
+Now `x` tells us in words that "``Zero `Add` a`` equals `a`" and `y` tells us that "``a `Add` Zero`` equals ``Zero `Add` a``". Then it should make sense that "``a `Add` Zero`` equals `a`", right?
+
+To express this, we use
+
+< Transitivity  :: a `Equal` b -> b `Equal` c -> a `Equal` c
+
+We try to align the types of `x` and `y` into the pattern in the signature
+
+
+```
+(a `Add` Zero)          a
     `Equal`          `Equal`                  y
-(Zero `Add` a)          q
+(Zero `Add` a)          b
 
       |                 |
       V                 V
 
-(Zero `Add` a)          q
+(Zero `Add` a)          b
    `Equal`           `Equal`                  x
-      a                 r
+      a                 c
 
       |                 |
       V                 V
       
-(a `Add` Zero)          p
+(a `Add` Zero)          a
    `Equal`           `Equal`         y `Transitivity` x
-      a                 q
+      a                 c
 ```
 
-As you can see, giving `y` and `x` to `Transitivity` matches the more general type of `Transitivity`. When transitivity gets its two arguments, it becomes a value of the last type.
+We should give `y` as the first argument and `x` as the second argument to `Transitivity` to get what we want.
 
->     z :: (a `Add` Zero) `Equal` a
->     z = y `Transitivity` x
+> zeroAddR :: (a `Add` Zero) `Equal` a
+> zeroAddR = y `Transitivity` x
+>   where
+>     x :: (Zero `Add` a) `Equal` a
+>     x = ZeroAddL
+>     y :: (a `Add` Zero) `Equal` (Zero `Add` a)
+>     y = AddCom
+
+We reload GHCi
+
+```
+Ok, modules loaded: Proofs.Kinematics.
+```
+
+It compiles! Which means it type-checks. And then we know our proof is correct. The type-checker in Haskell here acts as a proof-checker.
+
+There is only one way to get good at proving stuff in Haskell, and that is to practise!  You can start with the following exercise.
+
+---
+
+**Exercise.**
+
+Prove the following
+
+< zeroMulR :: (a `Mul` Zero) `Equal` Zero
+
+It's very similar to the previous example. Experiment with the different axioms to try to get to the solution.
+
+**Solution.**
+
+> zeroMulR :: (a `Mul` Zero) `Equal` Zero
+> zeroMulR = y `Transitivity` x
+>   where
+>     x :: (Zero `Mul` a) `Equal` Zero
+>     x = ZeroMulL
+>     y :: (a `Mul` Zero) `Equal` (Zero `Mul` a)
+>     y = MulCom
+
+---
+
+In the following two chapters we'll prove two kinematic formulas. Along the way, many small lemmas like the one above will be proven. Proving in Haskell will be examplified and you can follow along and do parts for yourself. The larger parts you try yourself, the better! If something isn't marked as an exercise, try anyway! In the end you will have the knowledge and experience to try one formula entirely yourself.
+
+
+
+
+
+
+
+
 
 
 

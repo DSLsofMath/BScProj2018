@@ -10,60 +10,110 @@ The first proof
 > {-# LANGUAGE TypeOperators #-}
 
 > module Proofs.Proof1
-> ( vFunEavalMtAvi
+> ( 
 > )
 > where
 
 > import Proofs.Kinematics
 
-Vi ska börja med att bevisa
+The goal of this chapter is to prove the following formula
 
 \begin{align}
   v_f = v_i + a*t 
 \end{align}
 
-som mer rigoröst bör skrivas som
+which more precisely should be written as
 
 \begin{align}
   v_f = v_i + a_{value} * (\Delta t)(t_f)
 \end{align}
 
-Vi ska alltså skapa ett värde av följande typ:
+---
 
-< type Proof1 = Vf `Equal` (Vi `Add` (Avalue `Mul` DeltaTfun Tf))
+**Exercise.**
 
-Nu kör vi!
+Write the type of the statement we want to prove.
+
+**Solution.**
+
+< Vf `Equal` (Vi `Add` (Avalue `Mul` DeltaTfun Tf))
+
+---
+
+Let's go!
 
 **(I)**
 
-Vi börjar med två axiom, definerande likhetheter.
+Let's begin by having two of the defining equalities here
 
-> afunEaval :: Afun t `Equal` PolyFun Avalue Zero Zero t
-> afunEaval = AfunCon
+> afEav :: Afun t `Equal` Avalue
+> afEav = AfunCon
 
-> dvEinafun :: DeltaVfun t `Equal` Integ (Afun t') Ti t t'
-> dvEinafun = DeltaVint
+> dvEiaf :: DeltaVfun t `Equal` Integ (Afun t') Ti t t'
+> dvEiaf = DeltaVint
 
 \begin{align}
-  a(t) = a_{value} && (\Delta v)(t) = \int_{t_i}^t a(t) dt
+  a(t) = a_{value} && (\Delta v)(t) = \int_{t_i}^t a(t') dt'
 \end{align}
+
+We'll give values "mnemonic" names. `afEav` is composed of
+
+- `af` - acceleration function
+- `E` - equals
+- `av` - acceleration value
+
+We won't explain all these. Hopefully they make sense.
 
 **(II)**
 
-Vi ersätter integralen av acceleration som funktion med acceleration som värde.
+We replace (the general) `Afun t'` with its actual value `Avalue`.
 
-> dvEinaval :: DeltaVfun t `Equal` Integ (PolyFun Avalue Zero Zero t') Ti t t'
-> dvEinaval = dvEinafun `Transitivity` x
+> dvEiav :: DeltaVfun t `Equal` Integ Avalue Ti t t'
+> dvEiav = y
 >   where
->     x :: Integ (Afun t) l u t' `Equal` 
->          Integ (PolyFun Avalue Zero Zero t) l u t'
->     x = CongInteg afunEaval
+>     x :: Integ (Afun t') x y z `Equal` Integ Avalue x y z
+>     x = CongInteg afEav
+
+`x` is an equality stating the any integral matching the left-hand-side can be replaced with the right-hand-side one. The one in `dvEiaf` does, so we use `Transitivity` to replace it.
+
+>     y :: DeltaVfun t `Equal` Integ Avalue Ti t t'
+>     y = dvEiaf `Transitivity` x
+
+A general trick with `Transitivity` is to think *what you want to replace* and *what you want to keep*. Here, we wanted to *keep* `DeltaVfun t`. So it should have the role of `a` in
+
+< Transitivity  :: a `Equal` b -> b `Equal` c -> a `Equal` c
+
+and hence the equality having what you want to keep on the left-hand-side, should be the left argument to `Transitivity`. The right argument should have on the left-hand-side of its equaility a type matching the one you wanted to replace in the first equality.
 
 \begin{align}
-  (\Delta v)(t) = \int_{t_i}^t a_{value} dt
+  (\Delta v)(t) = \int_{t_i}^t a_{value} dt'  
 \end{align}
 
 **(III)**
+
+We want to evaluate the integral. We have one axiom for that
+
+< IntegEval :: Integ (PolyFun a0 a1 Zero t) l u t
+<                `Equal`
+<              ((PolyFun Zero a0 (a1 `Div` Two) u) 
+<                  `Sub`
+<               (PolyFun Zero a0 (a1 `Div` Two) l))
+
+but it requires the integrand to be a `PolyFun`. In other words, we need to transform `Avalue` (our current integrand) to a `PolyFun` of some sort. We have an axiom for that as well
+
+< PolyEval :: PolyFun a0 a1 a2 t `Equal` ((a0 `Add` (a1 `Mul` t)) `Add` (a2 `Mul` (t `Mul` t)))
+
+
+TODO: Stopp här. Det innan måste göras om. a0 kan sättas till Avalue `Mul` t och då kan man fuska ändå! buhuhu
+
+
+
+
+
+
+
+
+> {-
 
 Vi beräknar integralen
 
@@ -214,7 +264,7 @@ Vi använder konventionen $t_i = 0$.
 
 Phew! Så där. Nu kan vi känna oss nöja med detta första bevis.
 
-
+> -}
 
 
 

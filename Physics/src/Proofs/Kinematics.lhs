@@ -1,6 +1,8 @@
 
 WIP
 
+TODO: Uppdatera text efter att T lagts till
+
 Kinematics
 ==========
 
@@ -175,6 +177,10 @@ Try to remember the remaining 8 values and add them.
 >           | Tf
 
 ---
+
+We also need the *current* time.
+
+>           | T
 
 The value of the acceleration is another symbolic name.
 
@@ -546,6 +552,12 @@ It's very similar to the previous example. Experiment with the different axioms 
 ---
 
 In the following two chapters we'll prove two kinematic formulas. Along the way, many small lemmas like the one above will be proven. Proving in Haskell will be examplified and you can follow along and do parts for yourself. The larger parts you try yourself, the better! If something isn't marked as an exercise, try anyway! In the end you will have the knowledge and experience to try one formula entirely yourself.
+
+The keys to proving things are
+
+- Look at the axioms to see if something appears to have a type matching what you currently are working with.
+- Used typed holes and helper values (`x` and `y` above) to work step by step. Create helper values for the steps and reload in GHCi to check their types.
+- Try to match types to each other to be able to use `Transitivity` like we did before.
 
 
 

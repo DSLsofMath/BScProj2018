@@ -215,67 +215,177 @@ Finally we have the equalitity for the constant acceleration
 
 >   AfunCon :: Afun t `Equal` Avalue
 
-som säger att funktionen för acceleration, *för alla* `t`, är lika med `Avalue`.
+which says the the function for acceleration, *for all* `t`, is equal to `Avalue`.
 
-Matematiska likheter
---------------------
+Mathematical equalities
+-----------------------
 
-Okej, så nu har vi de definerande likheterna. Vi behöver även några matematiska likheter. Man skulle kunna tänka sig att definera *alla* som finns, bara för att det inte ska verka som att vi plockar ut det vi behöver, men det skulle bli väldigt många. Så vi låtsas vara lata och bara definerar några som råkar vara de vi behöver.
+Let's encode some mathematical equalities as well. When one usually does calculational proofs, only *one* constructor is used. It looks like
 
-Är detta inte fusk? I vanlig bevisföring i datorn nöjer man sig med en enda grundläggande likhet `Refl` och bevisar *allt* utifrån den. Det skulle här vara "out-of-scope". Vi skaffar kraftfulla axiom så att vi kan fokusera på de bevis som görs i fysiken. Axiomen kommer "uppenbarligen" vara rätt.
+< data Equal (x :: Expr) (y :: Expr) where
+<   Refl :: Equal a a
 
-De vi behöver blir...
+The `Refl` stands for reflection, and gives a proof that *anything* is equal to itself. And then `Equal` is finished. But we have already included a big stash of constructors to `Equal` and now we'll add even more. Isn't this cheating? Maybe, maybe not. In this language we are designing for kinematic proofs, we get quite powerful mathematical axioms. This is so we can focus on the kinematic parts in the proofs. Proving *everything* from scratch would be out of scope for this tutorial.
 
-Egenskaper hos likhet
+So the constructors for `Equal` are axioms. They are statements that are defined to be true and can in the proofs be pulled out of thin air.
 
->   Reflexive    :: a `Equal` a
->   Symmetry     :: a `Equal` b -> b `Equal` a
->   Transitivity :: a `Equal` b -> b `Equal` c -> a `Equal` c
+The language for our proofs will be designed once, and then the proving will start. It's difficult to know exactly which equalities will be need before doing the proofs. Therefore when this language was designed, equalities were added along the way.
 
-Canceling out
+To avoid "cheating", the axioms here must be trivially true. That addition is commutative we can agree on. (But we wouldn't agree on that in a discrete mathematics course). That $v(t) = v_i + a * t$ is not trivial here, so this cannot be taken as an axiom.
 
->   MulDiv       :: ((b `Div` a) `Mul` a) `Equal` b
->   AddSub       :: ((b `Sub` a) `Add` a) `Equal` b
+You can just skim the axioms for now. Once the proving the starts you can go back here and check 'em out in more detail.
 
-Kongruenser
+The equalities we need are:
 
->   CongAddL     :: a `Equal` b -> (a `Add` c) `Equal` (b `Add` c)
->   CongAddR     :: a `Equal` b -> (c `Add` a) `Equal` (c `Add` b)
->   CongSubL     :: a `Equal` b -> (a `Sub` c) `Equal` (b `Sub` c)
->   CongSubR     :: a `Equal` b -> (c `Sub` a) `Equal` (c `Sub` b)
->   CongMulL     :: a `Equal` b -> (a `Mul` c) `Equal` (b `Mul` c)
->   CongMulR     :: a `Equal` b -> (c `Mul` a) `Equal` (c `Mul` b)
->   CongInteg    :: a `Equal` b -> Integ a x y z `Equal` 
->                                  Integ b x y z
->   CongPoly2    :: a2 `Equal` a2' -> PolyFun a0 a1 a2 t `Equal`
->                                     PolyFun a0 a1 a2' t
+**Properties of equality**
 
-Integraler
+>   Reflexitivity :: a `Equal` a
+>   Symmetry      :: a `Equal` b -> b `Equal` a
+>   Transitivity  :: a `Equal` b -> b `Equal` c -> a `Equal` c
 
->   IntegEval    :: Integ (PolyFun a0   a1 Zero           t') l u t'
->                   `Equal`
->                        ((PolyFun Zero a0 (a1 `Div` Two) u) `Sub`
->                         (PolyFun Zero a0 (a1 `Div` Two) l))
+**Canceling out**
 
-Identiteter
+>   MulDiv        :: ((b `Div` a) `Mul` a) `Equal` b
+>   AddSub        :: ((b `Sub` a) `Add` a) `Equal` b
+
+**Congruency**
+
+The basic concept behind concruency is the purity of functions.
+
+\begin{align}
+  a = b \implies f(a) = f(b)
+\end{align}
+
+Here this conecpt is generalized to multi-paramater functions.
+
+>   CongAddL      :: a `Equal` b -> (a `Add` c) `Equal` (b `Add` c)
+>   CongAddR      :: a `Equal` b -> (c `Add` a) `Equal` (c `Add` b)
+>   CongSubL      :: a `Equal` b -> (a `Sub` c) `Equal` (b `Sub` c)
+>   CongSubR      :: a `Equal` b -> (c `Sub` a) `Equal` (c `Sub` b)
+>   CongMulL      :: a `Equal` b -> (a `Mul` c) `Equal` (b `Mul` c)
+>   CongMulR      :: a `Equal` b -> (c `Mul` a) `Equal` (c `Mul` b)
+>   CongInteg     :: a `Equal` b -> Integ a x y z `Equal` 
+>                                   Integ b x y z
+
+**Integrals**
+
+>   IntegEval     :: Integ (PolyFun a0 a1 Zero t) l u t
+>                      `Equal`
+>                    ((PolyFun Zero a0 (a1 `Div` Two) u) 
+>                        `Sub`
+>                     (PolyFun Zero a0 (a1 `Div` Two) l))
+
+This equality is the evaluation of an integral of a general first-order polynomial function.
+
+\begin{align}
+  \int_l^u (a_0 + a_1 * t)\ dt &= [a_0 * t + \frac{a_1}{2} * t^2]_l^u = \\
+ &= (a_0 * u + \frac{a_1}{2} * u^2) - (a_0 * l + \frac{a_1}{2} * l^2)
+\end{align}
+
+**Identities**
 
 > -- TODO: Bara L, bevisa R
->   ZeroNum      :: (Zero `Div` a) `Equal` Zero
->   ZeroMul      :: (Zero `Mul` a) `Equal` Zero
->   ZeroMulR     :: (a `Mul` Zero) `Equal` Zero
->   ZeroAddL     :: (Zero `Add` a) `Equal` a
->   ZeroAddR     :: (a `Add` Zero) `Equal` a
->   ZeroSub      :: (a `Sub` Zero) `Equal` a
+>   ZeroNum       :: (Zero `Div` a) `Equal` Zero
+>   ZeroMul       :: (Zero `Mul` a) `Equal` Zero
+>   ZeroMulR      :: (a `Mul` Zero) `Equal` Zero
+>   ZeroAddL      :: (Zero `Add` a) `Equal` a
+>   ZeroAddR      :: (a `Add` Zero) `Equal` a
+>   ZeroSub       :: (a `Sub` Zero) `Equal` a
 
-Aritmetik
+**Artihmetics**
 
->   MulDistSub   :: (a `Mul` (b `Sub` c)) `Equal`
+>   MulDistSub    :: (a `Mul` (b `Sub` c)) `Equal`
 >                   ((a `Mul` b) `Sub` (a `Mul` c))
->   AddCom       :: (a `Add` b) `Equal` (b `Add` a)
+>   AddCom        :: (a `Add` b) `Equal` (b `Add` a)
 
-Polynom
+**Polynomials**
 
->   PolyEval     :: PolyFun a0 a1 a2 t `Equal` ((a0 `Add` (a1 `Mul` t)) `Add` (a2 `Mul` (t `Mul` t)))
+>   PolyEval      :: PolyFun a0 a1 a2 t `Equal` ((a0 `Add` (a1 `Mul` t)) `Add` (a2 `Mul` (t `Mul` t)))
+
+This equality relates the syntactic `PolyFun` to the semantic corresponding expression.
+
+Some small example proofs
+-------------------------
+
+Before we start on the big proofs, lets prove some small lemmas that will be helpful.
+
+We have the axiom 
+
+< ZeroAddL :: (Zero `Add` a) `Equal` a
+
+which states that adding `Zero` from the left does nothing. We want to prove also that adding `Zero` from the right does nothing as well.
+
+We begin by writing the signature of the type, that is, what the statement is.
+
+> zeroAddR :: (a `Add` Zero) `Equal` a
+
+Now we have to construct a value of that type, that is, construct a proof.
+
+> zeroAddR = z
+>   where
+
+In the `where` clause we'll define some other names.
+
+Very similar to what we want to prove is the axiom
+
+< ZeroAddL :: (Zero `Add` a) `Equal` a
+
+So lets include it and its signature
+
+>     x :: (Zero `Add` a) `Equal` a
+>     x = ZeroAddL
+
+Our gut-feeling tells us that ``Zero `Add` a`` can be flipped. Between `zeroAddR` and `ZeroAddL` it *is* flipped and indeed, there is an axiom for this flipping.
+
+< AddCom :: (p `Add` q) `Equal` (q `Add` p)
+
+It's valid for *any* `p` and `q`. Let's set `p` to `a` and `q` to `Zero` when typing its signature.
+
+>     y :: (a `Add` Zero) `Equal` (Zero `Add` a)
+>     y = AddCom
+
+All right, so ``a `Add` Zero`` equals ``Zero `Add` a``, and ``Zero `Add` a`` equals `a`. (This is what `y` and `x` says). Then it makes sense that ``a `Add` Zero`` equals `a`, right? Yes, it does. This is expressed with
+
+< Transitivity :: p `Equal` q -> q `Equal` r -> p `Equal` r
+
+By writing
+
+< y `Transitivity` x
+
+`p`, `q` and `r` are decided in the following fashion
+
+```
+(a `Add` Zero)          p
+    `Equal`          `Equal`                  y
+(Zero `Add` a)          q
+
+      |                 |
+      V                 V
+
+(Zero `Add` a)          q
+   `Equal`           `Equal`                  x
+      a                 r
+
+      |                 |
+      V                 V
+      
+(a `Add` Zero)          p
+   `Equal`           `Equal`         y `Transitivity` x
+      a                 q
+```
+
+As you can see, giving `y` and `x` to `Transitivity` matches the more general type of `Transitivity`. When transitivity gets its two arguments, it becomes a value of the last type.
+
+>     z :: (a `Add` Zero) `Equal` a
+>     z = y `Transitivity` x
+
+
+
+
+
+
+
+
 
 
 

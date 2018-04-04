@@ -9,20 +9,15 @@ Introduction
 > )
 > where
 
-Vad bevisförining i datorn/Haskell är
+This chapter is about proving stuff in Haskell. More specifically, you'll learn lots about basic kinematics so that it can be defined rigorously, how to encode it in Haskell and finally how to prove it.
 
-Börja med satslogik för att bekanta sig
+We'll to de proofs using the *Curry-Howard correspondence*, which says that types and statements and values are proofs.
 
-Sedan presentera kinematik rigoröst och koda upp namnen
+![Some fancy Curry-Howard grafitti](CHC.png)
 
-Sedan bevisa en formel
+That is, to *state* something is to write *a type*. If the statement is true, a *proof* of it is a *value* if the correct type. The value must be constructed using the axioms and inference rules defined in the given context. Sounds abstract? Well, unfortunely you'll just have to trust me that it'll become clear in the following chapters.
 
-Sedan bevisa en annan formel
-
-Avslutning
-
-
-Detta kapitel ska förklara och bevisa fyra grundläggande kinematiska formler. De är som följer
+So what is this kinematics you're talking about? Have a look at these formulas
 
 \begin{align}
   v_f &= v_i + a*t \\
@@ -31,9 +26,12 @@ Detta kapitel ska förklara och bevisa fyra grundläggande kinematiska formler. 
   v_f^2 &= v_i^2 + 2*a*(x_f - x_i) \\
 \end{align}
 
-De gäller om $a$ är konstant. Men vad *exakt* syftar alla namn på? Och vad har $\Delta$ med dessa att göra? I samband med att vi kodar upp dem kommer detta göras rigoröst och tydligt.
+and you should know what I'm talking about. It's the basic fundamental newtonian kinematic formulas for one-dimensional movement. This chapter focuses on finding out what they really mean so that we can prove them.
 
-Bevisen sker i Haskell mha av Curry Howard korrespondensen. Den säger att påståenden är typer och bevis är värden. Det betyder att om man skapar ett värde av en viss typ så har man ett bevis för det påståendet.
+However, proving equlities is not the *easiest* thing to prove in Haskell. Therefire, to get a feeling of the Curry-Howard correspondce, we'll warm up by proving some basic logic. Afterwards we'll present the kinematic forumulas in great detail to clear out all ambiguitus. And finally we'll prove two of those formulas.
+
+Let's begin!
+
 
 
 

@@ -22,12 +22,14 @@ den tillhörande lärotexten och publiceringen av denna på en hemsida. Därefte
 följde en mindre del av utvärdering av materialet med en testgrupp som fick
 svara på vad de tyckte om läromaterialet.
 
+Det har inte funnits någon betydelsefull kronologi i projektet. I vilken ordningen aktiviteterna genomfördes spelar ingen roll för att förstå vad som genomfördes och hur det genomfördes. Resterande av kapitlet beskriver därför enbart aktiviteterna i sig, och inte i vilken ordningen de gjordes i relation till varandra. Självklart finns viss betydelsefull kronologi. Till exempel var (en del av) läromaterialet varit tvunget att vara skapat innan det kunde utvärderas, men sådana praktiska detaljer är obetydelsefulla för förståelsen.
+
 \section{Konstruktion av läromaterialet}
 
 Läromaterialet består av ett antal kapitel som vardera behandlar separata
 områden. Skapandet av varje kapitel skedde därför till största delen fristående
-från andra kapitel. Skrivandet av alla kapitel bestod i sin tur av tre faser,
-som såg likadana ut för alla kapitel. Dessa faser var val av område,
+från andra kapitel. Skapandet av kapitlena bestod i sin tur av tre faser,
+som såg likadana ut för alla kapitel. Dessa faser var sökande efter område,
 implementation av domänspecifika språk för området samt skrivande av lärotext.
 
 Denna skapandeprocess kan delas upp i en graf med två axlar: en utefter kapitel och en
@@ -47,7 +49,7 @@ varje kombination av kapitel och fas är en del i projektet som arbetades med.
         \frame{\includegraphics[width=0.9\linewidth]{figure/oversiktB.pdf}}
         \caption{Delarna visas med gränsöverskridande överlapp. Notera att
         implementation och skrivande \textit{alltid} var överlappande medan
-      selektion \textit{ofta men inte alltid} var det.}~\label{fig:oversiktB}
+      sökande \textit{ofta men inte alltid} var det.}~\label{fig:oversiktB}
     \end{subfigure}
     \caption{Översikt över hur skapandeprocessen av läromaterialet såg ut.
   Processen delas upp utefter två axlar: kapitel och fas. Varje kombination
@@ -56,20 +58,22 @@ varje kombination av kapitel och fas är en del i projektet som arbetades med.
 Även om detta sätt att dela upp processen är översiktlig är den inte helt
 verklighetstrogen. I praktiken fanns det överlapp mellan de olika delarna, både
 med avseende på kapitel och fas. Det här illustereras i
-figur~\ref{fig:oversiktB}. Där ser man att valet av områden skedde för flera
+figur~\ref{fig:oversiktB}. Där ser man att sökandet av områden skedde för flera
 kapitel samtidigt. Detta då arbetet med att hitta ett områden ofta gav flera
 områden samtidigt. I figuren ser man också att implementation av domänspecifika
 språk och skrivande av lärotext skedde samtidigt. Eftersom de i resultatet är
 sammanvävda var det också högst naturligt att processerna med att skapa dem
-också var sammanvävda.
+även de var sammanvävda.
 
-De tre följande avsnitten beskriver i detalj hur de tre faserna, val,
-implementation och skrivande, såg ut. Det är viktigt att minnas att det, som
-nämndes ovan, fanns överlapp mellan både faserna och kapitlena.
+De tre följande avsnitten beskriver i detalj hur de tre faserna, val, implementation och skrivande, såg ut. Det är viktigt att minnas att det, som nämndes ovan, fanns överlapp mellan både faserna och kapitlena.
 
-\subsection{Val av områden att behandla}\label{sec:valet}
+\subsection{Sökande efter områden att behandla}\label{sec:valet}
 
-Ett domänspecifikt språk modellerar ett specifikt och avgränsat område. Därför var det naturligt att söka och tänka i termer av avgränsade områden inom fysiken. För att mer konkret hitta områden att behandla kontaktades Åke Fäldt, examinator för \textit{Fysik för ingenjörer}\todo{Ref?} och fysikkursens bok, \textit{Univeristy Physics} \todo{Ref?} studerades.
+Ett domänspecifikt språk modellerar ett specifikt och avgränsat område. Därför var det naturligt att söka och tänka i termer av avgränsade områden inom fysiken. För att rent praktiskt hitta områden att behandla kontaktades Åke Fäldt, examinator för Fysik för ingenjörer\cite{tif085} och dess bok (University Physics\cite{UP}) och övrig material studerades.
+
+Denna sökandeprocess innefattade inte bara att \textit{hitta} fysikaliska områden utan även \textit{organisera} dem i relation till varandra. Som framgår senare är till exempel vissa områden påbyggningar av andra. Denna organisering var viktig för att kunna implementera de domänspecifika spårken på bästa sätt och undvika överlappande implementationer.
+
+\subsubsection*{Kontakt med Fäldt}
 
 Fäldt befrågades om vilka områden han i allmänhet anser studenter har
 svårt för. Detta för att i enlighet med projektets mål börja med de, för
@@ -83,63 +87,24 @@ uppgiften.
 
 Med hjälp av insikterna från Fäldt drogs två slutsatser. Den första slutsatsen
 var att matematisk analys var ett område värt att behandla i detalj. Den andra
-slutsatsen var att genom att ge struktur till olika typer av problem kan det
-förhoppningsvis underlätta för studenter att lära sig att identifiera vilken
+slutsatsen var att genom att ge struktur till olika typer av problem skulle det
+förhoppningsvis kunna underlätta för studenter att lära sig att identifiera vilken
 typ av uppgift de handskas med.
 
-Ett inledande val gjordes för att hitta mer specifika områden att arbeta.
-Detta genom att studera kursboken.
-Speciellt av intresse var de kapitel som behandlade mekanik (i enlighet med
-projektets mål att börja med klassisk mekanik), matematisk analys samt de
-kapitel som använde sig av en specifik syntax \todo{Syntax?}. Domänspecifik
-syntax var av intresse att finna då en betydlig del av domänspecifika språk är
-modellering av just syntaxen. \todo{Kanske förtydliga/utveckla varför detta är
-av intresse} Även områden som projektgruppen fann personligen intressanta
-valdes ut.
+\subsubsection*{Studerande av kursbok och kursmaterial}
 
-Allteftersom arbetet fortskred blev det tydligt att det fanns en distinktion
-mellan \textit{grundläggande} och \textit{komposita} områden.  Där de
-grundläggande områdena var områden som inte var beroende på andra delar inom fysiken
-utan kunde implementeras helt fristående från varandra. Till skillnad från de
-komposita områdena vilka byggde vidare på de grundläggande områdena och/eller andra
-komposita områden.
+Efter kontakten med Fäldt kunde ett sökande efter konkreta områden genomföras. Detta gjordes genom att studera kursboken och kursmaterialet tillhörande Fysik för ingenjörer. Innehållet som hittades delades upp i avgränsade områden för att de skulle bli lämpade till varsitt domänspecifikt språk. Speciellt av intresse var de kapitel som behandlade mekanik (i enlighet med projektets mål att börja med klassisk mekanik), matematisk analys samt de kapitel som använde sig av en specifik syntax \todo{Syntax?}. Domänspecifik syntax var av intresse att finna då en betydlig del av domänspecifika språk är modellering av just syntaxen. \todo{Kanske förtydliga/utveckla varför detta är av intresse}
 
-\end{draft}
+Sökandet i kursboken och kursmaterialet gav viktiga kunskaper om områden att behandla. Men minst lika viktiga var de inledande experiment som gjordes på varje område för att se huruvida det lämpade sig att göra ett domänspecifikt språk av och hur det skulle kunna se ut. Experimenten visade att enbart vissa områden, till exempel vektorer, fungerade bra att göra ett domänspecifikt språk av. Andra områden, till exempel lutande plan, var mindre lämpliga. Förenklat sagt var enbart områden med tydlig data och tydliga operationer lämpade. Detta diskuteras utförligare i avsnitt \ref{sec:lampligt}. Det framgick också att det blev överlapp mellan olika domänspecika språk trots att områdena var fristående. Ett exempel var det domänspecifika språk för partiklar som till stor del liknade de domänspecifika språken för matematisk analys och vektorer.
 
-\subsubsection*{Grundläggande områden}
+Det blev av dessa skäl nödvändigt att göra en distinktion mellan två typer av områden: \textit{grundläggande} och \textit{komposita}. Grundläggande områden är helt fristående från andra områden och behandlar grundläggande koncept. Komposita områden bygger vidare på andra områden eller tillämpar andra områden på konkreta fysikaliska problem.
 
-\begin{binge}
+\subsubsection*{Områden om valdes ut}
 
-\textbf{Fortfarande inte helt nöjd med detta avsnitt, känns som att det kan vara
-lite otydligt och upprepande}
-
-Grundläggande områden hittades främst genom det tidigare nämnda inledande
-valet av områden (se avsnitt~\ref{sec:valet}). Detta eftersom litteraturen som
-studerades började med just dessa områden för att sedan bygga vidare på dem i
-mer avancerade kapitel.
-
-Fler grundläggande områden har också hittats i efterhand. Avslutandet av den
-inledande inläsningen innebar alltså inget stopp av sökandet av grundläggande
-områden, även om de flesta redan hittats. Fler grundläggande områden hittades
-bland annat även genom att studera kursmaterialet som tillhörde Fysik
-för ingenjörer
-
-Sökandet i kursboken och kursmaterialet gav viktiga kunskaper om områden att
-behandla. Men minst lika viktiga var de experiment som gjordes för att se
-huruvida ett område lämpade sig som ett grundläggande område. De områden som inte
-lämpade sig fick istället behandlas annorlunda (se ``Komposita områden'' nedan). Förenklat sagt var de områden som innehöll tydlig data och tydliga operationer väl
-lämpade som ett grundläggande område. Lämpligheten hos olika områden diskuteras
-utförligare i avsnitt~\ref{sec:lampligt}.
-
-När de grundläggande områdena valdes ut definerades de så att det i största möjliga
-utsträckning var fristående. Detta för att kunna arbetas med parallellt. De
-grundläggande områdena som under projekets gång valdes ut blev bevis,
-dimensioner, matematisk analys och vektorer. 
+De grundläggande områdena som under projekets gång valdes ut blev bevis, dimensioner, matematisk analys och vektorer. 
 
 \textbf{OCH FLER?}
-\end{binge}
 
-\begin{draft}
 \textit{Bevis} eftersom det ger en insikt i hur de formler man använder
 faktiskt uppstår. För att genomföra bevis krävs också att formler och
 beteckningar görs rigorösa, vilket ger en bättre förståelse av dem.
@@ -159,23 +124,11 @@ pekade ut som speciellt viktigt och något som studenter har svårt för.
 mekaniken. Alla krafter, hastigheter och accelerationer betraktas som vektorer i
 planet eller rummet, och dessa är alla fundamentala element inom klassisk
 mekanik.
+
 \end{draft}
-
 \begin{binge}
-\textbf{OCH FLER?}
-\end{binge}
-  
-\subsubsection*{Komposita områden}
-\begin{draft}
-Komposita områden identifierades då det framgick att området var en
-vidareutveckling och/eller kombination av redan behandlade områden. Lösningen
-blev därför att tillämpa redan skrivna domänspecifika språk för att modellera
-dessa.
 
-Ett sätt som komposita områden hittades var därmed som ett resultat av sökandet och
-experimenterandet med grundläggande områden. Ett annat sätt var att även
-komposita områden direkt söktes efter. Då användes precis som tidigare nämnts
-främst kursboken och kursmaterialet tillhörande Fysik för ingenjörer.
+De komposita som valdes ut blev...
 
 Ett exempel på ett komposit område är momentan- och medel-rörelse eftersom det
 direkt utgör en stor delmängd av alla problem inom mekanik i Fysik för
@@ -185,6 +138,9 @@ en sträcka om man har en viss medelhastighet? Om ett objekt med massa $m$
 påverkas av en kraft som varierar enligt $\sin(t)$, vad är då
 momentanhastigheten vid $t=10$? Detta är en kombination av det grundläggande
 området som behandlar vektorer och området som behandlar matematisk analys.
+
+\end{binge}
+\begin{draft}
 
 \subsection{Implementation av DSL för områdena}
 
@@ -324,6 +280,7 @@ Från resultat: ska integreras här
 
 Hemsidan består av grundläggande HTML, CSS och javascript. På hemsidan finns en innehållsförteckning med klickbara länkar till de olika kapitlen. Hemsidan är öppen för alla och bör fungera i de flesta webläsare. Javascript är inget krav för hemsidan. Matematiska formler visas ändå, om än inte lika tydligt.
 
+
   \section{Test och återkoppling}
 
   % Återkoppling från examinator (NAD): "Nils Anders Danielsson <nad@cse.gu.se>
@@ -346,3 +303,36 @@ Hemsidan består av grundläggande HTML, CSS och javascript. På hemsidan finns 
   studio, om inte det redan täckts väl i Avgränsningar.
 
 \end{binge}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

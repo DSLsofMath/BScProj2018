@@ -928,24 +928,31 @@ compute the numerical approximation of the integral by letting $dx$ be
 a very small, but finite, number instead of being infinitesimal. The
 smaller our $dx$, the better the approximation
 
-> integrateApprox f a b dx = sum (fmap area xs)
->   where xs = takeWhile (<b) [a + 0*dx, a + 1*dx ..]
->         area x = f x * dx
+> integrateApprox f dx a b =
+
+$b$ must be greater than $a$ for a definite integral to make sense,
+but if that's not the case, we can just flip the order of $a$ and $b$
+and flip the sign of the area.
+
+>   let xs = takeWhile (<b) [a + 0*dx, a + 1*dx ..]
+>       area x = f x * dx
+>   in if b >= a then sum (fmap area xs)
+>               else (-(integrateApprox f dx b a))
 
 For example, let's calculate the area of the right-angled triangle under $y = x$
 between $x=0$ and $x=10$. As the area of a right-angled triangle is calculated as
 $A = \frac{b * h}{2}$, we expect the result of \texttt{integrateApprox} to approach
 $A = \frac{b * h}{2} = \frac{10 * 10}{2} = 50$ as $dx$ gets smaller
 
-< λ integrateApprox (\textbackslash x -> x) 0 10 5
+< λ integrateApprox (\textbackslash x -> x) 5    0 10
 < 25
-< λ integrateApprox (\textbackslash x -> x) 0 10 1
+< λ integrateApprox (\textbackslash x -> x) 1    0 10
 < 45
-< λ integrateApprox (\textbackslash x -> x) 0 10 0.5
+< λ integrateApprox (\textbackslash x -> x) 0.5  0 10
 < 47.5
-< λ integrateApprox (\textbackslash x -> x) 0 10 0.1
+< λ integrateApprox (\textbackslash x -> x) 0.1  0 10
 < 49.50000000000013
-< λ integrateApprox (\textbackslash x -> x) 0 10 0.01
+< λ integrateApprox (\textbackslash x -> x) 0.01 0 10
 < 50.04999999999996
 
 Great, it works for numeric approximations! This can be useful at times,

@@ -16,7 +16,7 @@ header > a {
   text-decoration: none;
 }
 
-header h1 {
+header h1, header h2 {
   text-align: center;
 }
 
@@ -39,26 +39,33 @@ main {
 }
 
 main figure {
-  margin: 20px 60px;
+    margin: 0px;
+    text-align: center;
 }
 
 main img {
-  border: 4px solid #F0F0F0;
-  border-radius: 4px;
-  width: 100%;
+  width: 70%;
+  margin: auto;
+  border: none;
+}
+
+.img-border {
+    border: 3px solid #F0F0F0;
+    border-radius: 5px;
 }
 
 .float-img-left, .float-img-right {
   width: 35%;
-  border: none;
 }
 
 .float-img-right {
-  float: right;
+    float: right;
+    margin-left: 10px;
 }
 
 .float-img-left {
-  float: left;
+    float: left;
+    margin-right: 10px;
 }
 
 figcaption {

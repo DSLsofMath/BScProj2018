@@ -65,6 +65,8 @@ def build_sections(sources):
         chapter = apply_template(
             chapter_templ,
             {
+                "section-name": section,
+                "chapter-name": chapter_name,
                 "content": content,
                 "previous-href": prev_chap_href,
                 "previous-name": prev_chap_name,
@@ -109,7 +111,11 @@ sources = [
         ("Vector", "Physics/src/Vector/Vector.lhs")
     ]),
     ("Calculus", [
-        ("Calculus", "Physics/src/Calculus/Calculus.lhs"),
+        ("Introduction", "Physics/src/Calculus/Intro.lhs"),
+        ("Function expressions", "Physics/src/Calculus/FunExpr.lhs"),
+        ("Differential calculus", "Physics/src/Calculus/DifferentialCalc.lhs"),
+        ("Integral calculus", "Physics/src/Calculus/IntegralCalc.lhs"),
+        ("Visualization, Verification, and Application", "Physics/src/Calculus/VisVerApp.lhs"),
     ]),
     ("Examples", [
         ("Gungbräda", "Physics/src/Examples/Gungbraeda.lhs"),

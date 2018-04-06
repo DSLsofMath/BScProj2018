@@ -528,17 +528,35 @@ D(y) &= lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x} \\
      &= a \mapsto lim_{h \to 0} \frac{y(a + h) - y(a)}{h}
 \end{align*}
 
-There, the definition of derivatives! Not to complicated, was it?
+There, the definition of derivatives! Not to complicated, was it? We
+can write a simple numerically approximative according to the
+definition like
 
-The differentiation function is represented in our syntax tree as
+> deriveApprox f h x = (f(x + h) - f(x)) / h
 
-<     | D FunExpr
+Only when $h$ is infinitely small is `deriveApprox` fully
+accurate. However, as we can't really represent an infinitely small
+number in finite memory, the result will only be approximative, and
+the approximation will get better as $h$ gets smaller. For example,
+let's calculate the slope of $f(x)=x^2$ at $f(3)$. As the slope of
+this parabola is calculated as $k = 2x$, we expect the result of
+`deriveApprox` to approach $k = 2x = 2*3 = 6$ as $h$ gets smaller
 
-Very simple!
+< ghci> deriveApprox (\x -> x^2) 5    3
+< 11
+< ghci> deriveApprox (\x -> x^2) 1    3
+< 7
+< ghci> deriveApprox (\x -> x^2) 0.5  3
+< 6.5
+< ghci> deriveApprox (\x -> x^2) 0.1  3
+< 6.100000000000012
+< ghci> deriveApprox (\x -> x^2) 0.01 3
+< 6.009999999999849
 
-And so, now what? What was the point of deriving that fancy definition
-for derivatives? Well, now we can derive things symbolically, which
-implies provable 100% perfect accuracy, no numeric approximations!
+Ok, that works, but not well. By making use of that fancy definition
+for derivatives that we derived earlier, we can now derive things
+symbolically, which implies provable 100% perfect accuracy, no numeric
+approximations!
 
 We define a function to symbolically derive a function
 expression. `derive` takes a function expression, and returns the

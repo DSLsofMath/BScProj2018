@@ -16,6 +16,8 @@ The dimension of a quantity is often implicitly understood given its unit. If I 
 
 There are 7 *base dimensions*, each with a corresponding SI-unit.
 
+TODO: In my browser the list and the image components don't line up. I think you will need to split into seven images.
+
 ![The 7 base dimensions](Base_dimensions.png){.float-img-right}
 
 - Length (metre)
@@ -28,6 +30,6 @@ There are 7 *base dimensions*, each with a corresponding SI-unit.
 
 The outline of this chapter is to first introduce dimensions on *value-level* (to print them nicely). Then we'll do dimensions on *type-level* (to only permit legal operations). And finally we'll combine those results to create a data type for quantities.
 
-In science SI-units are prefered over all other units. Therefore we'll only care about SI-units. Since we now have a one-to-one correspondence between dimensions and units, only one is really needed!
+In science, SI-units are prefered over all other units. Therefore we'll only care about SI-units. Given this decision, we now have a one-to-one correspondence between dimensions and units, which means that only one concept is really needed!
 
 Let's start with value-level dimensions.

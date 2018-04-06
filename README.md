@@ -23,17 +23,16 @@ Medlemmar: Oskar, Erik, Daniel, Björn, Johan
 
 Skriv om du arbetar på en av punkterna och det kommer ta lång tid (så att ingen annan arbetar samtidigt). Ta bort den när den är klar.
 
+- Introduktion
 - Teori
     - Didaktik
 - Metod
-    - Utvärdering
     - Implementation komposita
     - Implementation expandera gemensamma drag
     - Lärotext didaktik
     - Lärotext komposita
     - Hemsidan
 - Resultat
-    - Utvärdering
 - Diskussion
     - Expandera DSL+fysik gör att fysik enklare
     - Expandera Vårt tillvägagångssätt

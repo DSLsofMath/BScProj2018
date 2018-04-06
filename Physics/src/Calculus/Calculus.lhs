@@ -730,10 +730,6 @@ A sight for sore eyes!
 
 
 
-> {-
-
-
-
 Integrals - An integral part of calculus
 ======================================================================
 
@@ -851,105 +847,70 @@ nail the result down to a single function!
 
 
 
+Actually integrating with my man, Riemann
+======================================================================
 
-TODO: Also look at numerical computation of integrals
+We've analyzed *what* an integral is, and we can tell if a function is
+the antiderivative of another. For example, $x^2$ is an antiderivative
+of $2x$ because $D(x^2) = 2x$. But *how* do we find integrals in the
+first place?
 
-TODO: Then looking at the formal definition of integration to get `integrate`.
+We start our journey with a familiar name, Leibniz. He, and also but
+independently Newton, discovered the heart of integrals and
+derivatives: The *fundamental theorem of calculus*. The definitions
+they made were all based on infinitesimals which, as said earlier, was
+considered too imprecise. Later, Riemann rigorously formalized
+integration using limits.
 
+There exist many formal definitions of integrals, and they're not all
+equivalent. They each deal with different cases and classes of
+problems, and some remain in use mostly for pedagogical purposes. The
+most commonly used definitions are the Riemann integrals and the
+Lebesgue integrals.
 
+The Riemann integral was the first rigorous definition of the
+integral, and for many practical applications it can be evaluated by
+the fundamental theorem of calculus or approximated by numerical
+integration. However, it is a deficient definition, and is therefore
+unsuitable for many theoretical purposes. For such purposes, the
+Lebesgue integral is a better fit.
 
+All that considered, we will use Riemann integrals. While they may be
+lacking for many purposes, they are probably more familiar to most
+students (they are to me!), and will be sufficient for the purposes of
+physics courses at the level we're at.
 
-The heart of integrals and derivatives, the *fundememntal theorem of
-calculus*, was independently discovered by both Newton and Leibniz.
-They based their definitions on infinitesimals which, as described
-earlier, was considered too imprecise. Later, Riemann rigorously
-formalized integration using limits.
+If we look back at the syntax of definite integrals
 
- > There are many ways of formally defining an integral, not all of
- > which are equivalent. The differences exist mostly to deal with
- > differing special cases which may not be integrable under other
- > definitions, but also occasionally for pedagogical reasons. The most
- > commonly used definitions of integral are Riemann integrals and
- > Lebesgue integrals.
+$$\int_a^b f(x) dx$$
 
-We only look at Riemann integrals for now, since they will likely be more familiar to most students (They are to me!).
+the application of $f$ and the $dx$ part actually implies the
+definition of the Riemann integral. We can read it in english as "For
+every infinitesimal interval of $x$, starting at $a$ and ending at
+$b$, take the value of $f$ at that x (equiv. to taking the value at
+any point in the infinitesimal interval), and calculate the area of
+the rectangle with width $dx$ and height $f(x)$, then sum all of these
+parts together.".
 
- > In the branch of mathematics known as real analysis, the Riemann
- > integral, created by Bernhard Riemann, was the first rigorous
- > definition of the integral of a function on an interval. It was
- > presented to the faculty at the University of Göttingen in 1854, but
- > not published in a journal until 1868.[1] For many functions and
- > practical applications, the Riemann integral can be evaluated by the
- > fundamental theorem of calculus or approximated by numerical
- > integration.
- >
- > The Riemann integral is unsuitable for many theoretical
- > purposes. Some of the technical deficiencies in Riemann integration
- > can be remedied with the Riemann–Stieltjes in > tegral, and most
- > disappear with the Lebesgue integral.
+As we're dealing with an infinite sum of infinitesimal parts: a limit
+must be involved. $a$ and $b$ are be the lower and upper limits of the
+sum. Our iteration variable should increase with infinitesimal $dx$
+each step.  Each step we add the area of the rectangle with height
+$f(x')$, where $x'$ is any point in $[x$, $x + dx]$.  As $x + dx$
+approaches $x$ when $dx$ approaches zero, $x' = lim_{dx \to 0} x + dx
+= x$.
 
-See: [Why should one still teach Riemann integration? (Mathoverflow)](https://mathoverflow.net/questions/52708/why-should-one-still-teach-riemann-integration)
+$$\int_a^b f = \int_a^b f(x) dx = lim_{dx \to 0} \sum_{x = a, a + dx, a + 2dx, ...}^b A(x, dx) \text{ where } A(x, dx) = f(x) * dx$$
 
-So there are some problems, but Riemann integrals will do for now.(?)
+![Smaller $dx$ result in better approximations. (C) KSmrq](https://upload.wikimedia.org/wikipedia/commons/2/2a/Riemann_sum_convergence.png){.float-img-right .img-border}
 
-% Because we won't do rigorous proofs requiring Lebesgue integrals in this course?
-
-We will also only study definite integrals here, as indefinite integrals are not required to be used in this course anyway.
-
-Geometrically (in 2D), the integral of a function over an interval is equivalent to the area under the graph of that function
-over the same interval.
-
- > The definite integral is defined informally as the signed area of the
- > region in the xy-plane that is bounded by the graph of f, the x-axis
- > and the vertical lines $x = a$ and $x = b$. The area above the x-axis adds
- > to the total and that below the x-axis subtracts from the total.
- >
- > -- <cite>[Wikipedia - Integral](https://en.wikipedia.org/wiki/Integral)</cite>
-
-This is the syntax for definite integrals
-
-$$ \int_a^b f(x) dx $$
-
-This would be read as "The signed area under the graph of $f(x)$ from $x=a$ to $x=b$".
-
-Clearly, the integral symbol binds $a$ and $b$ which are then the limits of the integral, and constitute
-the interval over which to integrate/take the area, and $f$ is the function which we integrate/take the area under.
-The less obvious part of the syntax is the $(x)$ part in $f(x)$ and the $dx$. Is $x$ an argument to be passed to the
-integral that is bound here? No. What this syntax actually implies is that, in english, "For every infinitesimal interval of $x$,
-starting at $a$ and ending at $b$, take the value of $f$ at that x (equiv. to taking the value at any point in the infinitesimal
-interval), and calculate the area of the rectangle with width $dx$ and height $f(x)$, then sum all of these parts together."
-
-If we assume that $f$ is a unary function, which is the only kind of function we will be dealing with here, the syntax is redundant.
-$dx$ is completely internal to the behaviour of the function, and is not an argument bound by it, we could easily omitt it from the syntax.
-Further, if we see the integral as a function that integrates a function over an interval, $\int_a^b f(x)$ doesn't really make any sense, and
-should just be $\int_a^b f$.
-
-This syntax is much simpler and leaves less room for confusion.
-
-`integrate f a b =` $\int_a^b f$
-
-Now for the definition.
-
-We look again at the informal definition above. $\int_a^b f$ is the sum of all rectangles with height $f(x)$
-and width $dx$ for all infinitesimal intervals $dx$ between $a$ and $b$.
-
-So we're dealing with an infinite sum of infinitesimal parts: a limit must be involved. $a$ and $b$ must be
-the lower and upper limits of the sum. Our iteration variable should increase with infinitesimal $dx$ each step.
-Each step we add the area of the rectangle with height $f(x')$, where $x'$ is any point in $[x$, $x + dx]$.
-As $x + dx$ approaches $x$ when $dx$ approaches zero, $x' = lim_{dx \to 0} x + dx = x$.
-
-$$ \int_a^b f = lim_{dx \to 0} \sum_{x = a, a + dx, a + 2dx, ...}^b A(x, dx) \text{ where } A(x, dx) = f(x) * dx $$
-
-Based on this definition, we could implement a function in haskell to compute the numerical approximation of the integral
-by letting $dx$ be a very small, but finite, number instead of being infinitesimal. The smaller our $dx$, the better the
-approximation
-
-Here's a pic that shows that smaller $dx$ results in better approximations:
-
-![Riemann sum convergence, (C) KSmrq](https://upload.wikimedia.org/wikipedia/commons/2/2a/Riemann_sum_convergence.png){.img-border}
+Based on this definition, we could implement a function in haskell to
+compute the numerical approximation of the integral by letting $dx$ be
+a very small, but finite, number instead of being infinitesimal. The
+smaller our $dx$, the better the approximation
 
 > integrateApprox f a b dx = sum (fmap area xs)
->   where xs     = takeWhile (<b) [a + 0*dx, a + 1*dx ..]
+>   where xs = takeWhile (<b) [a + 0*dx, a + 1*dx ..]
 >         area x = f x * dx
 
 For example, let's calculate the area of the right-angled triangle under $y = x$
@@ -972,247 +933,195 @@ Great, it works for numeric approximations! This can be useful at times,
 but not so much in our case. We want closed expressions to use when solving
 physics problems, regardless of whether there are computations or not!
 
-Luckily, the Fundamental Theorem of Calculus tells us that there IS a way to
-express integrals in closed form!
+To find some integrals, making simple use of the fundamental theorem
+of calculus, i.e. $D(\int f) = f$, is enough. That is, we "think
+backwards". For example, we can use this method to find the integral
+of $cos$.
 
-From the article on [Wikipedia](https://en.wikipedia.org/wiki/Fundamental_theorem_of_calculus):
+Which function derives to $cos$? Think, think, think ... I got it! It's $sin$, isn't it?
 
- > First part
- >
- > This part is sometimes referred to as the first fundamental theorem of calculus.
- >
- > Let $f$ be a continuous real-valued function defined on a closed
- > interval $[a, b]$. Let $F$ be the function defined, for all $x \in [a, b]$, by
- >
- > $$ F(x) = \int_a^x f(t) dt $$
- >
- > Then, $F$ is uniformly continuous on $[a,b]$, differentiable on the
- > open interval $(a, b)$ and
- >
- > $$ F'(x) = f(x) $$
- >
- > for all $x \in (a,b)$.
- >
- > Alternatively, if $f$ is merely Riemann integrable, then $F$ is
- > continuous on $[a,b]$ (but not necessarily differentiable).
- >
- > Corollary
- >
- > The fundamental theorem is often employed to compute the definite
- > integral of a function $f$ for which an antiderivative $F$ is
- > known. Specifically, if $f$ is a real-valued continuous function on
- > $[a,b]$ and $F$ is an antiderivative of $f$ in $[a,b]$ then
- >
- > $$ \int_a^b f(t) dt = F(b) - F(a) $$
- >
- > The corollary assumes continuity on the whole interval. This result is
- > strengthened slightly in the following part of the theorem.
- >
- > Second part
- >
- > This part is sometimes referred to as the second fundamental theorem
- > of calculus or the Newton–Leibniz axiom.
- >
- > Let $f$ and $f$ be real-valued functions defined on a closed interval
- > $[a,b]$ such that $f$ is continuous on all $[a,b]$ and the derivative
- > of $F$ is $f$ for almost all points in $[a,b]$. That is, $f$ and $F$
- > are functions such that for all $x \in (a,b)$ except for perhaps a set
- > of measure zero in the interval:
- >
- > $$ F'(x)=f(x) $$
- >
- > If $f$ is Riemann integrable on $[a,b]$ then
- >
- > $$ \int_a^b f(x) dx = F(b) - F(a) $$
- >
- > The second part is somewhat stronger than the corollary because it
- > does not assume that $f$ is continuous.
- >
- > When an antiderivative $f$ exists, then there are infinitely many
- > antiderivatives for $f$, obtained by adding an arbitrary constant to
- > $f$. Also, by the first part of the theorem, antiderivatives of $f$
- > always exist when $f$ is continuous.
+$$D(sin) = cos \implies \int cos = sin + const C$$
 
-And here's the proof. We won't delve into this, but it's quite simple.
+So simple! The same method can be used to find the integral of
+polynomials and some other simple functions. Coupeled with some
+integration rules for products and exponents, this can get us quite
+far! But what if we're not superhumans and haven't memorized all the
+tables? What if we have to do integration without a cheat sheet for,
+like, an exam? In situations like these we make use of the definition
+of the Riemann integral, like we make use of the definition of
+differentiation in a previous chapter. As an example, let us again
+integrate $cos$, but now with this second method. Keep in mind that
+due to the technical limitations of Riemann integrals, not all
+integrals may be found this way.
 
- > Bevis
- >
- > Satsen kan bevisas enligt följande:
- >
- > \begin{align*}
- > F'(x) &= \lim_{h \to 0} \frac{F(x + h) - F(x)}{h} \\
- >       &= \lim_{h \to 0} \frac{1}{h} \left( \int_a^{x + h} f(t) dt - \int_a^x f(t) dt \right) \\
- >       &= \lim_{h \to 0} \frac{1}{h} \int_x^{x + h} f(t) dt \\
- >       &= \lim_{h \to 0} f(c) \\
- >       &= \lim_{c \to x} f(c) \\
- >       &= f(x)
- > \end{align*}
- >
- > I första steget utnyttjas derivatans definition och i det andra
- > definitionen av $f$. I det tredje steget används räknelagar för
- > integraler. I fjärde steget används medelvärdessatsen för
- > integraler. I femte steget utnyttjas det faktum att $c$ ligger mellan
- > $x$ och $x + h$, så då $h \to 0$ gäller att $c \to x$. Sista steget
- > ges av att $f$ är kontinuerlig.
- >
- > -- <cite>[Wikipedia - Analysens Fundamentalsats](https://sv.wikipedia.org/wiki/Analysens_fundamentalsats)</cite>
+Using the trigonometric identity of $\lim_{x \to 0} \frac{sin x}{x} = 1$ we find
 
-Let's write a function for symbolic integration of
-functions. `integrate` will be the indefinite integration function, as
-it's more powerful. Definite integrals can be expressed directly in
-terms of indefinite integrals, but not quite vice versa.
+\begin{align*}
+\int_a^b cos \\
+             & \{ \text{ Riemann integral }\} \\
+             &= \lim_{dx \to 0} \sum_{x = a, a + dx, a + 2*dx, ...}^b cos(x) * dx \\
+             &= \lim_{dx \to 0} dx * \sum_{x = a, a + dx, a + 2*dx, ...}^b cos(x) \\
+             &= \lim_{dx \to 0} dx * (cos(a) + cos(a + dx) + cos(a + 2*dx) + ... + cos(a + \frac{b - a}{dx}*dx)) \\
+             & \{ \text{ Sums of cosines with arguments in arithmetic progression } \} \\
+             &= \lim_{dx \to 0} dx * \frac{sin(\frac{(\frac{b - a}{dx} + 1) dx}{2}) * cos(a + \frac{\frac{b - a}{dx} dx}{2})}{sin(dx/2)} \\
+             &= \lim_{dx \to 0} dx * \frac{sin(\frac{b - a + dx}{2}) * cos(\frac{a + b}{2})}{sin(dx/2)} \\
+             & \{ \text{ Trig. product-to-sum ident. } \} \\
+             &= \lim_{dx \to 0} dx * \frac{sin(\frac{b - a + dx}{2} + \frac{a + b}{2}) + sin(\frac{b - a + dx}{2} - \frac{a + b}{2})}{2sin(dx/2)} \\
+             &= \lim_{dx \to 0} dx * \frac{sin(b + dx/2) + sin(-a + dx/2)}{2sin(dx/2)} \\
+             &= \lim_{dx \to 0} \frac{sin(b + dx/2) + sin(-a + dx/2)}{\frac{sin(dx/2)}{dx/2}} \\
+             & \{ dx \to 0 \} \\
+             &= \frac{sin(b + 0/2) + sin(-a + 0/2)}{1} \\
+             &= sin(b) + sin(-a) \\
+             &= sin(b) - sin(a)
+\end{align*}
 
-> integrate :: Expr -> RealNum -> Expr
-> integrate (f :+ g) c = (integrate f 0 + integrate g 0) + const' c
-> integrate (f :- g) c = (integrate f 0 - integrate g 0) + const' c
+The definition of definite integrals then give us that
+
+$$\int_a^b cos = sin(b) - sin(a) \land \int_a^b f = F(b) - F(a) \implies F = sin$$
+
+The antiderivative of $cos$ is $sin$ (again, as expected)!
+
+Let's implement these rules as a function for symbolic (indefinite)
+integration of functions. We'll start with the nicer cases, and
+progress to the not so nice ones.
+
+`integrate` takes a function to symbolically integrate, and a real
+number that decides the vertical offset of the function, i.e. the
+value of $f(0)$. The antiderivative with the given vertical offset is
+returned.
+
+> integrate :: FunExpr -> RealNum -> FunExpr
+
+First, our elementary functions. You can prove them using the methods
+described above, but the easiest way to find them is to just look them
+up in some table of integrals (dust of that old calculus cheat sheet)
+or on WolframAlpha (or Wikipedia, or whatever. Up to you).
+
+> integrate Exp c = Exp :+ Const c
+> integrate Log c = Id :* (Log :- Const 1) :+ Const c
+> integrate Sin c = Const 0 :- Cos :+ Const c
+> integrate Cos c = Sin :+ Const c
+> integrate Asin c = (Const 1 :- Id:^(Const 2)):^(Const 0.5) :+ Id :* Asin :+ Const c
+> integrate Acos c = Id :* Acos :- (Const 1 :- Id:^(Const 2)):^(Const 0.5) :+ Const c
+
+These two good boys. Very simple as well.
+
+> integrate Id c = Id:^Const 2 :/ Const 2 :+ Const c
+> integrate (Const d) c = Const d :* Id :+ Const c
+
+Addition and subtraction is trivial. Just use the backwards method and
+compare to how sums and differences are differentiated.
+
+> integrate (f :+ g) c = integrate f c :+ integrate g 0
+> integrate (f :- g) c = integrate f c :- integrate g 0
+
+Delta is easy. Just expand it to the difference that it is, and
+integrate.
+
+> integrate (Delta h f) c = integrate (f :. (Id :+ Const h) :- f) c
+
+A derivative? That's trivial, the integration and differentiation
+cancel each other, right? Nope, not so simple! We have to make sure
+that the constant coefficient is equal to `c`, which it might not be
+if we just cancel the operations and add the `c`. The simplest way to
+solve this is to evaluate the function at $x=0$, and check the
+value. We then add a term that corrects the function such that
+$I(D(f), c)[0] = c$. As we haven't implemented an evaluator yet, just
+leave this "incorrect" for now, and fix it later!
+
+> integrate (D f) c = f :+ Const (c - (eval f) 0)
+> -- integrate (D f) c = f -- Incorrect (unless we don't care about `c`)
+
+Integrating an integral? Just integrate the integral!
+
+> integrate (I d f) c = integrate (integrate f d) c 
+
+Aaaaaand now it starts to get complicated.
 
 There exists a great product rule in the case of differentiation, but
-not for integration. There just doesn't exist a great way to integrate a
+not for integration. There just isn't any nice way to integrate a
 product that always works! The integration rule that's most analogous
 to the product rule for differentiation, is integration by parts:
 
 $$ \int f(x) g(x) dx = f(x) G(x) - \int f'(x) g(x) dx $$
 
-Hmm, this doesn't look quite as helpful as the differentiation product rule, does it?
-We want this rule to give us an expression of simpler and/or fewer integrals, and it may indeed do so.
-For example, the integration of the product $x * e^x$ is a great examples of a case where it works well:
+Hmm, this doesn't look quite as helpful as the differentiation product
+rule, does it?  We want this rule to give us an expression of simpler
+and/or fewer integrals, and it may indeed do so.  For example, the
+integration of the product $x * e^x$ is a great examples of a case
+where it works well:
 
 $$ \int x e^x dx = x e^x - \int 1 e^x dx = x e^x - e^x = e^x (x - 1) $$
 
-Now THAT is a simplification.
+Now THAT is a simplification. However, just by flipping the order of
+the expressions, we get a case where the integration by parts rule
+only makes things worse:
 
-However, just by flipping the order of the expressions, we get a case where the integration by parts rule only makes things worse:
+\begin{align*}
+\int e^x x dx &= e^x x^2 - \int e^x x dx \\
+              &= e^x x^2 - (e^x x^2 - \int e^x x dx) \\
+              &= e^x x^2 - (e^x x^2 - (e^x x^2 - \int e^x x dx)) \\
+              &= ...
+\end{align*}
 
-$$ \int e^x x dx = e^x x^2 - \int e^x x dx = e^x x^2 - (e^x x^2 - \int e^x x dx) = e^x x^2 - (e^x x^2 - (e^x x^2 - \int e^x x dx)) = ... $$
-
-Oh no, it's an infinite recursion!
+Oh no, it's an infinite recursion with successive increase in
+complexity! (You can prove this using mathematical induction as an
+exercise.)
 
 There is also the problem that the integration by parts rule is simply
-undefined in the case of $g(x)$ not being integrable to $G(x)$. And
-so, as there exists no great way to do it, we'll settle for a mediocre
-one! We'll define the integration of a product to use integration by
-parts, but before integrating we'll simplify the expression in the
-hopes that it will become better suited for integration.
+not defined in the case of $g(x)$ not being integrable to $G(x)$
+(e.g. $g(x) = e^x^2$, according to the internet). And so, as there
+exists no great way to do it, we'll settle for a mediocre one! We'll
+define the integration of a product to use integration by parts, but
+before integrating we'll simplify the expression in the hopes that it
+will become better suited for integration.
 
 > integrate (f :* g) c =
->     let simplified = simplify (f * g)
->     in if simplified == (f * g)
->        then f * integrate g 0 - integrate (derive f * g) 0 + const' c
->        else integrate simplified c
+>   let simplified = simplify (f :* g)
+>   in if simplified == f :* g
+>      then f :* integrate g 0 :- integrate (derive f :* g) 0 :+ Const c
+>      else integrate simplified c
 
-We get a similar rule for quotients
+The rule for quotients is very similar
 
 > integrate (f :/ g) c =
->     let simplified = simplify (f / g)
->     in if simplified == (f / g)
->        then let _F = integrate f 0
->             in _F / g + integrate (_F * (derive g / (g^2))) 0 + const' c
->        else integrate simplified c
+>   let simplified = simplify (f :/ g)
+>   in if simplified == f :/ g
+>      then let _F = integrate f 0
+>           in _F :/ g :+ integrate (_F :* (derive g :/ (g:^Const 2))) 0 :+ Const c
+>      else integrate simplified c
+
+There is no good rule for exponentials in general. Only for certain
+combinations of functions in the base and exponent is symbolic
+integration well defined. We'll only treat the special case of $x^c$,
+which at least implies that we can use polynomials. As an exercise,
+you could also implement the the various exponential identities here.
+
+> integrate (f :^ g) c =
+>   case (simplify f, simplify g) of
+>     (Id, Const c) -> Id:^(Const (c+1)) :/ Const (c+1)
+>     (_, _)        -> error "Can't integrate integrals like that!"
 
 Integration of function composition is, simply said, somewhat
-complicated.  The technique to use is called "integration by
-substituted", and is something like a reverse of the chain-rule of
-differentiation. Luckily, most beginner-to-intermediate physics
-courses purposfully avoid the use of composed functions when
-integration is required, and as such, we simply won't implement it!
+complicated. The technique to use is called "integration by
+substitution", and is something like a reverse of the chain-rule of
+differentiation. This method is tricky to implement, but luckily most
+beginner-to-intermediate physics courses purposfully avoid the use of
+composed functions when integration is required. Therefore, we simply
+won't implement it!
 
 As long as we ensure our input functions are not composed functions,
 `integrate` will still be well behaved.
 
 > integrate (f :. g) c = error "Please don't try to integrate function compositions!"
 
-To integrate a lambda function, we simply integrate the
-body-expression with regards to the parameter variable
-
-> integrate (Lambda p b) c = Lambda p (integrateEx b p c)
-
-And then there are these functions. We just look up the formulas of
-integration in Wolfram Alpha or something.
-
-> integrate (Func "log") c = Lambda "x" ("x" * log "x" - "x" + const' c)
-> integrate (Func "exp") c = Func "exp" + const' c
-> integrate (Func "sin") c = Func "negate" :. Func "cos" + const' c
-> integrate (Func "cos") c = Func "sin" + const' c
-> integrate (Func "asin") c = Lambda "x" (sqrt (1 - "x"^2) + "x" * asin "x" + const' c)
-> integrate (Func "acos") c = Lambda "x" ("x" * acos "x" - sqrt (1 - "x"^2) + const' c)
-> integrate (Func "negate") c = Func "negate" + const' c
-> integrate _ _ = undefined
-
-> integrateEx :: Expr -> String -> RealNum -> Expr
-
-You probably already know the rule for integrating polynomials (which
-$x$ is a case of). It's just the reverse of the simple differentiation
-rule!
-
-$$ \int a_n x^n + a_{n-1} x^{n-1} + ... + a_1 x^1 + a_0 dx = \frac{a_n}{n+1} x^{n+1} + \frac{a_{n-1}}{n} x^{n} + ... + \frac{a_1}{2} x^2 + a_0 x^1 + C $$
-
-implies that
-
-$$ \int a dx = ax + C $$
-
-and
-
-$$ \int x dx = \frac{x^2}{2} + C $$
-
-And so, we implement exactly that
-
-> integrateEx (Const a) v c = Const a * Var v + Const c
-> integrateEx (Var u) v c | u == v    = (Var u)^2 / 2 + Const c
->                         | otherwise = Var u * Var v + Const c
-> integrateEx (a :+ b) v c = integrateEx a v 0 + integrateEx b v 0 + Const c
-> integrateEx (a :- b) v c = integrateEx a v 0 - integrateEx b v 0 + Const c
-> integrateEx (a :* b) v c =
->     let simplified = simplify (a * b)
->     in if simplified == (a * b)
->        then a * integrateEx b v 0 - integrateEx (derive a * b) v 0 + Const c
->        else integrateEx simplified v c
-> integrateEx (a :/ b) v c =
->     let simplified = simplify (a / b)
->     in if simplified == (a / b)
->        then let _A = integrateEx a v 0
->             in _A / b + integrateEx (_A * (derive b / (b^2))) v 0 + Const c
->        else integrateEx simplified v c
-> integrateEx e@(f :$ Const a) v c = e * Var v + Const c
-> integrateEx e@(f :$ Var u) v c | v == u    = integrate f c :$ Var v
->                                  | otherwise = e * Var v + Const c
-> integrateEx _ _ _ = undefined
-
-And we're done with our DSL of calculus!
-
-TODO: Proof/verification
-----------------------------------------------------------------------
-
-proof and/or tests go here
-
-TODO: Examples
-----------------------------------------------------------------------
-
-they go here
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-TODO: Move to after differentiation and integration and all that.
-      Begin by just doing all syntactical stuff, and then end the chapter
-      with evaluation, visualization, and testing.
 The value of evaluation
 ----------------------------------------------------------------------
 
-What comes after construction of function expressions? Well, using them of course!
+What comes after construction of function expressions? Well, using
+them of course!
 
 One way of using a function expression is to evaluate it, and use it
 just as you would a normal Haskell function. To do this, we need to
@@ -1293,5 +1202,3 @@ Integrating to get rid of /t:s.
 cool stuff here in general.
 
 Also, many pretty pictores
-
-> -}

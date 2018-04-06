@@ -9,15 +9,13 @@ DSL $\Rightarrow$ Modellera syntax.
 \end{binge}
 \begin{draft}
 
-NYA
+Ett domänspecifikt språk är ett språk som är avgränsat till en specifik domän. Nyckelorden är språk, specifik och domän. En domän är ett område, till exempel textformatering eller matlagning. Specifikt syftar på att det är \textit{just detta} område man behandlar och inget mer. Med språk menas ett sätt att uttrycka saker inom domänen. Svenska och Java är två exempel på språk.
 
-Ett domänspecifikt språk är ett språk som är avgränsat till en specifik domän. Nyckelorden är språk, specifik och domän. Ett domän är ett område, till exempel textformatering eller matlagning. Specifikt syftar på att det är \textit{just detta} område man behandlar och inget mer. Med språk menas ett sätt att uttryck saker inom domänen. Naturliga språk kan uttrycka en uppsjö ting. Ett programmeringsspråk uttrycker instruktioner för hur en dator gör sina uppgifter.
+Domänspecifika språk används inte bara i programmering utan förekommer även i andra mer vardagliga sammanhang. Inom domänen matlagning är steka, grilla och fritera användbara ord. Likaså inom domänen ridning är grimma, box och galopp användbara ord. Befinner man sig inom domänen vet man vad som menas med grimma och det är ett kort och väldefinerat sätt att uttrycka sig. Men detta språk (här i form av ord och begrepp) är meningslöst utanför domänen. Ett recept kan inte förklaras i termer av grimmor, boxar och galopper.
 
-Inom \textit{domänen} matlagning är steka, grilla och fritera användbara ord. Likaså inom \textit{domänen} ridning är grimma, box och galopp användbara ord. Befinner man sig inom domänen vet man vad som menas med grimma och det är ett kort och väldefinerat sätt att uttrycka sig. Men detta språk (här i form av ord/begrepp) är meningslöst utanför domänen. Ett recept kan inte förklaras i termer av grimmor, boxar och galopper.
+Domänspecifika språk är vanligt förekommande i programmeringssammanhang. HTML är ett domänspecifikt språk för textformatering, SQL för databashantering och typsnitt för att beskriva hur text ser ut på skärmen. Precis som domänspecifika språk i vardagan passar domänspecifika språk inom programmering enbart sitt egna domän. SQL är bra för databaser men inte att göra ett spel i.
 
-Domänspecifika språk är vanligt förekommande i programmeringssammanhang. HTML är ett domänspecifikt språk för textformatering, SQL för databashantering och NÅT MER för NÅT MER. Samma principer som för domänspecifika språk i vardagen gäller för domänspecifika språk inom progammering. SQL är bra för databaser men inte att göra ett spel i.
-
-Motsatsen till ett domänspecifikt språk är ett generellt språk. I vardagen är naturliga språk som svenska och engelska generella medan ryttar-begreppen ovan är domänspecifika. Likt i vardagen finns det generella programmeringsspråk som C++ och Java. Dessa är turingkompletta, vilket betyder att det går att uttrycka alla beräkningsbara problem i dem och även lösa dem givet tillräckligt med tid och \todo{referens} minnestillgångar. Begränsningen med dessa generella språk är just deras egen generaliserbarhet, eftersom de har stöd för alla typer av beräkningar så blir både läsbarheten och användarvänligheten lidande\todo{referens/motivering}.
+Motsatsen till ett domänspecifikt språk är ett generellt språk. I vardagen är naturliga språk som svenska och engelska generella medan ryttar-begreppen ovan är domänspecifika. Likt i vardagen finns det generella programmeringsspråk som C++ och Java. Dessa är turingkompletta, vilket betyder att det går att uttrycka alla beräkningsbara problem i dem och även lösa dem givet tillräckligt med tid och minnestillgångar.\cite{turing_ne} \cite{turing_book} Begränsningen med dessa generella språk är just deras egen generaliserbarhet, eftersom de har stöd för alla typer av beräkningar så blir både läsbarheten och användarvänligheten lidande.
 
 Ett exempel på ett domänspecifikt språk är ett \textit{syntaxträd}. Det exemplifieras här med ett syntaxträd för grundläggande matematiska uttryck, kodat i Haskell. Det visas i figur \ref{fig:syntax_exempel}.
 
@@ -31,7 +29,7 @@ data Expr = Expr :+: Expr
   \label{fig:syntax_exempel}
 \end{figure}
 
-Syntaxträdet innehåller \textit{datakonstruktorer} för att representera \textit{löv} (ändpunkter) och \textit{förgreningar}. I detta exempel är \texttt{:+:} och \texttt{:*:} förgreningar och \textit{Const}. Med hjälp av dem kan man uttrycka summan respektive produkten av två \textit{andra} uttryck. Löven representeras av \texttt{Const}, det är en konstant som man ej kan bygga vidare på.
+Syntaxträdet innehåller \textit{datakonstruktorer} för att representera \textit{löv} (ändpunkter) och \textit{förgreningar}. I detta exempel är \texttt{:+:} och \texttt{:*:} förgreningar. Med hjälp av dem kan man uttrycka summan respektive produkten av två andra uttryck. Löven representeras av \texttt{Const}, det är en konstant som man ej kan bygga vidare på.
 
 Med datakonstruktorerna kan man konstruera värden i språket. Ett exempelvärde från det tidigare syntaxträdet visas i figur \ref{fig:syntax_exempel_varde}.
 
@@ -52,7 +50,7 @@ Figur \ref{fig:syntax_exempel_varde} visar hur det matematiska uttrycket $7 * (3
   \label{fig:syntax_exempel_bild}
 \end{figure}
 
-Ett domänspecifikt språk kan antingen implementeras som ett fristående språk eller bäddas in i ett redan existerande språk. De domänspecifika språk som   utvecklats inom detta projekt är inbäddade i språket Haskell.
+Ett domänspecifikt språk kan antingen implementeras som ett fristående språk eller bäddas in i ett redan existerande språk. De domänspecifika språk som utvecklats inom detta projekt är inbäddade i språket Haskell.
 \end{draft}
 
 \section{Det funktionella programmeringsspråket Haskell}
@@ -116,7 +114,7 @@ then a value of that type is created
 
 Note that the Quantity data type has both value-level and type-level dimensions. As previosuly mentioned, value-level in order to print prettily and type-level to only permit legal operations.
   \end{lstlisting}
-  \caption{Ett exempel på hur en källfil till litterat programmering kan se ut. Exemplet är Litterate Haskell. Rader som börjar med \texttt{<} markerar att det är progamkod, medan rader utan markerar att det är text för människor.}
+  \caption{Ett exempel på hur en källfil till litterat programmering kan se ut. Exemplet är Litterate Haskell. Rader som börjar med \texttt{>} markerar att det är progamkod, medan rader utan markerar att det är text för människor.}
   \label{fig:litterate_haskell_exempel}
 \end{figure}
 
@@ -141,12 +139,22 @@ up med både \texttt{markdown} (används i projektet) och \texttt{Latex}. Det g�
 att exportera till bland annat HTML och PDF.
 \end{draft}
 
-\section{ARCS/didaktik}
+\section{Att skapa motiverande läromaterial}
 \label{sec:arcs}
-% TODO: använd inte förkortningen i rubriken.
-
-
 \begin{binge}
+ARCS-SAKER
+
+Motivation är en persons vilja att göra något. I undervisningssammanhang vill man att studenten ska lära sig materialet. Studenten behöver alltså vara motiverad, att vilja, lära sig. Motivation kan ha flera källor. Till exempel att studenten tycker materialet är intressant eller att det finns belöningar i form av tillfredsställelsen att få att högt betyg. 
+
+\textit{Motiverande design} innebär att systematiskt utforma undervisningen på ett sådant sätt att studenten blir motiverad till att lära sig. Det handlar om att använda olika tekniker för att väcka och behålla motivation. Det finns ett flertal olika modeller för detta men i detta projekt används enbart den så kallade \textit{ARCS}-modellen.\cite{arcs_book}
+
+\textit{ARCS} är en förkortning av ''Attention, Relevance, Confidence and Satisfaction'', på svenska ''uppmärksamhet, relevans, självförtroende och tillfredsställelse''. Precis som namnet antyder innehåller modellen fyra delar som vardera behandlar en aspekt av motivation. \textit{Attention} handlar om att fånga uppmärksamhet och väcka nyfikenhet. \textit{Relevance} handlar om att tillgodose studentens behov så att materialet upplevs som relevant för hen. \textit{Confidence} handlar om att övertyga studenten att hen kommer kunna lyckas lära sig materialet. \textit{Satisfaction} handlar om att ge studenten tillfredställelse efter att ha lärt sig något så att hen vill fortsätta lära sig. Det finns metoder för hur man genomför de olika delarna i praktiken och här följer en översikt för \textit{Attention} och \textit{Confidence}.\footnote{Eftersom projektet har ett begränsat fokus på de pedagogiska aspekterna, se avsnitt \ref{sec:avgransningar}, har enbart \textit{Attention} och \textit{Confidence} tagits hänsyn till. Av det skälet är det enbart de två delarna beskrivna här.}
+
+TODO: Skriv om strategier för attention. Ska försöka skriva några generella meningar om det som stod i boken.
+
+TODO: Skriv om strategier för confidence
+
+BJÖRN-SAKER
 
 Lärande Skola Bildning - kap 5 lärandeteorier
 

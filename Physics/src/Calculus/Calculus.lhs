@@ -1184,21 +1184,21 @@ the chapter.
 > eval (f :- g) = \x -> (eval f x - eval g x)
 > eval (f :* g) = \x -> (eval f x * eval g x)
 > eval (f :/ g) = \x -> (eval f x / eval g x)
+> eval (f :^ g) = \x -> (eval f x ** eval g x)
 
 Function composition is similarly evaluated according to the earlier definition
 
 > eval (f :. g) = \x -> eval f (eval g x)
 
-TODO: these bad bois
+Delta is just expanded to the difference that it really is
 
-> eval (Delta h f) = undefined
-> -- eval env (Delta x) = LambdaVal "_a" (Lambda "_b" ((x' :$ "_b") - (x' :$ "_a")))
-> --   where x' = subst env x
-> eval (D f) = undefined
-> -- eval env (D f) = eval env (simplify (derive f))
-> eval (I c f) = undefined
+> eval (Delta h f) = eval (f :. (Id :+ Const h) :- f)
 
+For derivatives and integrals, we apply the symbolic operations we
+wrote, and then evaluate the result.
 
+> eval (D f) = eval (derive f)
+> eval (I c f) = eval (integrate f c)
 
 TODO: Visualization with Hatlab
 --------------------------------------------------------------------

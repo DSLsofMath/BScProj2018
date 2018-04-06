@@ -11,6 +11,7 @@
     <header>
       <a href="../index.html"><h1>Learn You a <span class="physics">Physics</span> for Great Good!</h1></a>
       <h1>&gt;&gt;&gt; WORK IN PROGRESS &lt;&lt;&lt;</h1>
+      <h2>Dimensions / Type-level dimensions</h2>
       <nav>
 	<span>[src: <a href="https://github.com/DSLsofMath/BScProj2018/blob/master/Physics/src/Dimensions/TypeLevel.lhs">Dimensions/TypeLevel.lhs</a>]</span>
         <span>Previous: <a href="../Dimensions/Testing of value-level dimensions.html">Testing of value-level dimensions</a></span>
@@ -21,7 +22,7 @@
 
     <main>
       <h1 id="type-level-dimensions">Type-level dimensions</h1>
-<p>We will now implement <em>type-level</em> dimensions. What is type-level? When one usually programs (in Haskell), one operatates (e.g. adds) on values (e.g. <code>1</code> and <code>2</code>). This is on <em>value-level</em>. Now we’ll do the same thing but on <em>type-level</em>, that is, perform operations on types.</p>
+<p>We will now implement <em>type-level</em> dimensions. What is type-level? Programs (in Haskell) normally operatate on (e.g. add) values (e.g. <code>1</code> and <code>2</code>). This is on <em>value-level</em>. Now we’ll do the same thing but on <em>type-level</em>, that is, perform operations on types.</p>
 <p>What’s the purpose of type-level dimensions? It’s so we’ll notice as soon as compile-time if we’ve written something incorrect. E.g. adding a length and an area is not allowed since they have different dimensions.</p>
 <figure>
 <img src="Lengths_and_area.png" alt="Adding lengths is OK. Adding lengths and areas is not OK." /><figcaption>Adding lengths is OK. Adding lengths and areas is not OK.</figcaption>
@@ -36,19 +37,18 @@
 <a class="sourceLine" id="cb1-6" data-line-number="6"><span class="ot">{-# LANGUAGE TypeOperators #-}</span></a></code></pre></div>
 <p>See the end of the next chapter to read what they do.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">module</span> <span class="dt">Dimensions.TypeLevel</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">( <span class="dt">Dim</span>(<span class="fu">..</span>)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">, <span class="dt">Mul</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">, <span class="dt">Div</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">, <span class="dt">Length</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">, <span class="dt">Mass</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">, <span class="dt">Time</span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">, <span class="dt">Current</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9">, <span class="dt">Temperature</span></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10">, <span class="dt">Substance</span></a>
-<a class="sourceLine" id="cb2-11" data-line-number="11">, <span class="dt">Luminosity</span></a>
-<a class="sourceLine" id="cb2-12" data-line-number="12">, <span class="dt">One</span></a>
-<a class="sourceLine" id="cb2-13" data-line-number="13">)</a>
-<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="kw">where</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-2" data-line-number="2">    ( <span class="dt">Dim</span>(<span class="fu">..</span>)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">    , <span class="dt">Mul</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">    , <span class="dt">Div</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">    , <span class="dt">Length</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">    , <span class="dt">Mass</span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">    , <span class="dt">Time</span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">    , <span class="dt">Current</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9">    , <span class="dt">Temperature</span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10">    , <span class="dt">Substance</span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11">    , <span class="dt">Luminosity</span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12">    , <span class="dt">One</span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13">    ) <span class="kw">where</span></a></code></pre></div>
 <p>We’ll need to be able to operate on integers on the type-level. Instead of implementing it ourselves, we will just import the machinery so we can focus on the physics-part.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">import</span> <span class="dt">Numeric.NumType.DK.Integers</span></a></code></pre></div>
 <p>We make a <em>kind</em> for dimensions, just like we in the previous section made <em>type</em> for dimensions. On value-level we made a <em>type</em> with <em>values</em>. Now we make a <em>kind</em> with <em>types</em>. The meaning is exactly the same, except we have moved “one step up”.</p>
@@ -95,9 +95,9 @@
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw">type</span> <span class="dt">Acceleration</span> <span class="fu">=</span> <span class="ch">&#39;Dim Pos1 Zero Neg2 Zero Zero Zero Zero</span></a></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">type</span> <span class="dt">One</span> <span class="fu">=</span> <span class="ch">&#39;Dim Zero Zero Zero Zero Zero Zero Zero</span></a></code></pre></div>
 <h2 id="multiplication-and-division">Multiplication and division</h2>
-<p>Let’s implement multiplication and division on type-level. After such an operation a new dimension is created. And from the previous section we already know what the dimension should look like. To translate to Haskell-language: “after such an operation a new <em>type</em> is created”. How does one implement that? With <code>type family</code>! <code>type family</code> can easiest be thought of as a function on the type-level.</p>
+<p>Let’s implement multiplication and division on the type-level. After such an operation a new dimension is created. And from the previous section we already know what the dimension should look like. To translate to Haskell-language: “after such an operation a new <em>type</em> is created”. How does one implement that? With <code>type family</code>! A <code>type family</code> can easiest be thought of as a function on the type-level.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">type</span> family <span class="dt">Mul</span> (<span class="ot">d1 ::</span> <span class="dt">Dim</span>) (<span class="ot">d2 ::</span> <span class="dt">Dim</span>) <span class="kw">where</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2">  <span class="dt">Mul</span> (<span class="ch">&#39;Dim le1 ma1 ti1 cu1 te1 su1 lu1) </span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">  <span class="dt">Mul</span> (<span class="ch">&#39;Dim le1 ma1 ti1 cu1 te1 su1 lu1)</span></a>
 <a class="sourceLine" id="cb10-3" data-line-number="3">      (<span class="ch">&#39;Dim le2 ma2 ti2 cu2 te2 su2 lu2) =</span></a>
 <a class="sourceLine" id="cb10-4" data-line-number="4">      <span class="ch">&#39;Dim (le1+le2) (ma1+ma2) (ti1+ti2) (cu1+cu2)</span></a>
 <a class="sourceLine" id="cb10-5" data-line-number="5">        (te1<span class="fu">+</span>te2) (su1<span class="fu">+</span>su2) (lu1<span class="fu">+</span>lu2)</a></code></pre></div>
@@ -109,7 +109,7 @@
 <p><strong>Exercise.</strong> As you would suspect, division is very similar, so why don’t you try ’n implement it yourself?</p>
 <p><strong>Solution.</strong></p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">type</span> family <span class="dt">Div</span> (<span class="ot">d1 ::</span> <span class="dt">Dim</span>) (<span class="ot">d2 ::</span> <span class="dt">Dim</span>) <span class="kw">where</span></a>
-<a class="sourceLine" id="cb11-2" data-line-number="2">  <span class="dt">Div</span> (<span class="ch">&#39;Dim le1 ma1 ti1 cu1 te1 su1 lu1) </span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">  <span class="dt">Div</span> (<span class="ch">&#39;Dim le1 ma1 ti1 cu1 te1 su1 lu1)</span></a>
 <a class="sourceLine" id="cb11-3" data-line-number="3">      (<span class="ch">&#39;Dim le2 ma2 ti2 cu2 te2 su2 lu2) =</span></a>
 <a class="sourceLine" id="cb11-4" data-line-number="4">      <span class="ch">&#39;Dim (le1-le2) (ma1-ma2) (ti1-ti2) (cu1-cu2)</span></a>
 <a class="sourceLine" id="cb11-5" data-line-number="5">        (te1<span class="fu">-</span>te2) (su1<span class="fu">-</span>su2) (lu1<span class="fu">-</span>lu2)</a></code></pre></div>

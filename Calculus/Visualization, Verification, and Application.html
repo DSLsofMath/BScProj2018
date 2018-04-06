@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Learn You a Physics for Great Good!</title>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  </head>
+
+  <body>
+    <header>
+      <a href="../index.html"><h1>Learn You a <span class="physics">Physics</span> for Great Good!</h1></a>
+      <h1>&gt;&gt;&gt; WORK IN PROGRESS &lt;&lt;&lt;</h1>
+      <h2>Calculus / Visualization, Verification, and Application</h2>
+      <nav>
+	<span>[src: <a href="https://github.com/DSLsofMath/BScProj2018/blob/master/Physics/src/Calculus/VisVerApp.lhs">Calculus/VisVerApp.lhs</a>]</span>
+        <span>Previous: <a href="../Calculus/Integral calculus.html">Integral calculus</a></span>
+        <a href="../index.html">Table of contents</a>
+        <span>Next: <a href="../Examples/Gungbräda.html">Gungbräda</a></span>
+      </nav>
+    </header>
+
+    <main>
+      <div class="sourceCode" id="cb1"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">module</span> <span class="dt">Calculus.VisVerApp</span> <span class="kw">where</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">import</span> <span class="dt">Calculus</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw">import</span> <span class="dt">Hatlab.Plot</span></a></code></pre></div>
+<h2 id="visualization-with-hatlab">Visualization with Hatlab</h2>
+<p>The brain likes seeing things. Let’s give it a good looking reward!</p>
+<p>We’ll now make combined use of all of our nice functions. <code>simplify</code>, <code>derive</code>, <code>integrate</code>, <code>eval</code>, and <code>show</code>, all together: the most ambitious crossover event in history!</p>
+<p>First, we create some function expressions ready to be <code>show</code>n and <code>eval</code>uated.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1">f  <span class="fu">=</span> <span class="dt">Const</span> <span class="dv">3</span> <span class="fu">:*</span> <span class="dt">Id</span><span class="fu">:^</span><span class="dt">Const</span> <span class="dv">2</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">f&#39; <span class="fu">=</span> simplify (derive f)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">_F <span class="fu">=</span> simplify (integrate f <span class="dv">0</span>)</a></code></pre></div>
+<p>Then, we define a helper function to plot a list of function expressions with Hatlab.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="ot">plotFunExprs ::</span> [<span class="dt">FunExpr</span>] <span class="ot">-&gt;</span> <span class="dt">IO</span> ()</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">plotFunExprs <span class="fu">=</span> plot <span class="fu">.</span> fmap (\f <span class="ot">-&gt;</span> <span class="dt">Fun</span> (eval f) (show f))</a></code></pre></div>
+<p>Now try it for yourself! Let’s see the fruits of our labour!</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb4-1" data-line-number="1">ghci<span class="fu">&gt;</span> plotFunExprs [f, f&#39;, _F]</a></code></pre></div>
+<p>For fun, we can also plot the same functions but using our approximative functions for differentiation and integration</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb5-1" data-line-number="1">g x  <span class="fu">=</span> <span class="dv">3</span> <span class="fu">*</span> x<span class="fu">^</span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">g&#39; x <span class="fu">=</span> deriveApprox g <span class="fl">0.001</span> x</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">_G x <span class="fu">=</span> integrateApprox g <span class="fl">0.001</span> <span class="dv">0</span> x</a></code></pre></div>
+<p>Then plot with</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb6-1" data-line-number="1">ghci<span class="fu">&gt;</span> plot [<span class="dt">Fun</span> g <span class="st">&quot;3x^2&quot;</span>, <span class="dt">Fun</span> g&#39; <span class="st">&quot;D(3x^2)&quot;</span>, <span class="dt">Fun</span> _G <span class="st">&quot;I(3x^2)&quot;</span>]</a></code></pre></div>
+<p>Waddaya know! They look identical! I guess it just goes to show that a good approximation is often good enough.</p>
+<h2 id="todo-verification">TODO: Verification</h2>
+<p>QuickCheck everything. Verify that simplified expressions evaluate to equivalent function as original</p>
+<h2 id="todo-applying-our-dsl-to-solve-physics-problems">TODO: Applying our DSL to solve physics problems!</h2>
+<p>Mostly problems regarding position, velocity, acceleration, time.</p>
+<p>Average FOO vs. Instantaneous FOO – Differences vs Derivatives.</p>
+<p>Integrating to get rid of /t:s.</p>
+<p>cool stuff here in general.</p>
+<p>Also, many pretty pictores</p>
+
+    </main>
+
+    <footer>
+      <nav>
+	<span>[src: <a href="https://github.com/DSLsofMath/BScProj2018/blob/master/Physics/src/Calculus/VisVerApp.lhs">Calculus/VisVerApp.lhs</a>]</span>
+        <span>Previous: <a href="../Calculus/Integral calculus.html">Integral calculus</a></span>
+        <a href="../index.html">Table of contents</a>
+        <span>Next: <a href="../Examples/Gungbräda.html">Gungbräda</a></span>
+      </nav>
+      Licensed under the GPL by the Kandidatboisen (2018)
+    </footer>
+  </body>
+</html>

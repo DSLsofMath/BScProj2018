@@ -11,6 +11,7 @@
     <header>
       <a href="../index.html"><h1>Learn You a <span class="physics">Physics</span> for Great Good!</h1></a>
       <h1>&gt;&gt;&gt; WORK IN PROGRESS &lt;&lt;&lt;</h1>
+      <h2>Dimensions / Quantities</h2>
       <nav>
 	<span>[src: <a href="https://github.com/DSLsofMath/BScProj2018/blob/master/Physics/src/Dimensions/Quantity.lhs">Dimensions/Quantity.lhs</a>]</span>
         <span>Previous: <a href="../Dimensions/Type-level dimensions.html">Type-level dimensions</a></span>
@@ -22,13 +23,13 @@
     <main>
       <h1 id="quantities">Quantities</h1>
 <p>We’ll now create a data type for quantities and combine dimensions on value-level and type-level. Just as before, a bunch of GHC-extensions are necessary.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="ot">{-# LANGUAGE DataKinds #-}</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="ot">{-# LANGUAGE GADTs #-}</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="ot">{-# LANGUAGE KindSignatures #-}</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="ot">{-# LANGUAGE TypeFamilies #-}</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="ot">{-# LANGUAGE UndecidableInstances #-}</span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="ot">{-# LANGUAGE TypeOperators #-}</span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="ot">{-# LANGUAGE FlexibleInstances #-}</span></a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="ot">{-# LANGUAGE UndecidableInstances #-}</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="ot">{-# LANGUAGE FlexibleInstances #-}</span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="ot">{-# LANGUAGE GADTs #-}</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="ot">{-# LANGUAGE DataKinds #-}</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="ot">{-# LANGUAGE TypeOperators #-}</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="ot">{-# LANGUAGE KindSignatures #-}</span></a></code></pre></div>
+<p>TODO: The module header is overly long. Please group several (related) operations on each line</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">module</span> <span class="dt">Dimensions.Quantity</span></a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">( <span class="dt">Quantity</span></a>
 <a class="sourceLine" id="cb2-3" data-line-number="3">, length</a>
@@ -63,17 +64,21 @@
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">import</span>           <span class="dt">Dimensions.TypeLevel</span>  <span class="kw">as</span> <span class="dt">T</span></a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw">import</span>           <span class="dt">Prelude</span>               <span class="kw">as</span> <span class="dt">P</span> <span class="kw">hiding</span> (length, div)</a></code></pre></div>
 <p>First we create the data type for quantities.</p>
+<p>TODO: A bit confusing to use the same name for both the type constructor and the value constructor.</p>
+<p>TODO: Please explain the purpose of Quantity? (semantics, intended meaning or use, problem avoided, etc.).</p>
+<p>TODO: Perhaps also note that the intended use is with a side-condition (which you don’t check) that the value-level dimension matches the type-level dimensions.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">data</span> <span class="dt">Quantity</span> (<span class="ot">d ::</span> <span class="dt">T.Dim</span>) (<span class="ot">v ::</span> <span class="fu">*</span>) <span class="kw">where</span></a>
 <a class="sourceLine" id="cb4-2" data-line-number="2">  <span class="dt">Quantity</span><span class="ot"> ::</span> <span class="dt">V.Dim</span> <span class="ot">-&gt;</span> v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> d v</a></code></pre></div>
 <p><code>data Quantity</code> creates a <em>type constructor</em>. Which means it takes two <em>types</em> (of certain <em>kinds</em>) to create another <em>type</em> (of a certain <em>kind</em>). For comparsion, here’s a <em>value constructor</em> which takes two <em>values</em> (of certain <em>types</em>) as input to create another <em>value</em> (of a certain <em>type</em>).</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">data</span> <span class="dt">MyDataType</span> <span class="fu">=</span> <span class="dt">MyValueConstructor</span> <span class="dt">String</span> <span class="dt">Int</span></a></code></pre></div>
+<p>TODO: MyValueConstructor is the value constructor, not MyDataType</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb6-1" data-line-number="1">ghci<span class="fu">&gt;</span> <span class="fu">:</span>t <span class="dt">MyValueConstructor</span></a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="dt">MyDataType</span><span class="ot"> ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">MyDataType</span></a></code></pre></div>
 <p>So this <code>Quantity</code> type constructor takes two <em>types</em> (of certain <em>kinds</em>) as input to create another <em>type</em> (of a certain <em>kind</em>). See the parallell to the value constructor? It’s the same thing, but “one step up” to the type-level.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb7-1" data-line-number="1">ghci<span class="fu">&gt;</span> <span class="fu">:</span>k <span class="dt">Quantity</span></a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="dt">Quantity</span><span class="ot"> ::</span> <span class="dt">T.Dim</span> <span class="ot">-&gt;</span> <span class="fu">*</span> <span class="ot">-&gt;</span> <span class="fu">*</span></a></code></pre></div>
 <p>Instead of checking the <em>type</em> (like we do on the value constructor above), we check the <em>kind</em>. The kind of <code>Quantity</code> shows, just as we said, that it takes two types as input. We also see that the <em>kind</em> of the first <em>type</em> must be <code>T.Dim</code>, i.e., a type-level dimension. The kind of the second type is <code>*</code>, which is the kind of types that can have values. Such types are for instance <code>Double</code>, <code>Integer</code> and <code>String</code> (but not <code>T.Dim</code>).</p>
-<p>The definition of <code>Quantity</code> tells us this too. In it, <code>(d :: T.Dim) (v :: *)</code> signifies that the type constructor <code>Quantity</code> takes a type <code>u</code> of kind <code>T.Dim</code> and a type of kind <code>*</code>. In this context, <code>u :: T.Dim</code> is read as “<code>u</code> has kind of <code>T.Dim</code>”.</p>
+<p>The definition of <code>Quantity</code> tells us this too. In it, <code>(d :: T.Dim) (v :: *)</code> signifies that the type constructor <code>Quantity</code> takes a type <code>u</code> of kind <code>T.Dim</code> and a type of kind <code>*</code>. In this context, <code>u :: T.Dim</code> is read as “<code>u</code> has kind <code>T.Dim</code>”.</p>
 <p>So the first row was a <em>type constructor</em>. The second row is a <em>value constructor</em>. It takes two values, one of type <code>V.Unit</code> and the other of type <code>v</code> (<code>v</code> will be bound when the type of the whole thing is decided). This is the same deal as “your average data type” value constructor, like the <code>MyDataType</code> example above.</p>
 <p>Both the type constructor and the value constructor have the same name <code>Quantity</code>. This is legal syntax. Just like the following is legal:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">data</span> <span class="dt">YourAverageDataType</span> <span class="fu">=</span> <span class="dt">YourAverageDataType</span> <span class="dt">Double</span></a></code></pre></div>
@@ -81,10 +86,14 @@
 <p>Okay, so how does all this tie together? First the <em>type</em> is decided, for instance</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">type</span> <span class="dt">ExampleType</span> <span class="fu">=</span> <span class="dt">Quantity</span> <span class="dt">T.Length</span> <span class="dt">Double</span></a></code></pre></div>
 <p>then a <em>value</em> of that type is created</p>
+<p>TODO: This examples comes too late (too far from the type definition). I suggest you start in the opposite order, from example values, and only then introduce the “heavier machinery”. This would also save you from inventing a phony type “MyDataType” - that could become “MyLength” or something like that.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="ot">exampleValue ::</span> <span class="dt">ExampleType</span></a>
 <a class="sourceLine" id="cb10-2" data-line-number="2">exampleValue <span class="fu">=</span> <span class="dt">Quantity</span> V.length <span class="fl">5.3</span></a></code></pre></div>
+<p>TODO: Please rephrase. The definition of “ExampleType” uses the type level and “exampleValue” uses the value level.</p>
+<p>TODO: (here and elsewhere) use “print” or “pretty print” or “pretty-print”, not “print prettily”.</p>
 <p>Note that the <code>Quantity</code> data type has both value-level and type-level dimensions. As previosuly mentioned, value-level in order to print prettily and type-level to only permit legal operations.</p>
 <p><strong>Exercise.</strong> Create a data type which has two type-level dimensions, always use <code>Rational</code> as the value-holding type (the role of <code>v</code>) but which has no value-level dimensions.</p>
+<p>TODO: What is the purpose (semantics, intended meaning or use) of Quantity’?</p>
 <p><strong>Solution.</strong></p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">data</span> <span class="dt">Quantity&#39;</span> (<span class="ot">d1 ::</span> <span class="dt">T.Dim</span>) (<span class="ot">d2 ::</span> <span class="dt">T.Dim</span>) <span class="kw">where</span></a>
 <a class="sourceLine" id="cb11-2" data-line-number="2">  <span class="dt">Quantity&#39;</span><span class="ot"> ::</span> <span class="dt">Rational</span> <span class="ot">-&gt;</span> <span class="dt">Rational</span> <span class="ot">-&gt;</span> <span class="dt">Quantity&#39;</span> d1 d2</a></code></pre></div>
@@ -95,15 +104,15 @@
 <a class="sourceLine" id="cb12-3" data-line-number="3">                          <span class="dt">Quantity</span> d v</a>
 <a class="sourceLine" id="cb12-4" data-line-number="4">quantityAdd (<span class="dt">Quantity</span> d v1) (<span class="dt">Quantity</span> _ v2) <span class="fu">=</span> <span class="dt">Quantity</span> d (v1<span class="fu">+</span>v2)</a></code></pre></div>
 <p>The type is interpreted as follows: two values of type <code>Quantity d v</code> is the input, where <code>d</code> is the type-level dimension. The output is also a value of type <code>Quantity d v</code>.</p>
-<p>The type of the function forces the inputs to have the same dimensions. For this reason, the dimension on value-level doesn’t matter on one of the arguments, because they will be the same. (It’s possible to create values where the dimensions on value-level and type-level don’t match. We’ll come back to this later.)</p>
-<p><code>Quantity d v</code> in the type and <code>Quantity d v1</code> as a value pattern shouldn’t be confused. The first <code>d</code> is a type variable, holding the type-level dimension while the second <code>d</code> is a (value) variable holding the value-level dimension. Similary, the first <code>v</code> is a type variable holding the type of values (e.g. <code>Double</code>) and the second <code>v</code> holds the actual value.</p>
+<p>The type of the function forces the inputs to have the same dimensions. For this reason, the dimension on value-level doesn’t matter on one of the arguments, because they will be the same. (It’s possible to create values where the dimensions on value-level and type-level don’t match. We’ll come back to this later. TODO: perhaps this comment needs to come earlier to give the reader a feeling for where it is all heading.)</p>
+<p><code>Quantity d v</code> in the type and <code>Quantity d v1</code> as a value pattern shouldn’t be confused (TODO: then rename one!). The first <code>d</code> is a type variable, holding the type-level dimension while the second <code>d</code> is a (value) variable holding the value-level dimension. Similary, the first <code>v</code> is a type variable holding the type of values (e.g. <code>Double</code>) and the second <code>v</code> holds the actual value.</p>
 <p>Multiplication is</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="ot">quantityMul ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> d1 v <span class="ot">-&gt;</span> </a>
-<a class="sourceLine" id="cb13-2" data-line-number="2">                          <span class="dt">Quantity</span> d2 v <span class="ot">-&gt;</span>             </a>
+<div class="sourceCode" id="cb13"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="ot">quantityMul ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> d1 v <span class="ot">-&gt;</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">                          <span class="dt">Quantity</span> d2 v <span class="ot">-&gt;</span></a>
 <a class="sourceLine" id="cb13-3" data-line-number="3">                          <span class="dt">Quantity</span> (d1 <span class="ot">`Mul`</span> d2) v</a>
-<a class="sourceLine" id="cb13-4" data-line-number="4">quantityMul (<span class="dt">Quantity</span> d1 v1) (<span class="dt">Quantity</span> d2 v2) <span class="fu">=</span> </a>
+<a class="sourceLine" id="cb13-4" data-line-number="4">quantityMul (<span class="dt">Quantity</span> d1 v1) (<span class="dt">Quantity</span> d2 v2) <span class="fu">=</span></a>
 <a class="sourceLine" id="cb13-5" data-line-number="5">  <span class="dt">Quantity</span> (d1 <span class="ot">`V.mul`</span> d2) (v1<span class="fu">*</span>v2)</a></code></pre></div>
-<p>The type has the following interpretation: two valus of type <code>Quantity dx v</code> is input, where <code>dx</code> are two types representing (potentially different) dimensions. As output, a value of type <code>Quantity</code> is returned. The type in the <code>Quantity</code> will be the type that is the product of the two dimensions in.</p>
+<p>The type has the following interpretation: two values of type <code>Quantity dx v</code> is input, where <code>dx</code> are two types representing (potentially different) dimensions. As output, a value of type <code>Quantity</code> is returned. The type in the <code>Quantity</code> will be the type that is the product of the two dimensions in.</p>
 <p><strong>Exercise.</strong> Implement subtraction and division.</p>
 <figure>
 <img src="Cowboy.png" alt="Are you a cowboy?" class="float-img-right" /><figcaption>Are you a cowboy?</figcaption>
@@ -137,10 +146,10 @@
 <a class="sourceLine" id="cb18-17" data-line-number="17">         <span class="ch">&#39;Numeric.NumType.DK.Integers.Zero)</span></a>
 <a class="sourceLine" id="cb18-18" data-line-number="18">      <span class="dt">Double</span></a></code></pre></div>
 <p>Which is the same as <code>Area</code>.</p>
-<p>Having type-level dimensions is used below, to enforce at compile-time that only allowed operations are performed.</p>
+<p>The type-level dimensions are used below to enforce, at compile-time, that only allowed operations are attempted.</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="co">-- Doesn&#39;t even compile</span></a>
 <a class="sourceLine" id="cb19-2" data-line-number="2">weird <span class="fu">=</span> quantityAdd width area</a></code></pre></div>
-<p>If the dimensions only were value-level, this error would be noticed only at run-time.</p>
+<p>If the dimensions had been value-level only, this error would go undetected until run-time.</p>
 <p><strong>Exercise.</strong> What is the volume of a cuboid with sides <span class="math inline">\(1.2\ m\)</span>, <span class="math inline">\(0.4\ m\)</span> and <span class="math inline">\(1.9\ m\)</span>? Create values for the involved quantities. Use <code>Float</code> instead of <code>Double</code>.</p>
 <p><strong>Solution.</strong></p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="ot">side1 ::</span> <span class="dt">Quantity</span> <span class="dt">Length</span> <span class="dt">Float</span></a>
@@ -166,7 +175,7 @@
 <a class="sourceLine" id="cb28-2" data-line-number="2">  (<span class="fu">==</span>) <span class="fu">=</span> quantityEq</a></code></pre></div>
 <p><strong>Exercise.</strong> Make <code>Quantity</code> an instance of <code>Ord</code>.</p>
 <p><strong>Solution.</strong></p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="ot">quantityCompare ::</span> (<span class="dt">Ord</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span> </a>
+<div class="sourceCode" id="cb29"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="ot">quantityCompare ::</span> (<span class="dt">Ord</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span></a>
 <a class="sourceLine" id="cb29-2" data-line-number="2">                              <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span> <span class="dt">Ordering</span></a>
 <a class="sourceLine" id="cb29-3" data-line-number="3">quantityCompare (<span class="dt">Quantity</span> _ v1) (<span class="dt">Quantity</span> _ v2) <span class="fu">=</span></a>
 <a class="sourceLine" id="cb29-4" data-line-number="4">  compare v1 v2</a></code></pre></div>
@@ -182,11 +191,11 @@
 <h2 id="arithmetic-on-quantities">Arithmetic on quantities</h2>
 <p>Let’s implement the arithmetic operations on <code>Quantity</code>. Basically it’s all about creating functions with the correct type-level dimensions.</p>
 <div class="sourceCode" id="cb33"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="kw">infixl</span> <span class="dv">6</span> <span class="fu">+#</span></a>
-<a class="sourceLine" id="cb33-2" data-line-number="2"><span class="ot">(+#) ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span> </a>
+<a class="sourceLine" id="cb33-2" data-line-number="2"><span class="ot">(+#) ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span></a>
 <a class="sourceLine" id="cb33-3" data-line-number="3">                   <span class="dt">Quantity</span> d v</a>
 <a class="sourceLine" id="cb33-4" data-line-number="4">(<span class="fu">+#</span>) <span class="fu">=</span> quantityAdd</a></code></pre></div>
 <div class="sourceCode" id="cb34"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw">infixl</span> <span class="dv">6</span> <span class="fu">-#</span></a>
-<a class="sourceLine" id="cb34-2" data-line-number="2"><span class="ot">(-#) ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span> </a>
+<a class="sourceLine" id="cb34-2" data-line-number="2"><span class="ot">(-#) ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span></a>
 <a class="sourceLine" id="cb34-3" data-line-number="3">                   <span class="dt">Quantity</span> d v</a>
 <a class="sourceLine" id="cb34-4" data-line-number="4">(<span class="dt">Quantity</span> d v1) <span class="fu">-#</span> (<span class="dt">Quantity</span> _ v2) <span class="fu">=</span> <span class="dt">Quantity</span> d (v1<span class="fu">-</span>v2)</a></code></pre></div>
 <div class="sourceCode" id="cb35"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb35-1" data-line-number="1"><span class="kw">infixl</span> <span class="dv">7</span> <span class="fu">*#</span></a>
@@ -194,13 +203,13 @@
 <a class="sourceLine" id="cb35-3" data-line-number="3">                   <span class="dt">Quantity</span> (d1 <span class="ot">`Mul`</span> d2) v</a>
 <a class="sourceLine" id="cb35-4" data-line-number="4">(<span class="fu">*#</span>) <span class="fu">=</span> quantityMul</a></code></pre></div>
 <div class="sourceCode" id="cb36"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="kw">infixl</span> <span class="dv">7</span> <span class="fu">/#</span></a>
-<a class="sourceLine" id="cb36-2" data-line-number="2"><span class="ot">(/#) ::</span> (<span class="dt">Fractional</span>  v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> d1 v <span class="ot">-&gt;</span> </a>
+<a class="sourceLine" id="cb36-2" data-line-number="2"><span class="ot">(/#) ::</span> (<span class="dt">Fractional</span>  v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> d1 v <span class="ot">-&gt;</span></a>
 <a class="sourceLine" id="cb36-3" data-line-number="3">                           <span class="dt">Quantity</span> d2 v <span class="ot">-&gt;</span></a>
 <a class="sourceLine" id="cb36-4" data-line-number="4">                           <span class="dt">Quantity</span> (d1 <span class="ot">`Div`</span> d2) v</a>
 <a class="sourceLine" id="cb36-5" data-line-number="5">(<span class="dt">Quantity</span> d1 v1) <span class="fu">/#</span> (<span class="dt">Quantity</span> d2 v2) <span class="fu">=</span></a>
 <a class="sourceLine" id="cb36-6" data-line-number="6">  <span class="dt">Quantity</span> (d1 <span class="ot">`V.div`</span> d2) (v1 <span class="fu">/</span> v2)</a></code></pre></div>
 <p>For all operations on quantities, one does the operation on the value and, in the case of multiplication and division, on the dimensions separetly. For addition and subtraction the in-dimensions must be the same. Nothing then happens with the dimension.</p>
-<p>How does one perform operations such as <code>sin</code> on a quantity with a <em>potential</em> dimensions? The answer is that the quantity must be dimensionless, and with the dimension nothing happens.</p>
+<p>How does one perform operations such as <code>sin</code> on a quantity with a <em>potential</em> dimension? The answer is that the quantity must be dimensionless, and with the dimension nothing happens.</p>
 <p>Why is that, one might wonder. Every function can be written as a power series. For <span class="math inline">\(sin\)</span> the series looks like</p>
 <span class="math display">\[\begin{align}
   sin(x) = x - \frac{x^3}{3!} + \frac{x^5}{5!} - ...
@@ -229,9 +238,9 @@
 <p>which isn’t compatible with <code>Quantity</code> since multiplication with <code>Quantity</code> has the following type</p>
 <div class="sourceCode" id="cb41"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="ot">(*#) ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> d1 v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> d2 v <span class="ot">-&gt;</span></a>
 <a class="sourceLine" id="cb41-2" data-line-number="2">                   <span class="dt">Quantity</span> (d1 <span class="ot">`Mul`</span> d2) v</a></code></pre></div>
-<p>The input here may actually be of <em>different</em> types, and the output has a type depending on the types of the input. However, the <em>kind</em> of the inputs and output are the same:, namely <code>Quantity</code>. We’ll just have to live with not being able to make <code>Quantity</code> a <code>Num</code>-instance.</p>
+<p>The input here may actually be of <em>different</em> types, and the output has a type depending on the types of the input. However, the <em>kind</em> of the inputs and output are the same, namely <code>Quantity</code>. We’ll just have to live with not being able to make <code>Quantity</code> a <code>Num</code>-instance.</p>
 <p>However, operations with only scalars (type <code>One</code>) has types compatible with <code>Num</code>.</p>
-<p><strong>Exercise.</strong> However, <code>Quantity One</code> has compatible types. Make it an instance of <code>Num</code>, <code>Fractional</code>, <code>Floating</code> and <code>Functor</code>.</p>
+<p><strong>Exercise.</strong> <code>Quantity One</code> has compatible types. Make it an instance of <code>Num</code>, <code>Fractional</code>, <code>Floating</code> and <code>Functor</code>.</p>
 <p><strong>Solution.</strong></p>
 <div class="sourceCode" id="cb42"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="kw">instance</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Num</span> (<span class="dt">Quantity</span> <span class="dt">One</span> v) <span class="kw">where</span></a>
 <a class="sourceLine" id="cb42-2" data-line-number="2">  (<span class="fu">+</span>) <span class="fu">=</span> (<span class="fu">+#</span>)</a>
@@ -268,6 +277,7 @@
 <a class="sourceLine" id="cb47-2" data-line-number="2">distance <span class="fu">=</span> <span class="dt">Quantity</span> V.time <span class="fl">5.0</span></a></code></pre></div>
 <p>with different dimensions on value-level and type-level.</p>
 <p>To solve these two problems we will introduce some syntactic sugar. First some pre-made values for the 7 base dimensions and the scalar.</p>
+<p>TODO: Please use “1” instead of “0” in all the dimensions. That signifies an amount of the “unit” (SI-units =&gt; always 1).</p>
 <div class="sourceCode" id="cb48"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb48-1" data-line-number="1">length<span class="ot"> ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Length</span> v</a>
 <a class="sourceLine" id="cb48-2" data-line-number="2">length <span class="fu">=</span> <span class="dt">Quantity</span> V.length <span class="dv">0</span></a></code></pre></div>
 <div class="sourceCode" id="cb49"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb49-1" data-line-number="1"><span class="ot">mass ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Mass</span> v</a>
@@ -287,6 +297,7 @@
 <div class="sourceCode" id="cb55"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb55-1" data-line-number="1"><span class="ot">one ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">One</span> v</a>
 <a class="sourceLine" id="cb55-2" data-line-number="2">one <span class="fu">=</span> <span class="dt">Quantity</span> V.one <span class="dv">0</span></a></code></pre></div>
 <p>And now the sugar.</p>
+<p>TODO: Please multiply the values instead of throwing them away. I’m pretty sure (#) should behave as “scale” of a vector space. So that (x#(y#z)) == ((x*y)#z).</p>
 <div class="sourceCode" id="cb56"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb56-1" data-line-number="1"><span class="ot">(#) ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> d v</a>
 <a class="sourceLine" id="cb56-2" data-line-number="2">v <span class="fu">#</span> (<span class="dt">Quantity</span> d _) <span class="fu">=</span> <span class="dt">Quantity</span> d v</a></code></pre></div>
 <p>The intended usage of the function is the following</p>
@@ -297,6 +308,7 @@
 <a class="sourceLine" id="cb57-5" data-line-number="5"><span class="dv">5</span> m</a></code></pre></div>
 <p>To create a <code>Quantity</code> with a certain value (here <code>5</code>) and a certain dimension (here <code>length</code>), you write as above and get the correct dimension on both value-level and type-level.</p>
 <p><code>length</code>, <code>mass</code> and so on are just dummy-values with the correct dimension (on both value-level and type-level) in order to easier create <code>Quantity</code> values. Any value with the correct dimension on both levels can be used as the right hand side argument.</p>
+<p>TODO: (above): please change impl. so that it matters. Then you basically get units on the value level and dimensions at the type level. (you may also want to rename “length” to “meter”, etc. to match this intuition. And you can support “inch”, “foot”, “lightyear”, etc as well, of the same type)</p>
 <div class="sourceCode" id="cb58"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb58-1" data-line-number="1">ghci<span class="fu">&gt;</span> <span class="kw">let</span> otherPersonsDistance <span class="fu">=</span> <span class="dv">10</span> <span class="fu">#</span> length</a>
 <a class="sourceLine" id="cb58-2" data-line-number="2">ghci<span class="fu">&gt;</span> <span class="kw">let</span> myDistance <span class="fu">=</span> <span class="dv">5</span> <span class="fu">#</span> otherPersonsDistance</a>
 <a class="sourceLine" id="cb58-3" data-line-number="3">ghci<span class="fu">&gt;</span> <span class="fu">:</span>t myDistance</a>
@@ -304,7 +316,7 @@
 <a class="sourceLine" id="cb58-5" data-line-number="5">ghci<span class="fu">&gt;</span> myDistance</a>
 <a class="sourceLine" id="cb58-6" data-line-number="6"><span class="dv">5</span> m</a></code></pre></div>
 <p>Precisely the same result.</p>
-<p>We want to maintain the invariant that the dimension on value-level and type-level always match. The pre-made values from above maintain it, and so does the arithmetic operations we previously created. Therefore, we only export those from this module! The user will have no choice but to use these constructs and hence the invariant will be maintained.</p>
+<p>We want to maintain the invariant that the dimension on value-level and type-level always match. The pre-made values from above maintain it, and so do the arithmetic operations we previously created. Therefore, we only export those from this module! The user will have no choice but to use these constructs and hence the invariant will be maintained.</p>
 <p>If the user needs other dimensions than the base dimensions (which it probably will), the follwing example shows how it’s done.</p>
 <div class="sourceCode" id="cb59"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb59-1" data-line-number="1">ghci<span class="fu">&gt;</span> <span class="kw">let</span> myLength <span class="fu">=</span> <span class="dv">5</span> <span class="fu">#</span> length</a>
 <a class="sourceLine" id="cb59-2" data-line-number="2">ghci<span class="fu">&gt;</span> <span class="kw">let</span> myTime <span class="fu">=</span> <span class="dv">2</span> <span class="fu">#</span> time</a>

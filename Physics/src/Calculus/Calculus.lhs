@@ -244,7 +244,7 @@ So if the `Show` is bad, we'll just have to make our own `Show`!
 >   show (f :* g) = "(" ++ show f ++ " * " ++ show g ++ ")"
 >   show (f :/ g) = "(" ++ show f ++ " / " ++ show g ++ ")"
 >   show (f :^ g) = "(" ++ show f ++ "^" ++ show g ++ ")"
->   show Id = "id"
+>   show Id = "x"
 >   show (Const x) = showReal x
 >   show (f :. g) = "(" ++ show f ++ " . " ++ show g ++ ")"
 >   show (Delta h f) = "(delta_" ++ showReal h ++ " " ++ show f ++ ")"

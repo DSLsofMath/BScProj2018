@@ -716,8 +716,9 @@ being the identity element.
 >     (Const a, Const b) -> Const (a * b)
 >     (f', Const c) -> Const c :* f'
 >     (f', g') | f' == g' -> f' :^ Const 2
->     (Const a :* f', g') -> simplify (Const a :* (f' :* g'))
->     (f', Const a :* g') -> simplify (Const a :* (f' :* g'))
+>     (Const a, Const b :* g') -> simplify (Const (a*b) :* g')
+>     (Const a :* f', g') -> simplify (f' :* (Const a :* g'))
+>     (fa, g' :/ fb) | fa == fb -> g'
 >     (f', g') -> f' :* g'
 > simplify (f :/ g) = case (simplify f, simplify g) of
 >     (Const 0, g') -> Const 0

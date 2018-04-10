@@ -86,7 +86,9 @@ och reflektion i förhållande till 
 teori och metod och andra 
 studier.
 
-Vad betyder denna ens?
+Vad betyder denna ens? 
+Att när vi diskuterar resultatet i diskussionen så knyter vi an till det vi
+skrivit i metod/teori.
 
 ### Kritiskt förhållningssätt till resultat
 
@@ -108,7 +110,9 @@ relevans är hög och källorna 
 består huvudsakligen av 
 vetenskapliga publikationer.*
 
-Det vi behöver ha källor på är trovärdiga, t.ex. ARCS-boken, NE, Patrik och Cezars paper, literat paper, och andra böcker. De internetkällor vi har är mer av "läs mer här".
+Det vi behöver ha källor på är trovärdiga, t.ex. ARCS-boken, NE, Patrik och
+Cezars paper, literat paper, och andra böcker. De internetkällor vi har är mer
+av "läs mer här".
 
 Vissa är kanske mindre relevanta, som NE om Turing, men de flesta är relevanta.
 

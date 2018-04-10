@@ -124,11 +124,67 @@ Vissa är kanske mindre relevanta, som NE om Turing, men de flesta är relevanta
 
 ## Struktur
 
-TODO
+Samtliga ska granskas noggrant men bör inte vara problemetiska att klara av.
+
+### (!) Kapitel och avsnitt
+
+Hela rapporten är indelad i tydliga 
+och väl avvägda kapitel, avsnitt och
+stycken.
+
+### (!) Styckehantering
+
+Styckehanteringen är mycket god och 
+följer tanken om en tanke/idé per 
+stycke och styckena har tydliga 
+kärnmeningar.
+
+### (!) Referenshantering
+
+Referenshantering av tabeller, figurer 
+och källor är korrekt och påverkar inte 
+läsningen. Eventuell parafrasering är 
+mycket väl avvägd.
+
+### (!) Tabeller och figurer
+
+Tabeller och figurer är placerade på 
+lämpliga ställen i texten, har 
+försetts med tydliga och 
+informativa tabell‐ respektive 
+figurrubriker och är väl 
+kommenterade i texten.
 
 ## Språk och stil
 
-TODO
+### (!) Meningsbyggnad
+
+Meningsbyggnaden är korrekt, formell och 
+effektiv (inga ofullständiga meningar). Endast 
+få meningar med alltför komplex 
+informationsstruktur (svårlästa meningar).
+
+### (!) Ordval och begrepp
+
+Rapporten präglas av korrekt ordval 
+samt av att begrepp är väl anpassade till 
+texttypen och används på ett 
+konsekvent sätt.
+
+### (!) Textens stil
+
+Stilnivån är jämn och växlar inte 
+mellan formell och informell stil. 
+Rapporten präglas av god 
+medvetenhet om gällande 
+stilkrav.
+
+### (!) Korrektur
+
+Rapporten har noggrant 
+korrekturlästs och innehåller ytterst 
+få eller inga syftnings‐, konstruktions‐ 
+eller stavfel.
 
 
 

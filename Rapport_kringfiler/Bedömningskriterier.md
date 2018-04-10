@@ -5,19 +5,25 @@ Jag har kopierat text för betyg 5, inte för att vi nödvändigtvis satsar på 
 
 Det som är kursiverat är avklarat, eller åtminstone som vi tycker är avklarat.
 
+Ett (!) i början av rubrik betyder att delen är avklarad eller att vi har en bra plan hur vi ska klara den.
+
 Här har vi så att vi vet vad som ska vara uppfyllt och hur långt vi kommit.
 
 ## Helhetsintryck
 
-### Syfte och struktur
+### (!) Syfte och struktur
 
 Det går att vid en översiktlig första granskning snabbt 
 förstå textens syfte, struktur, innehåll och relevans tack 
 vare en informativ titel, ett informativt sammandrag, 
-tydlig innehållsförteckning med effektiv rubriksättning 
+*tydlig innehållsförteckning med effektiv rubriksättning 
 samt figurer och tabeller som är tydligt knuta till 
 textens tema och kommunicerar metod, resultat och 
-slutsatser väl.
+slutsatser väl.*
+
+Vi har kanske lite lite bilder och tabeller, men som finns "kommunicerar väl innehållet".
+
+Titel och sammandrag är vi inte färdiga med, men bör kunna fixas bra när vi väl gör dem.
 
 ### Ämnesbeskrivning
 
@@ -30,7 +36,7 @@ välbalanserad rapport.
 
 Vad betyder denna ens?
 
-### Formalia
+### (!) Formalia
 
 Rapportens längd och formalia följer Chalmers 
 centrala anvisningar och är effektivt anpassade 
@@ -48,7 +54,7 @@ Slutsatserna är tydligt kopplade till och 
 överensstämmer mycket väl med resultatanalys och 
 syfte / problemformulering.
 
-### Teori‐ och metodval
+### (!) Teori‐ och metodval
 
 Författarna intar ett kritiskt förhållningssätt till teori‐ 
 och metodval genom att reflektera över deras 
@@ -67,7 +73,7 @@ av korrekt innehåll och relevanta referenser, och 
 stöds av tydliga exempel och med referenser till 
 resultatredovisningen.
 
-### Resultatredovisning
+### (!) Resultatredovisning
 
 Redovisningen av resultat är korrekt och väl 
 genomförd på ett innovativt sätt. 
@@ -101,7 +107,7 @@ andra studier eller tillämpningsområden.
 
 Vi bör diskutera både läromaterialet och vår diskussion.
 
-### Faktainsamling
+### (!) Faktainsamling
 
 *En mycket väl genomförd
 faktainsamling av hög kvalitet. 

@@ -25,17 +25,29 @@ Skriv om du arbetar på en av punkterna och det kommer ta lång tid (så att ing
 
 - Introduktion
 - Teori
-    - Didaktik
+    - **O** Didaktik 
 - Metod
     - Implementation komposita
-    - Implementation expandera gemensamma drag
-    - Lärotext didaktik
+    - **O** Lärotext didaktik
     - Lärotext komposita
     - Hemsidan
 - Resultat
+- Resultat2
+    - Expandera och proffesionalisera "fokus på fysik"
+    - Expandera och proffesionalisera DSL-lämpliga-områden
+    - Expandera och proffesionalisera DSL+fysik pedagogik
 - Diskussion
-    - Expandera DSL+fysik gör att fysik enklare
-    - Expandera Vårt tillvägagångssätt
+    - Expandera metod och teorival
+    - Lägg till till vidareutvecklingsmöjligheter
     - Etik: om roligt och hemsidan som gör pedagogik enklare
-    - Expandera Om vi tyckte läromaterialet blev bra
-    - Om att väldigt lite didaktik
+    - Diskutera vårt läromaterial enligt bedömningskriterier
+
+
+
+
+
+
+
+
+
+

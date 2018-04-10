@@ -47,12 +47,14 @@ Väntar på svar från Fackspråk om vad de tycker om detta på vår rapport
 
 ## Innehåll och förståelse
 
-### Relationen syfte – resultatanalys – diskussion (röd tråd)
+### (!) Relationen syfte – resultatanalys – diskussion (röd tråd)
 
-Syftet med studien framgår tydligt och är väl avgränsat. 
+*Syftet med studien framgår tydligt och är väl avgränsat.*
 Slutsatserna är tydligt kopplade till och 
 överensstämmer mycket väl med resultatanalys och 
 syfte / problemformulering.
+
+Vi ser till att skriva en bra slutsats som knyter an till vad vi fick för resultat och svarar på syftet som skrevs i introduktionen.
 
 ### (!) Teori‐ och metodval
 
@@ -72,6 +74,10 @@ välstrukturerad och väl avvägd. Den är underbyggd 
 av korrekt innehåll och relevanta referenser, och 
 stöds av tydliga exempel och med referenser till 
 resultatredovisningen.
+
+- Hänvisa till resultat i diskussion
+- Vara saklig, inte löst påhittat snack (vi kan fortfarande diskutera, men motivera och hänvisa till att våra erfarenheter)
+- Skaffa referenser i diskussion och resultat och rapport i övrigt
 
 ### (!) Resultatredovisning
 

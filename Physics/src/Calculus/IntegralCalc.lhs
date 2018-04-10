@@ -6,8 +6,6 @@
 Integrals - An integral part of calculus
 ======================================================================
 
-![](integral.png "A snaky integral"){.float-img-right}
-
 *Integrals* are functions used to describe area, volume, and
 accumulation in general. The operation of integration is the second
 fundamental operation of calculus, and the inverse of
@@ -82,6 +80,8 @@ $$\int f(x) dx$$
 should really just be
 
 $$\int f$$.
+
+![](integral.png "A snaky integral"){.float-img-right}
 
 Next, the definition of definite integrals implies that we can write
 

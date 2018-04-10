@@ -1,0 +1,154 @@
+
+# Bedömningskriterier
+
+Jag har kopierat text för betyg 5, inte för att vi nödvändigtvis satsar på det betyget, utan för att det är den mest extrema.
+
+Det som är kursiverat är avklarat, eller åtminstone som vi tycker är avklarat.
+
+Här har vi så att vi vet vad som ska vara uppfyllt och hur långt vi kommit.
+
+## Helhetsintryck
+
+### Syfte och struktur
+
+Det går att vid en översiktlig första granskning snabbt 
+förstå textens syfte, struktur, innehåll och relevans tack 
+vare en informativ titel, ett informativt sammandrag, 
+tydlig innehållsförteckning med effektiv rubriksättning 
+samt figurer och tabeller som är tydligt knuta till 
+textens tema och kommunicerar metod, resultat och 
+slutsatser väl.
+
+### Ämnesbeskrivning
+
+Ämnesbeskrivningen är mycket bra med en resultatanalys 
+som är överskådlig och väl sammankopplad med syfte och 
+slutsats. Relevanta områden täcks in och beskrivs på ett 
+tydligt sätt. Dessutom är urval och omfång tydligt 
+kopplade till studiens syfte och övrigt innehåll i en 
+välbalanserad rapport.
+
+Vad betyder denna ens?
+
+### Formalia
+
+Rapportens längd och formalia följer Chalmers 
+centrala anvisningar och är effektivt anpassade 
+till uppgiften. Formaliaaspekter i texten 
+förstärker läsandet och är inte iögonfallande.
+
+Väntar på svar från Fackspråk om vad de tycker om detta på vår rapport
+
+## Innehåll och förståelse
+
+### Relationen syfte – resultatanalys – diskussion (röd tråd)
+
+Syftet med studien framgår tydligt och är väl avgränsat. 
+Slutsatserna är tydligt kopplade till och 
+överensstämmer mycket väl med resultatanalys och 
+syfte / problemformulering.
+
+### Teori‐ och metodval
+
+Författarna intar ett kritiskt förhållningssätt till teori‐ 
+och metodval genom att reflektera över deras 
+lämplighet i förhållande till den genomförda studien. 
+Dessa reflekterande uttalanden tillför området nya 
+teoretiska och / eller metodtekniska insikter och 
+slutsatser.
+
+Kommer täckas av avsnittet "Diskussion/Teori och metodval"
+
+### Argumentation
+
+Argumentation och diskussion är saklig, 
+välstrukturerad och väl avvägd. Den är underbyggd 
+av korrekt innehåll och relevanta referenser, och 
+stöds av tydliga exempel och med referenser till 
+resultatredovisningen.
+
+### Resultatredovisning
+
+Redovisningen av resultat är korrekt och väl 
+genomförd på ett innovativt sätt. 
+Tillsammans med urvalet av tabeller, figurer 
+och exempel utgör resultatredovisningen en 
+övertygande helhet som är välanpassad för 
+den förväntade läsekretsen
+
+Lägger vi till lite mer tekniskt, t.ex. syntax-träd och symboliska ops för analys blir denna uppfylld.
+
+### Analys i förhållande till teori/metod
+
+Analysen av resultatet 
+innehåller relevant tolkning 
+och reflektion i förhållande till 
+teori och metod och andra 
+studier.
+
+Vad betyder denna ens?
+
+### Kritiskt förhållningssätt till resultat
+
+Författarna intar ett kritiskt förhållningssätt till 
+de resultat de har fått fram genom att diskutera 
+deras relevans och eventuella konsekvenser av 
+dem. Författarna diskuterar även oklara och 
+oväntade resultat och sin studies relation till 
+andra studier eller tillämpningsområden.
+
+Vi bör diskutera både läromaterialet och vår diskussion.
+
+### Faktainsamling
+
+*En mycket väl genomförd
+faktainsamling av hög kvalitet. 
+Källornas trovärdighet och 
+relevans är hög och källorna 
+består huvudsakligen av 
+vetenskapliga publikationer.*
+
+Det vi behöver ha källor på är trovärdiga, t.ex. ARCS-boken, NE, Patrik och Cezars paper, literat paper, och andra böcker. De internetkällor vi har är mer av "läs mer här".
+
+Vissa är kanske mindre relevanta, som NE om Turing, men de flesta är relevanta.
+
+## Struktur
+
+TODO
+
+## Språk och stil
+
+TODO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -12,11 +12,11 @@
 % Metoddelen skrivs nästan alltid i dåtid (imperfekt) och ofta används
 % passiv form för att beskriva forskningsaktiviteter.
 
-\chapter{Konstruktion och utvärdering av läromaterialet}
+\chapter{Konstruktion och utvärdering av läromaterialet samt möten med Fäldt}
 
 \begin{draft}
 
-Projektets genomförande bestod av tre delar. Den största delen bestod av att skapa själva läromaterialet, och där ingick sökande efter fysikaliska områden, implementation av domänspecifika språk och skrivande av lärotext. De två andra delarna var publicering på en hemsida och utvärdering av läromaterialet med en testgrupp.
+Projektets genomförande bestod av fyra delar. Den största delen var att skapa själva läromaterialet, och där ingick sökande efter fysikaliska områden, implementation av domänspecifika språk och skrivande av lärotext. De tre andra delarna var publicering av läromaterialet på en hemsida, utvärdering av läromaterialet med en testgrupp samt möten med Åke Fäldt, examinator och föreläsare för Fysik för ingenjörer. Mötena med Fäldt hade två syften: att hitta problemområden i fysikkursen och att få återkoppling på läromaterialet.
 
 Det har inte funnits någon betydelsefull kronologi i projektet. I vilken ordningen aktiviteterna genomfördes spelar ingen roll för att förstå vad som genomfördes och hur det genomfördes. Resterande av kapitlet beskriver därför enbart aktiviteterna i sig, och inte i vilken ordningen de gjordes i relation till varandra. Självklart finns viss betydelsefull kronologi. Till exempel var (en del av) läromaterialet varit tvunget att vara skapat innan det kunde utvärderas, men sådana praktiska detaljer är obetydelsefulla för förståelsen.
 
@@ -72,6 +72,7 @@ Ett domänspecifikt språk modellerar ett specifikt och avgränsat område. Där
 Denna sökandeprocess innefattade inte bara att \textit{hitta} fysikaliska områden utan även \textit{organisera} dem i relation till varandra. Som framgår senare är till exempel vissa områden påbyggningar av andra. Denna organisering var viktig för att kunna implementera de domänspecifika spårken på bästa sätt och undvika överlappande implementationer.
 
 \subsubsection{Kontakt med Fäldt}
+\label{sec:kontakt_faldt}
 
 Fäldt befrågades om vilka områden han i allmänhet anser studenter har
 svårt för. Detta för att i enlighet med projektets mål börja med de, för
@@ -180,45 +181,43 @@ För att konkret visa hur en implementationen av ett grundläggande område ser 
 och motiveringen bakom den visas här ett exempel. Exemplet kommer från
 läromaterialet och implementerar fysikaliska dimensioner i Haskell.
 
-I fysiken finns det dimensioner. Några exempel är \textit{längd},
+I fysiken finns det dimensioner \cite{dimensioner_ne}. Några exempel är \textit{längd},
 \textit{hastighet} och \textit{massa}. Dimensionerna kan läggas i en av två
-kategorier: grundläggande eller sammansatta. Det finns enbart sju grundläggande
-dimensioner (längd, massa, tid, elektrisk ström, temperatur, substansmängd och
-ljusstyrka) REF medan det finns oändligt många sammansatta. Sammansatta
+kategorier: basdimensioner eller sammansatta dimensioner. Det finns enbart sju 
+basdimensioner (längd, massa, tid, elektrisk ström, temperatur, substansmängd och
+ljusstyrka) medan det finns oändligt många sammansatta. Sammansatta
 dimensioner fås genom att multiplicera eller dividera två andra dimesnioner. Av
-de tre exempelna är den första och sista grundläggande, medan den sista är
+de tre exempelna är den första och sista basdimensioner, medan den sista är
 sammansatt.
 
 En första ansats till implementation skulle därför kunna se ut som
 
 % Dessa inställningar ska bara användas vid "inline" kod som ej är separat figur.
 \begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
- data BD        -- Base Dimension
-        = Le    -- Langd
+ data BD        -- Basdimension
+        = Le    -- `Längd'
         | Ma    -- Massa
         | Ti    -- Tid
-        | Cu    -- Eletrisk strom
+        | Cu    -- `Eletrisk ström'
         | Te    -- Temperatur
         | Su    -- Substansmangd
         | Lu    -- Ljusstyrka
 \end{lstlisting}
 
-TODO: syntax och semantik i teori.
-
-där \texttt{BD} syntaktiskt representerar de sju grundläggande dimensionerna.
+där \texttt{BD} syntaktiskt representerar de sju basdimensionerna.
 Sammansatta dimensioner kan representeras med följande syntaxträd
 
 \begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
-data Dim = BaseDim BD   -- Lov med grundlaggande dimesnion
-         | Mul Dim Dim  -- Forgrening med multiplikation mellan tva andra dimensioner
-         | Div Dim Dim  -- Forgrening med division mellan tva andra dimensioner
+data Dim = BaseDim BD   -- `Löv med grundläggande dimension'
+         | Mul Dim Dim  -- `Förgrening med multiplikation mellan två andra dimensioner'
+         | Div Dim Dim  -- `Förgrening med division mellan två andra dimensioner'
 \end{lstlisting}
 
 Några exempelvärden blir då
 
 \begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
-langd = BaseDim Le
-hastighet = Div langd (BaseDim Ti)
+`length = BaseDim Le'
+`velocity = Div length (BaseDim Ti)'
 \end{lstlisting}
 
 Denna implementation har dock två problem. För det första finns det en
@@ -249,24 +248,24 @@ BaseDim Le
 
 Även om en sådan förenklare går att göra valdes en annan lösning till
 läromaterialet. Nyckeln ligger i att betrakta dimensioner som en multipikation
-av grundläggande dimensioner med exponenter. Ta till exempel hastighet
+av basdimensioner med exponenter. Ta till exempel hastighet
 \begin{align*}
   \frac{Längd}{Tid} \iff Längd^1 * Tid^{-1}
 \end{align*}
 Då kan följande representation användas för dimensioner
 
 \begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
-data Dim = Dim Int    -- Exponent till langd
+data Dim = Dim Int    -- Exponent till `längd'
                Int    -- Exponent till massa
                Int    -- Exponent till tid
-               Int    -- Exponent till strom
+               Int    -- Exponent till `ström'
                Int    -- Exponent till temperatur
-               Int    -- Exponent till substansmangd
+               Int    -- Exponent till `substansmängd'
                Int    -- Exponent till ljusstyrka
 \end{lstlisting}
 
 Datatypen har sju fält som vardera anger vilken exponent respektive
-grundläggande dimension ska ha. Värdet för hastighet är
+basdimension ska ha. Värdet för hastighet är
 
 \begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
 hastighet = Dim 1 0 -1 0 0 0 0
@@ -294,7 +293,7 @@ Expontenterna hos de två dimensionerna som multipliceras adderas i enlighet med
 potensregeln.
 
 För att se alla implementationer hänvisas till läromaterialet i sig. Ett utdrag
-finns i bilaga \ref{cha:utdrag}.
+finns i bilaga \ref{cha:utdrag} och det fullständiga finns tillgängligt på internet \cite{LYAP}.
 
 \subsubsection{Implementation av komposita områden}
 
@@ -395,6 +394,8 @@ Haskell-kod med hjälp av de grundläggande områdena. Beskrivning av det klassi
   \label{fig:komposit-ex}
 \end{figure}
 
+TODO: Work-energy-theorem på svenska
+
 Denna implementation kan kompileras och testas och ska då visa på att
 implementationerna av de grundlägganden områdena är både rigorösa och korrekta.
 Dessutom visar det att går att använda det material som presenteras tidigare
@@ -441,7 +442,7 @@ Hemsidan består av grundläggande HTML, CSS och javascript. På hemsidan finns 
 \end{binge}
 \begin{draft}
 
-\section{Utvärdering}
+\section{Utvärdering med testgrupp}
 
   % Återkoppling från examinator (NAD): "Nils Anders Danielsson <nad@cse.gu.se>
   % 27 Feb (1 day ago)
@@ -461,6 +462,32 @@ För att utvärdera läromaterialet gjordes en kort och informell utvärdering m
 
 Utvärderingen gjordes genom att visa dem läromaterialet och ge det en kort presentation och bakgrund. Sedan fick de på egen hand läsa det. Deras spontana reaktioner och svar på frågor noterades.
 
-KANSKE NÅT MED ÅKE OCKSÅ
+\section{Möten med Fäldt}
+
+För att få återkoppling på läromaterialet hölls två möten med Åke Fäldt, föreläsare och examinator för Fysik för ingenjörer. Ett möte hölls relativt tidigt i projektets skede, 2018-03-02, och ett andra relativt sent, 2018-04-11. Under mötena presenterades läromaterialet i sig och tanken med det, nämligen att presentera fysik på ur ett annat perspektiv, ett funktionellt programmeringsperspektiv. Det diskuterades också svåra områden i Fysik för ingenjörer, vad läromaterialet skulle kunna bidra med för kunskaper till studenter samt dess eventuella roll i relation till fysikkursen i övrigt.
 
 \end{draft}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

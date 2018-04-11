@@ -1,13 +1,11 @@
 
 \chapter{Teori}
 
-TODO: Lägg till om syntax och semantik
+\begin{draft}
+
+TODO: Ingress här. Fackspråk har sagt att aldrig tomt mellan två rubriker.
 
 \section{Domänspecifika språk}
-\begin{binge}
-DSL $\Rightarrow$ Modellera syntax.
-\end{binge}
-\begin{draft}
 
 Ett domänspecifikt språk är ett språk som är avgränsat till en specifik domän. Nyckelorden är språk, specifik och domän. En domän är ett område, till exempel textformatering eller matlagning. Specifikt syftar på att det är \textit{just detta} område man behandlar och inget mer. Med språk menas ett sätt att uttrycka saker inom domänen. Svenska och Java är två exempel på språk.
 
@@ -17,7 +15,20 @@ Domänspecifika språk är vanligt förekommande i programmeringssammanhang. HTM
 
 Motsatsen till ett domänspecifikt språk är ett generellt språk. I vardagen är naturliga språk som svenska och engelska generella medan ryttar-begreppen ovan är domänspecifika. Likt i vardagen finns det generella programmeringsspråk som C++ och Java. Dessa är turingkompletta, vilket betyder att det går att uttrycka alla beräkningsbara problem i dem och även lösa dem givet tillräckligt med tid och minnestillgångar.\cite{turing_ne} \cite{turing_book} Begränsningen med dessa generella språk är just deras egen generaliserbarhet, eftersom de har stöd för alla typer av beräkningar så blir både läsbarheten och användarvänligheten lidande.
 
-Ett exempel på ett domänspecifikt språk är ett \textit{syntaxträd}. Det exemplifieras här med ett syntaxträd för grundläggande matematiska uttryck, kodat i Haskell. Det visas i figur \ref{fig:syntax_exempel}.
+Ett exempel på ett domänspecifikt språk är \textit{syntaxträd}. Syntaxträd har använts mycket i projektet och beskrivs mer utförligt i avsnitt \ref{sec:syntax}.
+
+Ett domänspecifikt språk kan antingen implementeras som ett fristående språk eller bäddas in i ett redan existerande språk. De domänspecifika språk som utvecklats inom detta projekt är inbäddade i programmeringsspråket \textit{Haskell}. Haskell är ett lämpligt val eftersom 
+
+enkelt att skapa datatyper och bryta isär med mönstermatchning. 
+
+TODO: fixa avslutet här
+
+\section{Syntax, semantik och syntaxträd}
+\label{sec:syntax}
+
+I samband med domänspecifika språk dyker begreppen \textit{syntax} och \textit{semantik} upp. Syntax är grammatiken för ett språk medan semantiken är betydelsen av en konstruktion, en mening, i språket. Inom aritmetik\footnote{Aritmetik är den gren inom matematiken som behandlar att räkna.} är tal och räknesätt syntax medan uttrycket beräknat är semantiken. Till exempel är $((3 + 2) * 10)^4$ syntax medan $6.250.000$ är semantiken, eftersom det är det som det syntaktiska uttrycket \textit{betyder}. Domänspecifika språk har med syntax att göra eftersom många domänspecifika språk används till att modellera just syntax.
+
+En form av domänspecika språk är syntaxträd, och som redan nämnts har de en stor betydelse i detta projekt. Ett syntaxträd är en trädrepresentation av en syntax. För att illustrera begreppet visas här ett domänspecifikt språk som är ett syntaxträd som modellerar aritmetiska uttryck. Det är implementerat i Haskell. Syntaxträdet visas i figur \ref{fig:syntax_exempel}.
 
 \begin{figure}[tph]
   \begin{lstlisting}
@@ -41,7 +52,7 @@ value = Const 7 :*: (Const 3 :+: Const 10)
   \label{fig:syntax_exempel_varde}
 \end{figure}
 
-Figur \ref{fig:syntax_exempel_varde} visar hur det matematiska uttrycket $7 * (3 + 10)$ modelleras. Konstruktorn \texttt{:*:} får som sina två argument uttrycken \texttt{Const 7} och \texttt{Const 3 :+: Const 10}. Det är alltså en produkt av två deluttryck. Syntaxträd brukar illusteras med just träddiagram. Detta exempelvärde illustreras i figur \ref{fig:syntax_exempel_bild}.
+Figur \ref{fig:syntax_exempel_varde} visar hur det aritmetiska uttrycket $7 * (3 + 10)$ modelleras. Konstruktorn \texttt{:*:} får som sina två argument uttrycken \texttt{Const 7} och \texttt{Const 3 :+: Const 10}. Det är alltså en produkt av två deluttryck. Syntaxträd brukar illusteras med just träddiagram. Detta exempelvärde illustreras i figur \ref{fig:syntax_exempel_bild}.
 
 \begin{figure}[tph]
   \centering
@@ -50,38 +61,27 @@ Figur \ref{fig:syntax_exempel_varde} visar hur det matematiska uttrycket $7 * (3
   \label{fig:syntax_exempel_bild}
 \end{figure}
 
-Ett domänspecifikt språk kan antingen implementeras som ett fristående språk eller bäddas in i ett redan existerande språk. De domänspecifika språk som utvecklats inom detta projekt är inbäddade i språket Haskell.
-\end{draft}
+Precis som semantik har en roll i samband med syntax, har semantik även en roll i samband med syntaxträd. I detta exempel är semantiken det värde som syntaxträdet betyder. Detta värde kan beräknas utifrån syntaxträdet. Det görs genom en \textit{utvärderingsfunktion}. För exemplets syntaxträd kan utvärderingsfunktionen se ut som i figur \ref{fig:eval_tree}
 
-\section{Det funktionella programmeringsspråket Haskell}
-
-\begin{draft}
-  Haskell är ett funktionellt programmeringsspråk som lämpar sig bra för att
-  implementera ett domänspecifikt språk i. Anledningen till detta är den lätthet
-  som man kan skapa nya datatyper och klasser för att representera grundstenarna
-  i det nya språk, och även dess mönstermatchning som gör det möjligt att på
-  enkelt sätt bryta isär komplexa datatyper och konstruktorer för evaluering.
-
-  En evalueringsfunktion för det domänspecifika språket ovan för enkla
-  matematiska uttryck kan se ut på detta viset~\ref{fig:eval_exempel}, kodat i
-  Haskell:
-
-  \begin{figure}[tph]
+\begin{figure}[tph]
   \begin{lstlisting}
-eval :: Expr -> Double
-eval expr1 :+: expr2 = (eval expr1) + (eval expr2)
-eval expr1 :*: expr2 = (eval expr1) * (eval expr2)
-eval (Const double)  = double
+evaluate :: Expr -> Double
+evaluate (e1 :+: e2) = evaluate e1 + evaluate e2
+evaluate (e1 :*: e2) = evaluate e1 * evaluate e2
+evaluate (Const v)   = v
   \end{lstlisting}
-  \caption{Ett exempel på en evalueringsfunktion kan kodas i
-Haskell.}~\label{fig:eval_exempel} \end{figure}
+  \caption{En utvärderingsfunktion för syntaxträdet.}
+  \label{fig:eval_tree}
+\end{figure}
 
-Här syns det hur förgreningarna \texttt{:*:} och \texttt{:+:} fångas upp av
-mönstermatchningen och uttrycken på vardera sida evalueras var för sig innan de
-slås ihop med den korresponderande matematiska operatorn. När evaluatorn stöter
-på en konstant returneras dess värde oförändrat. 
+Det finns tre saker speciellt värda att notera i figur \ref{fig:eval_tree}. Det ena är att eftersom syntaxen innehåller tre olika typer av element, här motsvarat av de tre datakonstruktorerna, krävs tre fall i utvärderingsfunktionen som vardera utvärderar ett av dem. \textit{evaluate} har därför ett fall för \texttt{:+:}, ett för \texttt{:*:} och ett för \texttt{Const}. 
+
+Den andra saken att notera ur figur \ref{fig:eval_tree} är hur ett fall utvärderas. Hur utvärderingen ska ses ut får man genom att ta hänsyn till semantiken hos det syntaktiska elementet. \texttt{e1 :+: e2} är syntax för addition av de två uttrycken \texttt{e1} och \texttt{e2}. Därför blir semantiken, värdet, av \texttt{e1 :+: e2} lika med värdet hos \texttt{e1} och \texttt{e2} adderade. Ett liknande resonemang ger svaret på hur utvärderingen av de två resterande fallen ska se ut.
+
+Den tredje saken i figur \ref{fig:eval_tree} värd att poängtera är dess typsignatur, \texttt{Expr -> Double}. Den gör nämligen att man kan tolka \texttt{evaluate}, och utvärderingsfunktioner i allmänhet, som en översättning från syntax (här \texttt{Expr}) till semantik (här \texttt{Double}).
 
 \end{draft}
+
 
 \section{Litterat programmering och Literate Haskell}
 \label{sec:lhs}

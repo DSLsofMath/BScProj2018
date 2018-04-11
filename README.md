@@ -21,7 +21,7 @@ Medlemmar: Oskar, Erik, Daniel, Björn, Johan
 
 ## Kvar på rapporten
 
-Skriv om du arbetar på en av punkterna och det kommer ta lång tid (så att ingen annan arbetar samtidigt). Ta bort den när den är klar.
+Klart tills måndag 16 april.
 
 - Annat
     - **O** Abstract och sammanfattning
@@ -38,6 +38,7 @@ Skriv om du arbetar på en av punkterna och det kommer ta lång tid (så att ing
     - **J** Hemsidan
 - Resultat
     - **E, J** Mer tekniskt stoff i analys och vektorer
+    - **O** Vad vi fick ut från Åke-möte1 och Åke-möte2
 - DiskRes
     - **E** Expandera och proffesionalisera "fokus på fysik"
     - **E** Expandera och proffesionalisera DSL-lämpliga-områden

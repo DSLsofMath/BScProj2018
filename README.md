@@ -38,10 +38,10 @@ Gör en överstrykning på saker när de är klara.
     - **O** Lärotext didaktik
     - ~~**E** Lärotext komposita~~
     - **J** Hemsidan
-    - **O** Åke-möten
+    - ~~**O** Åke-möten~~
 - Resultat
     - **E, J** Mer tekniskt stoff i analys och vektorer
-    - **O** Vad vi fick ut från Åke-möte1 och Åke-möte2
+    - ~~**O** Vad vi fick ut från Åke-möte1 och Åke-möte2~~
 - DiskRes
     - **E** Expandera och proffesionalisera "fokus på fysik"
     - **E** Expandera och proffesionalisera DSL-lämpliga-områden

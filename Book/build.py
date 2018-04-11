@@ -98,7 +98,6 @@ def build_index(sources):
 sources = [
     ("Introduction", [
         ("Introduction'", "Physics/src/Introduction/Introduction.lhs"),
-        ("Starting Out", "Physics/src/Introduction/StartingOut.lhs"),
     ]),
     ("Dimensions", [
         ("Introduction", "Physics/src/Dimensions/Intro.lhs"),

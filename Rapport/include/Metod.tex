@@ -306,7 +306,7 @@ områden som skulle implementeras och se vilka av de grundläggande områdena so
 låg till grund. Efter en sådan studie växte den faktiska implementationen fram
 genom experimentering och diskussion inom gruppen.
 
-Ett exempel på ett komposit område är implementationen av klassisk mekanik
+Ett exempel på ett komposit område är implementationen av fysik för partiklar
 där det grundläggande området vektorer och området om matematisk analys
 kombinerades. Anledningen till detta var att partiklars position, hastighet och
 acceleration modelleras med vektorer, dessutom är de krafter som påverkar
@@ -358,11 +358,38 @@ Haskell. Literat programmering passade bra ihop med
 hur läromaterialet skulle se ut då det betonade det jämnbördiga förhållandet
 mellan programkod och förklaringar. För att läromaterialet skulle vara
 lättförståeligt var det också viktigt att presentera materialet i den ordning
-som en mänsklig läsare, och inte datorn, tyckte var enklast. Avsnitt \ref{sec:lhs} beskriver hur literat programmering fungerar i allmänhet och ger en bra bild hur det såg ut även i detta projekt.
+som en mänsklig läsare, och inte datorn, tyckte var enklast. Avsnitt
+\ref{sec:lhs} beskriver hur literat programmering fungerar i allmänhet och ger
+en bra bild hur det såg ut även i detta projekt.
 
-Under skrivandet av lärotexten passades övningar på att läggas till. Oftast skapades övningar genom att befintlig lärotext modifierades till att istället för att bara förklara allt, då och då uppmana läsaren att göra nästa steg i implementationen själv. Nästa steg behölls alltid för att fungera som facit. När ett kapitel var avslutat lades dessutom extra övningar till i slutet. Dessa övningar var ofta vidareutvecklingsmöjligheter av det domänspecifika språk som fanns.
+Under skrivandet av lärotexten passades övningar på att läggas till. Oftast
+skapades övningar genom att befintlig lärotext modifierades till att istället
+för att bara förklara allt, då och då uppmana läsaren att göra nästa steg i
+implementationen själv. Nästa steg behölls alltid för att fungera som facit. När
+ett kapitel var avslutat lades dessutom extra övningar till i slutet. Dessa
+övningar var ofta vidareutvecklingsmöjligheter av det domänspecifika språk som
+fanns.
 
-Skrivandet av lärotexten till de grundläggande och komposita områden var övergripande likadana. Skillnaden låg i balansen mellan Haskell och fysik. För de grundläggande områdena fokuserade lärotexten mer på Haskell eftersom det var ett domänspecifikt språk som skulle konstrueras. Hur det fungerade var därför viktigt att förklara. Dessutom var det fysikaliska och matematiska inslagen inte alltför stora. I kontrast står lärotexten för det komposita områdena, där ett större fokus låg på fysik. För dessa områden visades hur de domänspecifika språken var praktiskt användbara och då förklarades fysik, för att sedan kunna visa hur den fysiken kunde represententeras i de domänspecifika språken.
+Skrivandet av lärotexten till de grundläggande och komposita områden var
+övergripande likadana. Skillnaden låg i balansen mellan Haskell och fysik. För
+de grundläggande områdena fokuserade lärotexten mer på Haskell eftersom det var
+ett domänspecifikt språk som skulle konstrueras. Hur det fungerade var därför
+viktigt att förklara. Dessutom var det fysikaliska och matematiska inslagen inte
+alltför stora. I kontrast står lärotexten för det komposita områdena, där ett
+större fokus låg på fysik. För dessa områden visades hur de domänspecifika
+språken var praktiskt användbara och då förklarades fysik, för att sedan kunna
+visa hur den fysiken kunde represententeras i de domänspecifika språken.
+
+Ett exempel på detta är läromaterialet kring det komposita området om fysik för
+partiklar. Vars implementation var en sammanslagning av området vektorer, och
+matematisk analys. Där istället för att visa och förklara hur områdena kunde
+implementeras i Haskell istället visade hur det direkt gick att översätta de
+fysikaliska formlerna som beskriver partiklars rörelse och energier till
+Haskell-kod med hjälp av de grundläggande områdena. Beskrivning av det klassiska
+"work-energy theorem" gick då till på följande sätt:
+
+
+\end{description}
 
 \end{draft}
 \begin{binge}

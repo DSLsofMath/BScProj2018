@@ -23,6 +23,8 @@ Medlemmar: Oskar, Erik, Daniel, Björn, Johan
 
 Klart tills måndag 16 april.
 
+Gör en överstrykning på saker när de är klara.
+
 - Annat
     - **O** Abstract och sammanfattning
     - Slutsatser
@@ -30,12 +32,13 @@ Klart tills måndag 16 april.
 - Teori
     - **O** ARCS
     - **B** Annan didaktik
-    - **O** Syntax och semantik (se metod.impl hur det används)
+    - ~~**O** Syntax och semantik (se metod.impl hur det används)~~
 - Metod
     - ~~**E** Implementation komposita~~
     - **O** Lärotext didaktik
     - ~~**E** Lärotext komposita~~
     - **J** Hemsidan
+    - **O** Åke-möten
 - Resultat
     - **E, J** Mer tekniskt stoff i analys och vektorer
     - **O** Vad vi fick ut från Åke-möte1 och Åke-möte2
@@ -44,7 +47,7 @@ Klart tills måndag 16 april.
     - **E** Expandera och proffesionalisera DSL-lämpliga-områden
     - **E** Expandera och proffesionalisera DSL+fysik pedagogik
 - Diskussion
-    - **J** Expandera metod och teorival
+    - **J** Metod och teorival: expandera befintligt (om det är vettigt) och lägg till. Kolla bedömningskriterier
     - **B** Lägg till till vidareutvecklingsmöjligheter
     - **B** Etik: om roligt och hemsidan som gör pedagogik enklare
     - Diskutera vårt läromaterial enligt bedömningskriterier

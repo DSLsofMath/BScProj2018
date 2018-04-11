@@ -5,12 +5,13 @@ default: Main.pdf
 
 Main.pdf:: \
 	include/Diskussion.tex \
+	include/DiskRes.tex \
 	include/Introduktion.tex \
 	include/Metod.tex \
 	include/Resultat.tex \
 	include/Slutsatser.tex \
 	include/Teori.tex \
-	include/backmatter/Lambda.tex \
+	include/backmatter/Utdrag.tex \
 	include/frontmatter/Abstract.tex \
 	include/frontmatter/Acknowledgements.tex \
 	include/frontmatter/Ordlista.tex \

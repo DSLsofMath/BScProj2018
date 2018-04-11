@@ -51,7 +51,11 @@ occur. We'll have to keep that in mind when doing calculations!
 > --   RealNum -> RealNum
 
 Now, to the syntax. We've concluded that real functions are really
-what calculus is all about, so let's model them.
+what calculus is all about, so let's model them. We create a data type
+`FunExpr` that will represent symbolic expressions of functions in our
+language.
+
+![`FunExpr` is very expressive!](expressive.png "FunExpr is very expressive!"){.float-img-left}
 
 > data FunExpr
 

@@ -171,7 +171,8 @@ $$\frac{(\Delta f)(h, x)}{(\Delta id)(h, x)} = \frac{f(x + h) - f(x)}{h}$$
 for very small $h$.
 
 But what if we don't want just a numerical approximation, but THE
-derivative of a function at any arbitrary point? What if we make $h$ not just very small, but *infinitley* small?
+derivative of a function at any arbitrary point? What if we make $h$
+not just very small, but *infinitley* small?
 
 Introducing *infinitesimals*! From the wikipedia entry on *Leibniz's notation*
 
@@ -180,6 +181,8 @@ Introducing *infinitesimals*! From the wikipedia entry on *Leibniz's notation*
  > uses the symbols $dx$ and $dy$ to represent infinitely small (or
  > infinitesimal) increments of x and y, respectively, just as $\Delta x$ and
  > $\Delta y$ represent finite increments of x and y, respectively.
+
+![](shrinking.png "Real smol boi"){.float-img-right}
 
 So there's a special syntax for differences where the step $h$ is
 infinitely small, and it's called Leibniz's notation. We interpret the
@@ -212,7 +215,11 @@ A later section on the same wikipedia entry elaborates a bit:
  > its usefulness kept it popular even in the face of several competing
  > notations.
 
-What is then the "right" way to do derivatives? As luck would have it, not much differently than Leibniz's suggested! The intuitive idea can be turned into a precise definition by defining the derivative to be the limit of difference quotients of real numbers. Again, from wikipedia - Leibniz's notation:
+What is then the "right" way to do derivatives? As luck would have it,
+not much differently than Leibniz's suggested! The intuitive idea can
+be turned into a precise definition by defining the derivative to be
+the limit of difference quotients of real numbers. Again, from
+wikipedia - Leibniz's notation:
 
  > In its modern interpretation, the expression dy/dx should not be read
  > as the division of two quantities dx and dy (as Leibniz had envisioned

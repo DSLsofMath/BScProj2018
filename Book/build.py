@@ -7,7 +7,7 @@ mostly using basic templating
 
 import os
 import shutil
-import subprocess
+from subprocess import Popen, PIPE
 
 def read_file(filepath):
     with open(filepath, "r") as f:
@@ -27,12 +27,12 @@ def write_string_to_file(s, filepath):
         f.write(s)
 
 def render_lhs(lhs_filepath):
-    return subprocess.check_output([
-        "pandoc", lhs_filepath,
-                  "-f", "markdown+lhs",
-                  "-t", "html",
-                  "--mathjax"
-    ]).decode("utf8")
+    cmd = ["pandoc", lhs_filepath, "-f", "markdown+lhs", "-t", "html", "--mathjax"]
+    p = Popen(cmd, stdout=PIPE, stderr=PIPE)
+    stdout, stderr = p.communicate()
+    if stderr != b"":
+        print("file: {}, stderr: {}".format(lhs_filepath, stderr))
+    return stdout.decode("utf8")
 
 def has_image_ext(filename):
     _, ext = os.path.splitext(filename)
@@ -96,6 +96,9 @@ def build_index(sources):
     write_string_to_file(index, "index.html")
 
 sources = [
+    ("Introduction", [
+        ("Introduction'", "Physics/src/Introduction/Introduction.lhs"),
+    ]),
     ("Dimensions", [
         ("Introduction", "Physics/src/Dimensions/Intro.lhs"),
         ("Value-level dimensions", "Physics/src/Dimensions/ValueLevel.lhs"),

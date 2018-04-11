@@ -25,13 +25,16 @@ Skriv om du arbetar på en av punkterna och det kommer ta lång tid (så att ing
 
 - Introduktion
 - Teori
-    - **O** Didaktik 
+    - **O** ARCS
+    - Annan didaktik
+    - Syntax och semantik (se metod.impl hur det används)
 - Metod
     - Implementation komposita
     - **O** Lärotext didaktik
     - Lärotext komposita
     - Hemsidan
 - Resultat
+    - Mer tekniskt stoff i analys och vektorer
 - Resultat2
     - Expandera och proffesionalisera "fokus på fysik"
     - Expandera och proffesionalisera DSL-lämpliga-områden

@@ -102,7 +102,7 @@ Vad betyder denna ens?
 Att när vi diskuterar resultatet i diskussionen så knyter vi an till det vi
 skrivit i metod/teori.
 
-### Kritiskt förhållningssätt till resultat
+### (!) Kritiskt förhållningssätt till resultat
 
 Författarna intar ett kritiskt förhållningssätt till 
 de resultat de har fått fram genom att diskutera 
@@ -111,7 +111,15 @@ dem. Författarna diskuterar även oklara och 
 oväntade resultat och sin studies relation till 
 andra studier eller tillämpningsområden.
 
-Vi bör diskutera både läromaterialet och vår diskussion.
+Detta tycker jag täcks i disk-res. 
+
+Oväntat resultat: 5.2 att vissa var olämpliga, och att därför bara har vissa områden.
+
+Relevans: 5.3 att läromaterialet ger ett nytt sätt att tänka kring fysik som ger det struktur och att det kan väcka intresse hos de som gillar DSLs
+
+Relation till andra: Khan liknande, men utan DSLs. Inte än, men här kan vi snacka om DSL2016 och DSLsofMath.
+
+Allmän kritik: [5.1] är kritisk till att lite fysik-fokus. [5.3] är kritisk till att kort testgrupp.
 
 ### (!) Faktainsamling
 

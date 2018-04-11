@@ -23,26 +23,29 @@ Medlemmar: Oskar, Erik, Daniel, Björn, Johan
 
 Skriv om du arbetar på en av punkterna och det kommer ta lång tid (så att ingen annan arbetar samtidigt). Ta bort den när den är klar.
 
+- Annat
+    - **O** Abstract och sammanfattning
+    - Slutsatser
 - Introduktion
 - Teori
     - **O** ARCS
-    - Annan didaktik
-    - Syntax och semantik (se metod.impl hur det används)
+    - **B** Annan didaktik
+    - **O** Syntax och semantik (se metod.impl hur det används)
 - Metod
-    - Implementation komposita
+    - **E** Implementation komposita
     - **O** Lärotext didaktik
-    - Lärotext komposita
-    - Hemsidan
+    - **E** Lärotext komposita
+    - **J** Hemsidan
 - Resultat
-    - Mer tekniskt stoff i analys och vektorer
-- Resultat2
-    - Expandera och proffesionalisera "fokus på fysik"
-    - Expandera och proffesionalisera DSL-lämpliga-områden
-    - Expandera och proffesionalisera DSL+fysik pedagogik
+    - **E, J** Mer tekniskt stoff i analys och vektorer
+- DiskRes
+    - **E** Expandera och proffesionalisera "fokus på fysik"
+    - **E** Expandera och proffesionalisera DSL-lämpliga-områden
+    - **E** Expandera och proffesionalisera DSL+fysik pedagogik
 - Diskussion
-    - Expandera metod och teorival
-    - Lägg till till vidareutvecklingsmöjligheter
-    - Etik: om roligt och hemsidan som gör pedagogik enklare
+    - **J** Expandera metod och teorival
+    - **B** Lägg till till vidareutvecklingsmöjligheter
+    - **B** Etik: om roligt och hemsidan som gör pedagogik enklare
     - Diskutera vårt läromaterial enligt bedömningskriterier
 
 

@@ -90,7 +90,7 @@ den förväntade läsekretsen
 
 Lägger vi till lite mer tekniskt, t.ex. syntax-träd och symboliska ops för analys blir denna uppfylld.
 
-### Analys i förhållande till teori/metod
+### Analys i förhållande till teori/metod AIFTTM
 
 Analysen av resultatet 
 innehåller relevant tolkning 
@@ -111,7 +111,7 @@ dem. Författarna diskuterar även oklara och 
 oväntade resultat och sin studies relation till 
 andra studier eller tillämpningsområden.
 
-Detta tycker jag täcks i disk-res. 
+Detta tycker jag täcks i disk2.
 
 Oväntat resultat: 5.2 att vissa var olämpliga, och att därför bara har vissa områden.
 

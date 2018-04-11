@@ -1,0 +1,104 @@
+%LaTeX-inställningar%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Kompliera med pdflatex
+\documentclass[a4paper, 10pt]{article}
+
+\usepackage[utf8x]{inputenc}
+\usepackage[swedish]{babel}
+\usepackage{graphicx}
+
+\usepackage{enumitem}
+
+\usepackage{geometry} 
+\geometry{a4paper} 
+\geometry{margin=1in}
+\setcounter{section}{1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Fyll i:
+\newcommand{\tid}{11:30}
+\newcommand{\plats}{3209}
+\newcommand{\lasvecka}{2}
+\newcommand{\datum}{2018-03-28}
+\newcommand{\present}{
+Björn\\
+Erik\\
+Johan\\
+Oskar\\
+Handledare Patrik\\
+}
+\newcommand{\justerare}{Ingen}
+\newcommand{\sekreterare}{Björn}
+%Snabbkommandon
+\newcommand{\sect}[1][]{\section*{\S \thesection. #1} \stepcounter{section}}
+\newcommand{\para}{\paragraph \noindent}
+\newcommand{\ssect}[1][]{\subsection*{#1}}
+
+\begin{document}
+
+
+%Rubrik etc
+\section*{\center Mötesprotokoll LP4 LV\lasvecka} 
+\vspace{1em}
+\textbf{Tid:} \tid , \datum \\
+\textbf{Plats:} \plats \\
+
+%Protokoll:
+%Observera att detta är ett exempel som speglar exemplet på kallelse. Protokollet skall utformas på så sätt att det varje vecka speglar den aktuella kallelsen. Paragrafer kan komma att läggas till eller justeras.
+\sect[Mötets öppnande]
+\ssect[Närvarande]
+\present %Fyll i listan som startar på rad 20
+
+\sect[Godkännande av dagordning]
+
+\sect[Godkännande av föregående mötesprotokoll]
+
+\sect[Informationspunkter]
+
+Eventuella möten:
+
+Vi har fått svar från åke, dns, roger. De är alla intresserade av möten.
+
+\sect[Statusrapport]
+%Alla rapporterar individuellt status
+
+
+\sect[Uppföljning och eventuella förändringar]
+%Mötet diskuterar om milstolparna för denna veckan har nåtts. Om inte, hur ska de nås under kommande vecka?
+
+\sect[Kommande uppgifter]
+Första mötet blir med Åke:
+
+För återkoppling om han förstår det vi gjort.
+
+\sect[Övrigt]
+Vi snackar med patrik om vad som kan vara intressant att ta upp med intressanterna.\\
+\\
+Återkoppling från i måndags från testgruppen:
+
+    "Väldigt intressant, kul att läsa. 
+    
+    Kan förändra lite navigation."\\
+\\
+HCAR:
+
+    En maillista som skickar ut det senaste inom haskellvärlden 2ggr per år. Vi skulle kunna skicka en länk till vårat projekt till dom.\\
+\\
+Möjliga kombinationer av DSLs?
+
+    "Visar styrkan av haskell"
+
+    Calculus + vektorer (skoj för Patrik)\\
+\\
+Vad ska Patrik läsa/spendera tid på?
+
+    Lärarmaterialet?
+
+    Delar av rapporten?
+
+\sect[Nästa möte sker...]
+11/4 onsdag 12:00\\
+17/4 tisdag 11:00
+
+\sect[Mötets avslutande]
+
+\end{document}

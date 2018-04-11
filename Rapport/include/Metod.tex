@@ -12,21 +12,17 @@
 % Metoddelen skrivs nästan alltid i dåtid (imperfekt) och ofta används
 % passiv form för att beskriva forskningsaktiviteter.
 
-\chapter{Metod}
+\chapter{Konstruktion och utvärdering av läromaterialet}
 
 \begin{draft}
 
-Projektets genomförande bestod till störst del av konstruktionen av själva
-läromaterialet, och där ingick skapandet av domänspecifika språk, skapandet av
-den tillhörande lärotexten och publiceringen av denna på en hemsida. Därefter
-följde en mindre del av utvärdering av materialet med en testgrupp som fick
-svara på vad de tyckte om läromaterialet.
+Projektets genomförande bestod av tre delar. Den största delen bestod av att skapa själva läromaterialet, och där ingick sökande efter fysikaliska områden, implementation av domänspecifika språk och skrivande av lärotext. De två andra delarna var publicering på en hemsida och utvärdering av läromaterialet med en testgrupp.
 
 Det har inte funnits någon betydelsefull kronologi i projektet. I vilken ordningen aktiviteterna genomfördes spelar ingen roll för att förstå vad som genomfördes och hur det genomfördes. Resterande av kapitlet beskriver därför enbart aktiviteterna i sig, och inte i vilken ordningen de gjordes i relation till varandra. Självklart finns viss betydelsefull kronologi. Till exempel var (en del av) läromaterialet varit tvunget att vara skapat innan det kunde utvärderas, men sådana praktiska detaljer är obetydelsefulla för förståelsen.
 
 \section{Konstruktion av läromaterialet}
 
-Läromaterialet består av ett antal kapitel som vardera behandlar separata
+Läromaterialet består av X kapitel som vardera behandlar separata
 områden. Skapandet av varje kapitel skedde därför till största delen fristående
 från andra kapitel. Skapandet av kapitlena bestod i sin tur av tre faser,
 som såg likadana ut för alla kapitel. Dessa faser var sökande efter område,
@@ -65,6 +61,8 @@ språk och skrivande av lärotext skedde samtidigt. Eftersom de i resultatet är
 sammanvävda var det också högst naturligt att processerna med att skapa dem
 även de var sammanvävda.
 
+Genom hela projektet har skapande av kapitlena skett parallellt. De olika processerna har även befunnit sig i olika faser samtidigt.
+
 De tre följande avsnitten beskriver i detalj hur de tre faserna, val, implementation och skrivande, såg ut. Det är viktigt att minnas att det, som nämndes ovan, fanns överlapp mellan både faserna och kapitlena.
 
 \subsection{Sökande efter områden att behandla}\label{sec:valet}
@@ -73,7 +71,7 @@ Ett domänspecifikt språk modellerar ett specifikt och avgränsat område. Där
 
 Denna sökandeprocess innefattade inte bara att \textit{hitta} fysikaliska områden utan även \textit{organisera} dem i relation till varandra. Som framgår senare är till exempel vissa områden påbyggningar av andra. Denna organisering var viktig för att kunna implementera de domänspecifika spårken på bästa sätt och undvika överlappande implementationer.
 
-\subsubsection*{Kontakt med Fäldt}
+\subsubsection{Kontakt med Fäldt}
 
 Fäldt befrågades om vilka områden han i allmänhet anser studenter har
 svårt för. Detta för att i enlighet med projektets mål börja med de, för
@@ -91,7 +89,7 @@ slutsatsen var att genom att ge struktur till olika typer av problem skulle det
 förhoppningsvis kunna underlätta för studenter att lära sig att identifiera vilken
 typ av uppgift de handskas med.
 
-\subsubsection*{Studerande av kursbok och kursmaterial}
+\subsubsection{Studerande av kursbok och kursmaterial}
 
 Efter kontakten med Fäldt kunde ett sökande efter konkreta områden genomföras. Detta gjordes genom att studera kursboken och kursmaterialet tillhörande Fysik för ingenjörer. Innehållet som hittades delades upp i avgränsade områden för att de skulle bli lämpade till varsitt domänspecifikt språk. Speciellt av intresse var de kapitel som behandlade mekanik (i enlighet med projektets mål att börja med klassisk mekanik), matematisk analys samt de kapitel som använde sig av en specifik syntax \todo{Syntax?}. Domänspecifik syntax var av intresse att finna då en betydlig del av domänspecifika språk är modellering av just syntaxen. \todo{Kanske förtydliga/utveckla varför detta är av intresse}
 
@@ -99,9 +97,11 @@ Sökandet i kursboken och kursmaterialet gav viktiga kunskaper om områden att b
 
 Det blev av dessa skäl nödvändigt att göra en distinktion mellan två typer av områden: \textit{grundläggande} och \textit{komposita}. Grundläggande områden är helt fristående från andra områden och behandlar grundläggande koncept. Komposita områden bygger vidare på andra områden eller tillämpar andra områden på konkreta fysikaliska problem.
 
-\subsubsection*{Områden om valdes ut}
+\subsubsection{Områden som valdes ut}
 
-De grundläggande områdena som under projekets gång valdes ut blev bevis, dimensioner, matematisk analys och vektorer. 
+TODO: Skriv om att varför just dessa. Var för att projektgruppen identifierade dessa grundläggande områden som resten av fysiken byggde på.
+
+De grundläggande områdena som under projekets gång valdes ut blev bevis, dimensioner, matematisk analys och vektorer.
 
 \textbf{OCH FLER?}
 
@@ -128,6 +128,8 @@ mekanik.
 \end{draft}
 \begin{binge}
 
+TODO: Skriv om varför just dessa komposita. Finns säkert många komposita, så något urval måste ha gjorts.
+
 De komposita som valdes ut blev...
 
 Ett exempel på ett komposit område är momentan- och medel-rörelse eftersom det
@@ -144,60 +146,184 @@ området som behandlar vektorer och området som behandlar matematisk analys.
 
 \subsection{Implementation av DSL för områdena}
 
-Implementationen av ett domänspecifikt språk till ett område inleddes med att bygga vidare på den experimentering som gjorts under urvalsfsen. Det finns inte ett rätt sätt att skriva ett domänspecifikt språk på, därav gjordes försök med flera olika varianter för att se vad som fungerade bäst.
+Implementationen av ett domänspecifikt språk till ett område inleddes med att
+bygga vidare på den experimentering som gjorts under urvalsfsen. Det finns inte
+ett rätt sätt att skriva ett domänspecifikt språk på, därav gjordes försök med
+flera olika varianter för att se vad som fungerade bäst. Implementationen var en
+iterativ process. I flera fall har implementationer gjorts om från grunden om
+det visat sig först en bit in att implementationen kunde gjorts bättre eller
+hade brister. Dessutom gjordes, i varierande mån, inläsning av domänspecifika
+språk, fysik och Haskell för att kunna implementera på bästa sätt.
 
-Vad som ansågs vara en bra, eller åtminstone tillräckligt bra, representation var i huvudsak baserat på gruppmedlemmarnas intuition om Haskell och diskussion inom gruppen och med handledaren. Implementationerna skulle vara både naturliga, i den mening att de gick att använda smidigt rent tekniskt. Men de skulle även vara lättförståliga. Den progamtekniskt elegantaste implementationen användes därför inte alltid, utan den mer verbosa versionen föredrogs för att göra läromaterialet så lättläst som möjligt. Dock avstods inte använding av mer avancerade funktioner i Haskell när de var motiverade av materialet som beskrevs, men då alltid med en utömmande förklaring av hur det fungerade och utan krav på tidigare kunskap hos läsaren.
+Vad som ansågs vara en bra, eller åtminstone tillräckligt bra, implementation
+var i huvudsak baserat på gruppmedlemmarnas intuition om Haskell och diskussion
+inom gruppen och med handledaren. Det viktigaste var att de skulle vara
+lättförståliga. Den progamtekniskt elegantaste implementationen användes därför
+inte alltid, utan den mer verbosa versionen föredrogs för att göra
+läromaterialet så lättläst som möjligt. Dock avstods det inte från använding av
+mer avancerade funktioner i Haskell när de var motiverade av materialet som
+beskrevs, men då alltid med en utömmande förklaring av hur det fungerade och
+utan krav på tidigare kunskap hos läsaren.
 
-De olika områdena krävde i varierande mån inläsning och studering av Haskell,
-fysik, matematik och domänspecifika språk. Till exempel krävde kapitlet om
-dimensioner inläsning om typnivå-programmering i Haskell. 
+Efter att ett domänspecifikt språk implementerats skrevs tester till det. Det
+som var intressant att testa var olika lagar som skulle gälla. Eftersom de
+domänspecifika språk modellerade matematik var det matematiska lagar som skulle
+gälla. Ett exempel var att vektoraddition skulle vara kommutativ. Testerna
+gjordes med hjälp av \textit{QuickCheck}. QuickCheck är ett testningsverktyg i
+Haskell som genererar många och slumpmässiga testfall. Att lagarna gällde för de
+domänspecifika språken verifierades med andra ord genom testa för många
+exempelvärden. Inga bevis av att lagarna gällde gjordes.
 
-\end{draft}
+\subsubsection{Implementation av grundläggande områden}
 
-\begin{binge}
+För att konkret visa hur en implementationen av ett grundläggande område ser ut
+och motiveringen bakom den visas här ett exempel. Exemplet kommer från
+läromaterialet och implementerar fysikaliska dimensioner i Haskell.
 
-HÄR ÄR ETT GENERELLT STYCKE SOM KAN BYGGAS VIDARE PÅ
+I fysiken finns det dimensioner. Några exempel är \textit{längd},
+\textit{hastighet} och \textit{massa}. Dimensionerna kan läggas i en av två
+kategorier: grundläggande eller sammansatta. Det finns enbart sju grundläggande
+dimensioner (längd, massa, tid, elektrisk ström, temperatur, substansmängd och
+ljusstyrka) REF medan det finns oändligt många sammansatta. Sammansatta
+dimensioner fås genom att multiplicera eller dividera två andra dimesnioner. Av
+de tre exempelna är den första och sista grundläggande, medan den sista är
+sammansatt.
 
-I allmänhet implementerades DSL i Haskell som en kombination av syntaxträd,
-funktioner för att manipulera dessa träd, och evalueringsfunktioner till något
-slags semantisk domän\todo{Vad är ett semantiskt domän}. Komposita DSL var
-istället mer \todo{beskrivning}. Varje DSL, grundläggande och komposita,
-parades även ihop med en mängd fysikproblem att appliceras på, sådant att
-läsaren skulle få förståelse för hur DSLen kan brukas utöver hur de
-implementerades.
+En första ansats till implementation skulle därför kunna se ut som
 
-\textbf{TODO: En generell beskrivning av implementation}
+% Dessa inställningar ska bara användas vid "inline" kod som ej är separat figur.
+\begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
+ data BD        -- Base Dimension
+        = Le    -- Langd
+        | Ma    -- Massa
+        | Ti    -- Tid
+        | Cu    -- Eletrisk strom
+        | Te    -- Temperatur
+        | Su    -- Substansmangd
+        | Lu    -- Ljusstyrka
+\end{lstlisting}
 
-\textbf{TODO: Ett specifikt exempel på implementation}
+TODO: syntax och semantik i teori.
 
-Syntax analyserades och modellerades i syntaxträd. För vissa områden
-(enheter?) definierades även ett semantiskt värde som representerade
-en slags kanonisk form.
+där \texttt{BD} syntaktiskt representerar de sju grundläggande dimensionerna.
+Sammansatta dimensioner kan representeras med följande syntaxträd
 
-\end{binge}
-\begin{draft}
+\begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
+data Dim = BaseDim BD   -- Lov med grundlaggande dimesnion
+         | Mul Dim Dim  -- Forgrening med multiplikation mellan tva andra dimensioner
+         | Div Dim Dim  -- Forgrening med division mellan tva andra dimensioner
+\end{lstlisting}
 
-Efter att ett domänspecifikt språk implementerats skrevs tester till det. Det som var intressant att testa var olika lagar som skulle gälla. Eftersom de domänspecifika språk modellerade matematik var det matamatiska lagar som skulle gälla. Ett exempel var att vektoraddition skulle vara kommutativ.
+Några exempelvärden blir då
 
-Testerna gjordes med hjälp av \textit{QuickCheck}. QuickCheck är ett testningsverktyg i Haskell som genererar många och slumpmässiga testfall. Att lagarna gällde för de domänspecifika språken verifierades med andra ord genom testa för många exempelvärden. Inga bevis av att lagarna gällde gjordes.
+\begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
+langd = BaseDim Le
+hastighet = Div langd (BaseDim Ti)
+\end{lstlisting}
 
-\end{draft}
-\begin{binge}
+Denna implementation har dock två problem. För det första finns det en
+syntaktisk, men ingen semantisk, skillnad mellan
 
-\textbf{Saker som vi väntar en stund med att skriva}
+\begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
+Le
+\end{lstlisting}
 
-KOMPOSITA ASPEKTER
+och
 
-Till de komposita områdena implementerades inga domänspecifika språk. Istället användes de tidigare språken som skapats för de grundläggande områdena. SKRIV MER HÄR NÄR VI GJORT NÅGRA KOMPOSITA
+\begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
+BaseDim Le
+\end{lstlisting}
 
-Importera DSLerna för varandra för att göra mer komplicerade grejer.
+För det andra måste olika syntaktiska former kunna förenklas till en och samma
+form. Till exempel måste
 
-Eller, \emph{Bruk av de mer fundamentala/teoretiska DSLerna för att
-  angripa områden av mer ``tillämpad'' natur (såsom Krafter, Arbete,
-  etc) )}(?)
+\begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
+Mul (Div (BaseDim Le) (BaseDim Ti)) (BaseDim Ti)
+\end{lstlisting}
 
-\end{binge}
-\begin{draft}
+kunna förenklas till
+
+\begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
+BaseDim Le
+\end{lstlisting}
+
+Även om en sådan förenklare går att göra valdes en annan lösning till
+läromaterialet. Nyckeln ligger i att betrakta dimensioner som en multipikation
+av grundläggande dimensioner med exponenter. Ta till exempel hastighet
+\begin{align*}
+  \frac{Längd}{Tid} \iff Längd^1 * Tid^{-1}
+\end{align*}
+Då kan följande representation användas för dimensioner
+
+\begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
+data Dim = Dim Int    -- Exponent till langd
+               Int    -- Exponent till massa
+               Int    -- Exponent till tid
+               Int    -- Exponent till strom
+               Int    -- Exponent till temperatur
+               Int    -- Exponent till substansmangd
+               Int    -- Exponent till ljusstyrka
+\end{lstlisting}
+
+Datatypen har sju fält som vardera anger vilken exponent respektive
+grundläggande dimension ska ha. Värdet för hastighet är
+
+\begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
+hastighet = Dim 1 0 -1 0 0 0 0
+\end{lstlisting}
+
+som har $1$ som exponent för basdimensionen längd och $-1$ som exponent för
+basdimensionen tid.
+
+Multiplikation av två dimensioner går till som multiplikation mellan två tal.
+Till exempel \begin{align*}
+  Hastighet * Tid = (Längd^1 * Tid^{-1}) * Tid^1 = Längd^1 * Tid^{-1 + 1} =
+  Längd \end{align*}
+Det vill säga, potensregeln används för att beräkna den nya produkten.
+
+Multiplikation mellan två dimensioner i läromaterialet implemtentarades på ett
+motsvarande sätt
+
+\begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
+mulDim :: Dim -> Dim -> Dim
+mulDim (Dim le1 ma1 ti1 cu1 te1 su1 lu1) (Dim le2 ma2 ti2 cu2 te2 su2 lu2) =
+  Dim (le1+le2) (ma1+ma2) (ti1+ti2) (cu1+cu2) (te1+t2) (su1+su2) (lu1+lu2)
+\end{lstlisting}
+
+Expontenterna hos de två dimensionerna som multipliceras adderas i enlighet med
+potensregeln.
+
+För att se alla implementationer hänvisas till läromaterialet i sig. Ett utdrag
+finns i bilaga \ref{cha:utdrag}.
+
+\subsubsection{Implementation av komposita områden}
+
+Implementationen av komposita områden var en vidareutveckling på de redan
+implementerade grundläggande områdena. Detta utfördes genom att kombinera
+element från två eller flera områden för att på så sätt tillsammans skapa ett
+helt nytt område. Denna kombination växte fram organiskt genom att studera det
+områden som skulle implementeras och se vilka av de grundläggande områdena som
+låg till grund. Efter en sådan studie växte den faktiska implementationen fram
+genom experimentering och diskussion inom gruppen.
+
+Ett exempel på ett komposit område är implementationen av fysik för partiklar
+där det grundläggande området vektorer och området om matematisk analys
+kombinerades. Anledningen till detta var att partiklars position, hastighet och
+acceleration modelleras med vektorer, dessutom är de krafter som påverkar
+partiklar även modellerade som vektorer. Sen används matematisk analys för att
+göra dessa beräkningar. Därför var det naturligt att modellera klassisk mekanik
+med hjälp av vektorer vars komponenter var datatypen för uttryck som
+implementerades av matematisk analys.
+
+Exempel från läromaterialet:
+\begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
+type Mass    = FunExpr
+type VectorE = Vector3 FunExpr -- Vector of functional expressions
+
+data Particle  = P { pos  :: VectorE -- Position as a function of time, unit m
+                   , mass :: Mass   -- Mass, unit kg
+                   }
+\end{lstlisting}
 
 \subsection{Skriva lärotext}
 
@@ -212,7 +338,7 @@ Avslutningsvis skrevs inledning och avslutning till kapitlet.
 \begin{binge}
 
 Generellt under skrivningen av lärotext togs det hänsyn till ARCS som
-presenterats i avsnitt~\ref{sec:arcs}. 
+presenterats i avsnitt~\ref{sec:arcs}.
 
 \textbf{TODO: skriv mer här när vet om ARCS.}
 
@@ -228,22 +354,54 @@ uppmärksamhet med lite humor och lättsamhet etc.
 \begin{draft}
 
 Lärotexten och programkoden skrevs sammanvävt i samma fil, i Literate
-Haskell, se avsnitt~\ref{sec:lhs}. Literat programmering passade bra ihop med
+Haskell. Literat programmering passade bra ihop med
 hur läromaterialet skulle se ut då det betonade det jämnbördiga förhållandet
 mellan programkod och förklaringar. För att läromaterialet skulle vara
 lättförståeligt var det också viktigt att presentera materialet i den ordning
-som en mänsklig läsare, och inte datorn, tyckte var enklast.
+som en mänsklig läsare, och inte datorn, tyckte var enklast. Avsnitt
+\ref{sec:lhs} beskriver hur literat programmering fungerar i allmänhet och ger
+en bra bild hur det såg ut även i detta projekt.
 
-Under skrivandet av lärotexten passades övningar på att läggas till. Oftast skapades övningar genom att befintlig lärotext modifierades till att istället för att bara förklara allt, då och då uppmana läsaren att göra nästa steg i implementationen själv. Nästa steg behölls alltid för att fungera som facit. När ett kapitel var avslutat lades dessutom extra övningar till i slutet. Dessa övningar var ofta vidareutvecklingsmöjligheter av det domänspecifika språk som fanns.
+Under skrivandet av lärotexten passades övningar på att läggas till. Oftast
+skapades övningar genom att befintlig lärotext modifierades till att istället
+för att bara förklara allt, då och då uppmana läsaren att göra nästa steg i
+implementationen själv. Nästa steg behölls alltid för att fungera som facit. När
+ett kapitel var avslutat lades dessutom extra övningar till i slutet. Dessa
+övningar var ofta vidareutvecklingsmöjligheter av det domänspecifika språk som
+fanns.
+
+Skrivandet av lärotexten till de grundläggande och komposita områden var
+övergripande likadana. Skillnaden låg i balansen mellan Haskell och fysik. För
+de grundläggande områdena fokuserade lärotexten mer på Haskell eftersom det var
+ett domänspecifikt språk som skulle konstrueras. Hur det fungerade var därför
+viktigt att förklara. Dessutom var det fysikaliska och matematiska inslagen inte
+alltför stora. I kontrast står lärotexten för det komposita områdena, där ett
+större fokus låg på fysik. För dessa områden visades hur de domänspecifika
+språken var praktiskt användbara och då förklarades fysik, för att sedan kunna
+visa hur den fysiken kunde represententeras i de domänspecifika språken.
+
+Ett exempel på detta är läromaterialet kring det komposita området om fysik för
+partiklar. Vars implementation var en sammanslagning av området vektorer, och
+matematisk analys. Där istället för att visa och förklara hur områdena kunde
+implementeras i Haskell istället visade hur det direkt gick att översätta de
+fysikaliska formlerna som beskriver partiklars rörelse och energier till
+Haskell-kod med hjälp av de grundläggande områdena. Beskrivning av det klassiska
+``work-energy theorem'' gick då till på följande sätt~\ref{fig:komposit-ex}:
+
+\begin{figure}[tph]
+  \centering
+  \fbox{\includegraphics[width=1\textwidth]{figure/komposit-Ex.png}}
+  \caption{Implementation av Work-Energy theorem i läromaterialet}
+  \label{fig:komposit-ex}
+\end{figure}
+
+Denna implementation kan kompileras och testas och ska då visa på att
+implementationerna av de grundlägganden områdena är både rigorösa och korrekta.
+Dessutom visar det att går att använda det material som presenteras tidigare
+till  att implementera och lösa mer komplexa problem.
 
 \end{draft}
 \begin{binge}
-
-KOMPOSITA ASPEKTER
-
-Vari vi visar att DSLerna både är praktiskt användbara, likt Wolfram
-Alpha, och att implementationen+applikationen hjälper oss förstå
-mekanik i allmänhet och probleminstanserna i synnerhet.
 
 \section{Skapande av och publicering på hemsidan}
 
@@ -306,36 +464,3 @@ Utvärderingen gjordes genom att visa dem läromaterialet och ge det en kort pre
 KANSKE NÅT MED ÅKE OCKSÅ
 
 \end{draft}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

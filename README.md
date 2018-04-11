@@ -14,27 +14,47 @@ Medlemmar: Oskar, Erik, Daniel, Björn, Johan
 * 15/5 : Utställning enligt anvisningar.
 * 16/5 : Engelsk Titel, Gäller rapporter på Svenska, kompletering möjlig fram till 9/6, vi kollar 24/5 och påminner
 * 21/5 : Deadline inlämning av Opposition, skriftlig elektronisk
-* 22/5 eller 23/5 : Muntliga slutredovisningar och opposition & Avtal om publicering, lämnas in i samband med presentationen
+* 24/5 eller 25/5 : Muntliga slutredovisningar och opposition & Avtal om publicering, lämnas in i samband med presentationen
 * 25/5 : Egen utvärdering på blankett till handledaren.
 * 1/6 : Deadline inlämning av slutrapport, elektronisk form, med införande av opponenternas kommentarer.
 
 
 ## Kvar på rapporten
 
-Skriv om du arbetar på en av punkterna och det kommer ta lång tid (så att ingen annan arbetar samtidigt). Ta bort den när den är klar.
+Klart tills måndag 16 april.
 
+- Annat
+    - **O** Abstract och sammanfattning
+    - Slutsatser
 - Introduktion
 - Teori
-    - Didaktik
+    - **O** ARCS
+    - **B** Annan didaktik
+    - **O** Syntax och semantik (se metod.impl hur det används)
 - Metod
-    - Implementation komposita
-    - Implementation expandera gemensamma drag
-    - Lärotext didaktik
-    - Lärotext komposita
-    - Hemsidan
+    - ~~**E** Implementation komposita~~
+    - **O** Lärotext didaktik
+    - ~~**E** Lärotext komposita~~
+    - **J** Hemsidan
 - Resultat
+    - **E, J** Mer tekniskt stoff i analys och vektorer
+    - **O** Vad vi fick ut från Åke-möte1 och Åke-möte2
+- DiskRes
+    - **E** Expandera och proffesionalisera "fokus på fysik"
+    - **E** Expandera och proffesionalisera DSL-lämpliga-områden
+    - **E** Expandera och proffesionalisera DSL+fysik pedagogik
 - Diskussion
-    - Expandera DSL+fysik gör att fysik enklare
-    - Expandera Vårt tillvägagångssätt
-    - Etik: om roligt och hemsidan som gör pedagogik enklare
-    - Expandera Om vi tyckte läromaterialet blev bra
+    - **J** Expandera metod och teorival
+    - **B** Lägg till till vidareutvecklingsmöjligheter
+    - **B** Etik: om roligt och hemsidan som gör pedagogik enklare
+    - Diskutera vårt läromaterial enligt bedömningskriterier
+
+
+
+
+
+
+
+
+
+

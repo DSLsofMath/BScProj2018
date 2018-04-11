@@ -101,7 +101,7 @@ Det blev av dessa skäl nödvändigt att göra en distinktion mellan två typer 
 
 TODO: Skriv om att varför just dessa. Var för att projektgruppen identifierade dessa grundläggande områden som resten av fysiken byggde på.
 
-De grundläggande områdena som under projekets gång valdes ut blev bevis, dimensioner, matematisk analys och vektorer. 
+De grundläggande områdena som under projekets gång valdes ut blev bevis, dimensioner, matematisk analys och vektorer.
 
 \textbf{OCH FLER?}
 
@@ -146,17 +146,54 @@ området som behandlar vektorer och området som behandlar matematisk analys.
 
 \subsection{Implementation av DSL för områdena}
 
-Implementationen av ett domänspecifikt språk till ett område inleddes med att bygga vidare på den experimentering som gjorts under urvalsfsen. Det finns inte ett rätt sätt att skriva ett domänspecifikt språk på, därav gjordes försök med flera olika varianter för att se vad som fungerade bäst. Implementationen var en iterativ process. I flera fall har implementationer gjorts om från grunden om det visat sig först en bit in att implementationen kunde gjorts bättre eller hade brister. Dessutom gjordes, i varierande mån, inläsning av domänspecifika språk, fysik och Haskell för att kunna implementera på bästa sätt.
+Implementationen av ett domänspecifikt språk till ett område inleddes med att
+bygga vidare på den experimentering som gjorts under urvalsfsen. Det finns inte
+ett rätt sätt att skriva ett domänspecifikt språk på, därav gjordes försök med
+flera olika varianter för att se vad som fungerade bäst. Implementationen var en
+iterativ process. I flera fall har implementationer gjorts om från grunden om
+det visat sig först en bit in att implementationen kunde gjorts bättre eller
+hade brister. Dessutom gjordes, i varierande mån, inläsning av domänspecifika
+språk, fysik och Haskell för att kunna implementera på bästa sätt.
 
-För att konkret visa hur en implementation ser ut och motiveringen bakom den visas här ett exempel. Exemplet kommer från läromaterialet och implementerar fysikaliska dimensioner i Haskell.
+Vad som ansågs vara en bra, eller åtminstone tillräckligt bra, implementation
+var i huvudsak baserat på gruppmedlemmarnas intuition om Haskell och diskussion
+inom gruppen och med handledaren. Det viktigaste var att de skulle vara
+lättförståliga. Den progamtekniskt elegantaste implementationen användes därför
+inte alltid, utan den mer verbosa versionen föredrogs för att göra
+läromaterialet så lättläst som möjligt. Dock avstods det inte från använding av
+mer avancerade funktioner i Haskell när de var motiverade av materialet som
+beskrevs, men då alltid med en utömmande förklaring av hur det fungerade och
+utan krav på tidigare kunskap hos läsaren.
 
-I fysiken finns det dimensioner. Några exempel är \textit{längd}, \textit{hastighet} och \textit{massa}. Dimensionerna kan läggas i en av två kategorier: grundläggande eller sammansatta. Det finns enbart sju grundläggande dimensioner (längd, massa, tid, elektrisk ström, temperatur, substansmängd och ljusstyrka) REF medan det finns oändligt många sammansatta. Sammansatta dimensioner fås genom att multiplicera eller dividera två andra dimesnioner. Av de tre exempelna är den första och sista grundläggande, medan den sista är sammansatt.
+Efter att ett domänspecifikt språk implementerats skrevs tester till det. Det
+som var intressant att testa var olika lagar som skulle gälla. Eftersom de
+domänspecifika språk modellerade matematik var det matematiska lagar som skulle
+gälla. Ett exempel var att vektoraddition skulle vara kommutativ. Testerna
+gjordes med hjälp av \textit{QuickCheck}. QuickCheck är ett testningsverktyg i
+Haskell som genererar många och slumpmässiga testfall. Att lagarna gällde för de
+domänspecifika språken verifierades med andra ord genom testa för många
+exempelvärden. Inga bevis av att lagarna gällde gjordes.
+
+\subsubsection{Implementation av grundläggande områden}
+
+För att konkret visa hur en implementationen av ett grundläggande område ser ut
+och motiveringen bakom den visas här ett exempel. Exemplet kommer från
+läromaterialet och implementerar fysikaliska dimensioner i Haskell.
+
+I fysiken finns det dimensioner. Några exempel är \textit{längd},
+\textit{hastighet} och \textit{massa}. Dimensionerna kan läggas i en av två
+kategorier: grundläggande eller sammansatta. Det finns enbart sju grundläggande
+dimensioner (längd, massa, tid, elektrisk ström, temperatur, substansmängd och
+ljusstyrka) REF medan det finns oändligt många sammansatta. Sammansatta
+dimensioner fås genom att multiplicera eller dividera två andra dimesnioner. Av
+de tre exempelna är den första och sista grundläggande, medan den sista är
+sammansatt.
 
 En första ansats till implementation skulle därför kunna se ut som
 
 % Dessa inställningar ska bara användas vid "inline" kod som ej är separat figur.
 \begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
- data BD         -- Base Dimension
+ data BD        -- Base Dimension
         = Le    -- Langd
         | Ma    -- Massa
         | Ti    -- Tid
@@ -168,7 +205,8 @@ En första ansats till implementation skulle därför kunna se ut som
 
 TODO: syntax och semantik i teori.
 
-där \texttt{BD} syntaktiskt representerar de sju grundläggande dimensionerna. Sammansatta dimensioner kan representeras med följande syntaxträd
+där \texttt{BD} syntaktiskt representerar de sju grundläggande dimensionerna.
+Sammansatta dimensioner kan representeras med följande syntaxträd
 
 \begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
 data Dim = BaseDim BD   -- Lov med grundlaggande dimesnion
@@ -183,7 +221,8 @@ langd = BaseDim Le
 hastighet = Div langd (BaseDim Ti)
 \end{lstlisting}
 
-Denna implementation har dock två problem. För det första finns det en syntaktisk, men ingen semantisk, skillnad mellan
+Denna implementation har dock två problem. För det första finns det en
+syntaktisk, men ingen semantisk, skillnad mellan
 
 \begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
 Le
@@ -195,7 +234,8 @@ och
 BaseDim Le
 \end{lstlisting}
 
-För det andra måste olika syntaktiska former kunna förenklas till en och samma form. Till exempel måste
+För det andra måste olika syntaktiska former kunna förenklas till en och samma
+form. Till exempel måste
 
 \begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
 Mul (Div (BaseDim Le) (BaseDim Ti)) (BaseDim Ti)
@@ -207,7 +247,9 @@ kunna förenklas till
 BaseDim Le
 \end{lstlisting}
 
-Även om en sådan förenklare går att göra valdes en annan lösning till läromaterialet. Nyckeln ligger i att betrakta dimensioner som en multipikation av grundläggande dimensioner med exponenter. Ta till exempel hastighet
+Även om en sådan förenklare går att göra valdes en annan lösning till
+läromaterialet. Nyckeln ligger i att betrakta dimensioner som en multipikation
+av grundläggande dimensioner med exponenter. Ta till exempel hastighet
 \begin{align*}
   \frac{Längd}{Tid} \iff Längd^1 * Tid^{-1}
 \end{align*}
@@ -223,21 +265,24 @@ data Dim = Dim Int    -- Exponent till langd
                Int    -- Exponent till ljusstyrka
 \end{lstlisting}
 
-Datatypen har sju fält som vardera anger vilken exponent respektive grundläggande dimension ska ha. Värdet för hastighet är
+Datatypen har sju fält som vardera anger vilken exponent respektive
+grundläggande dimension ska ha. Värdet för hastighet är
 
 \begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
 hastighet = Dim 1 0 -1 0 0 0 0
 \end{lstlisting}
 
-som har $1$ som exponent för basdimensionen längd och $-1$ som exponent för basdimensionen tid.
+som har $1$ som exponent för basdimensionen längd och $-1$ som exponent för
+basdimensionen tid.
 
-Multiplikation av två dimensioner går till som multiplikation mellan två tal. Till exempel
-\begin{align*}
-  Hastighet * Tid = (Längd^1 * Tid^{-1}) * Tid^1 = Längd^1 * Tid^{-1 + 1} = Längd
-\end{align*}
+Multiplikation av två dimensioner går till som multiplikation mellan två tal.
+Till exempel \begin{align*}
+  Hastighet * Tid = (Längd^1 * Tid^{-1}) * Tid^1 = Längd^1 * Tid^{-1 + 1} =
+  Längd \end{align*}
 Det vill säga, potensregeln används för att beräkna den nya produkten.
 
-Multiplikation mellan två dimensioner i läromaterialet implemtentarades på ett motsvarande sätt
+Multiplikation mellan två dimensioner i läromaterialet implemtentarades på ett
+motsvarande sätt
 
 \begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
 mulDim :: Dim -> Dim -> Dim
@@ -245,16 +290,40 @@ mulDim (Dim le1 ma1 ti1 cu1 te1 su1 lu1) (Dim le2 ma2 ti2 cu2 te2 su2 lu2) =
   Dim (le1+le2) (ma1+ma2) (ti1+ti2) (cu1+cu2) (te1+t2) (su1+su2) (lu1+lu2)
 \end{lstlisting}
 
-Expontenterna hos de två dimensionerna som multipliceras adderas i enlighet med potensregeln.
+Expontenterna hos de två dimensionerna som multipliceras adderas i enlighet med
+potensregeln.
 
-För att se alla implementationer hänvisas till läromaterialet i sig. Ett utdrag finns i bilaga \ref{cha:utdrag}.
+För att se alla implementationer hänvisas till läromaterialet i sig. Ett utdrag
+finns i bilaga \ref{cha:utdrag}.
 
-Vad som ansågs vara en bra, eller åtminstone tillräckligt bra, implementation var i huvudsak baserat på gruppmedlemmarnas intuition om Haskell och diskussion inom gruppen och med handledaren. Det viktigaste var att de skulle vara lättförståliga. Den progamtekniskt elegantaste implementationen användes därför inte alltid, utan den mer verbosa versionen föredrogs för att göra läromaterialet så lättläst som möjligt. Dock avstods inte använding av mer avancerade funktioner i Haskell när de var motiverade av materialet som beskrevs, men då alltid med en utömmande förklaring av hur det fungerade och utan krav på tidigare kunskap hos läsaren.
-es.
+\subsubsection{Implementation av komposita områden}
 
-Efter att ett domänspecifikt språk implementerats skrevs tester till det. Det som var intressant att testa var olika lagar som skulle gälla. Eftersom de domänspecifika språk modellerade matematik var det matamatiska lagar som skulle gälla. Ett exempel var att vektoraddition skulle vara kommutativ. Testerna gjordes med hjälp av \textit{QuickCheck}. QuickCheck är ett testningsverktyg i Haskell som genererar många och slumpmässiga testfall. Att lagarna gällde för de domänspecifika språken verifierades med andra ord genom testa för många exempelvärden. Inga bevis av att lagarna gällde gjordes.
+Implementationen av komposita områden var en vidareutveckling på de redan
+implementerade grundläggande områdena. Detta utfördes genom att kombinera
+element från två eller flera områden för att på så sätt tillsammans skapa ett
+helt nytt område. Denna kombination växte fram organiskt genom att studera det
+områden som skulle implementeras och se vilka av de grundläggande områdena som
+låg till grund. Efter en sådan studie växte den faktiska implementationen fram
+genom experimentering och diskussion inom gruppen.
 
-Implementationen av grundläggande och komposita områden följde i huvudsak samma generella mönster. Skillnaden låg i att skapande av respektive avändande av domänspecifika språk. För de grundläggande områdena implementerades domänspecifika språk från grunden på det sätt som beskrivits ovan. För de komposita områdena användes tillämpades istället de befintliga domänspecifka språken på fysikaliska problem. Tidigare domänspecifika språk kombinerades också till nya domänspecifka språk.
+Ett exempel på ett komposit område är implementationen av klassisk mekanik
+där det grundläggande området vektorer och området om matematisk analys
+kombinerades. Anledningen till detta var att partiklars position, hastighet och
+acceleration modelleras med vektorer, dessutom är de krafter som påverkar
+partiklar även modellerade som vektorer. Sen används matematisk analys för att
+göra dessa beräkningar. Därför var det naturligt att modellera klassisk mekanik
+med hjälp av vektorer vars komponenter var datatypen för uttryck som
+implementerades av matematisk analys.
+
+Exempel från läromaterialet:
+\begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
+type Mass    = FunExpr
+type VectorE = Vector3 FunExpr -- Vector of functional expressions
+
+data Particle  = P { pos  :: VectorE -- Position as a function of time, unit m
+                   , mass :: Mass   -- Mass, unit kg
+                   }
+\end{lstlisting}
 
 \subsection{Skriva lärotext}
 
@@ -269,7 +338,7 @@ Avslutningsvis skrevs inledning och avslutning till kapitlet.
 \begin{binge}
 
 Generellt under skrivningen av lärotext togs det hänsyn till ARCS som
-presenterats i avsnitt~\ref{sec:arcs}. 
+presenterats i avsnitt~\ref{sec:arcs}.
 
 \textbf{TODO: skriv mer här när vet om ARCS.}
 
@@ -365,36 +434,3 @@ Utvärderingen gjordes genom att visa dem läromaterialet och ge det en kort pre
 KANSKE NÅT MED ÅKE OCKSÅ
 
 \end{draft}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

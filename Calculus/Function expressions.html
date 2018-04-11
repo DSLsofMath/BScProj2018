@@ -42,7 +42,10 @@
 <a class="sourceLine" id="cb2-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">-- The type of the semantic value of calculus is the unary real function</span></a>
 <a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">--   RealNum -&gt; RealNum</span></a></code></pre></div>
-<p>Now, to the syntax. We’ve concluded that real functions are really what calculus is all about, so let’s model them.</p>
+<p>Now, to the syntax. We’ve concluded that real functions are really what calculus is all about, so let’s model them. We create a data type <code>FunExpr</code> that will represent symbolic expressions of functions in our language.</p>
+<figure>
+<img src="expressive.png" title="FunExpr is very expressive!" alt="FunExpr is very expressive!" class="float-img-left" /><figcaption><code>FunExpr</code> is very expressive!</figcaption>
+</figure>
 <div class="sourceCode" id="cb3"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">data</span> <span class="dt">FunExpr</span></a></code></pre></div>
 <p>First of all, there’s the elementary functions. We can’t have them all, that would get too repetitive to implement, but we’ll put in all the fun ones.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb4-1" data-line-number="1">    <span class="fu">=</span> <span class="dt">Exp</span></a>

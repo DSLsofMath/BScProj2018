@@ -96,6 +96,10 @@ def build_index(sources):
     write_string_to_file(index, "index.html")
 
 sources = [
+    ("Introduction", [
+        ("Introduction'", "Physics/src/Introduction/Introduction.lhs"),
+        ("Starting Out", "Physics/src/Introduction/StartingOut.lhs"),
+    ]),
     ("Dimensions", [
         ("Introduction", "Physics/src/Dimensions/Intro.lhs"),
         ("Value-level dimensions", "Physics/src/Dimensions/ValueLevel.lhs"),

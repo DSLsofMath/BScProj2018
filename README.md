@@ -34,7 +34,7 @@ Klart tills måndag 16 april.
 - Metod
     - ~~**E** Implementation komposita~~
     - **O** Lärotext didaktik
-    - **E** Lärotext komposita
+    - ~~**E** Lärotext komposita~~
     - **J** Hemsidan
 - Resultat
     - **E, J** Mer tekniskt stoff i analys och vektorer

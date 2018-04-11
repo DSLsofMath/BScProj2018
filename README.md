@@ -32,7 +32,7 @@ Skriv om du arbetar på en av punkterna och det kommer ta lång tid (så att ing
     - **B** Annan didaktik
     - **O** Syntax och semantik (se metod.impl hur det används)
 - Metod
-    - **E** Implementation komposita
+    - ~~**E** Implementation komposita~~
     - **O** Lärotext didaktik
     - **E** Lärotext komposita
     - **J** Hemsidan

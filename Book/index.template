@@ -14,7 +14,9 @@
     </header>
 
     <main>
-      {toc}
+      <div id="toc">
+	{toc}
+      </div>
     </main>
 
     <footer>

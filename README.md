@@ -11,8 +11,7 @@ Medlemmar: Oskar, Erik, Daniel, Björn, Johan
 * 2/3  : Egen utvärdering på blankett till handledaren.
 * 23/3 : Rapportspråk, vi kollar 24/3 och påminner. Kompletering möjlig fram till 27/4.
 * 8/5  : Inlämning av poster för tryckning
-* 15/5 : Utställning enligt anvisningar.
-* 16/5 : Engelsk Titel, Gäller rapporter på Svenska, kompletering möjlig fram till 9/6, vi kollar 24/5 och påminner
+* 15/5 : Utställning enligt anvisningar.* 16/5 : Engelsk Titel, Gäller rapporter på Svenska, kompletering möjlig fram till 9/6, vi kollar 24/5 och påminner
 * 21/5 : Deadline inlämning av Opposition, skriftlig elektronisk
 * 24/5 eller 25/5 : Muntliga slutredovisningar och opposition & Avtal om publicering, lämnas in i samband med presentationen
 * 25/5 : Egen utvärdering på blankett till handledaren.
@@ -30,12 +29,12 @@ Gör en överstrykning på saker när de är klara.
     - Slutsatser
 - Introduktion
 - Teori
-    - **O** ARCS
+    - ~~**O** ARCS~~
     - **B** Annan didaktik
     - ~~**O** Syntax och semantik (se metod.impl hur det används)~~
 - Metod
     - ~~**E** Implementation komposita~~
-    - **O** Lärotext didaktik
+    - ~~**O** Lärotext didaktik~~
     - ~~**E** Lärotext komposita~~
     - **J** Hemsidan
     - ~~**O** Åke-möten~~

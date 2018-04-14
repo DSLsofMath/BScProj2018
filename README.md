@@ -25,7 +25,7 @@ Klart tills måndag 16 april.
 Gör en överstrykning på saker när de är klara.
 
 - Annat
-    - **O** Abstract och sammanfattning
+    - ~~**O** Abstract/sammanfattning~~
     - Slutsatser
 - Introduktion
 - Teori

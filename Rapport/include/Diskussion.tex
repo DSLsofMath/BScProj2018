@@ -217,8 +217,8 @@ använda ett språk som inte har en lika stark koppling till ren matematik som
 Haskell har hade kanske lett till att det stora fokuset inte låg på matematiken
 bakom fysiken, utan istället på fysiken framför matematiken.
 
-\subsubsection{Vad för slags områden är DSLs lämpligt att göra för?}
-\label{sec:lampligt}
+\subsubsection{Vad för slags områden är DSLs lämpligt att göra
+för?}~\label{sec:lampligt}
 
 TODO: Hänvisa mer till resultat. Att av dessa skäl är inga DSLs för fysik.
 
@@ -226,16 +226,16 @@ TODO: Se AIFTTM i bedömningskriterier. Här kan vi knyta an till metod genom: d
 klassificiering som gjordes (grund/komposit)- att den ledde till denna tudelning
 om inte så fysikaliska DSLs, 
 
-Under projektets gång gjordes flera experiment för att se hur man kunde göra ett
-domänspecifikt språk för ett område. Det visade sig att visa områden var
-lämpligare än andra. Till exempel var analys och vektorer områden som vi ansåg
-väl lämpade, medan andra som till exempel lutande plan och termodynamik var
-mindre lämpade.
-
-Vad har de lämpliga områdena gemensamt? De gemensamma dragen är att de är
-matematiska, har en fix struktur och består av ``data och operationer''.
-Tabell~\ref{tab:data_och_ops} visar några exempel på områden med sina data och
-operationer.
+Under genomförandet av projektet utfördes flera experiment för att bedömma olika
+områdens lämplighet för att modelleras med ett domänspecifikt språk. Det visade
+sig snabbt att vissa områden lämpade sig mindre väl än andra. Medans områden
+såsom vektorer och matematisk analys lämpade sig väldigt väl, detta var inte
+särskilt förvånande eftersom både områden är varsin egen gren inom matematiken
+och lämpar sig därmed väl för implementering i Haskell som är ett språk med nära
+anknytning till matematik. En annan sak som dessa väl lämpade områden hade
+gemensamt var en tydlig syntax och en fix struktur som bestod av ``data och
+operationer'' Tabell~\ref{tab:data_och_ops} visar några exempel på områden med
+sina data och operationer.
 
 \begin{table}[tph]
 \centering
@@ -250,30 +250,42 @@ Analys, funktioner & Derivera, multiplicera \\ \bottomrule
 \end{tabular}
 \end{table}
 
-Varför gör dessa drag att de är lämpliga att göra domänspecifika språk för?
-TODO: Matematiska: man modellerar syntaxen
-
 Den fixa strukturen kombinerat med data och operationer gör det enkelt att
 modellera dessa områden med datatyper i Haskell. Datatyper har nämligen också en
 fix form. Dessutom blir relationen mellan data och operationer i Fysik och
-datatyper och funktioner i Haskell väldigt tydlig. En operation/funktion
-resulterar sedan i data av samma slag som innan \todo{Som innan?}.
+datatyper och funktioner i Haskell tydligare. Denna strukturella likhet gör
+modellerandet och manipulerandet av data enkel att genomföra rent tekniskt. Men
+den innebär också en pedagogisk vinst. Genom att ha strukturerat upp fysik
+tydligt i Haskell blir det förhoppningsvis enklare för läsaren att förstå hur
+datan hänger ihop rent fysikaliskt. Och även hur relationerna mellan olika
+datatyper och funktionerna som dyker upp i läromaterialet direkt kan översättas
+till relationer inom fysik.
 
-Denna strukturella likhet gör modellerandet och manipulerandet av data enkel att
-genomföra rent tekniskt. Men den innebär också en pedagogisk vinst. Genom att ha
-strukturerat upp fysik tydligt i Haskell blir det förhoppningsvis enklare för
-läsaren att förstå hur datan hänger ihop rent fysikaliskt. Och även hur
-relationerna mellan olika datatyper och funktionerna som dyker upp i
-läromaterialet direkt kan översättas till relationer inom fysik.
+Anledningen till att vi tycker att dessa drag gör ett område mer eller
+mindre lämpat för ett domänspecifikt språk kommer från ett val vi gjorde tidigt
+i projektet, nämligen valet att använda Haskell. I avsnitt~\ref{sec:syntax}
+beskriver vi begreppen syntax, semantik och syntaxträd och dess koppling till
+både domänspecifika språk och Haskell. Dock finns det ingenting som säger att
+man måste lägga ett sånt stort fokus som vi har gjort på t.ex.~syntaxträd, hade
+vi istället valt bort Haskell till fördel för ett objektorienterat språk
+istället så hade får definition av vad som gör ett område lämpat för
+implementation helt annorlunda.
 
 I kontrast till dessa lämpliga områden står mindre lämpliga områden (eller
-åtminstone områden som vi inte lyckades göra något bra av). Som nämndes tidigare
-är termodynamik och lutande plan exempel på mindre lämpliga områden. Vad har
-dessa områden för gemensamma drag?
+åtminstone områden som vi inte lyckades göra något bra av). Lutande plan exempel
+på mindre lämpliga områden. Vad har detta område för drag som gör det mindre
+lämpat för ett domänspecifika språk?
 
-Ett gemensamt drag som gör dem svåra att göra domänspecifika språk av är att de
-består av en samling teoretiska samband. För det lutande planet är det till
-exempel $a = g \cdot \sin(v)$, som illusteras i figur~\ref{fig:lutande_plan}.
+När man skapar ett domänspecifikt språk till ett område gör man det genom att
+identifiera vad som är syntaxen som används, vad är det för data som modelleras,
+vilka operationer opererar på denna data och vad finns det för lagar och samband
+som gäller för dessa. Detta sätt att arbeta fungerar bra för områden som är
+generella och som går att modellera på ett som tillåter vidareutveckling, såsom
+vektorer i flera dimensioner eller vektorer vars komponenter kan vara av vilken
+typ som helst.
+
+Detta gäller ej för lutande plan. Visst finns det samband, men dessa samband
+gäller endast för lutande plan, t.ex.~ $a = g \cdot \sin(v)$, som illusteras i figur~\ref{fig:lutande_plan}.
 
 \begin{figure}[tph]
   \frame{\includegraphics[width=\linewidth]{figure/Lutande_plan.pdf}}
@@ -284,26 +296,25 @@ exempel $a = g \cdot \sin(v)$, som illusteras i figur~\ref{fig:lutande_plan}.
 
 Teoretiska samband av det slaget relaterar olika egenskaper i systemet.
 Visserligen kan man modellera samband och ekvationer som ett domänspecifikt
-språk, men vi menar att nyttan inte blir stor med det. Det man kan göra är att
-programmera en ekvationslösare. Men den hade behövt vara både mekanisk och
-komplex. Den skulle alltså skilja sig drastiskt från hur man löser problem för
-hand och skulle vara svår att förstå. Alldeles för mycket fokus skulle hamna på
-algoritmer istället för fysik.
+språk, men vi menar att nyttan inte blir stor med det eftersom allt vi då gör är
+att skriva de formler som redan finns att tillgå i diverse kursböcker i fysik
+utan att tillföra någon ny kunskap och utan att modellera dem på ett generellt
+eller unikt sätt. Det man då kan göra är att programmera en ekvationslösare. Men
+den hade varit både mekanisk och komplex. Den skulle alltså skilja sig
+drastiskt från hur man löser problem för hand och skulle vara svår att förstå.
+Alldeles för mycket fokus skulle hamna på algoritmer istället för fysik. Vi
+anser även att en ekvationslösare inte hjälper till att lära ut fysik, tvärtom
+döljer den matematiken som ligger bakom svaret.
 
 När det kommer till lutande plan och liknande områden är nyckeln att visserligen
 känna till vilka samband som gäller, men det framförallt att veta när man ska
 använda dem och hur man tillämpar dem på olika typer av uppgifter. Vi behandlar
 därför områden som lutande plan genom att lösa exempeluppgifter modellerade i de
-tidigare domänspecika språk. De tidigare språken tillhandahåller de matematiska
+tidigare domänspecifika språk. De tidigare språken tillhandahåller de matematiska
 verktyg som behövs för att koda upp lösningar av problem.
 
-
-TODO: Kanske avsluta med att poängtera skillnaderna mellan lämpliga och mindre
-lämpliga.
-
-Och vad är skillnaden mellan dessa två kategorier av områden?
-
-Den viktiga skillnaden är att t.ex. analys har tydlig data och operationer 
+Vad är då skillnaden mellan dessa två kategorier av områden?
+Den viktigaste skillnaden är att t.ex.~analys har tydlig data och operationer 
 medan problemlösning som lutande plan består av ett antal samband som används
 beroende på behov. Dessa samband består då av koncept som redan är modellerade i
 andra avsnitt och själva skrivandet av den koden bidrar inte med någon ny

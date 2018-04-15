@@ -113,7 +113,6 @@ testgruppen och mötena med Fäldt.
 
 \subsubsection{Om läromaterialets fokus på matematik och Haskell snarare än
 fysik}
-
 En stor del av läromaterialets fokus ligger på matematik och Haskell snarare än
 fysik. Detta trots att läromaterialet är tänkt att handla om fysik. Varför är
 det så?
@@ -161,6 +160,62 @@ läromaterialet. Vi menar att det skulle vara svårt att väva in domänspecifik
 språk på ett meningsfullt sätt om de samtidigt skulle vara i skymundan. Ett
 läromaterial med större fokus på fysik bör i så fall enbart handla om fysik. En
 utförligare diskussion om detta finns i avsnitt~\ref{sec:bara_fysik}.
+
+\textbf{------------------------------}
+
+Målet med läromaterialet var att lära ut fysik på ett roligt och lättförståeligt
+sätt. Dock syns det vid läsning av materialet att det stora fokuset lagts på att
+förklara och lära ut matematik och Haskell. Varför blev det så? Vi menar att det
+finns många anledningar till detta. 
+
+\begin{figure}[tph]
+  \centering
+  \includegraphics[width=0.75\textwidth]{figure/purity.png}
+  \caption{XKCD:s beskrivning av samma problem.}
+\end{figure}
+
+Problemet med att prata om en egen implementation av fysik är att fysik inte är
+ett helt eget område. Det är snarare så att fysik kan ses som applicerad
+matematik, att fysik använder matematiken för att beskriva det fysikaliska
+universum vi lever i. Det blir därför naturligt att när den faktiska
+implementationen av dessa beskrivningar och lagar sker, så sker de med hjälp av
+matematiken. Att ett stort fokus läggs på matematiken är alltså bara en
+konsekvens av fysiken i sig själv.
+
+Såklart ingår det ochså en hel del problemlösning inom fysik, den faktiska
+applikationen av de beskrivningar och lagar som matematiken ger oss. Men
+problemlösning är något som vi tycker är svårt och problematiskt att modellera
+som ett domänspecifikt språk, något som diskuteras djupare i
+avsnitt~\ref{sec:lampligt}.
+
+Anledningen till att ett stort fokus läggs på Haskell är att eftersom
+implementationen av fysik ibland använder sig av koncept som inte alltid är
+kända för en läsare med endast en grundläggande förståelse för Haskell måste
+dessa koncept förklaras grundligt så att ingen förståelse går förlorad. Och
+eftersom ett syfte med läromaterialet var väcka intresse hos läsaren med
+bakgrund inom Haskell så ville vi lägga fokus på att tydligt visa på
+parallellerna mellan funktionell programmering, matematik och implementationen
+av fysik. 
+
+Vi hävdar alltså att fokuset inte enbart lagts på fysik pågrund av att det inte
+är så fysik fungerar och att det är lika viktigt att förklara Haskell. Men måste
+det vara så? Det kan mycket väl vara så att detta fokusskifte har skett pågrund
+av hur vi valde att genomföra projektet. I ett tidigt skede valde vi söka efter
+områden som vi ansåg vara fristående och väl avgränsade~\ref{sec:konstruktion},
+och implementera dessa var för sig. Utan tvekan har detta sätt att påbörja
+projektet påverkat allting som kom därefter, om vi istället hade utvecklat
+läromaterialet som en kombination av olika områden från början hade det kanske
+inte varit lika främmande att även baka in problemlösning i detta och på så sätt
+fått in ett ordentligt fysikperspektiv. 
+
+Även tidigare än så går det att vara kritisk till projektets utformning. Varför
+valdes Haskell som implementationsspråk? Vi hävdar i teorin~\ref{sec:syntax} att
+Haskells typer och fokus på mönstermatchning gör det idealt för implementering
+av domänspecifika språk.  Men betyder det att det är idealt för implementering
+av fysik? Kanske ett objektorienterat språk som Java hade passat bättre. Att
+använda ett språk som inte har en lika stark koppling till ren matematik som
+Haskell har hade kanske lett till att det stora fokuset inte låg på matematiken
+bakom fysiken, utan istället på fysiken framför matematiken.
 
 \subsubsection{Vad för slags områden är DSLs lämpligt att göra för?}
 \label{sec:lampligt}

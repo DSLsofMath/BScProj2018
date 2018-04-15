@@ -39,11 +39,11 @@ Gör en överstrykning på saker när de är klara.
     - **J** Hemsidan
     - ~~**O** Åke-möten~~
 - Resultat
-    - **E, J** Mer tekniskt stoff i analys och vektorer
+    - **~~E~~, J** Mer tekniskt stoff i analys och vektorer
     - ~~**O** Vad vi fick ut från Åke-möte1 och Åke-möte2~~
 - DiskRes
-    - **E** Expandera och proffesionalisera "fokus på fysik"
-    - **E** Expandera och proffesionalisera DSL-lämpliga-områden
+    - ~~**E** Expandera och proffesionalisera "fokus på fysik"~~
+    - ~~**E** Expandera och proffesionalisera DSL-lämpliga-områden~~
     - **E** Expandera och proffesionalisera DSL+fysik pedagogik
 - Diskussion
     - **J** Metod och teorival: expandera befintligt (om det är vettigt) och lägg till. Kolla bedömningskriterier

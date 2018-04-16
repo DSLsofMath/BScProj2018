@@ -137,7 +137,7 @@ Relevans: testgrupp alldelles för kort för att göra nytta [Skriv om i 5.2.2.3
 
 ~~Oväntat: lämpliga. [Betona att oväntat i 5.2.2.2]~~
 
-Relation till andra: Khan, LYAH, DSL2016 liknande [Skriv i 5.2.2.3]
+Relation till andra: ~~Khan~~, LYAH, ~~DSL2016~~, DSLsofMath, liknande [Skriv i 5.2.2.3]
 
 ~~Annan kritik: [5.2.2.1] är kritisk till att lite fysik-fokus.~~
 

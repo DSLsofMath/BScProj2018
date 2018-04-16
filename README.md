@@ -28,6 +28,7 @@ Gör en överstrykning på saker när de är klara.
     - ~~**O** Abstract/sammanfattning~~
     - Slutsatser
 - Introduktion
+    - Fixa todos
 - Teori
     - ~~**O** ARCS~~
     - ~~**B** Annan didaktik~~

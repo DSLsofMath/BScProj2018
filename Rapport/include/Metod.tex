@@ -12,15 +12,15 @@
 % Metoddelen skrivs nästan alltid i dåtid (imperfekt) och ofta används
 % passiv form för att beskriva forskningsaktiviteter.
 
-\chapter{Konstruktion och utvärdering av läromaterialet samt möten med Fäldt}
+\chapter{Genomförande}
 
 \begin{draft}
 
-Projektets genomförande bestod av fyra delar. Den största delen var att skapa själva läromaterialet, och där ingick sökande efter fysikaliska områden, implementation av domänspecifika språk och skrivande av lärotext. De tre andra delarna var publicering av läromaterialet på en hemsida, utvärdering av läromaterialet med en testgrupp samt möten med Åke Fäldt, examinator och föreläsare för Fysik för ingenjörer. Mötena med Fäldt hade två syften: att hitta problemområden i fysikkursen och att få återkoppling på läromaterialet.
+Projektets genomförande bestod av fyra delar. Den största delen var att konstruera själva läromaterialet, och där ingick sökande efter fysikaliska områden, implementation av domänspecifika språk och skrivande av lärotext. De tre andra delarna var publicering av läromaterialet på en hemsida, utvärdering av läromaterialet med en testgrupp samt möten med Åke Fäldt, examinator och föreläsare för Fysik för ingenjörer. Mötena med Fäldt hade två syften: att hitta problemområden i fysikkursen och att få återkoppling på läromaterialet.
 
 Det har inte funnits någon betydelsefull kronologi i projektet. I vilken ordningen aktiviteterna genomfördes spelar ingen roll för att förstå vad som genomfördes och hur det genomfördes. Resterande av kapitlet beskriver därför enbart aktiviteterna i sig, och inte i vilken ordningen de gjordes i relation till varandra. Självklart finns viss betydelsefull kronologi. Till exempel var (en del av) läromaterialet varit tvunget att vara skapat innan det kunde utvärderas, men sådana praktiska detaljer är obetydelsefulla för förståelsen.
 
-\section{Konstruktion av läromaterialet}
+\section{Konstruktion av läromaterialet}~\label{sec:konstruktion}
 
 Läromaterialet består av X kapitel som vardera behandlar separata
 områden. Skapandet av varje kapitel skedde därför till största delen fristående
@@ -49,7 +49,8 @@ varje kombination av kapitel och fas är en del i projektet som arbetades med.
     \end{subfigure}
     \caption{Översikt över hur skapandeprocessen av läromaterialet såg ut.
   Processen delas upp utefter två axlar: kapitel och fas. Varje kombination
-  är en del som arbetats med och är gråmarkerad.} \end{figure}
+  är en del som arbetats med och är gråmarkerad.} 
+\end{figure}
 
 Även om detta sätt att dela upp processen är översiktlig är den inte helt
 verklighetstrogen. I praktiken fanns det överlapp mellan de olika delarna, både
@@ -103,6 +104,8 @@ Det blev av dessa skäl nödvändigt att göra en distinktion mellan två typer 
 TODO: Skriv om att varför just dessa. Var för att projektgruppen identifierade dessa grundläggande områden som resten av fysiken byggde på.
 
 De grundläggande områdena som under projekets gång valdes ut blev bevis, dimensioner, matematisk analys och vektorer.
+
+När kunskap inhämtats om olika områden kunde ett urval göras. De områden som identifierades som grundläggande och hade en väl lämpad struktur (se avsnitt \ref{sec:valdes lampligt}) ut. Med detta som grund blev följande de områden som valdes ut.
 
 \textbf{OCH FLER?}
 
@@ -176,6 +179,7 @@ domänspecifika språken verifierades med andra ord genom testa för många
 exempelvärden. Inga bevis av att lagarna gällde gjordes.
 
 \subsubsection{Implementation av grundläggande områden}
+\label{sec:grund_impl}
 
 För att konkret visa hur en implementationen av ett grundläggande område ser ut
 och motiveringen bakom den visas här ett exempel. Exemplet kommer från
@@ -333,32 +337,14 @@ programkoden gick att förstå innan kopplingar till matematik och fysik kunde
 förklaras. Det var nämligen lärotext av det slaget som skrevs senare.
 Avslutningsvis skrevs inledning och avslutning till kapitlet.
 
-\end{draft}
-\begin{binge}
-
-Generellt under skrivningen av lärotext togs det hänsyn till ARCS som
-presenterats i avsnitt~\ref{sec:arcs}.
-
-\textbf{TODO: skriv mer här när vet om ARCS.}
-
-Lättsamt språk och en gnutta humor för att hålla kvar
-uppmärksamhet. Relaterat till Attention i ARCS modellen (2016
-använde den. Såg vettig ut).
-
-TODO: Expandera. Vad exakt använder vi för didaktisk metod? Samma
-som appliceras i Learn You a Haskell, mer eller mindre. Fånga
-uppmärksamhet med lite humor och lättsamhet etc.
-
-\end{binge}
-\begin{draft}
+Generellt under skrivningen togs det hänsyn till en specifik underaspekt i ARCS-modellen, nämligen \textit{humor}. Språket i lärotexten har varit lättsamt, vardagligt och talspråkligt för att hålla kvar uppmärksamheten hos läsaren. Det har även ritats roliga bilder för att ge ytterligare humoristiska drag.
 
 Lärotexten och programkoden skrevs sammanvävt i samma fil, i Literate
 Haskell. Literat programmering passade bra ihop med
 hur läromaterialet skulle se ut då det betonade det jämnbördiga förhållandet
 mellan programkod och förklaringar. För att läromaterialet skulle vara
 lättförståeligt var det också viktigt att presentera materialet i den ordning
-som en mänsklig läsare, och inte datorn, tyckte var enklast. Avsnitt
-\ref{sec:lhs} beskriver hur literat programmering fungerar i allmänhet och ger
+som en mänsklig läsare, och inte datorn, tyckte var enklast. Avsnitt \ref{sec:lhs} beskriver hur literat programmering fungerar i allmänhet och ger
 en bra bild hur det såg ut även i detta projekt.
 
 Under skrivandet av lärotexten passades övningar på att läggas till. Oftast
@@ -373,30 +359,27 @@ Skrivandet av lärotexten till de grundläggande och komposita områden var
 övergripande likadana. Skillnaden låg i balansen mellan Haskell och fysik. För
 de grundläggande områdena fokuserade lärotexten mer på Haskell eftersom det var
 ett domänspecifikt språk som skulle konstrueras. Hur det fungerade var därför
-viktigt att förklara. Dessutom var det fysikaliska och matematiska inslagen inte
+viktigt att förklara. Dessutom var de fysikaliska och matematiska inslagen inte
 alltför stora. I kontrast står lärotexten för det komposita områdena, där ett
 större fokus låg på fysik. För dessa områden visades hur de domänspecifika
 språken var praktiskt användbara och då förklarades fysik, för att sedan kunna
 visa hur den fysiken kunde represententeras i de domänspecifika språken.
 
-Ett exempel på detta är läromaterialet kring det komposita området om fysik för
-partiklar. Vars implementation var en sammanslagning av området vektorer, och
-matematisk analys. Där istället för att visa och förklara hur områdena kunde
-implementeras i Haskell istället visade hur det direkt gick att översätta de
+Ett exempel på ovanstående är kapitlet kring det komposita området om fysik för
+partiklar. Dess implementation var en sammanslagning av området vektorer och
+matematisk analys, där istället för att visa och förklara hur områdena kunde
+implementeras i Haskell visade hur det direkt gick att översätta de
 fysikaliska formlerna som beskriver partiklars rörelse och energier till
-Haskell-kod med hjälp av de grundläggande områdena. Beskrivning av det klassiska
-``work-energy theorem'' gick då till på följande sätt~\ref{fig:komposit-ex}:
+Haskell-kod med hjälp av de grundläggande områdena. Beskrivning av relationen arbete-energi (engelska Work-Energy theorem) gick då till som i figur \ref{fig:komposit-ex}:
 
 \begin{figure}[tph]
   \centering
   \fbox{\includegraphics[width=1\textwidth]{figure/komposit-Ex.png}}
-  \caption{Implementation av Work-Energy theorem i läromaterialet}
+  \caption{Implementation av relationen arbete-energi i läromaterialet}
   \label{fig:komposit-ex}
 \end{figure}
 
-TODO: Work-energy-theorem på svenska
-
-Denna implementation kan kompileras och testas och ska då visa på att
+Implementation kan kompileras och testas och ska då visa på att
 implementationerna av de grundlägganden områdena är både rigorösa och korrekta.
 Dessutom visar det att går att använda det material som presenteras tidigare
 till  att implementera och lösa mer komplexa problem.
@@ -465,6 +448,8 @@ Utvärderingen gjordes genom att visa dem läromaterialet och ge det en kort pre
 \section{Möten med Fäldt}
 
 För att få återkoppling på läromaterialet hölls två möten med Åke Fäldt, föreläsare och examinator för Fysik för ingenjörer. Ett möte hölls relativt tidigt i projektets skede, 2018-03-02, och ett andra relativt sent, 2018-04-11. Under mötena presenterades läromaterialet i sig och tanken med det, nämligen att presentera fysik på ur ett annat perspektiv, ett funktionellt programmeringsperspektiv. Det diskuterades också svåra områden i Fysik för ingenjörer, vad läromaterialet skulle kunna bidra med för kunskaper till studenter samt dess eventuella roll i relation till fysikkursen i övrigt.
+
+Fäldt befrågades även på vilka fysikalsika områden datastudenter haft svårt för i Fysik för ingenjörer. Detta finns beskrivit i avsnitt \ref{sec:kontakt_faldt}.
 
 \end{draft}
 

@@ -78,10 +78,10 @@ resultatredovisningen.
 Ref till resultat
 - ~~Vad Åke tyckte, i [5.2.2.3]~~
 - ~~Vad testgrupp tyckte, i [5.2.2.3]~~
-- Att läromaterialet har de grundläggande det har, i [5.2.2.2] & [5.2.2.1]
+- ~~Att läromaterialet har de grundläggande det har, i [5.2.2.2] & [5.2.2.1]~~
 
 Tydliga exemepel
-- Utveckla väl analys och lutande plan, i [5.2.2.2]
+- ~~Utveckla väl dimensioner och lutande plan, i [5.2.2.2]~~
 - ~~Ha exemempel på hur DSL strukturerar, i [5.2.2.3]~~
 
 Referenser (är våra erfarenheter, och de finns det inga referenser på för det är våra upplevelser. Men här är ändå några refs man kan ha i diskussionen)
@@ -106,11 +106,11 @@ teori och metod och andra 
 studier.
 
 Till metod
-- Att vi som urvalskriterie hade att skulle ha bra matematisk struktur, därför blev också de resulterande områdena sådana [5.2.1] och [5.2.2.1]
+- Att vi som urvalskriterie hade att skulle ha bra matematisk struktur, därför blev också de resulterande områdena sådana [5.2.1] och ~~[5.2.2.1]~~
 - Kan inte dra några starka slutsatser av testgrupp för så kort undersökning. [5.2.2.3]
 
 Till teori
-- ???
+- ~~Att använda Haskell [5.2.2.1]~~
 
 Till andra studier
 - 
@@ -135,11 +135,11 @@ andra studier eller tillämpningsområden.
 
 Relevans: testgrupp alldelles för kort för att göra nytta [Skriv om i 5.2.2.3]
 
-Oväntat: lämpliga. [Betona att oväntat i 5.2.2.2]
+~~Oväntat: lämpliga. [Betona att oväntat i 5.2.2.2]~~
 
 Relation till andra: Khan, LYAH, DSL2016 liknande [Skriv i 5.2.2.3]
 
-Annan kritik: [5.2.2.1] är kritisk till att lite fysik-fokus.
+~~Annan kritik: [5.2.2.1] är kritisk till att lite fysik-fokus.~~
 
 ### (!) Faktainsamling
 

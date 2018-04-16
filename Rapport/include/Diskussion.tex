@@ -113,66 +113,11 @@ testgruppen och mötena med Fäldt.
 
 \subsubsection{Om läromaterialets fokus på matematik och Haskell snarare än
 fysik}
-En stor del av läromaterialets fokus ligger på matematik och Haskell snarare än
-fysik. Detta trots att läromaterialet är tänkt att handla om fysik. Varför är
-det så?
-
-En orsak till att ett stort fokus ligger på matematik är att fysik egentligen
-bara är räkneexempel i matematik. Ta cirkulär centralrörelse som exempel. Att
-beskriva en sådan rörelse hos en kropp görs med hjälp av vektorer och matematisk
-analys. Fysik finns bara som en bakomliggande teori som dikterar vilka samband
-som gäller. Själva räknandet görs sedan med matematik.
-
-Detta är dock inte hela sanningen. Inom fysik ingår en stor del problemlösning,
-till exempel att sätta upp och hitta krafter i mekanikproblem, utan att någon
-matematik behöver blandas in. Denna typ av fysik är dock svår att göra
-domänspecifika språk av, något som diskuteras djupare i
-avsnitt~\ref{sec:lampligt}.
-
-Läromaterialet innehåller även en hel del förklaringar av Haskell-teknisk
-karaktär. Orsaken till detta är tvåfaldigt. För det första används avancerade
-koncept inom Haskell som läsaren inte förväntas kunna sedan innan. Ett exempel
-är typnivå-programmering. För att göra kopplingen mellan Haskell och fysik så
-tydlig som möjlig behövdes fysikaliska dimensioner kunna likställas med, och
-hanteras på samma sätt, som Haskell-typer.
-
-För det andra är läromaterialets syfte inte enbart att lära ut fysik i sig, utan
-även visa hur fysik kan modelleras i domänspecifika språk och dra paralleller
-mellan fysik och domänspecifika språk. Av detta skäl blir det naturligt att det
-''även'' ägnas en hel del förklaringar åt programkoden. Syftet är att väcka
-intresse för fysik, inte att lära ut fysik. Ett sätt att göra det är att visa
-dessa paralleller.
-
-Är det rätt eller fel att ha en relativt liten tyngd på fysiken som projekets
-läromaterial har? På den frågan har vi mer än ett svar. Man kan svara ja, med
-hänvisning till de ovanstående skälen att det direkta syftet inte är att lära ut
-fysik utan att väcka intresse. Man kan svara nej, och hävda att de
-domänspecifika språken kan utformas på ett annat sätt som mer direkt knyter an
-till fysikaliska koncept, till exempel ett syntaxträd för sammansättningen av
-ett lutande plans komponenter. Vi tyckte dock det var svårt att göra på det
-sättet, se avsnitt~\ref{sec:lampligt}. Detta är dock en
-vidareutvecklingspotential, att undersöka huruvida det går att göra det på ett
-bra sätt.
-
-Man kan också svara nej på frågan av ett annat skäl, nämligen att fysiken i sig
-bör vara det främsta fokuset. Detta skulle dock innebära en helt annan form på
-läromaterialet. Vi menar att det skulle vara svårt att väva in domänspecifika
-språk på ett meningsfullt sätt om de samtidigt skulle vara i skymundan. Ett
-läromaterial med större fokus på fysik bör i så fall enbart handla om fysik. En
-utförligare diskussion om detta finns i avsnitt~\ref{sec:bara_fysik}.
-
-\textbf{------------------------------}
 
 Målet med läromaterialet var att lära ut fysik på ett roligt och lättförståeligt
-sätt. Dock syns det vid läsning av materialet att det stora fokuset lagts på att
+sätt. Dock syns det i resultatet, avsnitt \ref{sec:res_laromaterial}, att det stora fokuset lagts på att
 förklara och lära ut matematik och Haskell. Varför blev det så? Vi menar att det
 finns många anledningar till detta. 
-
-\begin{figure}[tph]
-  \centering
-  \includegraphics[width=0.75\textwidth]{figure/purity.png}
-  \caption{XKCD:s beskrivning av samma problem.}
-\end{figure}
 
 Problemet med att prata om en egen implementation av fysik är att fysik inte är
 ett helt eget område. Det är snarare så att fysik kan ses som applicerad
@@ -180,7 +125,14 @@ matematik, att fysik använder matematiken för att beskriva det fysikaliska
 universum vi lever i. Det blir därför naturligt att när den faktiska
 implementationen av dessa beskrivningar och lagar sker, så sker de med hjälp av
 matematiken. Att ett stort fokus läggs på matematiken är alltså bara en
-konsekvens av fysiken i sig själv.
+konsekvens av fysiken i sig själv. Det är till och med så att olika områden kan ses som tillämpningar av andra områden, se figur \ref{fig:xkcd}, där det bland annat illustreras att kemi är en tillämpning av fysik, som i sin tur är en tillämpning av matematik.
+
+\begin{figure}[tph]
+  \centering
+  \includegraphics[width=0.75\textwidth]{figure/purity.png}
+  \caption{XKCD:s beskrivning av samma problem, att fysik är en tillämpning av matematik. Det är i själva verkat så att en kedja av områden kan betraktas som tillämpningar av varandra.}
+  \label{fig:xkcd}
+\end{figure}
 
 Såklart ingår det ochså en hel del problemlösning inom fysik, den faktiska
 applikationen av de beskrivningar och lagar som matematiken ger oss. Men
@@ -201,7 +153,7 @@ Vi hävdar alltså att fokuset inte enbart lagts på fysik pågrund av att det i
 är så fysik fungerar och att det är lika viktigt att förklara Haskell. Men måste
 det vara så? Det kan mycket väl vara så att detta fokusskifte har skett pågrund
 av hur vi valde att genomföra projektet. I ett tidigt skede valde vi söka efter
-områden som vi ansåg vara fristående och väl avgränsade~\ref{sec:konstruktion},
+områden som vi ansåg vara fristående och väl avgränsade~\ref{sec:valet},
 och implementera dessa var för sig. Utan tvekan har detta sätt att påbörja
 projektet påverkat allting som kom därefter, om vi istället hade utvecklat
 läromaterialet som en kombination av olika områden från början hade det kanske
@@ -357,7 +309,7 @@ tvingas man att ge struktur till dem. Det ger ett nytt, välstrukturerat och
 förhoppningsvi enklare sätt att se på dem, vilket vi själva tycker är
 meningsfullt.
 
-År 2016 genomfördes ett kandidarbete på Chalmers liknande detta. \cite{DSL2016}
+År 2016 genomfördes ett kandidarbete på Chalmers liknande detta. \cite{kandidat2016}
 Det kandidatarbetet resulterade också i ett läromaterial. Skillnaden är att det
 handlade om signallära medan detta handlar om fysik. Grundidėn är dock densamma:
 att använda domänspecifika språk för att ge struktur till ett annat område.

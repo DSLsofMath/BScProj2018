@@ -30,7 +30,7 @@ Gör en överstrykning på saker när de är klara.
 - Introduktion
 - Teori
     - ~~**O** ARCS~~
-    - **B** Annan didaktik
+    - ~~**B** Annan didaktik~~
     - ~~**O** Syntax och semantik (se metod.impl hur det används)~~
 - Metod
     - ~~**E** Implementation komposita~~
@@ -47,8 +47,8 @@ Gör en överstrykning på saker när de är klara.
     - ~~**E** Expandera och proffesionalisera DSL+fysik pedagogik~~
 - Diskussion
     - **J** Metod och teorival: expandera befintligt (om det är vettigt) och lägg till. Kolla bedömningskriterier
-    - **B** Lägg till till vidareutvecklingsmöjligheter
-    - **B** Etik: om roligt och hemsidan som gör pedagogik enklare
+    - ~~**B** Lägg till till vidareutvecklingsmöjligheter~~
+    - ~~**B** Etik: om roligt och hemsidan som gör pedagogik enklare~~
     - Diskutera vårt läromaterial enligt bedömningskriterier
 
 

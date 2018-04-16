@@ -78,10 +78,10 @@ resultatredovisningen.
 Ref till resultat
 - ~~Vad Åke tyckte, i [5.2.2.3]~~
 - ~~Vad testgrupp tyckte, i [5.2.2.3]~~
-- Att läromaterialet har de grundläggande det har, i [5.2.2.2] & ~~[5.2.2.1]~~
+- ~~Att läromaterialet har de grundläggande det har, i [5.2.2.2] & [5.2.2.1]~~
 
 Tydliga exemepel
-- Utveckla väl analys och lutande plan, i [5.2.2.2]
+- ~~Utveckla väl dimensioner och lutande plan, i [5.2.2.2]~~
 - ~~Ha exemempel på hur DSL strukturerar, i [5.2.2.3]~~
 
 Referenser (är våra erfarenheter, och de finns det inga referenser på för det är våra upplevelser. Men här är ändå några refs man kan ha i diskussionen)

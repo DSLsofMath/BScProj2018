@@ -44,7 +44,7 @@ Gör en överstrykning på saker när de är klara.
 - DiskRes
     - ~~**E** Expandera och proffesionalisera "fokus på fysik"~~
     - ~~**E** Expandera och proffesionalisera DSL-lämpliga-områden~~
-    - **E** Expandera och proffesionalisera DSL+fysik pedagogik
+    - ~~**E** Expandera och proffesionalisera DSL+fysik pedagogik~~
 - Diskussion
     - **J** Metod och teorival: expandera befintligt (om det är vettigt) och lägg till. Kolla bedömningskriterier
     - **B** Lägg till till vidareutvecklingsmöjligheter

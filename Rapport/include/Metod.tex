@@ -76,13 +76,13 @@ verklighetstrogen. I praktiken fanns det överlapp mellan de olika delarna, båd
 med avseende på kapitel och fas. Det här illustereras i
 figur~\ref{fig:oversiktB}. Där ser man att sökandet av områden skedde för flera
 kapitel samtidigt. Detta då arbetet med att hitta ett område ofta gav flera
-områden samtidigt. I figuren ser man också att implementation av domänspecifika
+områden samtidigt. I figuren ser man också att implementationen av domänspecifika
 språk och skrivande av lärotext skedde samtidigt. Eftersom de i resultatet är
 sammanvävda var det också högst naturligt att processerna med att skapa dem
 även de var sammanvävda.
 
 \begin{binge}
-\textbf{Utveckla eller ta bort, känns som vi upprepar oss här}
+\textbf{TODO: Utveckla eller ta bort, känns som vi upprepar oss här}
 
 Genom hela projektet har skapande av kapitlena skett parallellt. De olika
 processerna har även befunnit sig i olika faser samtidigt.
@@ -97,12 +97,12 @@ nämndes ovan, fanns överlapp mellan både faserna och kapitlena.
 Ett domänspecifikt språk modellerar ett specifikt och avgränsat område. Därför
 var det naturligt att söka och tänka i termer av avgränsade områden inom
 fysiken. För att rent praktiskt hitta områden att behandla kontaktades Åke
-Fäldt, examinator för Fysik för ingenjörer\cite{tif085} och dess bok (University
+Fäldt, examinator för Fysik för ingenjörer\cite{tif085} och kursens bok (University
 Physics\cite{UP}) och övrig material studerades.
 
 Denna sökandeprocess innefattade inte bara att \textit{hitta} fysikaliska
 områden utan även \textit{organisera} dem i relation till varandra. Som framgår
-senare är till exempel vissa områden påbyggningar av andra. Denna organisering
+senare är till exempel vissa områden baserade på andra. Denna organisering
 var viktig för att kunna implementera de domänspecifika spårken på bästa sätt
 och undvika överlappande implementationer.
 
@@ -234,12 +234,12 @@ utan krav på tidigare kunskap hos läsaren.
 
 Efter att ett domänspecifikt språk implementerats skrevs tester till det. Det
 som var intressant att testa var olika lagar som skulle gälla. Eftersom de
-domänspecifika språk modellerade matematik var det matematiska lagar som skulle
-gälla. Ett exempel var att vektoraddition skulle vara kommutativ. Testerna
-gjordes med hjälp av \textit{QuickCheck}. QuickCheck är ett testningsverktyg i
-Haskell som genererar många och slumpmässiga testfall. Att lagarna gällde för de
-domänspecifika språken verifierades med andra ord genom testa för många
-exempelvärden. Inga bevis av att lagarna gällde gjordes.
+domänspecifika språk vi skrev modellerade matematik var det matematiska lagar
+som skulle gälla. Ett exempel var att vektoraddition skulle vara kommutativ.
+Testerna gjordes med hjälp av \textit{QuickCheck}. QuickCheck är ett
+testningsverktyg i Haskell som genererar många och slumpmässiga testfall. Att
+lagarna gällde för de domänspecifika språken verifierades med andra ord genom
+testa för många exempelvärden. Inga bevis av att lagarna gällde gjordes.
 
 \subsubsection*{Implementation av grundläggande områden}
 \label{sec:grund_impl}
@@ -253,8 +253,8 @@ I fysiken finns det dimensioner \cite{dimensioner_ne}. Några exempel är \texti
 kategorier: basdimensioner eller sammansatta dimensioner. Det finns enbart sju 
 basdimensioner (längd, massa, tid, elektrisk ström, temperatur, substansmängd och
 ljusstyrka) medan det finns oändligt många sammansatta. Sammansatta
-dimensioner fås genom att multiplicera eller dividera två andra dimesnioner. Av
-de tre exempelna är den första och sista basdimensioner, medan den sista är
+dimensioner fås genom att multiplicera eller dividera två andra dimensioner. Av
+dessa tre exempel är den första och sista basdimensioner, medan den andra är
 sammansatt.
 
 En första ansats till implementation skulle därför kunna se ut som
@@ -272,7 +272,7 @@ En första ansats till implementation skulle därför kunna se ut som
 \end{lstlisting}
 
 där \texttt{BD} syntaktiskt representerar de sju basdimensionerna.
-Sammansatta dimensioner kan representeras med följande syntaxträd
+Sammansatta dimensioner kan representeras med följande datatyp
 
 \begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
 data Dim = BaseDim BD   -- `Löv med grundläggande dimension'
@@ -347,7 +347,7 @@ Till exempel \begin{align*}
   Längd \end{align*}
 Det vill säga, potensregeln används för att beräkna den nya produkten.
 
-Multiplikation mellan två dimensioner i läromaterialet implemtentarades på ett
+Multiplikation mellan två dimensioner i läromaterialet implementerades på ett
 motsvarande sätt
 
 \begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
@@ -359,15 +359,16 @@ mulDim (Dim le1 ma1 ti1 cu1 te1 su1 lu1) (Dim le2 ma2 ti2 cu2 te2 su2 lu2) =
 Expontenterna hos de två dimensionerna som multipliceras adderas i enlighet med
 potensregeln.
 
-För att se alla implementationer hänvisas till läromaterialet i sig. Ett utdrag
-finns i bilaga \ref{cha:utdrag} och det fullständiga finns tillgängligt på internet \cite{LYAP}.
+För att se alla implementationer hänvisas läsaren till läromaterialet i sig. Ett
+utdrag finns i bilaga~\ref{cha:utdrag} och det fullständiga finns tillgängligt
+på internet\cite{LYAP}.
 
 \subsubsection*{Implementation av komposita områden}
 
 Implementationen av komposita områden var en vidareutveckling på de redan
 implementerade grundläggande områdena. Detta utfördes genom att kombinera
 element från två eller flera områden för att på så sätt tillsammans skapa ett
-helt nytt område. Denna kombination växte fram organiskt genom att studera det
+helt nytt område. Denna kombination växte fram organiskt genom att studera de
 områden som skulle implementeras och se vilka av de grundläggande områdena som
 låg till grund. Efter en sådan studie växte den faktiska implementationen fram
 genom experimentering och diskussion inom gruppen.
@@ -421,12 +422,13 @@ fanns.
 Skrivandet av lärotexten till de grundläggande och komposita områden var
 övergripande likadana. Skillnaden låg i balansen mellan Haskell och fysik. För
 de grundläggande områdena fokuserade lärotexten mer på Haskell eftersom det var
-ett domänspecifikt språk som skulle konstrueras. Hur det fungerade var därför
-viktigt att förklara. Dessutom var de fysikaliska och matematiska inslagen inte
-alltför stora. I kontrast står lärotexten för det komposita områdena, där ett
-större fokus låg på fysik. För dessa områden visades hur de domänspecifika
-språken var praktiskt användbara och då förklarades fysik, för att sedan kunna
-visa hur den fysiken kunde represententeras i de domänspecifika språken.
+ett helt nytt domänspecifikt språk som skulle konstrueras. Hur det fungerade var
+därför viktigt att förklara. Dessutom var de fysikaliska och matematiska
+inslagen inte alltför stora. I kontrast står lärotexten för det komposita
+områdena, där ett större fokus låg på fysik. För dessa områden visades hur de
+domänspecifika språken var praktiskt användbara och då förklarades fysik, för
+att sedan kunna visa hur den fysiken kunde represententeras i de domänspecifika
+språken.
 
 Ett exempel på ovanstående är kapitlet kring det komposita området om fysik för
 partiklar. Dess implementation var en sammanslagning av området vektorer och
@@ -496,38 +498,29 @@ hemsidan.
   % Jag tror det är kompatibelt med det jag sagt tidigare - att göra en "ordentlig" utvärdering av det pedagogiska utfallet är komplicerat och tar (kalender-)tid.
   % Informell utvärdering av en testgrupp bör dock ingå.
 
-För att utvärdera läromaterialet gjordes en kort och informell utvärdering med en testgrupp. Testgruppen bestod av tre andra studenter på Chalmers som gick tredje året på Datateknik eller Informationsteknik. De hade alla läst Fysik för ingenjörer eller motsvarande sedan innan och de hade läst en kurs i Haskell. Däremot hade de inte läst DSLsofMath eller motsvarande. Domänspecifika spårk var med andra ord nytt för dem.
+För att utvärdera läromaterialet gjordes en kort och informell utvärdering med
+en testgrupp. Testgruppen bestod av tre andra studenter på Chalmers som gick
+tredje året på Datateknik eller Informationsteknik. De hade alla läst Fysik för
+ingenjörer eller motsvarande sedan innan och de hade läst en kurs i Haskell.
+Däremot hade de inte läst DSLsofMath eller motsvarande. Domänspecifika språk var
+med andra ord nytt för dem.
 
-Utvärderingen gjordes genom att visa dem läromaterialet och ge det en kort presentation och bakgrund. Sedan fick de på egen hand läsa det. Deras spontana reaktioner och svar på frågor noterades.
+Utvärderingen gjordes genom att visa dem läromaterialet och ge det en kort
+presentation och bakgrund. Sedan fick de på egen hand läsa det. Deras spontana
+reaktioner och svar på frågor noterades.
 
 \section{Möten med fysikläraren}
 
-För att få återkoppling på läromaterialet hölls två möten med Åke Fäldt, föreläsare och examinator för Fysik för ingenjörer. Ett möte hölls relativt tidigt i projektets skede, 2018-03-02, och ett andra relativt sent, 2018-04-11. Under mötena presenterades läromaterialet i sig och tanken med det, nämligen att presentera fysik på ur ett annat perspektiv, ett funktionellt programmeringsperspektiv. Det diskuterades också svåra områden i Fysik för ingenjörer, vad läromaterialet skulle kunna bidra med för kunskaper till studenter samt dess eventuella roll i relation till fysikkursen i övrigt.
+För att få återkoppling på läromaterialet hölls två möten med Åke Fäldt,
+föreläsare och examinator för Fysik för ingenjörer. Ett möte hölls relativt
+tidigt i projektets skede, 2018-03-02, och ett andra relativt sent, 2018-04-11.
+Under mötena presenterades läromaterialet i sig och tanken med det, nämligen att
+presentera fysik på ur ett annat perspektiv, ett funktionellt
+programmeringsperspektiv. Det diskuterades också svåra områden i Fysik för
+ingenjörer, vad läromaterialet skulle kunna bidra med för kunskaper till
+studenter samt dess eventuella roll i relation till fysikkursen i övrigt.
 
-Fäldt befrågades även på vilka fysikalsika områden datastudenter haft svårt för i Fysik för ingenjörer. Detta finns beskrivit i avsnitt \ref{sec:kontakt_faldt}.
+Fäldt befrågades även på vilka fysikaliska områden datastudenter haft svårt för
+i Fysik för ingenjörer. Detta finns beskrivit i avsnitt~\ref{sec:kontakt_faldt}.
 
 \end{draft}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

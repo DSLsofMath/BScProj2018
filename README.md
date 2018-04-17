@@ -37,7 +37,7 @@ Gör en överstrykning på saker när de är klara.
     - ~~**E** Implementation komposita~~
     - ~~**O** Lärotext didaktik~~
     - ~~**E** Lärotext komposita~~
-    - **J** Hemsidan
+    - ~~**J** Hemsidan~~
     - ~~**O** Åke-möten~~
 - Resultat
     - **~~E~~, J** Mer tekniskt stoff i analys och vektorer

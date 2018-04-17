@@ -40,7 +40,7 @@ Gör en överstrykning på saker när de är klara.
     - ~~**J** Hemsidan~~
     - ~~**O** Åke-möten~~
 - Resultat
-    - **~~E~~, J** Mer tekniskt stoff i analys och vektorer
+    - ~~**E, J** Mer tekniskt stoff i analys och vektorer~~
     - ~~**O** Vad vi fick ut från Åke-möte1 och Åke-möte2~~
 - DiskRes
     - ~~**E** Expandera och proffesionalisera "fokus på fysik"~~

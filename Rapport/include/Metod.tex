@@ -16,11 +16,29 @@
 
 \begin{draft}
 
-Projektets genomförande bestod av fyra delar. Den största delen var att konstruera själva läromaterialet, och där ingick sökande efter fysikaliska områden, implementation av domänspecifika språk och skrivande av lärotext. De tre andra delarna var publicering av läromaterialet på en hemsida, utvärdering av läromaterialet med en testgrupp samt möten med Åke Fäldt, examinator och föreläsare för Fysik för ingenjörer. Mötena med Fäldt hade två syften: att hitta problemområden i fysikkursen och att få återkoppling på läromaterialet.
+Projektets genomförande bestod av fyra delar. Den största delen var att
+konstruera själva läromaterialet, och där ingick sökande efter fysikaliska
+områden, implementation av domänspecifika språk och skrivande av lärotext. De
+tre andra delarna var publicering av läromaterialet på en hemsida, utvärdering
+av läromaterialet med en testgrupp samt möten med Åke Fäldt, examinator och
+föreläsare för Fysik för ingenjörer. Mötena med Fäldt hade två syften: att hitta
+problemområden i fysikkursen och att få återkoppling på läromaterialet.
 
-Det har inte funnits någon betydelsefull kronologi i projektet. I vilken ordningen aktiviteterna genomfördes spelar ingen roll för att förstå vad som genomfördes och hur det genomfördes. Resterande av kapitlet beskriver därför enbart aktiviteterna i sig, och inte i vilken ordningen de gjordes i relation till varandra. Självklart finns viss betydelsefull kronologi. Till exempel var (en del av) läromaterialet varit tvunget att vara skapat innan det kunde utvärderas, men sådana praktiska detaljer är obetydelsefulla för förståelsen.
+\begin{binge}
+\textbf{TODO: Skriv om enligt PaJas kommentarer i rapporten}
 
-\section{Konstruktion av läromaterialet}~\label{sec:konstruktion}
+Det har inte funnits någon betydelsefull kronologi i projektet. I vilken
+ordningen aktiviteterna genomfördes spelar ingen roll för att förstå vad som
+genomfördes och hur det genomfördes. Resterande av kapitlet beskriver därför
+enbart aktiviteterna i sig, och inte i vilken ordningen de gjordes i relation
+till varandra. Självklart finns viss betydelsefull kronologi. Till exempel var
+(en del av) läromaterialet varit tvunget att vara skapat innan det kunde
+utvärderas, men sådana praktiska detaljer är obetydelsefulla för förståelsen.
+\end{binge}
+
+\section{Konstruktion av läromaterialet}\label{sec:konstruktion}
+
+\textbf{TODO: Sätt ett värde på X}
 
 Läromaterialet består av X kapitel som vardera behandlar separata
 områden. Skapandet av varje kapitel skedde därför till största delen fristående
@@ -28,9 +46,10 @@ från andra kapitel. Skapandet av kapitlena bestod i sin tur av tre faser,
 som såg likadana ut för alla kapitel. Dessa faser var sökande efter område,
 implementation av domänspecifika språk för området samt skrivande av lärotext.
 
-Denna skapandeprocess kan delas upp i en graf med två axlar: en utefter kapitel och en
-utefter fas. Det här illustreras i figur~\ref{fig:oversiktA}. Figuren visar att
-varje kombination av kapitel och fas är en del i projektet som arbetades med.
+Denna skapandeprocess kan delas upp i en graf med två axlar: en utefter kapitel
+och en utefter fas. Det här illustreras i figur~\ref{fig:oversiktA}. Figuren
+visar att varje kombination av kapitel och fas är en del i projektet som
+arbetades med.
 
 \begin{figure}[tph]
     \centering
@@ -56,23 +75,38 @@ varje kombination av kapitel och fas är en del i projektet som arbetades med.
 verklighetstrogen. I praktiken fanns det överlapp mellan de olika delarna, både
 med avseende på kapitel och fas. Det här illustereras i
 figur~\ref{fig:oversiktB}. Där ser man att sökandet av områden skedde för flera
-kapitel samtidigt. Detta då arbetet med att hitta ett områden ofta gav flera
+kapitel samtidigt. Detta då arbetet med att hitta ett område ofta gav flera
 områden samtidigt. I figuren ser man också att implementation av domänspecifika
 språk och skrivande av lärotext skedde samtidigt. Eftersom de i resultatet är
 sammanvävda var det också högst naturligt att processerna med att skapa dem
 även de var sammanvävda.
 
-Genom hela projektet har skapande av kapitlena skett parallellt. De olika processerna har även befunnit sig i olika faser samtidigt.
+\begin{binge}
+\textbf{Utveckla eller ta bort, känns som vi upprepar oss här}
 
-De tre följande avsnitten beskriver i detalj hur de tre faserna, val, implementation och skrivande, såg ut. Det är viktigt att minnas att det, som nämndes ovan, fanns överlapp mellan både faserna och kapitlena.
+Genom hela projektet har skapande av kapitlena skett parallellt. De olika
+processerna har även befunnit sig i olika faser samtidigt.
+\end{binge}
+
+De tre följande avsnitten beskriver i detalj hur de tre faserna, val,
+implementation och skrivande, såg ut. Det är viktigt att minnas att det, som
+nämndes ovan, fanns överlapp mellan både faserna och kapitlena.
 
 \subsection{Sökande efter områden att behandla}\label{sec:valet}
 
-Ett domänspecifikt språk modellerar ett specifikt och avgränsat område. Därför var det naturligt att söka och tänka i termer av avgränsade områden inom fysiken. För att rent praktiskt hitta områden att behandla kontaktades Åke Fäldt, examinator för Fysik för ingenjörer\cite{tif085} och dess bok (University Physics\cite{UP}) och övrig material studerades.
+Ett domänspecifikt språk modellerar ett specifikt och avgränsat område. Därför
+var det naturligt att söka och tänka i termer av avgränsade områden inom
+fysiken. För att rent praktiskt hitta områden att behandla kontaktades Åke
+Fäldt, examinator för Fysik för ingenjörer\cite{tif085} och dess bok (University
+Physics\cite{UP}) och övrig material studerades.
 
-Denna sökandeprocess innefattade inte bara att \textit{hitta} fysikaliska områden utan även \textit{organisera} dem i relation till varandra. Som framgår senare är till exempel vissa områden påbyggningar av andra. Denna organisering var viktig för att kunna implementera de domänspecifika spårken på bästa sätt och undvika överlappande implementationer.
+Denna sökandeprocess innefattade inte bara att \textit{hitta} fysikaliska
+områden utan även \textit{organisera} dem i relation till varandra. Som framgår
+senare är till exempel vissa områden påbyggningar av andra. Denna organisering
+var viktig för att kunna implementera de domänspecifika spårken på bästa sätt
+och undvika överlappande implementationer.
 
-\subsubsection{Kontakt med Fäldt}
+\subsubsection{Kontakt med fysikläraren}
 \label{sec:kontakt_faldt}
 
 Fäldt befrågades om vilka områden han i allmänhet anser studenter har
@@ -93,19 +127,46 @@ typ av uppgift de handskas med.
 
 \subsubsection{Studerande av kursbok och kursmaterial}
 
-Efter kontakten med Fäldt kunde ett sökande efter konkreta områden genomföras. Detta gjordes genom att studera kursboken och kursmaterialet tillhörande Fysik för ingenjörer. Innehållet som hittades delades upp i avgränsade områden för att de skulle bli lämpade till varsitt domänspecifikt språk. Speciellt av intresse var de kapitel som behandlade mekanik (i enlighet med projektets mål att börja med klassisk mekanik), matematisk analys samt de kapitel som använde sig av en specifik syntax \todo{Syntax?}. Domänspecifik syntax var av intresse att finna då en betydlig del av domänspecifika språk är modellering av just syntaxen. \todo{Kanske förtydliga/utveckla varför detta är av intresse}
+Efter kontakten med Fäldt kunde ett sökande efter konkreta områden genomföras.
+Detta gjordes genom att studera kursboken och kursmaterialet tillhörande Fysik
+för ingenjörer. Innehållet som hittades delades upp i avgränsade områden för att
+de skulle bli lämpade till varsitt domänspecifikt språk. Av speciellt intresse
+var de kapitel som behandlade mekanik (i enlighet med projektets mål att börja
+med klassisk mekanik), matematisk analys samt de kapitel som använde sig av en
+specifik syntax \todo{Syntax?}. Domänspecifik syntax var av intresse att finna
+då en betydlig del av domänspecifika språk är modellering av just syntaxen.
+\todo{Kanske förtydliga/utveckla varför detta är av intresse}
 
-Sökandet i kursboken och kursmaterialet gav viktiga kunskaper om områden att behandla. Men minst lika viktiga var de inledande experiment som gjordes på varje område för att se huruvida det lämpade sig att göra ett domänspecifikt språk av och hur det skulle kunna se ut. Experimenten visade att enbart vissa områden, till exempel vektorer, fungerade bra att göra ett domänspecifikt språk av. Andra områden, till exempel lutande plan, var mindre lämpliga. Förenklat sagt var enbart områden med tydlig data och tydliga operationer lämpade. Detta diskuteras utförligare i avsnitt \ref{sec:lampligt}. Det framgick också att det blev överlapp mellan olika domänspecika språk trots att områdena var fristående. Ett exempel var det domänspecifika språk för partiklar som till stor del liknade de domänspecifika språken för matematisk analys och vektorer.
+Sökandet i kursboken och kursmaterialet gav viktiga kunskaper om områden att
+behandla. Men minst lika viktiga var de inledande experiment som gjordes på
+varje område för att se huruvida det lämpade sig att göra ett domänspecifikt
+språk av och hur det skulle kunna se ut. Experimenten visade att enbart vissa
+områden, till exempel vektorer, fungerade bra att göra ett domänspecifikt språk
+av. Andra områden, till exempel lutande plan, var mindre lämpliga. Förenklat
+sagt var enbart områden med tydlig data och tydliga operationer lämpade. Detta
+diskuteras utförligare i avsnitt~\ref{sec:lampligt}. Det framgick också att det
+blev överlapp mellan olika domänspecika språk trots att områdena var fristående.
+Ett exempel var det domänspecifika språk för partiklar som till stor del
+tillämpade de domänspecifika språken för matematisk analys och vektorer.
 
-Det blev av dessa skäl nödvändigt att göra en distinktion mellan två typer av områden: \textit{grundläggande} och \textit{komposita}. Grundläggande områden är helt fristående från andra områden och behandlar grundläggande koncept. Komposita områden bygger vidare på andra områden eller tillämpar andra områden på konkreta fysikaliska problem.
+Det blev av dessa skäl nödvändigt att göra en distinktion mellan två typer av
+områden: \textit{grundläggande} och \textit{komposita}. Grundläggande områden är
+helt fristående från andra områden och behandlar grundläggande koncept.
+Komposita områden bygger vidare på andra områden eller tillämpar andra områden
+på konkreta fysikaliska problem.
 
 \subsubsection{Områden som valdes ut}
 
-TODO: Skriv om att varför just dessa. Var för att projektgruppen identifierade dessa grundläggande områden som resten av fysiken byggde på.
+TODO: Skriv om att varför just dessa. Var för att projektgruppen identifierade
+dessa grundläggande områden som resten av fysiken byggde på.
 
-De grundläggande områdena som under projekets gång valdes ut blev bevis, dimensioner, matematisk analys och vektorer.
+De grundläggande områdena som under projekets gång valdes ut blev bevis,
+dimensioner, matematisk analys och vektorer.
 
-När kunskap inhämtats om olika områden kunde ett urval göras. De områden som identifierades som grundläggande och hade en väl lämpad struktur (se avsnitt \ref{sec:valdes lampligt}) ut. Med detta som grund blev följande de områden som valdes ut.
+När kunskap inhämtats om olika områden kunde ett urval göras. De områden som
+identifierades som grundläggande och hade en väl lämpad struktur (se
+avsnitt~\ref{sec:valdes lampligt}) ut. Med detta som grund blev följande de
+områden som valdes ut.
 
 \textbf{OCH FLER?}
 
@@ -119,10 +180,12 @@ hjälpsamt att kunna utföra automatisk, datorassisterad dimensionsanalys på
 beräkningar.
 
 \textit{Matematisk analys} eftersom alla koncept i klassisk mekanik är
-relaterade genom matematisk analys. Mer specifikt används differenser för att
-beskriva medelrörelse, och infinitesimalkalkyl för att beskriva
-momentanrörelser. Vidare var infinitesimalkalkyl just det område som Fäldt
-pekade ut som speciellt viktigt och något som studenter har svårt för.
+relaterade genom matematisk analys. Mer specifikt används
+differenser\footnote{Till exempel används $\Delta(x)$ för att beskriva
+förflyttning i $x$-led} för att beskriva medelrörelse, och infinitesimalkalkyl
+för att beskriva momentanrörelser. Vidare var infinitesimalkalkyl just det
+område som Fäldt pekade ut som speciellt viktigt och något som studenter har
+svårt för.
 
 \textit{Vektorer} eftersom det är en viktig grundsten inom den klassiska
 mekaniken. Alla krafter, hastigheter och accelerationer betraktas som vektorer i
@@ -445,7 +508,7 @@ För att utvärdera läromaterialet gjordes en kort och informell utvärdering m
 
 Utvärderingen gjordes genom att visa dem läromaterialet och ge det en kort presentation och bakgrund. Sedan fick de på egen hand läsa det. Deras spontana reaktioner och svar på frågor noterades.
 
-\section{Möten med Fäldt}
+\section{Möten med fysikläraren}
 
 För att få återkoppling på läromaterialet hölls två möten med Åke Fäldt, föreläsare och examinator för Fysik för ingenjörer. Ett möte hölls relativt tidigt i projektets skede, 2018-03-02, och ett andra relativt sent, 2018-04-11. Under mötena presenterades läromaterialet i sig och tanken med det, nämligen att presentera fysik på ur ett annat perspektiv, ett funktionellt programmeringsperspektiv. Det diskuterades också svåra områden i Fysik för ingenjörer, vad läromaterialet skulle kunna bidra med för kunskaper till studenter samt dess eventuella roll i relation till fysikkursen i övrigt.
 

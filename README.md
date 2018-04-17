@@ -20,27 +20,29 @@ Medlemmar: Oskar, Erik, Daniel, Björn, Johan
 
 ## Kvar på rapporten
 
-Klart tills måndag 16 april.
+Börja gärna innan. Men på torsdagen den 19 försöker vi göra klart dem.
 
 Gör en överstrykning på saker när de är klara.
 
 - Annat
-    - Formalia
-    - Sammandrag
+    - Titel och framsidebild
+    - **O** Formalia
+    - **J** Sammandrag
     - Översätt sammandrag till abstract
+    - **B** Att böra på slutsatser
     - Slutsatser
 - Introduktion
-    - Fixa todos i bakgrund och allmän hyfsning
-    - Allmän hyfsning mål
-    - Allmän hyfsning avgränsningar
+    - **E** Fixa todos i bakgrund och allmän hyfsning
+    - **E** Allmän hyfsning mål
+    - **E** Allmän hyfsning avgränsningar
 - Teori
 - Metod
 - Resultat
 - DiskRes
 - Diskussion
-    - Genomförandediskussion
-    - Ingress till resultatdiskussion
-    - Mer kritik: Överlappande områden presenterar vi som någonting dåligt, att vi gärna vill ha väl definierade områden för att det bättre DSL då, men överlappande områden kanske kan vara bra ur en pedagogisk synvinkel. Se PaJas kommentarer i rapporten.
+    - **O** Genomförandediskussion
+    - **O** Ingress till resultatdiskussion
+    - **O** Mer kritik: Överlappande områden presenterar vi som någonting dåligt, att vi gärna vill ha väl definierade områden för att det bättre DSL då, men överlappande områden kanske kan vara bra ur en pedagogisk synvinkel. Se PaJas kommentarer i rapporten.
 
 
 

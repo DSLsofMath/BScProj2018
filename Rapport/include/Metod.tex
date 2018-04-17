@@ -448,44 +448,36 @@ Dessutom visar det att går att använda det material som presenteras tidigare
 till  att implementera och lösa mer komplexa problem.
 
 \end{draft}
-\begin{binge}
+\begin{draft}
 
 \section{Skapande av och publicering på hemsidan}
 
-  Läromaterialet publiceras på en internethemsida, varpå man kan läsa
-  allt o ha skoj.
+Läromaterialet kompilerades med hjälp av ett bygg-script och
+publicerades på en internethemsida. Bygg-scriptet anropar
+\textit{Pandoc} för att konvertera från källkod och text i Literate
+Haskell format till HTML, redo att visas på en hemsida. Pandoc
+packeterar även med \textit{MathJax} som använder JavaScript för att
+rendera matematiska formler i LaTeX format på fint och läsbart
+vis. Utan stöd för JavaScript skrivs matematik ut som omodifierad
+LaTeX kod, vilket är mer svårläst, men fortfarande tolkningsbart. Det
+skrevs även \textit{CSS} manuellt för att modifiera utseendet av
+hemsidan sådant att den blev mer fin och läsbar enligt
+projektmedlemmarna.
 
-  TODO: Slå ihop underrubriker till ett stycke.
+Varje källfil betraktades som ett kapitel och publicerades som
+separata undersidor. Med hjälp av ett index beskrivet i bygg-scriptet
+konstruerades navigationselement mellan kapitel på varje undersida
+och en innehållsförteckning.
 
-  \subsection{Beskrivning}
+För publicering lades all data producerad av bygg-scriptet i en ny git
+branch med namnet \texttt{gh-pages}. Att alla branches synkroniseras
+mot GitHub medför att alla filer på \texttt{gh-pages} branchen
+serveras som en hemsida med hjälp av \textit{GitHub
+  Pages}. Publiceringen skedde inte kontinuerligt eller automatiskt,
+utan krävde en manuell synkronisering vid varje önskad uppdatering av
+hemsidan.
 
-  Ett build-script hämtar .lhs källfilerna, i vilka lärotexten är
-  skriven med markdown. Rendrar med pandoc, och sätter in lite
-  navigationselement etc. med hjälp av eget templating-system. Manuellt
-  läggs sedan stoffet på gh-pages branchen för att automatiskt visas på
-  dslsofmath.github.io/BScProj2018. \todo{Förklara templating, rendrar, branch}
-
-  Obs: Medan bygget är scriptat så är inte publiceringen det, och
-  ingenting genereras/publiceras automatiskt kontinuerligt. Måste köra
-  scriptet manuellt och lägga stoff på gh-pages branchen.
-
-  \subsection{Build-script}
-
-  I.e. implementation av python-build-scriptet i mer detalj.
-
-  TODO: Är detta ens intressant? Viktigt för att producera sidan såklart, men
-  inte intressant ur varken matte eller haskell/DSL perspektiv.
-
-  \subsection{Hemsidan}
-
-  TODO: Nåt om design, läslighet, grafik(?), navigation, avsiktligt undvikande
-  av javascript, etc.
-
-Från resultat: ska integreras här
-
-Hemsidan består av grundläggande HTML, CSS och javascript. På hemsidan finns en innehållsförteckning med klickbara länkar till de olika kapitlen. Hemsidan är öppen för alla och bör fungera i de flesta webläsare. Javascript är inget krav för hemsidan. Matematiska formler visas ändå, om än inte lika tydligt.
-
-\end{binge}
+\end{draft}
 \begin{draft}
 
 \section{Utvärdering med testgrupp}

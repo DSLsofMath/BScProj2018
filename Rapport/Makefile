@@ -5,7 +5,6 @@ default: Main.pdf
 
 Main.pdf:: \
 	include/Diskussion.tex \
-	include/DiskRes.tex \
 	include/Introduktion.tex \
 	include/Metod.tex \
 	include/Resultat.tex \

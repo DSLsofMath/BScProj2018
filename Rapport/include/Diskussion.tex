@@ -28,39 +28,15 @@ istället.
 
 \section{Genomförandediskussion}
 
-I projektets genomförande har det funnits flera teori- och metodval som kan
-kritiseras. Dessa val diskuteras och kritiseras i detta avsnitt.
+Hur domänspecifika språk kan kombineras med fysik var inget vi visste när projketet startade. En stor del i början av projketet ägnades därför åt att försöka komma på olika sätt att använda dem ihop med olika fysikaliska områden. Det gjordes många experiment innan vi hittade sätt att skapa domänspecifika språk till fysik som var annat än triviala implementationer av formler, till exempel att formlen för rörelseenergi, $E_k = \frac{mv^2}{2}$, kan skrivas som \texttt{ek m v = m * v * v / 2} i Haskell. Detta spånande och experimenterande ledde till slut till att vi kunde se någon slags strategi för hur man kan kombinera dem, vilket blev den metodik som beskrivs i avsnitt \ref{sec:konstruktion}. Det vi vill poängtera är med andra ord att det har varit svårt och oklart hur läromaterialet skulle kunna utformas.
 
-Utvärderingen som gjordes under projektet kan kritiseras på flera sätt. För det
-första bestod testgruppen av väldigt få personer, enbart tre stycken. Fler
-personer hade behövts för att få ett mindre snävt underlag. För det andra hölls
-utvärderingen under en ytterst kort tid, ungefär en timme. I början av den
-timmen såg de läromaterialet för första gången och resterande tid läste
-testgruppen det. Utvärderingen hade behövt vara längre för att låta testgruppen
-i lugn och ro arbeta igenom ett par kapitel, inklusive att följa med i
-programmeringen som gjordes i läromaterialet. För det tredje var vi inte tydliga
-med vad för frågor vi ville ha svar på, utan istället noterade vi testgruppens
-spontana reaktioner. Vi ville till exempel veta om de tyckte att domänspecifika
-språk gav en rigorös struktur till fysik. Men eftersom vi inte gjorde det
-tydligt för testgruppen kunde de heller inte tänka på dessa frågor. Med tanke på
-dessa tre brister i utvärderingen är alla slutsatser dragna med utvärderingen
-som stöd ytterst osäkra.
+Genom projektets gång har val gjorts kring vilka metoder och teorier som skulle användas. Dessa är kanske inte de bästa, så här kommer vi diskutera och kritisera dem.
 
-Det går även att kritisera hur valet av områden gick till under projektet.
-Dels kan det ha lett till att inga domänspecifika språk för fysik
-implementerades, se diskussionen i avsnitt \ref{sec:fpf}. Dels skedde urvalet ur
-implementatörens perspektiv (det vill säga, vårt) och inte ur användarens
-perspektiv (studenten som ska nyttja läromaterialet). Med det menar vi att
-områden valdes utifrån hur det implementationsmässigt hängde ihop, till exempel
-att matematisk analys är grunden till flera tillämpningar. Istället hade områden
-kunnat väljas utifrån de fysikaliska problem studenter ska lösa i Fysik för
-ingenjörer, till exempel lutande plan, block och talja eller momentjämvikt, och
-utifrån det utforma domänspecifika språk. De olika sätten att tänka vid val av
-områden skiljer sig åt och ingen tankeverksamhet ägnades i projeket åt att ett
-sätt skulle kunna vara bättre. Istället blev det implementationsperspektivet
-eftersom det var enklast.
+Utvärderingen som gjordes under projektet kan kritiseras på flera sätt. För det första bestod testgruppen av väldigt få personer, enbart tre stycken. Fler personer hade behövts för att få ett mindre snävt underlag. För det andra hölls utvärderingen under en ytterst kort tid, ungefär en timme. I början av den timmen såg de läromaterialet för första gången och resterande tid läste testgruppen det. Utvärderingen hade behövt vara längre för att låta testgruppen i lugn och ro arbeta igenom ett par kapitel, inklusive att följa med i programmeringen som gjordes i läromaterialet. För det tredje var vi inte tydliga med vad för frågor vi ville ha svar på, utan istället noterade vi testgruppens spontana reaktioner. Vi ville till exempel veta om de tyckte att domänspecifika språk gav en rigorös struktur till fysik. Men etftersom vi inte gjorde det tydligt för testgruppen kunde de heller inte tänka på dessa frågor. Med tanke på dessa tre brister i utvärderingen är alla slutsatser dragna med utvärderingen som stöd ytterst osäkra.
 
-Till sist kan man kritisera den allmäna metoden som valdes för utformningen av läromaterialet, nämligen att skriva varje kapitel som en lång, sammanhängande, löpande text. Lärotexten har skrivits som en berättelse om hur ett domänspecitikt språk kan implementeras eller tillämpas för olika fysikaliska områden. Nackdelen är att det blir en passiv inlärning. Läsaren visas hur man kan göra utan att försöka så mycket själv. Visserligen har övningar inkluderats i läromaterialet, och läsaren uppmuntras programmera koden parallellt, men det tenderar ändå riskera bli en passiv inlärning.  Valet att använda Literete Haskell har definitivt bidragit till dessa passiva tendense. Literate Haskell är inget annat än en färdig implemenation fast mer väldokumenterad och anpassad för människor än en vanlig programfil. Det kan till och med vara så att Literate Haskell är sämre än ``bara'' Haskell, med avseende på aktivt lärande, då det är enklare att ändra och experimentera med en programfil utan prosa i vägen. Under projektets genomförande hade det därför varit av intresse att undersöka alternativa sätt att utforma lärotexten som uppmuntrat ett mer aktivt lärande.
+Det går även att kritisera hur urvalet av områden gick till under projektet. Dels kan det ha lett till att inga domänspecifika språk för fysik implementerades, se diskussionen i avsnitt \ref{sec:fpf}. Dels skedde urvalet ur implementatörens perspektiv (det vill säga, vårt) och inte ur användarens perspektiv (studenten som ska nyttja läromaterialet). Med det menar vi att områden valdes utifrån hur det implementationsmässigt hängde ihop, till exempel att matematisk analys är grunden till flera tillämpningar. Istället hade områden kunnat väljas utifrån de fysikaliska problem studenter ska lösa i Fysik för ingenjörer, till exempel lutande plan, block och talja eller momentjämvikt, och utifrån det utforma domänspecifika språk. De olika sätten att tänka vid val av områden skiljer sig åt och mest fokus under projektet har varit ur implementationsperspektivet. Visserligen gjordes enstaka försök att tänka på det andra sättet också, men vi tyckte det var svårt att  skapa några domänspecika språk på det sättet, se avsnitt \ref{sec:lampligt}. Vi hade dock kunnat utforska detta tankesätt grundligare än vad vi gjort, istället för att avfärda det som ett svårare sätt att gå till väga.
+
+Till sist kan man kritisera den allmäna metoden som valdes för utformningen av läromaterialet, nämligen att skriva varje kapitel som en lång, sammanhängande, löpande text. Lärotexten har skrivits som en berättelse om hur ett domänspecitikt språk kan implementeras eller tillämpas för olika fysikaliska områden. Nackdelen är att det blir en passiv inlärning. Läsaren visas hur man kan göra utan att försöka så mycket själv. Visserligen har övningar inkluderats i läromaterialet, och läsaren uppmuntras programmera koden parallellt, men det tenderar ändå riskera bli en passiv inlärning.  Valet att använda Literete Haskell har definitivt bidragit till dessa passiva tendense. Literate Haskell är inget annat än en färdig implemenation fast mer väldokumenterad och anpassad för människor än en vanlig programfil. Det kan till och med vara så att Literate Haskell är sämre än ``bara'' Haskell, med avseende på aktivt lärande, då det är enklare att ändra och experimentera med en programfil utan prosa i vägen. Under projektets genomförande hade det därför varit av intresse att undersöka alternativa sätt att utforma lärotexten som uppmuntrat ett mer aktivt lärande. Det hade till exempel kunnat vara att presentera iden bakom fysikaliska dimensioner, och sedan låta studenten själv skapa implementationen. Något enkelt exempel hade kunnat visats först för att ge någon slags fingervisning hur man kan göra.
 
 \section{Resultatdiskussion}
 

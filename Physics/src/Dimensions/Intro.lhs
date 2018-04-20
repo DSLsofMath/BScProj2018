@@ -16,9 +16,7 @@ The dimension of a quantity is often implicitly understood given its unit. If I 
 
 There are 7 *base dimensions*, each with a corresponding SI-unit.
 
-TODO: In my browser the list and the image components don't line up. I think you will need to split into seven images.
-
-![The 7 base dimensions](Base_dimensions.png){.float-img-right}
+![The 7 base dimensions](Base_dimensions.png)
 
 - Length (metre)
 - Mass (kilogram)

@@ -32,9 +32,9 @@ Gör en överstrykning på saker när de är klara.
     - **B** Att böra på slutsatser
     - Slutsatser
 - Introduktion
-    - **E** Fixa todos i bakgrund och allmän hyfsning
-    - **E** Allmän hyfsning mål
-    - **E** Allmän hyfsning avgränsningar
+    - ~~**E** Fixa todos i bakgrund och allmän hyfsning~~
+    - ~~**E** Allmän hyfsning mål~~
+    - ~~**E** Allmän hyfsning avgränsningar~~
 - Teori
 - Metod
 - Resultat

@@ -136,7 +136,7 @@ dem. Författarna diskuterar även oklara och 
 oväntade resultat och sin studies relation till 
 andra studier eller tillämpningsområden.
 
-Relevans: testgrupp alldelles för kort för att göra nytta [Skriv om i 5.2.2.3]
+Relevans: vem är läromaterialet relevant för? [5.2]
 
 ~~Oväntat: lämpliga. [Betona att oväntat i 5.2.2.2]~~
 

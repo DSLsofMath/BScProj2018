@@ -41,7 +41,7 @@ Gör en överstrykning på saker när de är klara.
 - DiskRes
 - Diskussion
     - ~~**O** Genomförandediskussion~~
-    - **O** Ingress till resultatdiskussion
+    - ~~**O** Ingress till resultatdiskussion~~
     - **O** Mer kritik: Överlappande områden presenterar vi som någonting dåligt, att vi gärna vill ha väl definierade områden för att det bättre DSL då, men överlappande områden kanske kan vara bra ur en pedagogisk synvinkel. Se PaJas kommentarer i rapporten.
 
 

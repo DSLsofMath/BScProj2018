@@ -9,11 +9,9 @@ I detta kapitel diskuteras projektets genomförande, resultat, vidareutvecklings
 
 \begin{binge}
 
-Hur domänspecifika språk kan kombineras med fysik var inget vi visste när projketet startade. En stor del i början av projketet ägnades därför åt att försöka komma på olika sätt att använda dem ihop med olika fysikaliska områden. Det gjordes många experiment innan vi hittade sätt att skapa domänspecifika språk till fysik som var annat än triviala implementationer av formler, till exempel att formlen för rörelseenergi, $E_k = \frac{mv^2}{2}$, kan skrivas som \texttt{ek m v = m * v * v / 2} i Haskell. Detta spånande och experimenterande ledde till slut till att vi kunde se någon slags strategi för hur man kan kombinera dem, vilket blev den metodik som beskrivs i avsnitt \ref{sec:konstruktion}. Det vi vill poängtera är med andra ord att det har varit svårt och oklart hur läromaterialet skulle kunna utformas.
+Till att börja med vill vi säga att hur domänspecifika språk kan kombineras med fysik inte var något vi visste när projketet startade. En stor del i början av projketet ägnades därför åt att försöka komma på olika sätt att använda dem ihop med olika fysikaliska områden. Det gjordes många experiment innan vi hittade sätt att skapa domänspecifika språk till fysik som var annat än triviala implementationer av formler, till exempel att formlen för rörelseenergi, $E_k = \frac{mv^2}{2}$, kan skrivas som \texttt{ek m v = m * v * v / 2} i Haskell. Detta spånande och experimenterande ledde till slut till att vi kunde se någon slags strategi för hur man kan kombinera dem, vilket blev den metodik som beskrivs i avsnitt \ref{sec:konstruktion}. Det vi vill poängtera är med andra ord att det har varit svårt och oklart hur projektet skulle föras framåt eftersom det inte funnits någon klar och tydlig väg att följa.
 
-De två nedanstående ska vara nånstans i diskussion.
-
-De domänspecifika språken modellerar områden snarare än att vara problemlösare.
+Markerad1: De domänspecifika språken modellerar områden snarare än att vara problemlösare.
 \textit{Analys} exemplifierar detta väl. Det språket består av ett syntaxträd
 över algebraiska uttryck samt operationer som derivering och integration. Med
 hjälp av det kan man modellera uttryck och analytiska operationer på dem.
@@ -24,7 +22,7 @@ TODO: Osäker på ovan. Vad exakt innebär ``problemlösning''? Varför är
 diffekv lösning problemlösning, men inte automatisk derivering (vilket
 görs i analys).
 
-Hur bra våra moduler blev samt varför de inte är problemlösare utan modellerare
+Markerad2: Hur bra våra moduler blev samt varför de inte är problemlösare utan modellerare
 istället.
 
 \section{Genomförandediskussion}
@@ -41,38 +39,16 @@ Till sist kan man kritisera den allmäna metoden som valdes för utformningen av
 
 Detta kapitel inleds med en övergripande diskussion om det resulterande läromaterialet, för att sedan övergå till en något mer generell diskussion kring kombinationen av domänspecifika språk och fysik.
 
-I projektets mål och avgränsningar stod det att vi skulle börja med klassisk mekanik, för att i mån av tid även behandla termodynamik och våglära. Hur långt hann vi? I avsnitt \ref{sec:res_laromaterial} nämns att de tre grundläggande områdena dimensioner, matematisk analys och vektorer är färdiga, samt de komposita områdena partikelmekanik, gundbräda och krafter på lådor. Med andra ord har mekanik påbörjats, men inte termodynamik och våglära. Men hur mycket är kvar? Det som återstår enligt oss är att tillämpa de grundläggande områdena på fler fysikaliska problem utöver gungbräda och krafter på lådor. Dessutom kan man utveckla mer fördjupande områden, till exempel bevisföring, något som nämndes i avsnitt \ref{sec:res_laromaterial} att det påbörjats.
+I projektets mål och avgränsningar stod det att vi skulle börja med klassisk mekanik, för att i mån av tid även behandla termodynamik och våglära. Hur långt hann vi? I avsnitt \ref{sec:res_laromaterial} nämns att de tre grundläggande områdena dimensioner, matematisk analys och vektorer är färdiga, samt de komposita områdena partikelmekanik, gundbräda och krafter på lådor. Med andra ord har mekanik påbörjats, men inte termodynamik och våglära. Men hur mycket är kvar? Det som återstår enligt oss är att tillämpa de grundläggande områdena på fler fysikaliska problem utöver gungbräda och krafter på lådor. Vi tror att de tre grundläggande områdena som är färdiga räcker. Förutom fler tillämpningar kan man utveckla mer fördjupande områden, till exempel bevisföring, något som nämndes i avsnitt \ref{sec:res_laromaterial} att det påbörjats.
 
+En annan del av målet var att läromaterialet skulle vara lättillgängligt genom ett lättsamt språk, publicering på en hemsida och fri tillgång till källkoden. Vi kan genast konstatera att de senare två har genomförts. Vi passar även på att säga att vi tycker att en lättanvänd hemsida är trevligare att använda än PDF-filer eftersom de inte har sidbrytningar, fixa sidmarginaler med mera. Detta är visserligen små detaljer, men tillsammans påverkar de upplevelsen i stort. Vi tycker även att språket i läromaterialet är lättsamt då vi medvetet skrivit talspråkligt, som om vi pratat med en vän.
 
-
-
-
-
-
-
+Vem är detta läromaterial relevant för? Visserligen är målgruppen datastudenter men vi tror att det kan vara relevant för fler än så. Framförallt har vi personligen dragit nytta av det när vi konstruerade det, eftersom det gav oss fördjupade kunskapar i fysik, domänspecifka språk och Haskell. Läromaterialet kan även vara intressant för fysiklärare. Fäldt nämnde till exempel att han tyckte den rigorösa tankesätt läromaterialet skolar in läsaren i kan vara användbart även i traditionell fysikundervisning. Fysiklärare skulle därför kunna finna intresse i att undersöka hur ett sådant här läromaterial kan integreras i undervisningen.
 
 En del av projketets mål var att diskutera kombinationen av
 domänspecifika språk och fysik. I de tre följande avsnitten diskuterar vi därför läromaterialets fokus på matematik och Haskell istället för fysik, vilka fysikalsika områden som var lämpliga att göra domänspecifika språk till samt om det finns en pedagogisk nytta i att kombinera de två. Diskussionen är till största del baserad på våra erfarenheter efter att ha implementerat ett flertal domänspecifika språk relaterade till fysik, men de är även baserade på uppfattningar från testgruppen och fysikläraren.
 
-\subsection{Kritik av läromaterialet}
-
-Är läromaterialet relevant för någon?
-- För oss för vi lärde oss, definitivt
-- Kanske inte för datastudenter, för vem orkar hålla på med extramaterial?
-- Kanske för fysiklärare som använder desse ideer till att presentera rigoröst
-- Kanske för programledningen som ett sätt att brottas med tentastatitistik
-
-
-
-
-
-
-En stor del av projektets mål var att skapa ett läromaterialet som både skulle
-vara roligt och intressant att läsa. Vi skulle åstakomma detta genom att använda
-oss av ARCS-metoden (?), användandet av lättsam text och roliga bilder för att
-lätta upp materialet. 
-
-VAR?: Det Patrik sa om pedagogiskt att lära ut delar som är samma men sedan visa att kan göras med generell grej.
+Markerad3: VAR?: Det Patrik sa om pedagogiskt att lära ut delar som är samma men sedan visa att kan göras med generell grej.
 
 \end{binge}
 \begin{draft}

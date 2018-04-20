@@ -109,11 +109,14 @@ Till metod
 - Att vi som urvalskriterie hade att skulle ha bra matematisk struktur, därför blev också de resulterande områdena sådana [5.2.1] och ~~[5.2.2.1]~~
 - ~~Kan inte dra några starka slutsatser av testgrupp för så kort undersökning. [5.2.2.3]~~
 
+
 Till teori
 - ~~Att använda Haskell [5.2.2.1]~~
+- ~~Att använda LHS gjorde passivt~~ står om i genomförandediskusson. Gräns mellan resultat och metod.
 
 Till andra studier
 - ~~DSL2016 gjorde också strukturgivande [5.2.2.3]~~
+- ~~Khan i [5.2.2.3]~~
 
 
 

@@ -32,17 +32,11 @@ Gör en överstrykning på saker när de är klara.
     - **B** Att böra på slutsatser
     - Slutsatser
 - Introduktion
-    - ~~**E** Fixa todos i bakgrund och allmän hyfsning~~
-    - ~~**E** Allmän hyfsning mål~~
-    - ~~**E** Allmän hyfsning avgränsningar~~
 - Teori
 - Metod
 - Resultat
-- DiskRes
 - Diskussion
-    - ~~**O** Genomförandediskussion~~
-    - ~~**O** Ingress till resultatdiskussion~~
-    - **O** Mer kritik: Överlappande områden presenterar vi som någonting dåligt, att vi gärna vill ha väl definierade områden för att det bättre DSL då, men överlappande områden kanske kan vara bra ur en pedagogisk synvinkel. Se PaJas kommentarer i rapporten.
+
 
 
 

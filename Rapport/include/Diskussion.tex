@@ -86,6 +86,7 @@ exempel hade kunnat visats först för att ge någon slags fingervisning om hur 
 kan göra.
 
 \section{Resultatdiskussion}
+\label{sec:res_disk}
 
 Detta kapitel inleds med en övergripande diskussion om det resulterande
 läromaterialet, för att sedan övergå till en något mer generell diskussion kring
@@ -112,8 +113,7 @@ Vi kan genast konstatera att de senare två har genomförts. Vi passar även på
 säga att vi tycker att en lättanvänd hemsida är trevligare att använda än
 PDF-filer eftersom de inte har sidbrytningar, fixa sidmarginaler med mera. Detta
 är visserligen små detaljer, men tillsammans påverkar de upplevelsen i stort. Vi
-tycker även att språket i läromaterialet är lättsamt då vi medvetet skrivit
-talspråkligt, som om vi pratar med en vän.
+tycker även att språket i läromaterialet är någorlunda lättsamt då vi skriver talspråkligt och vardagligt, och förklarar svårigheterna grundligt. Språket hade dock kunnat vara ännu mer vänligt. Till exempel framställer vi olika koncept som ``väldigt enkla'' fastän läsaren kanske inte alls tycker det.
 
 Vem är detta läromaterial relevant för? Visserligen är målgruppen datastudenter
 men vi tror att det kan vara relevant för fler än så. Framförallt har vi
@@ -410,7 +410,7 @@ Avslutningsvis när det kommer till domänspecifika språks vara eller icke-vara
 
 % Oskar: Jag tycker inte LYAH går att få in här eftersom detta avsnitt handlar om DSL+fysik är pedagogiskt. Likheten med LYAH är att båda lättsamma, så bör stå där vi snackar om det.
 
-\section{Vidareutvecklingsmöjligheter}
+\section{Vidareutvecklingsmöjligheter och behov av ytterligare kunskap}
 
 Läromaterialet innehåller domänspecifika språk för de \textit{matematiska}
 områdena analys och vektorer. Dessa områden används sedan för att koda upp och
@@ -421,40 +421,28 @@ domänspecifika språk utan göra fysikalsika domänspecifika språk. Det kan va
 saker som ett syntaxträd för ett lutande plans komponenter. Det kan vara ett
 syntaxträd för vilka krafter som verkar på fysikalsika kroppar i mekanikproblem.
 Det kan till och med vara ett domänspecifikt språk för något så abstrakt som
-fysikalisk problemlösning i allmänhet. Vi har dessvärre ingen aning hur det
-skulle kunna se ut. Men av just detta skäl tror vi det hade varit väldigt
-intressant att se hur ett mer fysik-orienterat domänspecifikt språk kan se ut.
+fysikalisk problemlösning i allmänhet. Vi vet inte hur ett domänspecifikt språk av detta slag kan se ut, vilket är anledning till att vi gick den andra vägen, som vi diskuterade i avsnitt \ref{sec:fpf}. Att ger mer fysik-orienterade domänspecifika språj hade däröfr varit en möjligt vidareutveckling.
 
 En annan möjlig vidareutveckling är att göra en rigorös studie kring de
 pedagogiska aspekterna kring kombinationen av fysik och domänspecifika språk.
 Detta projekt innehöll enbart en mindre sådan studie. Det som kan vara
 intressant att undersöka är om studenter tycker att fysik blir intressantare
 genom en kombination av detta slag och kanske därför studerar mer i fysikkursen.
-Eller kanske om de rent av blir bättre på fysik i sig genom att fysik
-presenterats på detta sätt, det vill säga att ett läromaterial av detta slag
-skulle kunna fungera istället för traditionell undervisning inom fysik. Givetvis
-skulle kompletering av läromaterialet behöva göras så att det är heltäckande.
+Det hade också varit intressant att undersöka om det rigorösa tankesätt domänspecifka språk förmedlar, se avsnitt \ref{sec:bara_fysik}, spiller över och gör nytta inom traditionell fysikundervisning. Det är inom dessa två frågor det främsta behovet av ytterligare kunskaper ligger. Målet med ett arbete av detta slag är trots allt att förbättra fysikkunskaper (genom ökat intresse eller mer rigorösitet) och då är det av yttersta vikt att undersöka om det faktiskt blir så i praktiken.
 
 Även det befintliga läromaterialet kan byggas vidare på. I sin nuvarande
 form behandlas varken termodynamik eller vågrörelselära något alls. Dessutom lär
 det finnas aspekter inom den klassiska mekaniken som fattas.
 
-\end{draft}
-\begin{binge}
-
 Slutgiltligen finns det en mycket intressant vidareutveckling som inte alls har
-behandlats av detta projekt, nämligen att använda dessa domänspecifika språk som
-ett slags syntaktiskt lager mellan mellan en användare och en komplex kodbas. I
+behandlats i detta projekt, nämligen att använda matematiska och fysikalsika domänspecifika språk som
+ett syntaktiskt lager mellan användare och en underliggande komplex kodbas. I
 många fall kan dessa kodbaser vara implementerade på ointuitivt sätt och utan
 någon typsäkerhet. I dessa fall kan det vara mycket användbart med ett
-domänspecifikt språk med hög typsäkerhet som möjliggör för en användare att
+domänspecifikt språk med hög typsäkerhet som möjliggör för användaren att
 endast skriva korrekta uttryck och som döljer den bakomliggande komplexiteten.
-Denna idè framfördes till oss av \textbf{TODO: Jeff} men är även någonting som
-har genomförts på andra områden, t.ex.~inom molekylär dynamik\cite{MD}.
-
-\end{binge}
-
-\begin{draft}
+Denna idè framfördes till oss av Jeff Chen\footnote{Jeffs sida på Chalmers: \url{https://www.chalmers.se/en/education/next-stop/stuamb/Pages/Previous\%20student\%20ambassadors/Jeff.aspx}.} på Chalmers, men är även någonting som
+har genomförts på andra områden, till exempel inom molekylär dynamik\cite{MD}.
 
 \section{Etiska aspekter}
 
@@ -463,8 +451,8 @@ vara tillgängligt för alla. Därför har vi valt att publicera det på en hems
 Denna hemsida använder grundläggande HTML och CSS samt javascript. Javascript är
 dock inget krav för funktionalitet. Eftersom hemsidan är lättviktig bör den
 fungera väl även på gamla datorer och telefoner, till skillnad från tunga
-PDF-filer och många moderna hemsidor. Läromaterialet blir så även mer tillgängligt för
-elever i länder med begränsad internetuppkoppling.
+PDF-filer och många moderna hemsidor. Läromaterialet blir på detta sätt tillgängligt även för
+studenter i länder med mindre bra internetuppkoppling.
 
 Tanken om tillgänglighet ligger även bakom valet att låta källkoden var fritt
 tillgänglig. Visserligen \textit{är} läromaterialet i princip hela källkoden, så
@@ -481,10 +469,10 @@ Valet att skriva på engelska har också att göra med tillgängligheten. Fler k
 engelska än svenska. På detta sätt kan läromaterialet komma fler till gagn.
 
 Angående beskrevningen under teori att upplevelsen av materialet är ämnad att vara rolig, så
-är det mer tillgängligt för elever som inte hade orkar läsa en akademisk lärobok. Även om
+är det mer tillgängligt för elever som inte hade orkat läsa en akademisk lärobok. Även om
 kvaliten i en akademisk lärobok kan vara hög, är det inte alltid kvaliten kommer till nytta om
-eleven lägger boken åt sidan pga en impuls att göra något som kan vara mer stimulerande.
-Genom att använda ett enkelt språk, roliga formuleringar och bilder (som kan vara irellevanta), 
+eleven lägger boken åt sidan på grund av en impuls att göra något som kan vara mer stimulerande.
+Genom att använda ett enkelt språk, roliga formuleringar och bilder (som kan vara irrelevanta), 
 minskar chansen för flyktförsök. Detta kan tänkas vara extra viktigt för yngre elever vars kontroll av
 uppmärksamhet inte är lika utvecklat som hos äldre och som är intresserade av fysik på en mer avancerad nivå
 än de studerar i sin ordinarie undervisning.

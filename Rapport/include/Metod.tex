@@ -16,8 +16,8 @@
 
 \begin{draft}
 
-Projektets genomförande bestod av fyra delar. Den största delen var att
-konstruera själva läromaterialet, och där ingick sökande efter fysikaliska
+Projektets genomförande bestod av fyra delar. Den största delen var
+konstruktionen av själva läromaterialet, och där ingick sökande efter fysikaliska
 områden, implementation av domänspecifika språk och skrivande av lärotext. De
 tre andra delarna var publicering av läromaterialet på en hemsida, utvärdering
 av läromaterialet med en testgrupp samt möten med Åke Fäldt, examinator och
@@ -25,7 +25,6 @@ föreläsare för Fysik för ingenjörer. Mötena med Fäldt hade två syften: a
 problemområden i fysikkursen och att få återkoppling på läromaterialet.
 
 \begin{binge}
-\textbf{TODO: Skriv om enligt PaJas kommentarer i rapporten}
 
 Det har inte funnits någon betydelsefull kronologi i projektet. I vilken
 ordningen aktiviteterna genomfördes spelar ingen roll för att förstå vad som
@@ -34,6 +33,7 @@ enbart aktiviteterna i sig, och inte i vilken ordningen de gjordes i relation
 till varandra. Självklart finns viss betydelsefull kronologi. Till exempel var
 (en del av) läromaterialet varit tvunget att vara skapat innan det kunde
 utvärderas, men sådana praktiska detaljer är obetydelsefulla för förståelsen.
+
 \end{binge}
 
 \section{Konstruktion av läromaterialet}\label{sec:konstruktion}
@@ -133,9 +133,8 @@ för ingenjörer. Innehållet som hittades delades upp i avgränsade områden f�
 de skulle bli lämpade till varsitt domänspecifikt språk. Av speciellt intresse
 var de kapitel som behandlade mekanik (i enlighet med projektets mål att börja
 med klassisk mekanik), matematisk analys samt de kapitel som använde sig av en
-specifik syntax \todo{Syntax?}. Domänspecifik syntax var av intresse att finna
+specifik syntax. Domänspecifik syntax var av intresse att finna
 då en betydlig del av domänspecifika språk är modellering av just syntaxen.
-\todo{Kanske förtydliga/utveckla varför detta är av intresse}
 
 Sökandet i kursboken och kursmaterialet gav viktiga kunskaper om områden att
 behandla. Men minst lika viktiga var de inledande experiment som gjordes på
@@ -157,18 +156,10 @@ på konkreta fysikaliska problem.
 
 \subsubsection{Områden som valdes ut}
 
-TODO: Skriv om att varför just dessa. Var för att projektgruppen identifierade
-dessa grundläggande områden som resten av fysiken byggde på.
-
-De grundläggande områdena som under projekets gång valdes ut blev bevis,
-dimensioner, matematisk analys och vektorer.
-
 När kunskap inhämtats om olika områden kunde ett urval göras. De områden som
 identifierades som grundläggande och hade en väl lämpad struktur (se
 avsnitt~\ref{sec:valdes lampligt}) ut. Med detta som grund blev följande de
 områden som valdes ut.
-
-\textbf{OCH FLER?}
 
 \textit{Bevis} eftersom det ger en insikt i hur de formler man använder
 faktiskt uppstår. För att genomföra bevis krävs också att formler och
@@ -192,23 +183,27 @@ mekaniken. Alla krafter, hastigheter och accelerationer betraktas som vektorer i
 planet eller rummet, och dessa är alla fundamentala element inom klassisk
 mekanik.
 
-\end{draft}
 \begin{binge}
-
-TODO: Skriv om varför just dessa komposita. Finns säkert många komposita, så något urval måste ha gjorts.
-
-De komposita som valdes ut blev...
-
-Ett exempel på ett komposit område är momentan- och medel-rörelse eftersom det
-direkt utgör en stor delmängd av alla problem inom mekanik i Fysik för
-ingenjörer. Väldigt många av de uppgifter studenter lär sig lösa inom mekanik
-är sträcka/hastighet/acceleration/kraft problem. Hur lång tid tar det att åka
-en sträcka om man har en viss medelhastighet? Om ett objekt med massa $m$
-påverkas av en kraft som varierar enligt $\sin(t)$, vad är då
-momentanhastigheten vid $t=10$? Detta är en kombination av det grundläggande
-området som behandlar vektorer och området som behandlar matematisk analys.
-
+\textbf{TODO:~OCH FLER?}
 \end{binge}
+
+De komposita områdena identifierades som områden som byggde vidare på de redan
+implementerade grundläggande områdena. Det komposita områdena som valdes ut
+blev:
+
+\textit{Punktpartikelsmekanik}. Här gås mycket av den gymnasiala fysiken igenom.
+Lägesenergi, rörelseenergi, gravitation o.s.v. Den modelleras med vektorer vars
+komponenter består av matematiska uttryck tagna från kapitlet om matematisk
+analys. Förhoppningen är att detta område inte ska presentera någon ny fysik för
+läsaren utan istället visar hur redan känd fysik direkt går att översätta till
+domänspecifika våra domänspecifika språk.
+
+\end{draft}
+
+\begin{binge}
+\textbf{TODO:~OCH FLER?}
+\end{binge}
+
 \begin{draft}
 
 \subsection{Implementation av DSL för områdena}

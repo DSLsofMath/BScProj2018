@@ -396,6 +396,19 @@ which at least implies that we can use polynomials.
 >     (Id, Const c) -> Id:^(Const (c+1)) :/ Const (c+1)
 >     (_, _)        -> error "Can't integrate integrals like that!"
 
+**Exercise.** Find more rules of integrating exponentials and add to
+  the implementation.
+
+<details>
+<summary>**Solution**</summary>
+<div>
+
+Wikipedia has [a nice list of integrals of exponentials](https://en.wikipedia.org/wiki/List_of_integrals_of_exponential_functions)
+
+</div>
+</details>
+
+
 Integration of function composition is, simply said, somewhat
 complicated. The technique to use is called "integration by
 substitution", and is something like a reverse of the chain-rule of

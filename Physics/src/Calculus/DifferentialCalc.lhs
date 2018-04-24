@@ -306,8 +306,18 @@ And the limit
 
 $$\lim_{x \to 0} \frac{sin x}{x} = 1$$
 
-which can be proved using the unit circle and squeeze theorem, but we
-won't do that here.
+the proof of which is left as an exercise to the reader
+
+**Exercise.** Prove the limit $\lim_{x \to 0} \frac{sin x}{x} = 1$
+
+<details>
+<summary>**Hint**</summary>
+<div>
+
+This limit can be proven using the [unit circle](https://en.wikipedia.org/wiki/Unit_circle) and [squeeze theorem](https://en.wikipedia.org/wiki/Squeeze_theorem)
+
+</div>
+</details>
 
 Then, the differentiation
 
@@ -328,7 +338,11 @@ Again, trivial definition in Haskell
 
 > derive Sin = Cos
 
-I'll leave the proving of the rest of the implementations as an exercise to you, the reader.
+**Exercise.** Derive the rest of the cases using the definition of the derivative
+
+<details>
+<summary>**Solution**</summary>
+<div>
 
 > derive Exp = Exp
 > derive Log = Const 1 :/ Id
@@ -338,7 +352,8 @@ I'll leave the proving of the rest of the implementations as an exercise to you,
 > derive (f :- g) = derive f :- derive g
 > derive (f :* g) = derive f :* g :+ f :* derive g
 > derive (f :/ g) = (derive f :* g :- f :* derive g) :/ (g:^(Const 2))
-> derive (f :^ g) = f:^(g :- Const 1) :* (g :* derive f :+ f :* (Log :. f) :* derive g)
+> derive (f :^ g) =    f:^(g :- Const 1)
+>                   :* (g :* derive f :+ f :* (Log :. f) :* derive g)
 > derive Id = Const 1
 > derive (Const _) = Const 0
 > derive (f :. g) = derive g :* (derive f :. g)
@@ -352,7 +367,8 @@ for integral is *Antiderivative*...
 
 > derive (I c f) = f
 
-
+</div>
+</details>
 
 Keep it simple
 ----------------------------------------------------------------------
@@ -452,6 +468,21 @@ Exponentiation is not commutative, and further has no (two-sided) identity eleme
 >     (f', Const 1) -> f'
 >     (f', g') -> f' :^ g'
 
+**Exercises.** Look up (or prove by yourself) more identities (of
+  expressions, not identity elements) for exponentiation and implement
+  them.
+
+<details>
+<summary>**Solution**</summary>
+<div>
+
+For example, there is the identity of negative exponents. For any integer $n$ and nonzero $b$
+
+$$b^{-n} = \frac{1}{b^n}$$
+
+</div>
+</details>
+
 Intuitively, the identity function is the identity element for function composition
 
 > simplify (f :. g) = case (simplify f, simplify g) of
@@ -473,3 +504,5 @@ With this new function, many expressions become much more readable!
 < (cos + (2 * id))
 
 A sight for sore eyes!
+
+**Exercise.** Think of more ways an expression can be "simplified", and add your cases to the implementation.

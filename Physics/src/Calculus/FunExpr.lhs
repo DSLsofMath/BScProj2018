@@ -33,7 +33,7 @@ which is really equivalent to
 
 $$D(x \mapsto x^2) = x \mapsto 2x$$
 
-or
+or with more descriptive function names
 
 $$D(square) = double$$.
 
@@ -136,12 +136,12 @@ left-associative, and set the precedence.
 > -- Medium precedence
 > infixl 6 :+
 > infixl 6 :-
-> -- Higher
+> -- High precedence
 > infixl 7 :*
 > infixl 7 :/
-> -- Higherer
+> -- Higher precedence
 > infixl 8 :^
-> -- High as a kite
+> -- Higherer precedence
 > infixl 9 :.
 
 
@@ -198,7 +198,7 @@ expressions in a much more human friendly way!
 < ghci> carPosition
 < (10 + ((50 + (20 * id)) * id))
 
-Still a bit noisy with all the parens, but much better!
+Still a bit noisy with all the parentheses, but much better!
 
 Another class we need to instance for our `FunExpr` is
 `Arbitrary`. This class is associated with the testing library

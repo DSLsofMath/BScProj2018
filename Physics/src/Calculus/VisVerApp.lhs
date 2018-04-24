@@ -4,7 +4,7 @@
 > 
 > import Hatlab.Plot
 
-Visualization with Hatlab
+Plotting with Hatlab
 --------------------------------------------------------------------
 
 The brain likes seeing things. Let's give it a good looking reward!
@@ -44,26 +44,3 @@ Then plot with
 Waddaya know! They look identical! I guess it just goes to
 show that a good approximation is often good enough.
 
-
-
-TODO: Verification
----------------------------------------------------------------------
-
-QuickCheck everything. Verify that simplified expressions evaluate to
-equivalent function as original
-
-
-
-
-TODO: Applying our DSL to solve physics problems!
-----------------------------------------------------------------------
-
-Mostly problems regarding position, velocity, acceleration, time.
-
-Average FOO vs. Instantaneous FOO -- Differences vs Derivatives.
-
-Integrating to get rid of /t:s.
-
-cool stuff here in general.
-
-Also, many pretty pictores

@@ -106,10 +106,15 @@ Note that the `Quantity` data type has both value-level and type-level dimension
 
 TODO: What is the purpose (semantics, intended meaning or use) of Quantity'?
 
-**Solution.**
+<details>
+<summary>**Solution**</summary>
+<div>
 
 < data Quantity' (d1 :: T.Dim) (d2 :: T.Dim) where
 <   Quantity' :: Rational -> Rational -> Quantity' d1 d2
+
+</div>
+</details>
 
 A taste of types
 ----------------
@@ -141,7 +146,14 @@ The type has the following interpretation: two values of type `Quantity dx v` is
 
 ![Are you a cowboy?](Cowboy.png){.float-img-right}
 
-**Solution.** Hold on cowboy! Not so fast. We'll come back later to subtraction and division, so check your solution then.
+<details>
+<summary>**Solution**</summary>
+<div>
+
+Hold on cowboy! Not so fast. We'll come back later to subtraction and division, so check your solution then.
+
+</div>
+</details>
 
 Now on to some example values and types.
 
@@ -188,7 +200,9 @@ If the dimensions had been value-level only, this error would go undetected unti
 
 **Exercise.** What is the volume of a cuboid with sides $1.2\ m$, $0.4\ m$ and $1.9\ m$? Create values for the involved quantities. Use `Float` instead of `Double`.
 
-**Solution.**
+<details>
+<summary>**Solution**</summary>
+<div>
 
 > side1 :: Quantity Length Float
 > side1 = Quantity V.length 1.2
@@ -203,6 +217,9 @@ If the dimensions had been value-level only, this error would go undetected unti
 
 > volume :: Quantity Volume Float
 > volume = quantityMul side1 (quantityMul side2 side3)
+
+</div>
+</details>
 
 Pretty-printer
 --------------
@@ -228,7 +245,9 @@ It's useful to be able to compare quantities. Perhaps one wants to know which of
 
 **Exercise.** Make `Quantity` an instance of `Ord`.
 
-**Solution.**
+<details>
+<summary>**Solution**</summary>
+<div>
 
 > quantityCompare :: (Ord v) => Quantity d v ->
 >                               Quantity d v -> Ordering
@@ -237,6 +256,9 @@ It's useful to be able to compare quantities. Perhaps one wants to know which of
 
 > instance (Ord v) => Ord (Quantity d v) where
 >   compare = quantityCompare
+
+</div>
+</details>
 
 We often use `Double` as the value holding type. Doing exact comparsions isn't always possible to due rounding errors. Therefore, we'll create a `~=` function for testing if two quantities are almost equal.
 
@@ -326,7 +348,9 @@ However, operations with only scalars (type `One`) has types compatible with `Nu
 
 **Exercise.** `Quantity One` has compatible types. Make it an instance of `Num`, `Fractional`, `Floating` and `Functor`.
 
-**Solution.**
+<details>
+<summary>**Solution**</summary>
+<div>
 
 > instance (Num v) => Num (Quantity One v) where
 >   (+) = (+#)
@@ -358,6 +382,9 @@ However, operations with only scalars (type `One`) has types compatible with `Nu
 > instance Functor (Quantity One) where
 >   fmap = qmap
 
+</div>
+</details>
+
 Syntactic sugar
 ---------------
 
@@ -388,7 +415,9 @@ TODO: Please use "1" instead of "0" in all the dimensions. That signifies an amo
 
 **Exercise.** Do the rest.
 
-**Solution.**
+<details>
+<summary>**Solution**</summary>
+<div>
 
 > current :: (Num v) => Quantity Current v
 > current = Quantity V.current 0
@@ -404,6 +433,9 @@ TODO: Please use "1" instead of "0" in all the dimensions. That signifies an amo
 
 > one :: (Num v) => Quantity One v
 > one = Quantity V.one 0
+
+</div>
+</details>
 
 And now the sugar.
 
@@ -460,13 +492,18 @@ Just for convenience sake we'll define a bunch of common composite dimensions. E
 
 **Exericse.** Define pre-made values for velocity, acceleration, force, momentum and energy.
 
-**Solution.**
+<details>
+<summary>**Solution**</summary>
+<div>
 
 > velocity     = length   /# time
 > acceleration = velocity /# time
 > force        = mass     *# acceleration
 > momentum     = force    *# time
 > energy       = force    *# length
+
+</div>
+</details>
 
 ---
 
@@ -481,7 +518,9 @@ Alternative sugar with support for units
 < ghci> distance
 < 8046.72 m
 
-**Solution.**
+<details>
+<summary>**Solution**</summary>
+<div>
 
 > metre = 1 # length
 > kilometre = 1000 # length
@@ -503,6 +542,9 @@ Notice how the value is multiplied with the "base value" of the unit. This funct
 < ghci> let velocity2 = 33 ## metersPerSecond
 < ghci> velocity1 +# velocity2
 < 67.77 m/s
+
+</div>
+</details>
 
 A physics example
 -----------------

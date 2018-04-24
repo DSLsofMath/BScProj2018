@@ -90,10 +90,14 @@
 <p><code>'Dim</code> is used to distinguish between the <em>type</em> <code>Dim</code> (left-hand-side of the <code>data Dim</code> definition) and the <em>type constructor</em> <code>Dim</code> (right-hand-side of the <code>data Dim</code> definition, with <code>DataKinds</code>-perspective). <code>'Dim</code> refers to the type constructor. Both are created when using <code>DataKinds</code>.</p>
 <p><code>Pos1</code>, <code>Neg1</code> and so on corresponds to <code>1</code> and <code>-1</code> in the imported package, which operates on type-level integers.</p>
 <p><strong>Exercise.</strong> Create types for velocity, acceleration and the scalar.</p>
-<p><strong>Solution.</strong></p>
+<details>
+<summary><strong>Solution</strong></summary>
+<div>
 <div class="sourceCode" id="cb8"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">type</span> <span class="dt">Velocity</span>     <span class="fu">=</span> <span class="ch">&#39;Dim Pos1 Zero Neg1 Zero Zero Zero Zero</span></a>
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw">type</span> <span class="dt">Acceleration</span> <span class="fu">=</span> <span class="ch">&#39;Dim Pos1 Zero Neg2 Zero Zero Zero Zero</span></a></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">type</span> <span class="dt">One</span> <span class="fu">=</span> <span class="ch">&#39;Dim Zero Zero Zero Zero Zero Zero Zero</span></a></code></pre></div>
+</div>
+</details>
 <h2 id="multiplication-and-division">Multiplication and division</h2>
 <p>Let’s implement multiplication and division on the type-level. After such an operation a new dimension is created. And from the previous section we already know what the dimension should look like. To translate to Haskell-language: “after such an operation a new <em>type</em> is created”. How does one implement that? With <code>type family</code>! A <code>type family</code> can easiest be thought of as a function on the type-level.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">type</span> family <span class="dt">Mul</span> (<span class="ot">d1 ::</span> <span class="dt">Dim</span>) (<span class="ot">d2 ::</span> <span class="dt">Dim</span>) <span class="kw">where</span></a>
@@ -107,24 +111,36 @@
 <li><code>d1 :: Dim</code> is read as “the <em>type</em> <code>d1</code> has <em>kind</em> <code>Dim</code>”.</li>
 </ul>
 <p><strong>Exercise.</strong> As you would suspect, division is very similar, so why don’t you try ’n implement it yourself?</p>
-<p><strong>Solution.</strong></p>
+<details>
+<summary><strong>Solution</strong></summary>
+<div>
 <div class="sourceCode" id="cb11"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">type</span> family <span class="dt">Div</span> (<span class="ot">d1 ::</span> <span class="dt">Dim</span>) (<span class="ot">d2 ::</span> <span class="dt">Dim</span>) <span class="kw">where</span></a>
 <a class="sourceLine" id="cb11-2" data-line-number="2">  <span class="dt">Div</span> (<span class="ch">&#39;Dim le1 ma1 ti1 cu1 te1 su1 lu1)</span></a>
 <a class="sourceLine" id="cb11-3" data-line-number="3">      (<span class="ch">&#39;Dim le2 ma2 ti2 cu2 te2 su2 lu2) =</span></a>
 <a class="sourceLine" id="cb11-4" data-line-number="4">      <span class="ch">&#39;Dim (le1-le2) (ma1-ma2) (ti1-ti2) (cu1-cu2)</span></a>
 <a class="sourceLine" id="cb11-5" data-line-number="5">        (te1<span class="fu">-</span>te2) (su1<span class="fu">-</span>su2) (lu1<span class="fu">-</span>lu2)</a></code></pre></div>
+</div>
+</details>
 <p><strong>Exercise.</strong> Implement a type-level function for raising a dimension to the power of some integer.</p>
-<p><strong>Solution.</strong></p>
+<details>
+<summary><strong>Solution</strong></summary>
+<div>
 <div class="sourceCode" id="cb12"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">type</span> family <span class="dt">Power</span> (<span class="ot">d ::</span> <span class="dt">Dim</span>) (<span class="ot">n ::</span> <span class="dt">TypeInt</span>) <span class="kw">where</span></a>
 <a class="sourceLine" id="cb12-2" data-line-number="2">  <span class="dt">Power</span> (<span class="ch">&#39;Dim le ma ti cu te su lu) n =</span></a>
 <a class="sourceLine" id="cb12-3" data-line-number="3">    <span class="ch">&#39;Dim (le*n) (ma*n) (ti*n) (cu*n) (te*n) (su*n) (lu*n)</span></a></code></pre></div>
+</div>
+</details>
 <p>Now types for dimensions can be created by combining exisiting types, much like we did for values in the previous chapter.</p>
 <p><strong>Exercise.</strong> Create types for velocity, area, force and impulse.</p>
-<p><strong>Solution.</strong></p>
+<details>
+<summary><strong>Solution</strong></summary>
+<div>
 <div class="sourceCode" id="cb13"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">type</span> <span class="dt">Velocity&#39;</span> <span class="fu">=</span> <span class="dt">Length</span> <span class="ot">`Div`</span> <span class="dt">Time</span></a>
 <a class="sourceLine" id="cb13-2" data-line-number="2"><span class="kw">type</span> <span class="dt">Area</span>      <span class="fu">=</span> <span class="dt">Length</span> <span class="ot">`Mul`</span> <span class="dt">Length</span></a>
 <a class="sourceLine" id="cb13-3" data-line-number="3"><span class="kw">type</span> <span class="dt">Force</span>     <span class="fu">=</span> <span class="dt">Mass</span>   <span class="ot">`Mul`</span> <span class="dt">Length</span></a>
 <a class="sourceLine" id="cb13-4" data-line-number="4"><span class="kw">type</span> <span class="dt">Impulse</span>   <span class="fu">=</span> <span class="dt">Force</span>  <span class="ot">`Mul`</span> <span class="dt">Time</span></a></code></pre></div>
+</div>
+</details>
 <p>Perhaps not very exiting so far. But just wait ’til we create a data type for quantities. Then the strenghts of type-level dimensions will be clearer.</p>
 
     </main>

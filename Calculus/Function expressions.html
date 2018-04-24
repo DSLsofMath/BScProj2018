@@ -35,7 +35,7 @@
 <p><span class="math display">\[D(x^2) = 2x \text{ with regards to } x\]</span></p>
 <p>which is really equivalent to</p>
 <p><span class="math display">\[D(x \mapsto x^2) = x \mapsto 2x\]</span></p>
-<p>or</p>
+<p>or with more descriptive function names</p>
 <p><span class="math display">\[D(square) = double\]</span>.</p>
 <p>So the type of unary real functions seems like a great fit for a semantic value for calculus, and it is! Great! But… how do we represent a real number in Haskell? There is no <code>Real</code> type to use. Well, for simplicitys sake we can just say that a real number is basically the same as a <code>Double</code>, and it is (basically). The problem with <code>Double</code> is that it’s of finite precision, so rounding errors may occur. We’ll have to keep that in mind when doing calculations!</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">type</span> <span class="dt">RealNum</span> <span class="fu">=</span> <span class="dt">Double</span></a>
@@ -82,12 +82,12 @@
 <div class="sourceCode" id="cb12"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co">-- Medium precedence</span></a>
 <a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw">infixl</span> <span class="dv">6</span> <span class="fu">:+</span></a>
 <a class="sourceLine" id="cb12-3" data-line-number="3"><span class="kw">infixl</span> <span class="dv">6</span> <span class="fu">:-</span></a>
-<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">-- Higher</span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">-- High precedence</span></a>
 <a class="sourceLine" id="cb12-5" data-line-number="5"><span class="kw">infixl</span> <span class="dv">7</span> <span class="fu">:*</span></a>
 <a class="sourceLine" id="cb12-6" data-line-number="6"><span class="kw">infixl</span> <span class="dv">7</span> <span class="fu">:/</span></a>
-<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">-- Higherer</span></a>
+<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">-- Higher precedence</span></a>
 <a class="sourceLine" id="cb12-8" data-line-number="8"><span class="kw">infixl</span> <span class="dv">8</span> <span class="fu">:^</span></a>
-<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">-- High as a kite</span></a>
+<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">-- Higherer precedence</span></a>
 <a class="sourceLine" id="cb12-10" data-line-number="10"><span class="kw">infixl</span> <span class="dv">9</span> <span class="fu">:.</span></a></code></pre></div>
 <h2 id="a-structure-with-class">A structure with class</h2>
 <p>Now that we’ve defined the basic structure of our language, we can instantiate some useful classes. There are two in particular we care for: <code>Show</code> and <code>Arbitrary</code>.</p>
@@ -125,7 +125,7 @@
 <p>Not much to explain here. It’s just one way to print our syntax tree in a more readable way. What’s interesting is how we can now print our expressions in a much more human friendly way!</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb16-1" data-line-number="1">ghci<span class="fu">&gt;</span> carPosition</a>
 <a class="sourceLine" id="cb16-2" data-line-number="2">(<span class="dv">10</span> <span class="fu">+</span> ((<span class="dv">50</span> <span class="fu">+</span> (<span class="dv">20</span> <span class="fu">*</span> id)) <span class="fu">*</span> id))</a></code></pre></div>
-<p>Still a bit noisy with all the parens, but much better!</p>
+<p>Still a bit noisy with all the parentheses, but much better!</p>
 <p>Another class we need to instance for our <code>FunExpr</code> is <code>Arbitrary</code>. This class is associated with the testing library <em>QuickCheck</em>, and describes how to generate arbitrary values of a type for use when testing logical properties with <code>quickCheck</code>. For example, a property function could be formulated that states that the <code>:*</code> constructor of <code>FunExpr</code> is associative.</p>
 <p>The implementation itself is not very interesting. We generate a function expression that tends to contain mostly elementary functions, arithmetic operations, and a generous dose of constants; with a light sprinkle of differences, derivatives, and integrals.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">instance</span> <span class="dt">Arbitrary</span> <span class="dt">FunExpr</span> <span class="kw">where</span></a>

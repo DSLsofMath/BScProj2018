@@ -45,7 +45,10 @@
 <div class="sourceCode" id="cb6"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">instance</span> <span class="dt">Arbitrary</span> <span class="dt">IntPair</span> <span class="kw">where</span></a>
 <a class="sourceLine" id="cb6-2" data-line-number="2">  arbitrary <span class="fu">=</span> genIntPair</a></code></pre></div>
 <p><strong>Exercise.</strong> Now try to implement an <code>Arbitrary</code> instance of <code>Dim</code>.</p>
-<p><strong>Solution.</strong> Here’s one way to do it.</p>
+<details>
+<summary><strong>Solution</strong></summary>
+<div>
+<p>Here’s one way to do it.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="ot">genDim ::</span> <span class="dt">Gen</span> <span class="dt">Dim</span></a>
 <a class="sourceLine" id="cb7-2" data-line-number="2">genDim <span class="fu">=</span> <span class="kw">do</span></a>
 <a class="sourceLine" id="cb7-3" data-line-number="3">  le <span class="ot">&lt;-</span> arbitrary</a>
@@ -58,6 +61,8 @@
 <a class="sourceLine" id="cb7-10" data-line-number="10">  return (<span class="dt">Dim</span> le ma ti cu te su lu)</a></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">instance</span> <span class="dt">Arbitrary</span> <span class="dt">Dim</span> <span class="kw">where</span></a>
 <a class="sourceLine" id="cb8-2" data-line-number="2">  arbitrary <span class="fu">=</span> genDim</a></code></pre></div>
+</div>
+</details>
 <h2 id="properties-for-operations-on-dimensions">Properties for operations on dimensions</h2>
 <p>Since dimensions are treated just like regular numbers when it comes to multiplication and division, the laws which ought to hold should be pretty clear. It’s the “obvious” laws such as commutativity and so on.</p>
 <p>The laws to test are</p>
@@ -75,7 +80,10 @@
 <a class="sourceLine" id="cb9-2" data-line-number="2"><span class="ot">prop_mulCommutative ::</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span></a>
 <a class="sourceLine" id="cb9-3" data-line-number="3">prop_mulCommutative d1 d2 <span class="fu">=</span> d1 <span class="ot">`mul`</span> d2 <span class="fu">==</span> d2 <span class="ot">`mul`</span> d1</a></code></pre></div>
 <p><strong>Excercise.</strong> Implement the rest.</p>
-<p><strong>Solution.</strong> Here’s what the rest could look like.</p>
+<details>
+<summary><strong>Solution</strong></summary>
+<div>
+<p>Here’s what the rest could look like.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co">-- Property: multiplication is associative</span></a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="ot">prop_mulAssociative ::</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span></a>
 <a class="sourceLine" id="cb10-3" data-line-number="3">prop_mulAssociative d1 d2 d3 <span class="fu">=</span> d1 <span class="ot">`mul`</span> (d2 <span class="ot">`mul`</span> d3) <span class="fu">==</span></a>
@@ -96,6 +104,8 @@
 <a class="sourceLine" id="cb15-2" data-line-number="2"><span class="ot">prop_mulDivInv ::</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span></a>
 <a class="sourceLine" id="cb15-3" data-line-number="3">prop_mulDivInv d1 d2 <span class="fu">=</span> d1 <span class="ot">`mul`</span> d2 <span class="fu">==</span></a>
 <a class="sourceLine" id="cb15-4" data-line-number="4">  d1 <span class="ot">`div`</span> (one <span class="ot">`div`</span> d2)</a></code></pre></div>
+</div>
+</details>
 <h2 id="testing-the-pretty-printer">Testing the pretty-printer</h2>
 <p>TODO: It is good that you test it, but I suggest you keep that out of the learning material [perhaps a link to “extra reading”].</p>
 <p>We rely pretty heavily on the pretty-printer. Let’s test it too! We won’t get too ambitious in our testing of it. It’ll be enough to check that if a dimension has a nonzero</p>

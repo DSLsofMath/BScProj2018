@@ -16,7 +16,7 @@
 	<span>[src: <a href="https://github.com/DSLsofMath/BScProj2018/blob/master/Physics/src/Calculus/IntegralCalc.lhs">Calculus/IntegralCalc.lhs</a>]</span>
         <span>Previous: <a href="../Calculus/Differential calculus.html">Differential calculus</a></span>
         <a href="../index.html">Table of contents</a>
-        <span>Next: <a href="../Calculus/Visualization, Verification, and Application.html">Visualization, Verification, and Application</a></span>
+        <span>Next: <a href="../Calculus/Visualization.html">Visualization</a></span>
       </nav>
     </header>
 
@@ -68,11 +68,11 @@
 <p>We start our journey with a familiar name, Leibniz. He, and also but independently Newton, discovered the heart of integrals and derivatives: The <em>fundamental theorem of calculus</em>. The definitions they made were all based on infinitesimals which, as said earlier, was considered too imprecise. Later, Riemann rigorously formalized integration using limits.</p>
 <p>There exist many formal definitions of integrals, and they’re not all equivalent. They each deal with different cases and classes of problems, and some remain in use mostly for pedagogical purposes. The most commonly used definitions are the Riemann integrals and the Lebesgue integrals.</p>
 <p>The Riemann integral was the first rigorous definition of the integral, and for many practical applications it can be evaluated by the fundamental theorem of calculus or approximated by numerical integration. However, it is a deficient definition, and is therefore unsuitable for many theoretical purposes. For such purposes, the Lebesgue integral is a better fit.</p>
-<p>All that considered, we will use Riemann integrals. While they may be lacking for many purposes, they are probably more familiar to most students (they are to me!), and will be sufficient for the purposes of physics courses at the level we’re at.</p>
+<p>All that considered, we will use Riemann integrals. While they may be lacking for many purposes, they are probably more familiar to most students (they are to me!), and will be sufficient for the level we’re a.</p>
 <p>If we look back at the syntax of definite integrals</p>
 <p><span class="math display">\[\int_a^b f(x) dx\]</span></p>
 <p>the application of <span class="math inline">\(f\)</span> and the <span class="math inline">\(dx\)</span> part actually implies the definition of the Riemann integral. We can read it in english as “For every infinitesimal interval of <span class="math inline">\(x\)</span>, starting at <span class="math inline">\(a\)</span> and ending at <span class="math inline">\(b\)</span>, take the value of <span class="math inline">\(f\)</span> at that x (equiv. to taking the value at any point in the infinitesimal interval), and calculate the area of the rectangle with width <span class="math inline">\(dx\)</span> and height <span class="math inline">\(f(x)\)</span>, then sum all of these parts together.”.</p>
-<p>As we’re dealing with an infinite sum of infinitesimal parts: a limit must be involved. <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are be the lower and upper limits of the sum. Our iteration variable should increase with infinitesimal <span class="math inline">\(dx\)</span> each step. Each step we add the area of the rectangle with height <span class="math inline">\(f(x&#39;)\)</span>, where <span class="math inline">\(x&#39;\)</span> is any point in <span class="math inline">\([x\)</span>, <span class="math inline">\(x + dx]\)</span>. As <span class="math inline">\(x + dx\)</span> approaches <span class="math inline">\(x\)</span> when <span class="math inline">\(dx\)</span> approaches zero, <span class="math inline">\(x&#39; = lim_{dx \to 0} x + dx = x\)</span>.</p>
+<p>As we’re dealing with an infinite sum of infinitesimal parts: a limit must be involved. <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are the lower and upper limits of the sum. Our iteration variable should increase with infinitesimal <span class="math inline">\(dx\)</span> each step. Each step we add the area of the rectangle with height <span class="math inline">\(f(x&#39;)\)</span>, where <span class="math inline">\(x&#39;\)</span> is any point in <span class="math inline">\([x\)</span>, <span class="math inline">\(x + dx]\)</span>. As <span class="math inline">\(x + dx\)</span> approaches <span class="math inline">\(x\)</span> when <span class="math inline">\(dx\)</span> approaches zero, <span class="math inline">\(x&#39; = lim_{dx \to 0} x + dx = x\)</span>.</p>
 <p><span class="math display">\[\int_a^b f = \int_a^b f(x) dx = lim_{dx \to 0} \sum_{x = a, a + dx, a + 2dx, ...}^b A(x, dx) \text{ where } A(x, dx) = f(x) * dx\]</span></p>
 <figure>
 <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Riemann_sum_convergence.png" alt="Smaller dx result in better approximations. (C) KSmrq" class="float-img-right img-border" /><figcaption>Smaller <span class="math inline">\(dx\)</span> result in better approximations. (C) KSmrq</figcaption>
@@ -103,35 +103,40 @@
 <p>Using the trigonometric identity of <span class="math inline">\(\lim_{x \to 0} \frac{sin x}{x} = 1\)</span> we find</p>
 <span class="math display">\[\begin{align*}
 \int_a^b cos \\
-             &amp; \{ \text{ Riemann integral }\} \\
-             &amp;= \lim_{dx \to 0} \sum_{x = a, a + dx, a + 2*dx, ...}^b cos(x) * dx \\
-             &amp;= \lim_{dx \to 0} dx * \sum_{x = a, a + dx, a + 2*dx, ...}^b cos(x) \\
-             &amp;= \lim_{dx \to 0} dx * (cos(a) + cos(a + dx) + cos(a + 2*dx) + ... + cos(a + \frac{b - a}{dx}*dx)) \\
-             &amp; \{ \text{ Sums of cosines with arguments in arithmetic progression } \} \\
-             &amp;= \lim_{dx \to 0} dx * \frac{sin(\frac{(\frac{b - a}{dx} + 1) dx}{2}) * cos(a + \frac{\frac{b - a}{dx} dx}{2})}{sin(dx/2)} \\
-             &amp;= \lim_{dx \to 0} dx * \frac{sin(\frac{b - a + dx}{2}) * cos(\frac{a + b}{2})}{sin(dx/2)} \\
-             &amp; \{ \text{ Trig. product-to-sum ident. } \} \\
-             &amp;= \lim_{dx \to 0} dx * \frac{sin(\frac{b - a + dx}{2} + \frac{a + b}{2}) + sin(\frac{b - a + dx}{2} - \frac{a + b}{2})}{2sin(dx/2)} \\
-             &amp;= \lim_{dx \to 0} dx * \frac{sin(b + dx/2) + sin(-a + dx/2)}{2sin(dx/2)} \\
-             &amp;= \lim_{dx \to 0} \frac{sin(b + dx/2) + sin(-a + dx/2)}{\frac{sin(dx/2)}{dx/2}} \\
-             &amp; \{ dx \to 0 \} \\
-             &amp;= \frac{sin(b + 0/2) + sin(-a + 0/2)}{1} \\
-             &amp;= sin(b) + sin(-a) \\
-             &amp;= sin(b) - sin(a)
+               &amp;\{ \text{ Riemann integral }\} \\
+             = &amp;\lim_{dx \to 0} \sum_{x = a, a + dx, a + 2*dx, ...}^b cos(x) * dx \\
+             = &amp;\lim_{dx \to 0} dx * \sum_{x = a, a + dx, a + 2*dx, ...}^b cos(x) \\
+             = &amp;\lim_{dx \to 0} dx * (cos(a) + cos(a + dx) + cos(a + 2*dx) + ... + cos(a + \frac{b - a}{dx}*dx)) \\
+               &amp;\{ \text{ Sums of cosines with arguments in arithmetic progression } \} \\
+             = &amp;\lim_{dx \to 0} dx * \frac{sin(\frac{(\frac{b - a}{dx} + 1) dx}{2}) * cos(a + \frac{\frac{b - a}{dx} dx}{2})}{sin(dx/2)} \\
+             = &amp;\lim_{dx \to 0} dx * \frac{sin(\frac{b - a + dx}{2}) * cos(\frac{a + b}{2})}{sin(dx/2)} \\
+               &amp;\{ \text{ Trig. product-to-sum ident. } \} \\
+             = &amp;\lim_{dx \to 0} dx * \frac{sin(\frac{b - a + dx}{2} + \frac{a + b}{2}) + sin(\frac{b - a + dx}{2} - \frac{a + b}{2})}{2sin(dx/2)} \\
+             = &amp;\lim_{dx \to 0} dx * \frac{sin(b + dx/2) + sin(-a + dx/2)}{2sin(dx/2)} \\
+             = &amp;\lim_{dx \to 0} \frac{sin(b + dx/2) + sin(-a + dx/2)}{\frac{sin(dx/2)}{dx/2}} \\
+               &amp;\{ dx \to 0 \} \\
+             = &amp;\frac{sin(b + 0/2) + sin(-a + 0/2)}{1} \\
+             = &amp;sin(b) + sin(-a) \\
+             = &amp;sin(b) - sin(a)
 \end{align*}\]</span>
 <p>The definition of definite integrals then give us that</p>
 <p><span class="math display">\[\int_a^b cos = sin(b) - sin(a) \land \int_a^b f = F(b) - F(a) \implies F = sin\]</span></p>
 <p>The antiderivative of <span class="math inline">\(cos\)</span> is <span class="math inline">\(sin\)</span> (again, as expected)!</p>
 <p>Let’s implement these rules as a function for symbolic (indefinite) integration of functions. We’ll start with the nicer cases, and progress to the not so nice ones.</p>
-<p><code>integrate</code> takes a function to symbolically integrate, and a real number that decides the vertical offset of the function, i.e. the value of <span class="math inline">\(f(0)\)</span>. The antiderivative with the given vertical offset is returned.</p>
+<p><code>integrate</code> takes a function to symbolically integrate, and a real number that decides the vertical offset (i.e. the value of <span class="math inline">\(f(0)\)</span> / the constant term) of the function. The antiderivative with the given vertical offset is returned.</p>
+<p>Important to note is that not all functions are integrable. Unlike derivatives, some antiderivatives of elementary functions simply cannot be expressed as elementary functions themselves, according to <a href="https://en.wikipedia.org/wiki/Liouville%27s_theorem_%28differential_algebra%29">Liouville’s theorem</a>. Some examples include <span class="math inline">\(e^{-x^2}\)</span>, <span class="math inline">\(\frac{sin(x)}{x}\)</span>, and <span class="math inline">\(x^x\)</span>.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="ot">integrate ::</span> <span class="dt">FunExpr</span> <span class="ot">-&gt;</span> <span class="dt">RealNum</span> <span class="ot">-&gt;</span> <span class="dt">FunExpr</span></a></code></pre></div>
 <p>First, our elementary functions. You can prove them using the methods described above, but the easiest way to find them is to just look them up in some table of integrals (dust of that old calculus cheat sheet) or on WolframAlpha (or Wikipedia, or whatever. Up to you).</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb7-1" data-line-number="1">integrate <span class="dt">Exp</span> c <span class="fu">=</span> <span class="dt">Exp</span> <span class="fu">:+</span> <span class="dt">Const</span> c</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2">integrate <span class="dt">Log</span> c <span class="fu">=</span> <span class="dt">Id</span> <span class="fu">:*</span> (<span class="dt">Log</span> <span class="fu">:-</span> <span class="dt">Const</span> <span class="dv">1</span>) <span class="fu">:+</span> <span class="dt">Const</span> c</a>
 <a class="sourceLine" id="cb7-3" data-line-number="3">integrate <span class="dt">Sin</span> c <span class="fu">=</span> <span class="dt">Const</span> <span class="dv">0</span> <span class="fu">:-</span> <span class="dt">Cos</span> <span class="fu">:+</span> <span class="dt">Const</span> c</a>
 <a class="sourceLine" id="cb7-4" data-line-number="4">integrate <span class="dt">Cos</span> c <span class="fu">=</span> <span class="dt">Sin</span> <span class="fu">:+</span> <span class="dt">Const</span> c</a>
-<a class="sourceLine" id="cb7-5" data-line-number="5">integrate <span class="dt">Asin</span> c <span class="fu">=</span> (<span class="dt">Const</span> <span class="dv">1</span> <span class="fu">:-</span> <span class="dt">Id</span><span class="fu">:^</span>(<span class="dt">Const</span> <span class="dv">2</span>))<span class="fu">:^</span>(<span class="dt">Const</span> <span class="fl">0.5</span>) <span class="fu">:+</span> <span class="dt">Id</span> <span class="fu">:*</span> <span class="dt">Asin</span> <span class="fu">:+</span> <span class="dt">Const</span> c</a>
-<a class="sourceLine" id="cb7-6" data-line-number="6">integrate <span class="dt">Acos</span> c <span class="fu">=</span> <span class="dt">Id</span> <span class="fu">:*</span> <span class="dt">Acos</span> <span class="fu">:-</span> (<span class="dt">Const</span> <span class="dv">1</span> <span class="fu">:-</span> <span class="dt">Id</span><span class="fu">:^</span>(<span class="dt">Const</span> <span class="dv">2</span>))<span class="fu">:^</span>(<span class="dt">Const</span> <span class="fl">0.5</span>) <span class="fu">:+</span> <span class="dt">Const</span> c</a></code></pre></div>
+<a class="sourceLine" id="cb7-5" data-line-number="5">integrate <span class="dt">Asin</span> c <span class="fu">=</span>    (<span class="dt">Const</span> <span class="dv">1</span> <span class="fu">:-</span> <span class="dt">Id</span><span class="fu">:^</span>(<span class="dt">Const</span> <span class="dv">2</span>))<span class="fu">:^</span>(<span class="dt">Const</span> <span class="fl">0.5</span>)</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">                   <span class="fu">:+</span> <span class="dt">Id</span> <span class="fu">:*</span> <span class="dt">Asin</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7">                   <span class="fu">:+</span> <span class="dt">Const</span> c</a>
+<a class="sourceLine" id="cb7-8" data-line-number="8">integrate <span class="dt">Acos</span> c <span class="fu">=</span>    <span class="dt">Id</span> <span class="fu">:*</span> <span class="dt">Acos</span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9">                   <span class="fu">:-</span> (<span class="dt">Const</span> <span class="dv">1</span> <span class="fu">:-</span> <span class="dt">Id</span><span class="fu">:^</span>(<span class="dt">Const</span> <span class="dv">2</span>))<span class="fu">:^</span>(<span class="dt">Const</span> <span class="fl">0.5</span>)</a>
+<a class="sourceLine" id="cb7-10" data-line-number="10">                   <span class="fu">:+</span> <span class="dt">Const</span> c</a></code></pre></div>
 <p>These two good boys. Very simple as well.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb8-1" data-line-number="1">integrate <span class="dt">Id</span> c <span class="fu">=</span> <span class="dt">Id</span><span class="fu">:^</span><span class="dt">Const</span> <span class="dv">2</span> <span class="fu">:/</span> <span class="dt">Const</span> <span class="dv">2</span> <span class="fu">:+</span> <span class="dt">Const</span> c</a>
 <a class="sourceLine" id="cb8-2" data-line-number="2">integrate (<span class="dt">Const</span> d) c <span class="fu">=</span> <span class="dt">Const</span> d <span class="fu">:*</span> <span class="dt">Id</span> <span class="fu">:+</span> <span class="dt">Const</span> c</a></code></pre></div>
@@ -140,8 +145,8 @@
 <a class="sourceLine" id="cb9-2" data-line-number="2">integrate (f <span class="fu">:-</span> g) c <span class="fu">=</span> integrate f c <span class="fu">:-</span> integrate g <span class="dv">0</span></a></code></pre></div>
 <p>Delta is easy. Just expand it to the difference that it is, and integrate.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb10-1" data-line-number="1">integrate (<span class="dt">Delta</span> h f) c <span class="fu">=</span> integrate (f <span class="fu">:.</span> (<span class="dt">Id</span> <span class="fu">:+</span> <span class="dt">Const</span> h) <span class="fu">:-</span> f) c</a></code></pre></div>
-<p>A derivative? That’s trivial, the integration and differentiation cancel each other, right? Nope, not so simple! We have to make sure that the constant coefficient is equal to <code>c</code>, which it might not be if we just cancel the operations and add the <code>c</code>. The simplest way to solve this is to evaluate the function at <span class="math inline">\(x=0\)</span>, and check the value. We then add a term that corrects the function such that <span class="math inline">\(I(D(f), c)[0] = c\)</span>. As we haven’t implemented an evaluator yet, just leave this “incorrect” for now, and fix it later!</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb11-1" data-line-number="1">integrate (<span class="dt">D</span> f) c <span class="fu">=</span> f <span class="fu">:+</span> <span class="dt">Const</span> (c <span class="fu">-</span> (eval f) <span class="dv">0</span>)</a>
+<p>A derivative? That’s trivial, the integration and differentiation cancel each other, right? Nope, not so simple! We have to make sure that the constant coefficient is equal to <code>c</code>, which it might not be if we just cancel the operations and add the <code>c</code>. The simplest way to solve this is to evaluate the function at <span class="math inline">\(x=0\)</span>, and check the value. We then add a term that corrects the function such that <span class="math inline">\(I(D(f), c)[0] = c\)</span>. As we haven’t implemented an evaluator yet, you can leave this “incorrect” for now, and fix it later!</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb11-1" data-line-number="1">integrate (<span class="dt">D</span> f) c <span class="fu">=</span> f <span class="fu">:+</span> <span class="dt">Const</span> (c <span class="fu">-</span> (eval f) <span class="dv">0</span>) <span class="co">-- Correct, but requires `eval`</span></a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">-- integrate (D f) c = f -- Incorrect (unless we don&#39;t care about `c`)</span></a></code></pre></div>
 <p>Integrating an integral? Just integrate the integral!</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb12-1" data-line-number="1">integrate (<span class="dt">I</span> d f) c <span class="fu">=</span> integrate (integrate f d) c </a></code></pre></div>
@@ -152,13 +157,13 @@
 <p><span class="math display">\[ \int x e^x dx = x e^x - \int 1 e^x dx = x e^x - e^x = e^x (x - 1) \]</span></p>
 <p>Now THAT is a simplification. However, just by flipping the order of the expressions, we get a case where the integration by parts rule only makes things worse:</p>
 <span class="math display">\[\begin{align*}
-\int e^x x dx &amp;= e^x x^2 - \int e^x x dx \\
-              &amp;= e^x x^2 - (e^x x^2 - \int e^x x dx) \\
-              &amp;= e^x x^2 - (e^x x^2 - (e^x x^2 - \int e^x x dx)) \\
-              &amp;= ...
+\int e^x x dx = &amp;e^x x^2 - \int e^x x dx \\
+              = &amp;e^x x^2 - (e^x x^2 - \int e^x x dx) \\
+              = &amp;e^x x^2 - (e^x x^2 - (e^x x^2 - \int e^x x dx)) \\
+              = &amp;...
 \end{align*}\]</span>
-<p>Oh no, it’s an infinite recursion with successive increase in complexity! (You can prove this using mathematical induction as an exercise.)</p>
-<p>There is also the problem that the integration by parts rule is simply not defined in the case of <span class="math inline">\(g(x)\)</span> not being integrable to <span class="math inline">\(G(x)\)</span> (e.g. <span class="math inline">\(g(x) = e^x^2\)</span>, according to the internet). And so, as there exists no great way to do it, we’ll settle for a mediocre one! We’ll define the integration of a product to use integration by parts, but before integrating we’ll simplify the expression in the hopes that it will become better suited for integration.</p>
+<p>Oh no, it’s an infinite recursion with successive increase in complexity! Sadly, there’s no good way around it. By using heuristics, we could construct a complicated algorithm that guesses the best order of factors in a product when integrating, but that’s <em>way</em> out of scope for this book.</p>
+<p>Further, as a consequence of Liouville’s theorem, the integration by parts rule is simply not defined in the case of <span class="math inline">\(g(x)\)</span> not being integrable to <span class="math inline">\(G(x)\)</span>. And so, as there exists no definitely good way to do it, we’re forced to settle for a solution that works sometimes but not always. We’ll define the integration of a product to use integration by parts, but before integrating we’ll simplify the expression in the hopes that it will become better suited for integration.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb13-1" data-line-number="1">integrate (f <span class="fu">:*</span> g) c <span class="fu">=</span></a>
 <a class="sourceLine" id="cb13-2" data-line-number="2">  <span class="kw">let</span> simplified <span class="fu">=</span> simplify (f <span class="fu">:*</span> g)</a>
 <a class="sourceLine" id="cb13-3" data-line-number="3">  <span class="kw">in</span> <span class="kw">if</span> simplified <span class="fu">==</span> f <span class="fu">:*</span> g</a>
@@ -169,16 +174,26 @@
 <a class="sourceLine" id="cb14-2" data-line-number="2">  <span class="kw">let</span> simplified <span class="fu">=</span> simplify (f <span class="fu">:/</span> g)</a>
 <a class="sourceLine" id="cb14-3" data-line-number="3">  <span class="kw">in</span> <span class="kw">if</span> simplified <span class="fu">==</span> f <span class="fu">:/</span> g</a>
 <a class="sourceLine" id="cb14-4" data-line-number="4">     <span class="kw">then</span> <span class="kw">let</span> _F <span class="fu">=</span> integrate f <span class="dv">0</span></a>
-<a class="sourceLine" id="cb14-5" data-line-number="5">          <span class="kw">in</span> _F <span class="fu">:/</span> g <span class="fu">:+</span> integrate (_F <span class="fu">:*</span> (derive g <span class="fu">:/</span> (g<span class="fu">:^</span><span class="dt">Const</span> <span class="dv">2</span>))) <span class="dv">0</span> <span class="fu">:+</span> <span class="dt">Const</span> c</a>
-<a class="sourceLine" id="cb14-6" data-line-number="6">     <span class="kw">else</span> integrate simplified c</a></code></pre></div>
-<p>There is no good rule for exponentials in general. Only for certain combinations of functions in the base and exponent is symbolic integration well defined. We’ll only treat the special case of <span class="math inline">\(x^c\)</span>, which at least implies that we can use polynomials. As an exercise, you could also implement the the various exponential identities here.</p>
+<a class="sourceLine" id="cb14-5" data-line-number="5">          <span class="kw">in</span>    _F <span class="fu">:/</span> g</a>
+<a class="sourceLine" id="cb14-6" data-line-number="6">             <span class="fu">:+</span> integrate (_F <span class="fu">:*</span> (derive g <span class="fu">:/</span> (g<span class="fu">:^</span><span class="dt">Const</span> <span class="dv">2</span>))) <span class="dv">0</span></a>
+<a class="sourceLine" id="cb14-7" data-line-number="7">             <span class="fu">:+</span> <span class="dt">Const</span> c</a>
+<a class="sourceLine" id="cb14-8" data-line-number="8">     <span class="kw">else</span> integrate simplified c</a></code></pre></div>
+<p>There is no good rule for exponentials in general. Only for certain combinations of functions in the base and exponent is symbolic integration well defined. We’ll only treat the special case of <span class="math inline">\(x^c\)</span>, which at least implies that we can use polynomials.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb15-1" data-line-number="1">integrate (f <span class="fu">:^</span> g) c <span class="fu">=</span></a>
 <a class="sourceLine" id="cb15-2" data-line-number="2">  <span class="kw">case</span> (simplify f, simplify g) <span class="kw">of</span></a>
 <a class="sourceLine" id="cb15-3" data-line-number="3">    (<span class="dt">Id</span>, <span class="dt">Const</span> c) <span class="ot">-&gt;</span> <span class="dt">Id</span><span class="fu">:^</span>(<span class="dt">Const</span> (c<span class="fu">+</span><span class="dv">1</span>)) <span class="fu">:/</span> <span class="dt">Const</span> (c<span class="fu">+</span><span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb15-4" data-line-number="4">    (_, _)        <span class="ot">-&gt;</span> error <span class="st">&quot;Can&#39;t integrate integrals like that!&quot;</span></a></code></pre></div>
-<p>Integration of function composition is, simply said, somewhat complicated. The technique to use is called “integration by substitution”, and is something like a reverse of the chain-rule of differentiation. This method is tricky to implement, but luckily most beginner-to-intermediate physics courses purposfully avoid the use of composed functions when integration is required. Therefore, we simply won’t implement it!</p>
+<p><strong>Exercise.</strong> Find more rules of integrating exponentials and add to the implementation.</p>
+<details>
+<summary><strong>Solution</strong></summary>
+<div>
+<p>Wikipedia has <a href="https://en.wikipedia.org/wiki/List_of_integrals_of_exponential_functions">a nice list of integrals of exponentials</a></p>
+</div>
+</details>
+<p>Integration of function composition is, simply said, somewhat complicated. The technique to use is called “integration by substitution”, and is something like a reverse of the chain-rule of differentiation. This method is tricky to implement, as the way humans execute this method is highly dependent on intuition and a mind for patterns. A brute-force solution would be possible to implement, but is out of scope for this book, and not really relevant to what we want to learn here. We’ll leave integration of composition undefined.</p>
 <p>As long as we ensure our input functions are not composed functions, <code>integrate</code> will still be well behaved.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb16-1" data-line-number="1">integrate (f <span class="fu">:.</span> g) c <span class="fu">=</span> error <span class="st">&quot;Please don&#39;t try to integrate function compositions!&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb16-1" data-line-number="1">integrate (f <span class="fu">:.</span> g) c</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">  <span class="fu">=</span> error <span class="st">&quot;Please don&#39;t try to integrate function compositions!&quot;</span></a></code></pre></div>
 <h2 id="the-value-of-evaluation">The value of evaluation</h2>
 <p>What comes after construction of function expressions? Well, using them of course!</p>
 <p>One way of using a function expression is to evaluate it, and use it just as you would a normal Haskell function. To do this, we need to write an evaluator.</p>
@@ -216,7 +231,7 @@
 	<span>[src: <a href="https://github.com/DSLsofMath/BScProj2018/blob/master/Physics/src/Calculus/IntegralCalc.lhs">Calculus/IntegralCalc.lhs</a>]</span>
         <span>Previous: <a href="../Calculus/Differential calculus.html">Differential calculus</a></span>
         <a href="../index.html">Table of contents</a>
-        <span>Next: <a href="../Calculus/Visualization, Verification, and Application.html">Visualization, Verification, and Application</a></span>
+        <span>Next: <a href="../Calculus/Visualization.html">Visualization</a></span>
       </nav>
       © Kandidatboisen (2018), GPL
     </footer>

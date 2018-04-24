@@ -16,7 +16,7 @@
 	<span>[src: <a href="https://github.com/DSLsofMath/BScProj2018/blob/master/Physics/src/Introduction/Introduction.lhs">Introduction/Introduction.lhs</a>]</span>
         <span>Previous: <a href="../index.html">Table of contents</a></span>
         <a href="../index.html">Table of contents</a>
-        <span>Next: <a href="../Dimensions/Introduction.html">Introduction</a></span>
+        <span>Next: <a href="../Calculus/Introduction.html">Introduction</a></span>
       </nav>
     </header>
 
@@ -32,7 +32,8 @@
 <h1 id="so-whats-a-dsl">So what’s a DSL?</h1>
 <p>In general, a domain specific language is simply a computer language for a specific domain. It’s NOT a synonym for <a href="http://www.catb.org/jargon/html/online-preface.html">jargon</a>! DSLs can be specialized for markup, like <a href="https://en.wikipedia.org/wiki/HTML"><em>HTML</em></a>; for modeling, like <a href="https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form"><em>EBNF</em></a>; for programming, like <a href="https://en.wikipedia.org/wiki/Bash_%28Unix_shell%29"><em>Bash</em></a>; and more.</p>
 <p>The languages we will construct will mostly concern modeling of physics and mathematics. We will create data structures in Haskell to represent the same physics calculations that we write on paper, in such a way that we can write functions to, for example, analyze the expressions for validity.</p>
-<p>Look, we’ll demonstrate. Let’s say we want to model a language that is a subset to the common algebra we’re all familiar with. Our language will consist expressions of a single variable and addition. For example, these are valid expressions in such a language:</p>
+<p>Look, we’ll demonstrate. Let’s say we want to model a language that is a subset to the common algebra we’re all familiar with. Our language will consist expressions of a single variable and addition. For example, the following three expressions are all valid in such a language:</p>
+<p><span class="math display">\[x + x\]</span></p>
 <p><span class="math display">\[x\]</span></p>
 <p><span class="math display">\[x + x + x + x\]</span></p>
 <p>When implementing a DSL, we typically start with modeling the syntax. Let’s first declara a data type for the language</p>
@@ -41,7 +42,7 @@
 <div class="sourceCode" id="cb3"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" data-line-number="1">  <span class="fu">=</span> <span class="dt">X</span></a></code></pre></div>
 <p>or two expressions added together.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb4-1" data-line-number="1">  <span class="fu">|</span> <span class="dt">Add</span> <span class="dt">Expr</span> <span class="dt">Expr</span></a></code></pre></div>
-<p>And that’s it, kind of! A DSL without any associated functions for validation, symbolic manipulation, evaluation, or somesuch, is really no DSL at all! We mush DO something with it, or there is no point!</p>
+<p>And that’s it, kind of! A DSL without any associated functions for validation, symbolic manipulation, evaluation, or somesuch, is really no DSL at all! We must DO something with it, or there is no point!</p>
 <p>One thing we can do with expressions such as these, is compare whether two of them are equal. Even without using any numbers, we can test this by simply counting the <span class="math inline">\(x\)</span>s! If both expressions contain the same amount of <span class="math inline">\(x\)</span>s, they will be equal!</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="ot">eq ::</span> <span class="dt">Expr</span> <span class="ot">-&gt;</span> <span class="dt">Expr</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">eq e1 e2 <span class="fu">=</span> count e1 <span class="fu">==</span> count e2</a>
@@ -68,7 +69,7 @@
 	<span>[src: <a href="https://github.com/DSLsofMath/BScProj2018/blob/master/Physics/src/Introduction/Introduction.lhs">Introduction/Introduction.lhs</a>]</span>
         <span>Previous: <a href="../index.html">Table of contents</a></span>
         <a href="../index.html">Table of contents</a>
-        <span>Next: <a href="../Dimensions/Introduction.html">Introduction</a></span>
+        <span>Next: <a href="../Calculus/Introduction.html">Introduction</a></span>
       </nav>
       © Kandidatboisen (2018), GPL
     </footer>

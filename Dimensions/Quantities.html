@@ -94,9 +94,13 @@
 <p>Note that the <code>Quantity</code> data type has both value-level and type-level dimensions. As previosuly mentioned, value-level in order to print prettily and type-level to only permit legal operations.</p>
 <p><strong>Exercise.</strong> Create a data type which has two type-level dimensions, always use <code>Rational</code> as the value-holding type (the role of <code>v</code>) but which has no value-level dimensions.</p>
 <p>TODO: What is the purpose (semantics, intended meaning or use) of Quantity’?</p>
-<p><strong>Solution.</strong></p>
+<details>
+<summary><strong>Solution</strong></summary>
+<div>
 <div class="sourceCode" id="cb11"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">data</span> <span class="dt">Quantity&#39;</span> (<span class="ot">d1 ::</span> <span class="dt">T.Dim</span>) (<span class="ot">d2 ::</span> <span class="dt">T.Dim</span>) <span class="kw">where</span></a>
 <a class="sourceLine" id="cb11-2" data-line-number="2">  <span class="dt">Quantity&#39;</span><span class="ot"> ::</span> <span class="dt">Rational</span> <span class="ot">-&gt;</span> <span class="dt">Rational</span> <span class="ot">-&gt;</span> <span class="dt">Quantity&#39;</span> d1 d2</a></code></pre></div>
+</div>
+</details>
 <h2 id="a-taste-of-types">A taste of types</h2>
 <p>We’ll implement all arithmetic operations on <code>Quantity</code>, but for now, to get a taste of types, we show here addition and multiplication and some examples of values of type <code>Quantity</code>.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="ot">quantityAdd ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span></a>
@@ -117,7 +121,12 @@
 <figure>
 <img src="Cowboy.png" alt="Are you a cowboy?" class="float-img-right" /><figcaption>Are you a cowboy?</figcaption>
 </figure>
-<p><strong>Solution.</strong> Hold on cowboy! Not so fast. We’ll come back later to subtraction and division, so check your solution then.</p>
+<details>
+<summary><strong>Solution</strong></summary>
+<div>
+<p>Hold on cowboy! Not so fast. We’ll come back later to subtraction and division, so check your solution then.</p>
+</div>
+</details>
 <p>Now on to some example values and types.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="ot">width ::</span> <span class="dt">Quantity</span> <span class="dt">T.Length</span> <span class="dt">Double</span></a>
 <a class="sourceLine" id="cb14-2" data-line-number="2">width <span class="fu">=</span> <span class="dt">Quantity</span> V.length <span class="fl">0.5</span></a></code></pre></div>
@@ -151,7 +160,9 @@
 <a class="sourceLine" id="cb19-2" data-line-number="2">weird <span class="fu">=</span> quantityAdd width area</a></code></pre></div>
 <p>If the dimensions had been value-level only, this error would go undetected until run-time.</p>
 <p><strong>Exercise.</strong> What is the volume of a cuboid with sides <span class="math inline">\(1.2\ m\)</span>, <span class="math inline">\(0.4\ m\)</span> and <span class="math inline">\(1.9\ m\)</span>? Create values for the involved quantities. Use <code>Float</code> instead of <code>Double</code>.</p>
-<p><strong>Solution.</strong></p>
+<details>
+<summary><strong>Solution</strong></summary>
+<div>
 <div class="sourceCode" id="cb20"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="ot">side1 ::</span> <span class="dt">Quantity</span> <span class="dt">Length</span> <span class="dt">Float</span></a>
 <a class="sourceLine" id="cb20-2" data-line-number="2">side1 <span class="fu">=</span> <span class="dt">Quantity</span> V.length <span class="fl">1.2</span></a></code></pre></div>
 <div class="sourceCode" id="cb21"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="ot">side2 ::</span> <span class="dt">Quantity</span> <span class="dt">Length</span> <span class="dt">Float</span></a>
@@ -161,6 +172,8 @@
 <div class="sourceCode" id="cb23"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">type</span> <span class="dt">Volume</span> <span class="fu">=</span> <span class="dt">Length</span> <span class="ot">`Mul`</span> (<span class="dt">Length</span> <span class="ot">`Mul`</span> <span class="dt">Length</span>)</a></code></pre></div>
 <div class="sourceCode" id="cb24"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="ot">volume ::</span> <span class="dt">Quantity</span> <span class="dt">Volume</span> <span class="dt">Float</span></a>
 <a class="sourceLine" id="cb24-2" data-line-number="2">volume <span class="fu">=</span> quantityMul side1 (quantityMul side2 side3)</a></code></pre></div>
+</div>
+</details>
 <h2 id="pretty-printer">Pretty-printer</h2>
 <p>Let’s do a pretty-printer for quantities. Most of the work is already done by the value-level dimensions.</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="ot">showQuantity ::</span> (<span class="dt">Show</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span> <span class="dt">String</span></a>
@@ -174,13 +187,17 @@
 <div class="sourceCode" id="cb28"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw">instance</span> (<span class="dt">Eq</span> v) <span class="ot">=&gt;</span> <span class="dt">Eq</span> (<span class="dt">Quantity</span> d v) <span class="kw">where</span></a>
 <a class="sourceLine" id="cb28-2" data-line-number="2">  (<span class="fu">==</span>) <span class="fu">=</span> quantityEq</a></code></pre></div>
 <p><strong>Exercise.</strong> Make <code>Quantity</code> an instance of <code>Ord</code>.</p>
-<p><strong>Solution.</strong></p>
+<details>
+<summary><strong>Solution</strong></summary>
+<div>
 <div class="sourceCode" id="cb29"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="ot">quantityCompare ::</span> (<span class="dt">Ord</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span></a>
 <a class="sourceLine" id="cb29-2" data-line-number="2">                              <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span> <span class="dt">Ordering</span></a>
 <a class="sourceLine" id="cb29-3" data-line-number="3">quantityCompare (<span class="dt">Quantity</span> _ v1) (<span class="dt">Quantity</span> _ v2) <span class="fu">=</span></a>
 <a class="sourceLine" id="cb29-4" data-line-number="4">  compare v1 v2</a></code></pre></div>
 <div class="sourceCode" id="cb30"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw">instance</span> (<span class="dt">Ord</span> v) <span class="ot">=&gt;</span> <span class="dt">Ord</span> (<span class="dt">Quantity</span> d v) <span class="kw">where</span></a>
 <a class="sourceLine" id="cb30-2" data-line-number="2">  compare <span class="fu">=</span> quantityCompare</a></code></pre></div>
+</div>
+</details>
 <p>We often use <code>Double</code> as the value holding type. Doing exact comparsions isn’t always possible to due rounding errors. Therefore, we’ll create a <code>~=</code> function for testing if two quantities are almost equal.</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw">infixl</span> <span class="dv">4</span> <span class="fu">~=</span></a>
 <a class="sourceLine" id="cb31-2" data-line-number="2"><span class="ot">(~=) ::</span> <span class="dt">Quantity</span> d <span class="dt">Double</span> <span class="ot">-&gt;</span> <span class="dt">Quantity</span> d <span class="dt">Double</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span></a>
@@ -241,7 +258,9 @@
 <p>The input here may actually be of <em>different</em> types, and the output has a type depending on the types of the input. However, the <em>kind</em> of the inputs and output are the same, namely <code>Quantity</code>. We’ll just have to live with not being able to make <code>Quantity</code> a <code>Num</code>-instance.</p>
 <p>However, operations with only scalars (type <code>One</code>) has types compatible with <code>Num</code>.</p>
 <p><strong>Exercise.</strong> <code>Quantity One</code> has compatible types. Make it an instance of <code>Num</code>, <code>Fractional</code>, <code>Floating</code> and <code>Functor</code>.</p>
-<p><strong>Solution.</strong></p>
+<details>
+<summary><strong>Solution</strong></summary>
+<div>
 <div class="sourceCode" id="cb42"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="kw">instance</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Num</span> (<span class="dt">Quantity</span> <span class="dt">One</span> v) <span class="kw">where</span></a>
 <a class="sourceLine" id="cb42-2" data-line-number="2">  (<span class="fu">+</span>) <span class="fu">=</span> (<span class="fu">+#</span>)</a>
 <a class="sourceLine" id="cb42-3" data-line-number="3">  (<span class="fu">-</span>) <span class="fu">=</span> (<span class="fu">-#</span>)</a>
@@ -268,6 +287,8 @@
 <a class="sourceLine" id="cb44-14" data-line-number="14">  atanh <span class="fu">=</span> qmap atanh</a></code></pre></div>
 <div class="sourceCode" id="cb45"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb45-1" data-line-number="1"><span class="kw">instance</span> <span class="dt">Functor</span> (<span class="dt">Quantity</span> <span class="dt">One</span>) <span class="kw">where</span></a>
 <a class="sourceLine" id="cb45-2" data-line-number="2">  fmap <span class="fu">=</span> qmap</a></code></pre></div>
+</div>
+</details>
 <h2 id="syntactic-sugar">Syntactic sugar</h2>
 <p>In order to create a value representing a certain distance (5 metres, for example) one does the following</p>
 <div class="sourceCode" id="cb46"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb46-1" data-line-number="1"><span class="ot">distance ::</span> <span class="dt">Quantity</span> <span class="dt">T.Length</span> <span class="dt">Double</span></a>
@@ -285,7 +306,9 @@
 <div class="sourceCode" id="cb50"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb50-1" data-line-number="1"><span class="ot">time ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Time</span> v</a>
 <a class="sourceLine" id="cb50-2" data-line-number="2">time <span class="fu">=</span> <span class="dt">Quantity</span> V.time <span class="dv">0</span></a></code></pre></div>
 <p><strong>Exercise.</strong> Do the rest.</p>
-<p><strong>Solution.</strong></p>
+<details>
+<summary><strong>Solution</strong></summary>
+<div>
 <div class="sourceCode" id="cb51"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb51-1" data-line-number="1"><span class="ot">current ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Current</span> v</a>
 <a class="sourceLine" id="cb51-2" data-line-number="2">current <span class="fu">=</span> <span class="dt">Quantity</span> V.current <span class="dv">0</span></a></code></pre></div>
 <div class="sourceCode" id="cb52"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb52-1" data-line-number="1"><span class="ot">temperature ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Temperature</span> v</a>
@@ -296,6 +319,8 @@
 <a class="sourceLine" id="cb54-2" data-line-number="2">luminosity <span class="fu">=</span> <span class="dt">Quantity</span> V.luminosity <span class="dv">0</span></a></code></pre></div>
 <div class="sourceCode" id="cb55"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb55-1" data-line-number="1"><span class="ot">one ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">One</span> v</a>
 <a class="sourceLine" id="cb55-2" data-line-number="2">one <span class="fu">=</span> <span class="dt">Quantity</span> V.one <span class="dv">0</span></a></code></pre></div>
+</div>
+</details>
 <p>And now the sugar.</p>
 <p>TODO: Please multiply the values instead of throwing them away. I’m pretty sure (#) should behave as “scale” of a vector space. So that (x#(y#z)) == ((x*y)#z).</p>
 <div class="sourceCode" id="cb56"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb56-1" data-line-number="1"><span class="ot">(#) ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> d v</a>
@@ -331,12 +356,16 @@
 <p>Just for convenience sake we’ll define a bunch of common composite dimensions. Erm, <em>you’ll</em> define.</p>
 <hr />
 <p><strong>Exericse.</strong> Define pre-made values for velocity, acceleration, force, momentum and energy.</p>
-<p><strong>Solution.</strong></p>
+<details>
+<summary><strong>Solution</strong></summary>
+<div>
 <div class="sourceCode" id="cb61"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb61-1" data-line-number="1">velocity     <span class="fu">=</span> length   <span class="fu">/#</span> time</a>
 <a class="sourceLine" id="cb61-2" data-line-number="2">acceleration <span class="fu">=</span> velocity <span class="fu">/#</span> time</a>
 <a class="sourceLine" id="cb61-3" data-line-number="3">force        <span class="fu">=</span> mass     <span class="fu">*#</span> acceleration</a>
 <a class="sourceLine" id="cb61-4" data-line-number="4">momentum     <span class="fu">=</span> force    <span class="fu">*#</span> time</a>
 <a class="sourceLine" id="cb61-5" data-line-number="5">energy       <span class="fu">=</span> force    <span class="fu">*#</span> length</a></code></pre></div>
+</div>
+</details>
 <hr />
 <h2 id="alternative-sugar-with-support-for-units">Alternative sugar with support for units</h2>
 <p><strong>Exercise.</strong> Using the idea of the previous sugar, it’s possible to add support for non-SI units (at least for input), by using multiplication on some pre-made values. Define an operator and pre-made values to do this. It should work as follows.</p>
@@ -345,7 +374,9 @@
 <a class="sourceLine" id="cb62-3" data-line-number="3"><span class="ot">distance ::</span> <span class="dt">Quantity</span> <span class="dt">Length</span> <span class="dt">Double</span></a>
 <a class="sourceLine" id="cb62-4" data-line-number="4">ghci<span class="fu">&gt;</span> distance</a>
 <a class="sourceLine" id="cb62-5" data-line-number="5"><span class="fl">8046.72</span> m</a></code></pre></div>
-<p><strong>Solution.</strong></p>
+<details>
+<summary><strong>Solution</strong></summary>
+<div>
 <div class="sourceCode" id="cb63"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb63-1" data-line-number="1">metre <span class="fu">=</span> <span class="dv">1</span> <span class="fu">#</span> length</a>
 <a class="sourceLine" id="cb63-2" data-line-number="2">kilometre <span class="fu">=</span> <span class="dv">1000</span> <span class="fu">#</span> length</a>
 <a class="sourceLine" id="cb63-3" data-line-number="3">second <span class="fu">=</span> <span class="dv">1</span> <span class="fu">#</span> time</a>
@@ -361,6 +392,8 @@
 <a class="sourceLine" id="cb65-2" data-line-number="2">ghci<span class="fu">&gt;</span> <span class="kw">let</span> velocity2 <span class="fu">=</span> <span class="dv">33</span> <span class="fu">##</span> metersPerSecond</a>
 <a class="sourceLine" id="cb65-3" data-line-number="3">ghci<span class="fu">&gt;</span> velocity1 <span class="fu">+#</span> velocity2</a>
 <a class="sourceLine" id="cb65-4" data-line-number="4"><span class="fl">67.77</span> m<span class="fu">/</span>s</a></code></pre></div>
+</div>
+</details>
 <h2 id="a-physics-example">A physics example</h2>
 <p>To conclude this chapter, we show an example on how to code an exercise and its solution in this domain specific language we’ve created for quantities.</p>
 <p>The code comments show what GHCi prints for that line.</p>

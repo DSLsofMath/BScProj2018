@@ -65,20 +65,28 @@
 <p>Velocity is <span class="math inline">\(m/s\)</span> or equivalently <span class="math inline">\(m^1*s^{ -1 }\)</span>. This explains why the exponents are as above.</p>
 <p>Noticed how we used “m” (for metre) for implicitly refering to the dimension “length”? It’s quite natural to work this way.</p>
 <p><strong>Exercise.</strong> Create values for acceleration, area and charge.</p>
-<p><strong>Solution.</strong></p>
+<details>
+<summary><strong>Solution</strong></summary>
+<div>
 <div class="sourceCode" id="cb6"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb6-1" data-line-number="1">acceleration <span class="fu">=</span> <span class="dt">Dim</span> <span class="dv">1</span> <span class="dv">0</span> (<span class="fu">-</span><span class="dv">2</span>) <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span></a>
 <a class="sourceLine" id="cb6-2" data-line-number="2">area         <span class="fu">=</span> <span class="dt">Dim</span> <span class="dv">2</span> <span class="dv">0</span> <span class="dv">0</span>    <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span></a>
 <a class="sourceLine" id="cb6-3" data-line-number="3">charge       <span class="fu">=</span> <span class="dt">Dim</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">1</span>    <span class="dv">1</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span></a></code></pre></div>
+</div>
+</details>
 <h2 id="multiplication-and-division">Multiplication and division</h2>
 <p>Dimensions can be multiplied and divided. Velocity is, as we just saw, a division between length and time. Multiplication and division of dimensions are performed as if they were regular numbers, or variables holding numbers, and hence they follow the power laws. That is, to multiply, the exponents of the two numbers are added, and to divide, the exponents are subtracted.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="ot">mul ::</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Dim</span></a>
 <a class="sourceLine" id="cb7-2" data-line-number="2">(<span class="dt">Dim</span> le1 ma1 ti1 cu1 te1 su1 lu1) <span class="ot">`mul`</span> (<span class="dt">Dim</span> le2 ma2 ti2 cu2 te2 su2 lu2) <span class="fu">=</span></a>
 <a class="sourceLine" id="cb7-3" data-line-number="3">  <span class="dt">Dim</span> (le1<span class="fu">+</span>le2) (ma1<span class="fu">+</span>ma2) (ti1<span class="fu">+</span>ti2) (cu1<span class="fu">+</span>cu2) (te1<span class="fu">+</span>te2) (su1<span class="fu">+</span>su2) (lu1<span class="fu">+</span>lu2)</a></code></pre></div>
 <p><strong>Exercise.</strong> Implement a function for dividing two dimensions.</p>
-<p><strong>Solution.</strong></p>
+<details>
+<summary><strong>Solution</strong></summary>
+<div>
 <div class="sourceCode" id="cb8"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb8-1" data-line-number="1">div<span class="ot"> ::</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Dim</span></a>
 <a class="sourceLine" id="cb8-2" data-line-number="2">(<span class="dt">Dim</span> le1 ma1 ti1 cu1 te1 su1 lu1) <span class="ot">`div`</span> (<span class="dt">Dim</span> le2 ma2 ti2 cu2 te2 su2 lu2) <span class="fu">=</span></a>
 <a class="sourceLine" id="cb8-3" data-line-number="3">  <span class="dt">Dim</span> (le1<span class="fu">-</span>le2) (ma1<span class="fu">-</span>ma2) (ti1<span class="fu">-</span>ti2) (cu1<span class="fu">-</span>cu2) (te1<span class="fu">-</span>te2) (su1<span class="fu">-</span>su2) (lu1<span class="fu">-</span>lu2)</a></code></pre></div>
+</div>
+</details>
 <p>It’s now possible to construct dimensions in the following fashion.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb9-1" data-line-number="1">velocity&#39; <span class="fu">=</span> length <span class="ot">`div`</span> time</a>
 <a class="sourceLine" id="cb9-2" data-line-number="2">area&#39;     <span class="fu">=</span> length <span class="ot">`mul`</span> length</a>
@@ -90,9 +98,13 @@
   F_{friction} = \mu * F_{normal} \iff \mu = \frac{F_{friction}}{F_{normal}}
 \end{align}\]</span>
 <p><strong>Exercise.</strong> Create two values, which represent the scalar. They should of course have the same value, but be created in two different ways. One by writing the exponents explicitly. One by dividing two equal dimensions.</p>
-<p><strong>Solution.</strong></p>
+<details>
+<summary><strong>Solution</strong></summary>
+<div>
 <div class="sourceCode" id="cb10"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb10-1" data-line-number="1">one  <span class="fu">=</span> <span class="dt">Dim</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">0</span></a>
 <a class="sourceLine" id="cb10-2" data-line-number="2">one&#39; <span class="fu">=</span> force <span class="ot">`div`</span> force</a></code></pre></div>
+</div>
+</details>
 <h2 id="pretty-printer">Pretty-printer</h2>
 <figure>
 <img src="Printer.png" alt="A not so pretty printer" class="float-img-left" /><figcaption>A not so pretty printer</figcaption>

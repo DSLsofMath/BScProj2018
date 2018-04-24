@@ -99,6 +99,16 @@ sources = [
     ("Introduction", [
         ("Introduction'", "Physics/src/Introduction/Introduction.lhs"),
     ]),
+    ("Calculus", [
+        ("Introduction", "Physics/src/Calculus/Intro.lhs"),
+        ("Function expressions", "Physics/src/Calculus/FunExpr.lhs"),
+        ("Differential calculus", "Physics/src/Calculus/DifferentialCalc.lhs"),
+        ("Integral calculus", "Physics/src/Calculus/IntegralCalc.lhs"),
+        ("Visualization", "Physics/src/Calculus/VisVerApp.lhs"),
+    ]),
+    ("Vectors", [
+        ("Vector", "Physics/src/Vector/Vector.lhs")
+    ]),
     ("Dimensions", [
         ("Introduction", "Physics/src/Dimensions/Intro.lhs"),
         ("Value-level dimensions", "Physics/src/Dimensions/ValueLevel.lhs"),
@@ -109,16 +119,6 @@ sources = [
         ("Testing of Quantity",
         "Physics/src/Dimensions/Quantity/Test.lhs"),
         ("Usage", "Physics/src/Dimensions/Usage.lhs"),
-    ]),
-    ("Vectors", [
-        ("Vector", "Physics/src/Vector/Vector.lhs")
-    ]),
-    ("Calculus", [
-        ("Introduction", "Physics/src/Calculus/Intro.lhs"),
-        ("Function expressions", "Physics/src/Calculus/FunExpr.lhs"),
-        ("Differential calculus", "Physics/src/Calculus/DifferentialCalc.lhs"),
-        ("Integral calculus", "Physics/src/Calculus/IntegralCalc.lhs"),
-        ("Visualization, Verification, and Application", "Physics/src/Calculus/VisVerApp.lhs"),
     ]),
     ("Examples", [
         ("Gungbräda", "Physics/src/Examples/Gungbraeda.lhs"),

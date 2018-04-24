@@ -159,8 +159,8 @@ kan läsas både av människor och datorer. Det visar sig på följande två sä
 
 Det ena sättet är att jämfört med traditionella program får dokumentationen en
 ökad betydelse. I traditionella program är programkoden den viktiga delen. I
-litterata program däremot är dokumentationen minst lika viktig. Den används till
-att förklara koden, sätta den i relationen till andra delar och så vidare.
+litterata program är däremot dokumentationen minst lika viktig. Den används till
+att förklara koden, sätta den i relationen till andra delar, med mera.
 Detta jämnbördiga förhållande syns konkret genom att titta på hur källkoden är
 skriven i ett literat program. Det kan till exempel se ut som i
 figur~\ref{fig:litterate_haskell_exempel} där man ser att källkoden och
@@ -178,20 +178,20 @@ then a value of that type is created
 > exampleValue :: ExampleType
 > exampleValue = Quantity V.length 5.3
 
-Note that the Quantity data type has both value-level and type-level dimensions.
-As previosuly mentioned, value-level in order to pretty print and type-level to only permit legal operations.
+Note that the Quantity data type has both value-level and type-level dimensions. As previosuly mentioned, value-level in order to pretty print and type-level to only permit legal operations.
 \end{lstlisting}
   \caption{Ett exempel på hur en källfil till litterat programmering kan se ut.
            Exemplet är Litterate Haskell. Rader som börjar med \texttt{>}
            markerar att det är progamkod, medan rader utan markerar att det är
            dokumentation.}\label{fig:litterate_haskell_exempel} 
 \end{figure}
+% OBS! Raden med "note that the quantity..." måste vara en lång rad. Annars blir det fel i PDF:en
 
 Det andra sättet ett litterat program skiljer sig åt är ordningen programkoden
 står i. Traditionell programmering börjar oftast med att definiera små funktioner
-och metoder med snäva användningsområden och använder sen dessa för att senare
+och metoder med snäva användningsområden och använder sedan dessa för att senare
 bygga ihop mer komplexa strukturer. Med literat programmering börjar man hellre
-med den komplexa strukturer först och skriver text som förklarar den generella
+med komplexa strukturer först och skriver text som förklarar den generella
 struktureren utan att gå in på detaljerna, för att sedan presentera de små
 delarna var för sig med tillhörande förklarande text.
 
@@ -203,8 +203,8 @@ se ut som i figur~\ref{fig:litterate_haskell_exempel}. Filen, med tillägget
 ignoreras och programkoden behandlas som om den var en vanlig
 Haskell-fil. \texttt{.lhs}-filen kan också kompileras till material avsett för
 mäniskor. Det finns flera verktyg som gör det men det som används i detta
-projekt är \textit{Pandoc}\cite{pandoc}. Med \textit{Pandoc} kan texten märkas
-up med både \texttt{markdown} (används i projektet) och \texttt{Latex}. Det går
+projekt är \textit{Pandoc}\cite{pandoc}. Med Pandoc kan texten märkas
+up med både \textit{Markdown} (används i projektet) och \textit{Latex}. Det går
 att exportera till bland annat HTML och PDF.
 \end{draft}
 
@@ -217,10 +217,10 @@ studenten tycker materialet är intressant eller att det finns belöningar i for
 av tillfredsställelsen att få att högt betyg. 
 
 \textit{Motiverande design} innebär att systematiskt utforma undervisningen på
-ett sådant sätt att studenten blir motiverad till att lära sig. Det handlar om
+ett sådant sätt att studenten blir motiverad till att vilja lära sig. Det handlar om
 att använda olika tekniker för att väcka och behålla motivation. Det finns ett
 flertal olika modeller för detta men i detta projekt används enbart den så
-kallade \textit{ARCS}-modellen.\cite{arcs_book}
+kallade \textit{ARCS-modellen}~\cite{arcs_book}.
 
 \textit{ARCS} är en förkortning av ``Attention, Relevance, Confidence and
 Satisfaction'', på svenska ``uppmärksamhet, relevans, självförtroende och
@@ -234,7 +234,7 @@ tillfredställelse efter att ha lärt sig något så att hen vill fortsätta lä
 sig. Det finns strategier för hur man genomför de olika delarna i praktiken och
 här följer en översikt för \textit{Attention}.\footnote{Eftersom projektet har
 ett begränsat fokus på de pedagogiska aspekterna, se
-avsnitt~\ref{sec:avgransningar}, har enbart \textit{Attention}  tagits hänsyn till. Av det skälet är det enbart denna
+avsnitt~\ref{sec:avgransningar}, har enbart \textit{Attention}  tagits hänsyn till. Av detta skäl är det enbart denna
 del beskriven här.}
 
 För att fånga studentens uppmärksamhet och intresse finns tre allmäna
@@ -247,14 +247,13 @@ om olika struktur och ordning på utlärningen, till exempel att inte alltid
 utforma en lektion som föreläsning, demonstration och sedan övning, utan variera
 det med andra inslag, exempelvis ett filmklipp.
 
-
-Utifrån det sociokulturella perspektivet som Vygotskij utvecklade\cite{LSB_kap5}
-så lär sig elever av varandra. Eleverna befinner sig vid sin proximala
+Utifrån det sociokulturella perspektivet som Vygotskij utvecklade~\cite{LSB_kap5}
+lär sig elever av varandra. Eleverna befinner sig vid sin proximala
 utvecklingszon, där eleverna kan hjälpa varandra att förstå innebörden av
 definitioner och uttryck genom att sätta ord på det de vill kommunicera. Denna
-typen av kommunikation skulle kunna tänkas hjälpa elever sätta fingret på det de
+typ av kommunikation skulle kunna tänkas hjälpa elever sätta fingret på det de
 inte förstår. Med denna bakgrunden skulle parprogrammering kunna vara
-fördelaktigt. Dels för att eleverna kan lära sig av varandra, att de genom att
+fördelaktigt. Dels för att eleverna kan lära sig av varandra, dels att de genom att
 kommunicera sin förståelse internaliserar ämnet och bygger en djupare
 förståelse. Parprogrammering lämpar sig antagligen även för att begränsa
 flyktförsök, där elever medvetet eller mindre medvetet börjar göra något annat.
@@ -262,21 +261,22 @@ flyktförsök, där elever medvetet eller mindre medvetet börjar göra något a
 %Jean Piaget - Kognitivismen (lära sig A, B, A + B -> C, alternativt att eleven utmanas med något den trodde var sant, och tvingas omformulera en lösning som stödjer den presenterade situationen). s157
 
 Då internetplattformars interaktion med eleven är begränsad, i jämförelse med då
-eleven är i skolan och har tillgång till lärare, så brukar internetbaserade
+eleven är i skolan och har tillgång till lärare, brukar internetbaserade
 läroplattformar förlita sig på behavioristiska element i form av rätt eller fel
-svar\cite{LSB_und}. Vårat läromaterial har visserligen ingen interaktiv sida,
+svar~\cite{LSB_und}. Projketets läromaterial har visserligen ingen interaktiv sida,
 men typsystemet i Haskell skulle ändå tänkas kunna fungera som en fingervisare
-när en gör rätt eller fel. Det går exempelvis inte att addera olika dimensioner
-på ett olämpligt sätt, och funktionskomposition fungerar endast om funktionens
-typdefinitioner (typer på argument och returvärde) stämmer överrens. 
+när studenten gör rätt eller fel. Det går exempelvis inte att addera olika fysikaliska dimensioner, och funktionskomposition fungerar endast om funktionens
+typdefinitioner (typer på argument och returvärde) stämmer överrens.
 
-Evolutionärt sett har snabba belöningar varit fördelaktigt framför långsiktiga
-som kräver långsiktigt engagemang (ex.v öva inför en tenta) vilket beskrivs i
-boken ``Dansa på deadline: Uppskjutandets psykolog''\cite{DPD}. Detta är ännu en
-orsak till varför det är bra med belöning exempelvis i formen av glädje då en
+Evolutionärt sett har snabba belöningar varit fördelaktiga gentemot långsiktiga
+som kräver långsiktigt engagemang (exempelvis öva inför en tenta) vilket beskrivs i
+boken \textit{Dansa på deadline: Uppskjutandets psykolog}~\cite{DPD}. Detta är ännu en
+orsak till varför det är bra med belöning, exempelvis i formen av glädje då studenten
 ser att koden kompilerar. Läromaterialet innefattar även sporadiskt placerade
 roliga bilder, för att ge sporadiska reaktioner av glädje. Sporadiska belöningar
 är något som enligt författarna påverkar oss människor extra mycket, och som de
-menar även används inom ex.v. spelbranchen.
+menar även används inom exempelvis spelbranchen.
+
+TODO: Flytta en del till genomförande.
 
 \end{draft}

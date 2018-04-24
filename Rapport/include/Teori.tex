@@ -4,7 +4,7 @@
 \begin{draft}
 
 I detta kapitel beskrivs fyra områden av central betydelse för projektet. Dessa
-områden är domänspecifika språk, begreppen syntax, semantik och syntaxträd,
+områden är domänspecifika språk, begreppen syntax, syntaxträd och semantik,
 literat progammering samt ARCS-modellen och annan didaktik.
 
 \section{Domänspecifika språk}
@@ -26,19 +26,19 @@ förklaras i termer av grimmor, boxar och galopper.
 Domänspecifika språk är vanligt förekommande i programmeringssammanhang. HTML är
 ett domänspecifikt språk för textformatering, SQL för databashantering och
 CSV för tabeller. Precis som domänspecifika språk i vardagen passar
-domänspecifika språk inom programmering bäst för sitt egna domän. SQL är bra för
+domänspecifika språk inom programmering bäst för sin egen domän. SQL är bra för
 databaser men inte att göra ett spel i.
 
 Motsatsen till ett domänspecifikt språk är ett generellt språk. I vardagen är
 naturliga språk som svenska och engelska generella medan ryttar-begreppen ovan
 är domänspecifika. Precis som i vardagen finns det i datavärlden generella
-programmeringsspråk som C++ och Java. Dessa är turingkompletta, vilket betyder
+programmeringsspråk, till exempel C++ och Java. Dessa är turingkompletta, vilket betyder
 att det går att uttrycka alla beräkningsbara problem i dem och även lösa dem
 givet tillräckligt med tid och
 minnestillgångar\cite{turing_ne}\cite{turing_book}. Begränsningen med dessa
-generella språk är just deras egen generaliserbarhet, eftersom de har stöd för
+generella språk är att de är just generella. Eftersom de har stöd för
 alla typer av beräkningar så blir både läsbarheten och användarvänligheten
-lidande. Ett exempel på ett domänspecifikt språk i datavärlden är \textit{syntaxträd}. Syntaxträd har
+lidande. Ett exempel på en form av domänspecifika språk i datavärlden är \textit{syntaxträd}. Syntaxträd har
 använts mycket i projektet och beskrivs mer utförligt i
 avsnitt~\ref{sec:syntax}.
 
@@ -47,7 +47,7 @@ eller bäddas in i ett redan existerande språk. De domänspecifika språk som
 utvecklats inom detta projekt är inbäddade i programmeringsspråket
 \textit{Haskell}. Haskell är ett lämpligt val eftersom det är enkelt att skapa
 datatyper som bygger upp det domänspecifika språket. Att Haskell är ett
-högnivå-språk är också en fördel då man slipper programerings-tekniska detaljer,
+högnivå-språk är också en fördel då man slipper programeringstekniska detaljer,
 till exempel minneshantering, och istället kan fokusera på programmets innehåll
 och betydelse. Slutligen gör dess mönstermatchning att de datatyper som utgör
 det domänspecifika språket enkelt kan brytas isär och manipuleras.
@@ -86,7 +86,7 @@ Syntaxträdet innehåller \textit{datakonstruktorer} för att representera
 \textit{löv} (ändpunkter) och \textit{förgreningar}. I detta exempel är
 \texttt{:+:} och \texttt{:*:} förgreningar. Med hjälp av dem kan man uttrycka
 summan respektive produkten av två andra uttryck. Löven representeras av
-\texttt{Const}, det är en konstant som man ej kan bygga vidare på.
+\texttt{Const}. Det är en konstant som man ej kan bygga vidare på.
 
 Med datakonstruktorerna kan man konstruera uttryck i språket. Ett exempeluttryck
 från den tidigare datatypen visas i figur~\ref{fig:syntax_exempel_varde}.
@@ -95,15 +95,15 @@ från den tidigare datatypen visas i figur~\ref{fig:syntax_exempel_varde}.
   \begin{lstlisting}
 expr = Const 7 :*: (Const 3 :+: Const 10)
   \end{lstlisting}
-  \caption{Ett exempelvärde ur det tidigare syntaxträdet. Detta modellerar det
+  \caption{Ett exempeluttryck ur det tidigare syntaxträdet. Detta modellerar det
            matematiska uttrycket $7 * (3 + 10)$}\label{fig:syntax_exempel_varde}
 \end{figure}
 
 Figur~\ref{fig:syntax_exempel_varde} visar hur det aritmetiska uttrycket $7 * (3
 + 10)$ modelleras. Konstruktorn \texttt{:*:} får som sina två argument uttrycken
 \texttt{Const 7} och \texttt{Const 3 :+: Const 10}. Det är alltså en produkt av
-två deluttryck. Syntaxträd brukar illusteras med just träddiagram. Detta
-exempelvärde illustreras i figur \ref{fig:syntax_exempel_bild}.
+två deluttryck. Syntaxträd brukar illusteras med träddiagram. Detta
+exempeluttryck illustreras i figur \ref{fig:syntax_exempel_bild}.
 
 \begin{figure}[tph]
   \centering
@@ -131,12 +131,12 @@ evaluate (Const v)   = v
 Det finns tre saker som är speciellt värda att notera i
 figur~\ref{fig:eval_tree}. Den första är att eftersom syntaxen innehåller tre olika
 typer av element, här motsvarat av de tre datakonstruktorerna, krävs tre fall i
-beräkningsfunktionen som beräknar vardera av dem. \textit{evaluate} har
+beräkningsfunktionen som beräknar vardera av dem. \texttt{evaluate} har
 därför ett fall för \texttt{:+:}, ett för \texttt{:*:} och ett för
 \texttt{Const}. 
 
 Den andra saken att notera ur figur~\ref{fig:eval_tree} är hur ett fall
-beräknas. Hur beräkningen ska ses ut får man genom att ta hänsyn till
+beräknas. Hur beräkningen ska se ut får man genom att ta hänsyn till
 semantiken hos det syntaktiska elementet. \texttt{e1 :+: e2} är syntax för
 addition av de två uttrycken \texttt{e1} och \texttt{e2}. Därför blir
 semantiken, värdet, av \texttt{e1 :+: e2} lika med värdet hos \texttt{e1} och

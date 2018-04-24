@@ -27,6 +27,7 @@ Gör en överstrykning på saker när de är klara.
 - Annat
     - Titel och framsidebild
     - **O** Formalia
+    - **E** Abstract
     - **J** Sammandrag
     - Översätt sammandrag till abstract
     - **B** Att böra på slutsatser

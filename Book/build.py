@@ -7,7 +7,7 @@ mostly using basic templating
 
 import os
 import shutil
-import subprocess
+from subprocess import Popen, PIPE
 
 def read_file(filepath):
     with open(filepath, "r") as f:
@@ -27,12 +27,12 @@ def write_string_to_file(s, filepath):
         f.write(s)
 
 def render_lhs(lhs_filepath):
-    return subprocess.check_output([
-        "pandoc", lhs_filepath,
-                  "-f", "markdown+lhs",
-                  "-t", "html",
-                  "--mathjax"
-    ]).decode("utf8")
+    cmd = ["pandoc", lhs_filepath, "-f", "markdown+lhs", "-t", "html", "--mathjax"]
+    p = Popen(cmd, stdout=PIPE, stderr=PIPE)
+    stdout, stderr = p.communicate()
+    if stderr != b"":
+        print("file: {}, stderr: {}".format(lhs_filepath, stderr))
+    return stdout.decode("utf8")
 
 def has_image_ext(filename):
     _, ext = os.path.splitext(filename)
@@ -58,15 +58,22 @@ def build_sections(sources):
         if not os.path.exists(section):
             os.makedirs(section)
         chapter_path = "../../" + chapter_source
+        lhs_source_href = "https://github.com/DSLsofMath/BScProj2018/blob/master/{}".format(chapter_source)
+        prefix = "Physics/src/"
+        lhs_source_name = chapter_source[len(prefix):] if chapter_source.startswith(prefix) else chapter_source
         content = render_lhs(chapter_path)
         chapter = apply_template(
             chapter_templ,
             {
+                "section-name": section,
+                "chapter-name": chapter_name,
                 "content": content,
                 "previous-href": prev_chap_href,
                 "previous-name": prev_chap_name,
                 "next-href": next_chap_href,
                 "next-name": next_chap_name,
+                "lhs-source-href": lhs_source_href,
+                "lhs-source-name": lhs_source_name,
             })
         out_path = "{}/{}.html".format(section, chapter_name)
         write_string_to_file(chapter, out_path)
@@ -89,6 +96,9 @@ def build_index(sources):
     write_string_to_file(index, "index.html")
 
 sources = [
+    ("Introduction", [
+        ("Introduction'", "Physics/src/Introduction/Introduction.lhs"),
+    ]),
     ("Dimensions", [
         ("Introduction", "Physics/src/Dimensions/Intro.lhs"),
         ("Value-level dimensions", "Physics/src/Dimensions/ValueLevel.lhs"),
@@ -104,8 +114,11 @@ sources = [
         ("Vector", "Physics/src/Vector/Vector.lhs")
     ]),
     ("Calculus", [
-        ("Calculus", "Physics/src/Calculus/Calculus.lhs"),
-        ("Syntax Tree", "Physics/src/Calculus/SyntaxTree.lhs"),
+        ("Introduction", "Physics/src/Calculus/Intro.lhs"),
+        ("Function expressions", "Physics/src/Calculus/FunExpr.lhs"),
+        ("Differential calculus", "Physics/src/Calculus/DifferentialCalc.lhs"),
+        ("Integral calculus", "Physics/src/Calculus/IntegralCalc.lhs"),
+        ("Visualization, Verification, and Application", "Physics/src/Calculus/VisVerApp.lhs"),
     ]),
     ("Newtonian Mechanics", [
         ("Single particle mechanics", "Physics/src/NewtonianMechanics/SingleParticle.lhs")

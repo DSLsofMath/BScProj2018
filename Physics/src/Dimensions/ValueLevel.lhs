@@ -5,24 +5,27 @@ Value-level dimensions
 From the introduction, two things became apparanent:
 
 1. Given the unit of a quantity, its dimension is known implicitly.
-2. If we only care about SI-units, there is a one-to-one correspondence between dimensions and units.
+2. If we only work with SI-units, there is a one-to-one correspondence between dimensions and units.
 
 We'll use these facts when implementing dimensions. More precisely, "length" and "metre" will be interchangable, and so on.
 
+TODO: Explain (or link to explanation of) Haskell module syntax, and why you include it.
+
+TODO: I suggest you use the following layout pattern for the module headers (indent 4 spaces, put "where" after the closing paren).
+
 > module Dimensions.ValueLevel
-> ( Dim(..)
-> , mul
-> , div
-> , length
-> , mass
-> , time
-> , current
-> , temperature
-> , substance
-> , luminosity
-> , one
-> )
-> where
+>     ( Dim(..)
+>     , mul
+>     , div
+>     , length
+>     , mass
+>     , time
+>     , current
+>     , temperature
+>     , substance
+>     , luminosity
+>     , one
+>     ) where
 
 > import Prelude hiding (length, div)
 
@@ -85,6 +88,8 @@ It's now possible to construct dimensions in the following fashion.
 > force     = mass   `mul` acceleration
 > momentum  = force  `mul` time
 
+TODO: try to replace "since" by "because" (in many places) to avoid confusion with the meaning of "since" in the time-domain.
+
 A dimension we so far haven't mentioned is the *scalar*, which shows up when working with, for example, coefficients of friction. It's dimensionless since it arises from division of two equal dimensions. The case of coefficients of friction looks like
 
 \begin{align}
@@ -105,6 +110,9 @@ Pretty-printer
 
 The purpose of value-level dimensions is to be able to print 'em nicely. So let's create a pretty-printer.
 
+TODO: move "len" out of the way.
+TODO: I think this code is better left out (not part of the learning outcomes, or something like that). Its type + some example results may be useful, though.
+
 > len :: (Integral n) => [a] -> n
 > len [] = 0
 > len (a:as) = 1 + len as
@@ -119,16 +127,15 @@ The purpose of value-level dimensions is to be able to print 'em nicely. So let'
 >     pos     = filter (\(_, exp) -> exp >  0) paired
 >     neg     = filter (\(_, exp) -> exp <  0) paired
 >     neg'    = map (\(d, exp) -> (d, -exp)) neg
->
+
 >     f (u,1) = u
 >     f (u,n) = u ++ "^" ++ show n
->
+
 >     posStrs = map f pos
 >     negStrs = map f neg'
->     posStr  = if null pos
+>     posStr  = if null posStrs -- make a function for this repeated pattern (and use it twice: in posStr ad negStr)
 >               then ""
->               else foldl (\strs str -> str ++ "*" ++
->                    strs) (head posStrs) (tail posStrs)
+>               else foldl1 (\strs str -> str ++ "*" ++ strs) posStrs
 >     (left, right) = if len negStrs > 1
 >                     then ("(", ")")
 >                     else ("", "")
@@ -147,4 +154,8 @@ Now dimensions are printed quite pretty in GHCi.
 
 Note that the SI-unit of the dimensions is used for printing.
 
-The result from this section has been the ability to multiply, divide and print dimensions prettily. The next natural step would be to create a data type for quantities. However, we'll first implement type-level dimensions.
+TODO: Rephrase: if Quantity.lhs really is the "natural" next step, then make it the next step. Otherwise, if it just _seems to be_ the natural next step, explain why your next step is better (more natural?).
+
+The result from this section is the ability to multiply, divide and print dimensions. The next natural step would be to create a data type for quantities. However, we'll first implement type-level dimensions.
+
+TODO: Actually, the real "next step" according to the link is now "Testing of ...". Update the text to match. [Testing seems pretty natural to me.]

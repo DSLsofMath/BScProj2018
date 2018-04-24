@@ -2,7 +2,7 @@
 Type-level dimensions
 =====================
 
-We will now implement *type-level* dimensions. What is type-level? When one usually programs (in Haskell), one operatates (e.g. adds) on values (e.g. `1` and `2`). This is on *value-level*. Now we'll do the same thing but on *type-level*, that is, perform operations on types.
+We will now implement *type-level* dimensions. What is type-level? Programs (in Haskell) normally operatate on (e.g. add) values (e.g. `1` and `2`). This is on *value-level*. Now we'll do the same thing but on *type-level*, that is, perform operations on types.
 
 What's the purpose of type-level dimensions? It's so we'll notice as soon as compile-time if we've written something incorrect. E.g. adding a length and an area is not allowed since they have different dimensions.
 
@@ -22,19 +22,18 @@ To be able to do type-level programming, we'll need a nice stash of GHC-extensio
 See the end of the next chapter to read what they do.
 
 > module Dimensions.TypeLevel
-> ( Dim(..)
-> , Mul
-> , Div
-> , Length
-> , Mass
-> , Time
-> , Current
-> , Temperature
-> , Substance
-> , Luminosity
-> , One
-> )
-> where
+>     ( Dim(..)
+>     , Mul
+>     , Div
+>     , Length
+>     , Mass
+>     , Time
+>     , Current
+>     , Temperature
+>     , Substance
+>     , Luminosity
+>     , One
+>     ) where
 
 We'll need to be able to operate on integers on the type-level. Instead of implementing it ourselves, we will just import the machinery so we can focus on the physics-part.
 
@@ -100,10 +99,10 @@ This may sound confusing, but the point of this will become clear over time. Let
 Multiplication and division
 ---------------------------
 
-Let's implement multiplication and division on type-level. After such an operation a new dimension is created. And from the previous section we already know what the dimension should look like. To translate to Haskell-language: "after such an operation a new *type* is created". How does one implement that? With `type family`! `type family` can easiest be thought of as a function on the type-level.
+Let's implement multiplication and division on the type-level. After such an operation a new dimension is created. And from the previous section we already know what the dimension should look like. To translate to Haskell-language: "after such an operation a new *type* is created". How does one implement that? With `type family`! A `type family` can easiest be thought of as a function on the type-level.
 
 > type family Mul (d1 :: Dim) (d2 :: Dim) where
->   Mul ('Dim le1 ma1 ti1 cu1 te1 su1 lu1) 
+>   Mul ('Dim le1 ma1 ti1 cu1 te1 su1 lu1)
 >       ('Dim le2 ma2 ti2 cu2 te2 su2 lu2) =
 >       'Dim (le1+le2) (ma1+ma2) (ti1+ti2) (cu1+cu2)
 >         (te1+te2) (su1+su2) (lu1+lu2)
@@ -117,7 +116,7 @@ Let's implement multiplication and division on type-level. After such an operati
 **Solution.**
 
 > type family Div (d1 :: Dim) (d2 :: Dim) where
->   Div ('Dim le1 ma1 ti1 cu1 te1 su1 lu1) 
+>   Div ('Dim le1 ma1 ti1 cu1 te1 su1 lu1)
 >       ('Dim le2 ma2 ti2 cu2 te2 su2 lu2) =
 >       'Dim (le1-le2) (ma1-ma2) (ti1-ti2) (cu1-cu2)
 >         (te1-te2) (su1-su2) (lu1-lu2)

@@ -1,0 +1,94 @@
+%LaTeX-inställningar%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Kompliera med pdflatex
+\documentclass[a4paper, 10pt]{article}
+
+\usepackage[utf8x]{inputenc}
+\usepackage[swedish]{babel}
+\usepackage{graphicx}
+
+\usepackage{enumitem}
+
+\usepackage{geometry} 
+\geometry{a4paper} 
+\geometry{margin=1in}
+\setcounter{section}{1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Fyll i:
+\newcommand{\tid}{11:30}
+\newcommand{\plats}{3209}
+\newcommand{\lasvecka}{1}
+\newcommand{\datum}{2018-03-23}
+\newcommand{\present}{
+Björn\\
+Erik\\
+Johan\\
+Oskar\\
+Handledare Patrik\\
+}
+\newcommand{\justerare}{Ingen}
+\newcommand{\sekreterare}{Björn}
+%Snabbkommandon
+\newcommand{\sect}[1][]{\section*{\S \thesection. #1} \stepcounter{section}}
+\newcommand{\para}{\paragraph \noindent}
+\newcommand{\ssect}[1][]{\subsection*{#1}}
+
+\begin{document}
+
+
+%Rubrik etc
+\section*{\center Mötesprotokoll LP4 LV\lasvecka} 
+\vspace{1em}
+\textbf{Tid:} \tid , \datum \\
+\textbf{Plats:} \plats \\
+
+%Protokoll:
+%Observera att detta är ett exempel som speglar exemplet på kallelse. Protokollet skall utformas på så sätt att det varje vecka speglar den aktuella kallelsen. Paragrafer kan komma att läggas till eller justeras.
+\sect[Mötets öppnande]
+\ssect[Närvarande]
+\present %Fyll i listan som startar på rad 20
+
+\sect[Godkännande av dagordning]
+
+\sect[Godkännande av föregående mötesprotokoll]
+
+\sect[Informationspunkter]
+
+Vi testade läromaterial med kandidatgruppen som gjorde grundskoleläromaterial.
+
+\sect[Statusrapport]
+%Alla rapporterar individuellt status
+
+
+\sect[Uppföljning och eventuella förändringar]
+%Mötet diskuterar om milstolparna för denna veckan har nåtts. Om inte, hur ska de nås under kommande vecka?
+
+\sect[Kommande uppgifter]
+
+
+\sect[Övrigt]
+Diskuterar vad patrik bör kolla upp i repot.\\
+\\
+Diskuterar rapporten med Patrik.\\
+\\
+Skrivtips:
+
+Man kan beskriva övergripande, och kan ge ett exempell. Det behöver inte vara en heltäckande beskrivning av rapporten. Välj det som är lättare att skriva om, för att ge exempel.\\
+
+Vi måste veta hur många sidor text vi vill ha, en "page budget". Vi kan ta exempel från förra året, för att få fram budgets och uppdelningar av kapitel. Man kan lyfta ut längre förklaringar/exempel i appendix.\\
+\\
+Vi behöver kontakta Åke för att stämma fler möten, så att det blir bättre kommunikation angående eventuell intergrering av materialet i fysikkursen.\\
+\\
+Politik: Ha möte med nyckelpersoner angående utbildningen på datateknik.
+
+Kontakta Roger då han som programansvarig antagligen ansvarar för helheten och även då överlappande material.\\
+
+Kontakta eventuellt DNS.\\
+
+Erik skriver information som vi ska ta upp på mötena med nyckelpersoner, då erik verkar ha en klar ide om hur vårat material ska förmedlas till de.
+
+\sect[Nästa möte sker...]
+
+\sect[Mötets avslutande]
+
+\end{document}

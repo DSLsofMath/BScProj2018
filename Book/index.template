@@ -14,11 +14,13 @@
     </header>
 
     <main>
-      {toc}
+      <div id="toc">
+	{toc}
+      </div>
     </main>
 
     <footer>
-      Licensed under the GPL by the Kandidatboisen (2018)
+      © Kandidatboisen (2018), GPL
     </footer>
   </body>
 </html>

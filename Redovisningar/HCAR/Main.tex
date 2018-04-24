@@ -1,0 +1,42 @@
+\documentclass[DIV16,twocolumn,10pt]{scrreprt}
+\usepackage{paralist}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[final]{hcar}
+
+%include polycode.fmt
+
+\begin{document}
+
+\begin{hcarentry}{Learn You A Physics}
+\report{Erik Sjöström}
+\status{active development}
+\participants{Oskar Lundström, Johan Johansson, Björn Werner}% optional
+\makeheader
+
+Learn You A Physics is the result of a BSc project at Chalmers (supervised by P. Jansson) where the
+goal is to create an introductory learning material for physics aimed at programmers
+with a basic understanding of Haskell.
+
+It does this by identifying key areas in physics with a well defined scope,
+for example dimensional analysis or single particle mechanics, and develops
+a domain specific language around each of these areas.
+
+The implementation of these DSL's are the meat of the learning material with
+accompanying text to explain every step and how it relates to the physics of
+that specific area.
+
+The text is written in such a way as to be as non-frightening as possible,
+and to only require a beginner knowledge in Haskell.
+%
+Inspiration is taken from \href{http://learnyouahaskell.com/}{Learn you a Haskell for Great Good} and the project \href{https://github.com/DSLsofMath/DSLsofMath}{DSLsofMath} at Chalmers and University of Gothenburg.
+
+The \href{https://github.com/DSLsofMath/BScProj2018/tree/master/Physics}{source
+code} and \href{https://dslsofmath.github.io/BScProj2018/}{learning material}
+is freely available online.
+
+\FurtherReading
+  \href{https://dslsofmath.github.io/BScProj2018/} {Learn You A Physics}
+\end{hcarentry}
+
+\end{document}

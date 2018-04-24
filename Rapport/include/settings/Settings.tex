@@ -1,5 +1,3 @@
-%TODO: Perhaps remove or add clarification
-% CREATED BY DAVID FRISK, 2016
 
 \usepackage{xcolor}  % Setting text color
 
@@ -10,6 +8,14 @@
 \newenvironment{draft} {
     \color{blue}
 }
+
+\newcommand{\R}{\mathbb{R}}
+
+\usepackage{mdframed}
+\usepackage{chngcntr}
+\counterwithout{footnote}{chapter}
+
+\usepackage{pdfpages}
 
 % Radavstånd i listor
 \usepackage{enumitem}
@@ -46,6 +52,8 @@
 \lstset{frame=single}
 \lstset{breaklines=true}
 \lstset{basicstyle=\ttfamily}
+\lstset{commentstyle=\ttfamily}
+\lstset{escapeinside=`'}
 \usepackage{chemfig}								% Chemical structures
 \usepackage[margin=1in]{geometry}			% Page margin lengths
 \usepackage{eso-pic}								% Create cover page background

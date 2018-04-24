@@ -1,12 +1,12 @@
 > module NewtonianMechanics.SingleParticle where
 
-> import           Calculus.SyntaxTree
+< import           Calculus.SyntaxTree
+
 > import           Test.QuickCheck
 
 Laws:
 
 - A body remains at rest or in uniform motion unless acted upon by a force.
-- A body acted upon by a force moves in such a manner that the time rate of change of the momentum equals the force.
 - If two bodies exert forces on each other, these forces are equal in magnitude and opposite in direction.
 
 We will begin our journey into classical mechanics by studying point particles.
@@ -19,7 +19,7 @@ position in each dimension, x, y, and z. Since we've already defined vectors and
 mathmatical functions in previous chapters we won't spend any time on them here
 and instead just import those two modules.
 
-> import           Calculus.Calculus
+> import           Calculus
 > import           Vector.Vector as V
 
  The mass of a particle is just a numerical value so we'll model it using
@@ -49,6 +49,8 @@ of function expressions. So our data type is simply:
 
 So now we can create our particles! Let's try it out!
 
+**TODO: IMPLEMENT NUM INSTANCE FOR FunExpr AND REWRITE**
+
 ```
 ghci > let particle = P (V3 (3 :* Id :* Id) (2 :* Id) 1) 3
 ghci > particle
@@ -64,10 +66,10 @@ Velocity & Acceleration
 ------------------
 
 Velocity is defined as the derivative of the position with respect to time. More
-formally:
+formally, ($\vec{r}$ denotes the position vector):
 
 \begin{equation*}
-\vec{v} = \frac{d\vec{p}}{dt}
+\vec{v} = \frac{d\vec{r}}{dt}
 \end{equation*}
 
 And since the position of our particles are given as vectors we'll do the
@@ -86,54 +88,87 @@ Acceleration is defined as the derivative of the velocity with respect to time,
 or the second derivative of the position. More formally:
 
 \begin{equation*}
-\vec{a} = \frac{d\vec{v}}{dt} = \frac{d^2\vec{p}}{dt^2}
+\vec{a} = \frac{d\vec{v}}{dt} = \frac{d^2\vec{r}}{dt^2}
 \end{equation*}
 
 **Exercise** Try to figure out how to define the function for calculating the
-acceleration of a particle
+acceleration of a particle.
+
+<details>
+<summary>
+**Solution** 
+</summary>
+
+We already know how to get the velocity of a particle, so the the
+only step we need to take is to take the derivative of the velocity.
+
+< acceleration :: Particle -> VectorE
+< acceleration = vmap D . velocity
+
+Which is the same as:
+
+< acceleration :: Particle -> VectorE
+< acceleration = vmap D . vmap D . pos
+
+<details>
+<summary>
+**Trivia**
+</summary>
+
+Those of you familiar with functor laws will probably see that the code
+for calculating the acceleration could also be written as:
+
+> acceleration :: Particle -> VectorE
+> acceleration = vmap (D . D) . pos
+
+</details>
+</details>
 
 Forces & Newton's second law
 ------------------------------
 
+Newton's second law states that
+<blockquote>
+A body acted upon by a force moves in such a manner that the time rate of change
+of the momentum equals the force.
+</blockquote>
+
 This law expresses the relationship between force and momentum and is
-as follows:
+mathematically defined as follows:
+
 \begin{equation}
   \vec{F} = \frac{d \vec{p}}{d t} = \frac{d(m \cdot \vec{v})}{d t}
 \end{equation}
 
-
-
-The quantity $m \cdot v$ is what we mean when we say momentum. So the law
+The quantity $m \cdot \vec{v}$ is what we mean when we say momentum. So the law
 states that the net force on a particle is equal to the rate of change of the
-momentum with respect to time. And since the definition of acceleration is $a =
-\frac{d \vec{v}}{d t}$ we can write this law in a more familiar form, namely:
+momentum with respect to time. And since the definition of acceleration is
+$\vec{a} = \frac{d \vec{v}}{d t}$ we can write this law in a more familiar form,
+namely:
 
 \begin{equation}
   \vec{F} = m \cdot \vec{a}
 \end{equation}
 
-And thus if the particle is accelerating we can calculate the net force that
+And thus if the particle is accelerating we can calculate the force that
 must be acting on it, in code this would be:
 
 
-> force :: Particle -> VectorE
-> force p = vmap (* m) a
->   where
->     m = mass p
->     a = acceleration p
+< force :: Particle -> VectorE
+< force p = vmap (* m) a
+<   where
+<     m = mass p
+<     a = acceleration p
 
 > type Energy = FunExpr
 
 Where the acceleration of particle is found by deriving the velocity of that
 same particle with respect to $t$:
 
-> acceleration :: Particle -> VectorE
-> acceleration = vmap D . velocity
-
 TODO: Write something here
 
-> square :: VectorE -> FunExpr
-> square v = dotProd v v
+< square :: VectorE -> FunExpr
+< square v = dotProd v v
 
 Work and energy
 ---------------------
@@ -148,12 +183,12 @@ as the dot product of the force and the vector of displacement.
 
 where $\Delta \vec{r} = \vec{r_2} - \vec{r_1}$.
 
-> kineticEnergy :: Particle -> Energy
-> kineticEnergy p = Const 0.5 * m * v2
->   where
->     m  = mass p
->     v  = velocity p
->     v2 = square v
+< kineticEnergy :: Particle -> Energy
+< kineticEnergy p = Const 0.5 * m * v2
+<   where
+<     m  = mass p
+<     v  = velocity p
+<     v2 = square v
 
 The work-energy theorem states that for a particle of constant mass *m*, the
 total work *W* done on the particle as it moves from position $r_1$ to $r_2$ is
@@ -168,25 +203,25 @@ Let's codify this theorem:
 PS: This used to work just fine, but it no longer does since the switch to
 FunExpr. Problem probably lies somewhere in SyntaxTree
 
-> prop_WorkEnergyTheorem :: Mass -> VectorE -> VectorE -> IO Bool
-> prop_WorkEnergyTheorem m v1 v2 = prettyEqual deltaEnergy (kineticEnergy displacedParticle)
->   where
->     particle1 = P v1 m -- | Two particles with the same mass
->     particle2 = P v2 m -- | But different position vector
->     -- |          E_k,2                     - E_k,1
->     deltaEnergy = kineticEnergy particle2 - kineticEnergy particle1
->     displacedParticle = P (v2 - v1) m
+< prop_WorkEnergyTheorem :: Mass -> VectorE -> VectorE -> IO Bool
+< prop_WorkEnergyTheorem m v1 v2 = prettyEqual deltaEnergy (kineticEnergy displacedParticle)
+<   where
+<     particle1 = P v1 m -- | Two particles with the same mass
+<     particle2 = P v2 m -- | But different position vector
+<     -- |          E_k,2                     - E_k,1
+<     deltaEnergy = kineticEnergy particle2 - kineticEnergy particle1
+<     displacedParticle = P (v2 - v1) m
 
-> -- Test values
-> v1 = V3 (3 :* Id) (2 :* Id) (1 :* Id)
-> v2 = V3 0 0 (5 :* Id)
-> v3 = V3 0 (3 :* Id) 0 :: VectorE
-> v4 = V3 2 2 2 :: VectorE
-> m  = 5
-> p1 = P v1 m
-> p2 = P v2 m
-> dE = kineticEnergy p2 - kineticEnergy p1
-> p3 = P (v2 - v1) m
+< -- Test values
+< v1 = V3 (3 :* Id) (2 :* Id) (1 :* Id)
+< v2 = V3 0 0 (5 :* Id)
+< v3 = V3 0 (3 :* Id) 0 :: VectorE
+< v4 = V3 2 2 2 :: VectorE
+< m  = 5
+< p1 = P v1 m
+< p2 = P v2 m
+< dE = kineticEnergy p2 - kineticEnergy p1
+< p3 = P (v2 - v1) m
 
 Law of universal gravitation
 -------------------------------------
@@ -211,20 +246,20 @@ objects interacting, *r* is the distance between the centers of the masses and
 The gravitational constant has been finely approximated through experiments
 and we can state it in our code like this:
 
-> type Constant = FunExpr
->
-> gravConst :: Constant
-> gravConst = 6.674 * (10 ** (-11))
+< type Constant = FunExpr
+<
+< gravConst :: Constant
+< gravConst = 6.674 * (10 ** (-11))
 
 Now we can codify the law of universal gravitation using our definition
 of particles.
 
-> lawOfUniversalGravitation :: Particle -> Particle -> FunExpr
-> lawOfUniversalGravitation p1 p2 = gravConst * ((m_1 * m_2) / r2)
->   where
->     m_1 = mass p1
->     m_2 = mass p2
->     r2 = square $ pos p2 - pos p1
+< lawOfUniversalGravitation :: Particle -> Particle -> FunExpr
+< lawOfUniversalGravitation p1 p2 = gravConst * ((m_1 * m_2) / r2)
+<   where
+<     m_1 = mass p1
+<     m_2 = mass p2
+<     r2 = square $ pos p2 - pos p1
 
 If a particles position is defined as a vector representing its displacement
 from some origin O, then its heigh should be x. Or maybe it should be the

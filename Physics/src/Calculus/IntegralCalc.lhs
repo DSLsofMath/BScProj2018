@@ -150,8 +150,8 @@ Lebesgue integral is a better fit.
 
 All that considered, we will use Riemann integrals. While they may be
 lacking for many purposes, they are probably more familiar to most
-students (they are to me!), and will be sufficient for the purposes of
-physics courses at the level we're at.
+students (they are to me!), and will be sufficient for the level we're
+a.
 
 If we look back at the syntax of definite integrals
 
@@ -166,7 +166,7 @@ the rectangle with width $dx$ and height $f(x)$, then sum all of these
 parts together.".
 
 As we're dealing with an infinite sum of infinitesimal parts: a limit
-must be involved. $a$ and $b$ are be the lower and upper limits of the
+must be involved. $a$ and $b$ are the lower and upper limits of the
 sum. Our iteration variable should increase with infinitesimal $dx$
 each step.  Each step we add the area of the rectangle with height
 $f(x')$, where $x'$ is any point in $[x$, $x + dx]$.  As $x + dx$
@@ -238,21 +238,21 @@ Using the trigonometric identity of $\lim_{x \to 0} \frac{sin x}{x} = 1$ we find
 
 \begin{align*}
 \int_a^b cos \\
-             & \{ \text{ Riemann integral }\} \\
-             &= \lim_{dx \to 0} \sum_{x = a, a + dx, a + 2*dx, ...}^b cos(x) * dx \\
-             &= \lim_{dx \to 0} dx * \sum_{x = a, a + dx, a + 2*dx, ...}^b cos(x) \\
-             &= \lim_{dx \to 0} dx * (cos(a) + cos(a + dx) + cos(a + 2*dx) + ... + cos(a + \frac{b - a}{dx}*dx)) \\
-             & \{ \text{ Sums of cosines with arguments in arithmetic progression } \} \\
-             &= \lim_{dx \to 0} dx * \frac{sin(\frac{(\frac{b - a}{dx} + 1) dx}{2}) * cos(a + \frac{\frac{b - a}{dx} dx}{2})}{sin(dx/2)} \\
-             &= \lim_{dx \to 0} dx * \frac{sin(\frac{b - a + dx}{2}) * cos(\frac{a + b}{2})}{sin(dx/2)} \\
-             & \{ \text{ Trig. product-to-sum ident. } \} \\
-             &= \lim_{dx \to 0} dx * \frac{sin(\frac{b - a + dx}{2} + \frac{a + b}{2}) + sin(\frac{b - a + dx}{2} - \frac{a + b}{2})}{2sin(dx/2)} \\
-             &= \lim_{dx \to 0} dx * \frac{sin(b + dx/2) + sin(-a + dx/2)}{2sin(dx/2)} \\
-             &= \lim_{dx \to 0} \frac{sin(b + dx/2) + sin(-a + dx/2)}{\frac{sin(dx/2)}{dx/2}} \\
-             & \{ dx \to 0 \} \\
-             &= \frac{sin(b + 0/2) + sin(-a + 0/2)}{1} \\
-             &= sin(b) + sin(-a) \\
-             &= sin(b) - sin(a)
+               &\{ \text{ Riemann integral }\} \\
+             = &\lim_{dx \to 0} \sum_{x = a, a + dx, a + 2*dx, ...}^b cos(x) * dx \\
+             = &\lim_{dx \to 0} dx * \sum_{x = a, a + dx, a + 2*dx, ...}^b cos(x) \\
+             = &\lim_{dx \to 0} dx * (cos(a) + cos(a + dx) + cos(a + 2*dx) + ... + cos(a + \frac{b - a}{dx}*dx)) \\
+               &\{ \text{ Sums of cosines with arguments in arithmetic progression } \} \\
+             = &\lim_{dx \to 0} dx * \frac{sin(\frac{(\frac{b - a}{dx} + 1) dx}{2}) * cos(a + \frac{\frac{b - a}{dx} dx}{2})}{sin(dx/2)} \\
+             = &\lim_{dx \to 0} dx * \frac{sin(\frac{b - a + dx}{2}) * cos(\frac{a + b}{2})}{sin(dx/2)} \\
+               &\{ \text{ Trig. product-to-sum ident. } \} \\
+             = &\lim_{dx \to 0} dx * \frac{sin(\frac{b - a + dx}{2} + \frac{a + b}{2}) + sin(\frac{b - a + dx}{2} - \frac{a + b}{2})}{2sin(dx/2)} \\
+             = &\lim_{dx \to 0} dx * \frac{sin(b + dx/2) + sin(-a + dx/2)}{2sin(dx/2)} \\
+             = &\lim_{dx \to 0} \frac{sin(b + dx/2) + sin(-a + dx/2)}{\frac{sin(dx/2)}{dx/2}} \\
+               &\{ dx \to 0 \} \\
+             = &\frac{sin(b + 0/2) + sin(-a + 0/2)}{1} \\
+             = &sin(b) + sin(-a) \\
+             = &sin(b) - sin(a)
 \end{align*}
 
 The definition of definite integrals then give us that
@@ -266,9 +266,15 @@ integration of functions. We'll start with the nicer cases, and
 progress to the not so nice ones.
 
 `integrate` takes a function to symbolically integrate, and a real
-number that decides the vertical offset of the function, i.e. the
-value of $f(0)$. The antiderivative with the given vertical offset is
-returned.
+number that decides the vertical offset (i.e. the value of $f(0)$ /
+the constant term) of the function. The antiderivative with the given
+vertical offset is returned.
+
+Important to note is that not all functions are integrable. Unlike
+derivatives, some antiderivatives of elementary functions simply
+cannot be expressed as elementary functions themselves, according to
+[Liouville's
+theorem](https://en.wikipedia.org/wiki/Liouville%27s_theorem_%28differential_algebra%29). Some examples include $e^{-x^2}$, $\frac{sin(x)}{x}$, and $x^x$.
 
 > integrate :: FunExpr -> RealNum -> FunExpr
 
@@ -281,8 +287,12 @@ or on WolframAlpha (or Wikipedia, or whatever. Up to you).
 > integrate Log c = Id :* (Log :- Const 1) :+ Const c
 > integrate Sin c = Const 0 :- Cos :+ Const c
 > integrate Cos c = Sin :+ Const c
-> integrate Asin c = (Const 1 :- Id:^(Const 2)):^(Const 0.5) :+ Id :* Asin :+ Const c
-> integrate Acos c = Id :* Acos :- (Const 1 :- Id:^(Const 2)):^(Const 0.5) :+ Const c
+> integrate Asin c =    (Const 1 :- Id:^(Const 2)):^(Const 0.5)
+>                    :+ Id :* Asin
+>                    :+ Const c
+> integrate Acos c =    Id :* Acos
+>                    :- (Const 1 :- Id:^(Const 2)):^(Const 0.5)
+>                    :+ Const c
 
 These two good boys. Very simple as well.
 
@@ -306,10 +316,10 @@ that the constant coefficient is equal to `c`, which it might not be
 if we just cancel the operations and add the `c`. The simplest way to
 solve this is to evaluate the function at $x=0$, and check the
 value. We then add a term that corrects the function such that
-$I(D(f), c)[0] = c$. As we haven't implemented an evaluator yet, just
-leave this "incorrect" for now, and fix it later!
+$I(D(f), c)[0] = c$. As we haven't implemented an evaluator yet, you
+can leave this "incorrect" for now, and fix it later!
 
-> integrate (D f) c = f :+ Const (c - (eval f) 0)
+> integrate (D f) c = f :+ Const (c - (eval f) 0) -- Correct, but requires `eval`
 > -- integrate (D f) c = f -- Incorrect (unless we don't care about `c`)
 
 Integrating an integral? Just integrate the integral!
@@ -338,23 +348,26 @@ the expressions, we get a case where the integration by parts rule
 only makes things worse:
 
 \begin{align*}
-\int e^x x dx &= e^x x^2 - \int e^x x dx \\
-              &= e^x x^2 - (e^x x^2 - \int e^x x dx) \\
-              &= e^x x^2 - (e^x x^2 - (e^x x^2 - \int e^x x dx)) \\
-              &= ...
+\int e^x x dx = &e^x x^2 - \int e^x x dx \\
+              = &e^x x^2 - (e^x x^2 - \int e^x x dx) \\
+              = &e^x x^2 - (e^x x^2 - (e^x x^2 - \int e^x x dx)) \\
+              = &...
 \end{align*}
 
 Oh no, it's an infinite recursion with successive increase in
-complexity! (You can prove this using mathematical induction as an
-exercise.)
+complexity! Sadly, there's no good way around it. By using heuristics,
+we could construct a complicated algorithm that guesses the best order
+of factors in a product when integrating, but that's *way* out of
+scope for this book.
 
-There is also the problem that the integration by parts rule is simply
-not defined in the case of $g(x)$ not being integrable to $G(x)$
-(e.g. $g(x) = e^x^2$, according to the internet). And so, as there
-exists no great way to do it, we'll settle for a mediocre one! We'll
-define the integration of a product to use integration by parts, but
-before integrating we'll simplify the expression in the hopes that it
-will become better suited for integration.
+Further, as a consequence of Liouville's theorem, the integration by
+parts rule is simply not defined in the case of $g(x)$ not being
+integrable to $G(x)$. And so, as there exists no definitely good way
+to do it, we're forced to settle for a solution that works sometimes
+but not always.  We'll define the integration of a product to use
+integration by parts, but before integrating we'll simplify the
+expression in the hopes that it will become better suited for
+integration.
 
 > integrate (f :* g) c =
 >   let simplified = simplify (f :* g)
@@ -368,14 +381,15 @@ The rule for quotients is very similar
 >   let simplified = simplify (f :/ g)
 >   in if simplified == f :/ g
 >      then let _F = integrate f 0
->           in _F :/ g :+ integrate (_F :* (derive g :/ (g:^Const 2))) 0 :+ Const c
+>           in    _F :/ g
+>              :+ integrate (_F :* (derive g :/ (g:^Const 2))) 0
+>              :+ Const c
 >      else integrate simplified c
 
 There is no good rule for exponentials in general. Only for certain
 combinations of functions in the base and exponent is symbolic
 integration well defined. We'll only treat the special case of $x^c$,
-which at least implies that we can use polynomials. As an exercise,
-you could also implement the the various exponential identities here.
+which at least implies that we can use polynomials.
 
 > integrate (f :^ g) c =
 >   case (simplify f, simplify g) of
@@ -385,15 +399,17 @@ you could also implement the the various exponential identities here.
 Integration of function composition is, simply said, somewhat
 complicated. The technique to use is called "integration by
 substitution", and is something like a reverse of the chain-rule of
-differentiation. This method is tricky to implement, but luckily most
-beginner-to-intermediate physics courses purposfully avoid the use of
-composed functions when integration is required. Therefore, we simply
-won't implement it!
+differentiation. This method is tricky to implement, as the way humans
+execute this method is highly dependent on intuition and a mind for
+patterns. A brute-force solution would be possible to implement, but
+is out of scope for this book, and not really relevant to what we want
+to learn here. We'll leave integration of composition undefined.
 
 As long as we ensure our input functions are not composed functions,
 `integrate` will still be well behaved.
 
-> integrate (f :. g) c = error "Please don't try to integrate function compositions!"
+> integrate (f :. g) c
+>   = error "Please don't try to integrate function compositions!"
 
 
 

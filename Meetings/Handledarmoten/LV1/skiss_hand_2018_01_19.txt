@@ -1,0 +1,209 @@
+
+Patriks riktlinjer:
+	Projektdagbok
+	Bidragsrapport
+	Planeringsrapporten
+	Regelbundna handledarmöten
+
+dagordning:
+	preliminärer
+		val av ordf?
+			Erik anger sig själv		
+
+		val av sekreterare
+			björn väljs
+
+		val av poster i projektgruppen
+			
+
+	Organiseringen av projektet?
+		Planering av möten? Vissa tillfällen då vissa inte kan vara med?
+
+		behövs slack el kommunikationsplattform 
+			Erik fixar slack
+
+	Gruppkontrakt
+		Disciplin
+
+	Planeringsrapport
+
+	Bestämma ett projekt
+		Avgränsna projektet:
+			Fysik
+				Mekanik
+				Termodynamik
+				Vågor
+
+				Ta kontakt med någon inom ämnet, för att få ytterligare
+					specifiering
+
+				"Related work" - vad är redan gjort?
+					finns 2 böcker i anknytning till fysik
+						structure and interpretation of
+						classical mechanics
+
+					MIT (inspirerade d2 DSL kurs)
+
+					Patrik länkar ämnet. hackage - Hamilton
+					2 blogposts
+
+					
+				Skillnaden blir att vi främjar lärandet.
+
+				Syfte:
+					"Sänka kugg-statistiken i fysik"
+					Göra pedagogiskt material som passar in i fysikkursen
+				
+				Skalning av material:
+    				Bare minimum
+	    			Vore bra att ha
+		    		Extrordinary
+
+				OK att avgränsa starkt i början, än att börja stort och avgränsa senare.
+
+				"Mål - reflektera var vi är"
+				I planen för genomförandet utvärdera o reflektera.
+
+			Grudat
+
+			Finita automater
+
+			Reglerteknik
+
+	Boka handledning av fackspråk, och andra bokningar
+		Frdagar hittills, verkar funka bra för alla.
+		11:30 - 13:00 max
+		finns möjlighet att starta tidigare
+
+		väntar TODO	Fackspråk 
+
+	Loggboken med tidslogg
+	->
+	Projektdagbok:
+		Projektplan
+		Tidslogg		dagligen, individuell
+		(projekt) Dagboken    	minst en per vecka (vad vi har gjort, vad vi ska göra)
+					enl erik enl föreläsning: folk skriver vad de gjort.
+					(BJÖRN MAILAR o frågar)
+
+		Patrik: man lägger upp en länk till var tidsloggen finns i PP?
+		Björn kollar mer specifikt
+		
+
+	Kan inte välja demokratisk process
+		
+
+	Daniel hoppade av:
+		Erik mailar och frågar kursansvarig.
+	
+
+	Projektledningsgrejen?
+		Hela projektgrejen: 
+			Ansvarspersoner
+				Dokumentationsansvarig (Björn väljs)
+					Sekreterare
+					Bokningsansvarig
+				
+				Verifikation (
+					Nån som ansvarar för att vi håller oss till våra mål
+					att våra mål uppfylls
+					
+					(ansv för att test utförs)
+
+				Projektledare (Erik väljs)
+					Deadlineansvarig
+				
+				Presentationsansvarig (Oskar väljs)
+					Att det finns en
+
+				"Fixare"
+		Mötespecifikt:
+			(kan rotera)
+
+			Ordförande
+				Erik väljs
+			Sekreterare	
+				Björn väljs
+			Granskare 			
+				Oskar väljs
+
+	Uppföljning:
+		Projektet:
+			Vi har begränsat projektarbetet
+			Uppstartsmöten för att komma igång med projektet (projektledning)
+				(och föreläsningar)
+		Björn:
+			Inläsning på DSL.
+
+		Oskar:
+			Inläsning på DSL
+
+		Johan:
+			Inläsning på DSL
+
+		Erik:
+			Inläsning på DSL
+
+	Kommande uppgifter:
+		projektet:
+			Planeringsrapporten
+				Lista av milstolpar?
+				GANTZ timplan
+
+
+			Gruppkontrakt (TODO)
+			Bokningar (finns nedan)
+
+			Att gruppens medlemmar bekantar sig med DSLer.
+				så att de får en känsla för utvecklandet.
+
+			Bra att göra:
+				Läsa föregånde grupps rapport.
+		individuellt:
+	
+			Björn:
+				Bokar
+				Lägga upp mötesprotokoll...
+				 (inkl projektdagboken...)
+				 mailar om vi har förstått det rätt
+				frågar om gruppkontraktet (/tidslogg & dagbok / kontraktbrott)
+			Oskar:
+				Granska mötesprotokoll
+				Lägger in presentationspunkter i planeringsrapporten
+
+			Johan:
+				Gör gantt
+				
+
+			Erik:
+				Skriva in eventuella extra punkter i planeringsrapporten
+				Fixar slack
+
+	Gruppkontrakt
+		Fixat till stor del. Har ett par frågor som björn kollar upp.
+
+		Johan ska fylla i.
+
+	Planeringsrapport
+		Finns en mall på repot.
+		(har beskrivits i kommande uppgifter)
+		Lär tas upp mer på internmöte.
+
+	Bokningar:			
+		Fackspråk		(bokar Björn) om det är enskildt så berättar Björn.
+					Första handledningsmötet är bokat till 15:00 - 16:00
+						13de Februari
+					Andra mötet obokat!!! (april)
+					Tredhe mötet obokat!!!(april)
+
+					föreläsningar:
+						Vi fixar bokningarna genom slack.
+
+		Biblioteket		(bokar Björn) om det är enskildt så berättar Björn.
+						Vi fixar bokningar genom slack.
+
+		Teknikens organisation 	(sista har varit)
+						done.
+
+
+

@@ -1,0 +1,90 @@
+%LaTeX-inställningar%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Kompliera med pdflatex
+\documentclass[a4paper, 10pt]{article}
+
+\usepackage[utf8x]{inputenc}
+\usepackage[swedish]{babel}
+\usepackage{graphicx}
+
+\usepackage{enumitem}
+
+\usepackage{geometry} 
+\geometry{a4paper} 
+\geometry{margin=1in}
+\setcounter{section}{1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Fyll i:
+\newcommand{\tid}{12:00}
+\newcommand{\plats}{3213}
+\newcommand{\lasvecka}{3}
+\newcommand{\datum}{2018-04-11}
+\newcommand{\present}{
+Björn\\
+Erik\\
+Johan\\
+Oskar\\
+Handledare Patrik\\
+}
+\newcommand{\justerare}{Ingen}
+\newcommand{\sekreterare}{Björn}
+%Snabbkommandon
+\newcommand{\sect}[1][]{\section*{\S \thesection. #1} \stepcounter{section}}
+\newcommand{\para}{\paragraph \noindent}
+\newcommand{\ssect}[1][]{\subsection*{#1}}
+
+\begin{document}
+
+
+%Rubrik etc
+\section*{\center Mötesprotokoll LP4 LV\lasvecka} 
+\vspace{1em}
+\textbf{Tid:} \tid , \datum \\
+\textbf{Plats:} \plats \\
+
+%Protokoll:
+%Observera att detta är ett exempel som speglar exemplet på kallelse. Protokollet skall utformas på så sätt att det varje vecka speglar den aktuella kallelsen. Paragrafer kan komma att läggas till eller justeras.
+\sect[Mötets öppnande]
+\ssect[Närvarande]
+\present %Fyll i listan som startar på rad 20
+
+\sect[Godkännande av dagordning]
+
+\sect[Godkännande av föregående mötesprotokoll]
+
+\sect[Informationspunkter]
+
+\sect[Statusrapport]
+%Alla rapporterar individuellt status
+
+
+\sect[Uppföljning och eventuella förändringar]
+%Mötet diskuterar om milstolparna för denna veckan har nåtts. Om inte, hur ska de nås under kommande vecka?
+
+\sect[Kommande uppgifter]
+
+DNS möte på torsdag.
+
+    Förklara syftet med projektet.
+
+    Se till att det finns en dialog och att de är medvetna om projektet.
+
+\sect[Övrigt]
+
+Vi har snackat om Patriks funderingar på rapporten. Oskar har antecknat.\\
+\\
+Åkes kommentarer på mötet:
+
+    Jätteroligt, jättebra, intressant.
+
+    Kan möjligtvis peka på materialet i sin kurs för D studenter.\\
+\\
+Vi får en kontakt till en av Patriks kollegor som är bra på fysik och FP.
+
+\sect[Nästa möte sker...]
+
+17/4 tisdag 11:00
+
+\sect[Mötets avslutande]
+
+\end{document}

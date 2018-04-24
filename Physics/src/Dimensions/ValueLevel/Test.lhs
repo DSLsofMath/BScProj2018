@@ -36,7 +36,11 @@ An arbitrary example of an `Arbitrary` instance (get it?) could look like
 
 **Exercise.** Now try to implement an `Arbitrary` instance of `Dim`.
 
-**Solution.** Here's one way to do it.
+<details>
+<summary>**Solution**</summary>
+<div>
+
+Here's one way to do it.
 
 > genDim :: Gen Dim
 > genDim = do
@@ -51,6 +55,9 @@ An arbitrary example of an `Arbitrary` instance (get it?) could look like
 
 > instance Arbitrary Dim where
 >   arbitrary = genDim
+
+</div>
+</details>
 
 Properties for operations on dimensions
 ---------------------------------------
@@ -75,7 +82,11 @@ The implementation of the first law looks like
 
 **Excercise.** Implement the rest.
 
-**Solution.** Here's what the rest could look like.
+<details>
+<summary>**Solution**</summary>
+<div>
+
+Here's what the rest could look like.
 
 > -- Property: multiplication is associative
 > prop_mulAssociative :: Dim -> Dim -> Dim -> Bool
@@ -102,6 +113,9 @@ The implementation of the first law looks like
 > prop_mulDivInv :: Dim -> Dim -> Bool
 > prop_mulDivInv d1 d2 = d1 `mul` d2 ==
 >   d1 `div` (one `div` d2)
+
+</div>
+</details>
 
 Testing the pretty-printer
 --------------------------

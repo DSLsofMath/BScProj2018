@@ -1,0 +1,13 @@
+
+Björn fixar dagordningsmall.
+
+Lägga till en punkt om tidsrapportering (en påminnelse till alla).
+	
+Dagboksloggandet (björn frågar dom hur det är menat att fungera).
+
+Oskar fixar länk till tidsloggen på pingpong.
+
+
+
+
+

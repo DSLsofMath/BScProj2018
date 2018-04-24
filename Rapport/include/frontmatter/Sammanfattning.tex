@@ -1,14 +1,65 @@
 
 \thispagestyle{plain}			% Supress header
 
-%TODO: Perhaps include both Abstract + Sammanfattning on one page?
+TODO: Perhaps include both Abstract + Sammanfattning on one page?
 
-\section*{Sammanfattning}
-TODO: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+\begin{binge}
+
+\section*{Sammandrag}
+
+% Syfte med rapport + syfte med projekt
+Denna rapport beskriver utvecklingen av läromaterialet ``Learn You a
+Physics for Great Good''. Projektet utfördes som ett kandidatarbete vid institutionen
+för Data- och informationsteknik på Chalmers tekniska högskola. Syftet
+med projektet är att skapa ett läromaterial i form av en text som
+presenterar fysik med hjälp av programmeringskonceptet
+\textit{domänspecifika språk}, där de domänspecifika språken är
+implementerade i programmeringsspråket Haskell. Vidare ska 
+den pedagogiska nyttan av läromaterialet diskuteras samt hur väl fysik och
+domänspecifika språk går att kombinera.
+
+% Bakgrund, vår motivation
+Bakgrunden till projektet är att den för studenter på Datateknik på
+Chalmers obligatoriska fysikkursen \textit{Fysik för ingenjörer} har
+haft ganska dåliga tentastatestik under flera år. Vi tror att en
+faktor till att just datateknikstudenter får dåligt resultat i denna
+kurs, är att studenterna finner ämnet irrelevant i förhållande till
+resten av utbildningen. Vi tror också att detta problem kan lösas med ett
+läromaterial som fungerar som en brygga mellan fysik och
+programmering, och både visar på relevansen av ämnet och väcker
+intresse för fysik. Ett ökat intresse för fysik leder förhoppningsvis
+till bättre resultat i kursen.
+
+% Resultat, hur läromaterialet blev
+Det resulterande läromaterialet innehåller ett antal kapitel som
+behandlar områdena: bevis, fysikalsika dimensioner, matematisk analys,
+vektorer, partikelmekanik, och tillämpningar av dem. Varje kapitel
+består av fungerande Haskell-kod tillsammans med beskrivande
+text. Vissa kapitel bygger upp domänspecifika språk från grunden medan
+andra kombinerar och tillämpar tidigare domänspecifika språk på
+fysikaliska problem. Läromaterialet publicerades på en hemsida:
+\url{https://dslsofmath.github.io/BScProj2018/} och dess källkod finns
+fritt tillgänglig på:
+\url{https://github.com/DSLsofMath/BScProj2018}. Rapporten beskriver
+även de möten och diskussioner med utomstående som genomförts för att
+förbättra utvecklingen, samt de informella tester som gjorts på det
+färdiga läromaterialet.
+
+% Diskussion/slutsats, vad vi kom fram till (mer än att bli färdiga med läromaterialet)
+De slutsatser som nås i diskussionen av det utförda projektet är att
+domänspecifika språk kan ha en pedagogisk nytta i
+fysikundervisning. Eftersom de domänspecifika språken. Den strikta och
+rigorösa naturen av Haskell och domänspecifika språk ger att den
+processen av den fysikproblemlösningen de används för också blir
+strikt och rigorös, utan möjlighet till intuitiva men felaktiga
+genvägar. Detta tankesätt tror vi kan främja lärande om det förmedlas
+till klassisk fysikundervisning.
 
 % KEYWORDS (MAXIMUM 10 WORDS)
 \vfill
-TODO: Keywords: lorem, ipsum, dolor, sit, amet, consectetur, adipisicing, elit, sed, do.
+Nyckelord: Domänspecifika språk, Klassisk mekanik, Fysikutbildning, Läromaterial, Funktionell programmering
+
+\end{binge}
 
 \newpage				% Create empty back of side
 \thispagestyle{empty}

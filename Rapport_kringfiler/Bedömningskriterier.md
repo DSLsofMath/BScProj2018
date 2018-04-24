@@ -34,16 +34,12 @@ tydligt sätt. Dessutom är urval och omfång tydligt 
 kopplade till studiens syfte och övrigt innehåll i en 
 välbalanserad rapport.
 
-Vad betyder denna ens?
-
 ### (!) Formalia
 
 Rapportens längd och formalia följer Chalmers 
 centrala anvisningar och är effektivt anpassade 
 till uppgiften. Formaliaaspekter i texten 
 förstärker läsandet och är inte iögonfallande.
-
-Väntar på svar från Fackspråk om vad de tycker om detta på vår rapport
 
 ## Innehåll och förståelse
 
@@ -67,7 +63,7 @@ slutsatser.
 
 Kommer täckas av avsnittet "Diskussion/Teori och metodval"
 
-### Argumentation
+### (!) Argumentation
 
 Argumentation och diskussion är saklig, 
 välstrukturerad och väl avvägd. Den är underbyggd 
@@ -75,20 +71,27 @@ av korrekt innehåll och relevanta referenser, och 
 stöds av tydliga exempel och med referenser till 
 resultatredovisningen.
 
-- Hänvisa till resultat i diskussion
-- Vara saklig, inte löst påhittat snack (vi kan fortfarande diskutera, men motivera och hänvisa till att våra erfarenheter)
-- Skaffa referenser i diskussion och resultat och rapport i övrigt
+Ref till resultat
+- ~~Vad Åke tyckte, i [5.2.2.3]~~
+- ~~Vad testgrupp tyckte, i [5.2.2.3]~~
+- ~~Att läromaterialet har de grundläggande det har, i [5.2.2.2] & [5.2.2.1]~~
+
+Tydliga exemepel
+- ~~Utveckla väl dimensioner och lutande plan, i [5.2.2.2]~~
+- ~~Ha exemempel på hur DSL strukturerar, i [5.2.2.3]~~
+
+Referenser (är våra erfarenheter, och de finns det inga referenser på för det är våra upplevelser. Men här är ändå några refs man kan ha i diskussionen)
+- ~~Khan~~, LYAH, ~~DSL2016~~, DSLsofMath i [5.2.2.3]
+- *kanske* kan hitta något DSL-källa som säger likande vi gör i [5.2.2.2]
 
 ### (!) Resultatredovisning
 
-Redovisningen av resultat är korrekt och väl 
+*Redovisningen av resultat är korrekt och väl 
 genomförd på ett innovativt sätt. 
 Tillsammans med urvalet av tabeller, figurer 
 och exempel utgör resultatredovisningen en 
 övertygande helhet som är välanpassad för 
 den förväntade läsekretsen
-
-Lägger vi till lite mer tekniskt, t.ex. syntax-träd och symboliska ops för analys blir denna uppfylld.
 
 ### Analys i förhållande till teori/metod AIFTTM
 
@@ -98,9 +101,27 @@ och reflektion i förhållande till 
 teori och metod och andra 
 studier.
 
+Till metod
+- Att vi som urvalskriterie hade att skulle ha bra matematisk struktur, därför blev också de resulterande områdena sådana [5.2.1] och ~~[5.2.2.1]~~
+- ~~Kan inte dra några starka slutsatser av testgrupp för så kort undersökning. [5.2.2.3]~~
+
+
+Till teori
+- ~~Att använda Haskell [5.2.2.1]~~
+- ~~Att använda LHS gjorde passivt~~ står om i genomförandediskusson. Gräns mellan resultat och metod.
+
+Till andra studier
+- ~~DSL2016 gjorde också strukturgivande [5.2.2.3]~~
+- ~~Khan i [5.2.2.3]~~
+
+
+
+
 Vad betyder denna ens? 
 Att när vi diskuterar resultatet i diskussionen så knyter vi an till det vi
 skrivit i metod/teori.
+
+Saker i metoden gjorde att saker blev si och så.
 
 ### (!) Kritiskt förhållningssätt till resultat
 
@@ -111,15 +132,13 @@ dem. Författarna diskuterar även oklara och 
 oväntade resultat och sin studies relation till 
 andra studier eller tillämpningsområden.
 
-Detta tycker jag täcks i disk2.
+Relevans: vem är läromaterialet relevant för? [5.2]
 
-Oväntat resultat: 5.2 att vissa var olämpliga, och att därför bara har vissa områden.
+~~Oväntat: lämpliga. [Betona att oväntat i 5.2.2.2]~~
 
-Relevans: 5.3 att läromaterialet ger ett nytt sätt att tänka kring fysik som ger det struktur och att det kan väcka intresse hos de som gillar DSLs
+Relation till andra: ~~Khan~~, LYAH, ~~DSL2016~~, DSLsofMath, liknande [Skriv i 5.2.2.3]
 
-Relation till andra: Khan liknande, men utan DSLs. Inte än, men här kan vi snacka om DSL2016 och DSLsofMath.
-
-Allmän kritik: [5.1] är kritisk till att lite fysik-fokus. [5.3] är kritisk till att kort testgrupp.
+~~Annan kritik: [5.2.2.1] är kritisk till att lite fysik-fokus.~~
 
 ### (!) Faktainsamling
 

@@ -1,0 +1,44 @@
+
+issues på github, kan användas för att dokumentera frågor, ist för slack där frågor försvinner i flödet
+
+3 generella verktyg inom fysik:
+    calculus
+    vektorer?
+
+
+    MEGA BISARRO DSL? (johan)
+        separata små dsl eller allt intergrerat?
+
+    Uppgifter 
+        upphovsrätt
+            exempel från univsersity of physics
+            formuleringar från DSL, ex ang matematiska definitioner av komplexa tal
+
+Åke kommer hem 19de! Vi kan snart snacka med honom.
+
+halvtidsredovisningen kör vi demo på tisdag LV6
+    
+Att testa egenskaper i dsls:
+        "bevis", quickcheck (avrundningsfel)
+        
+        syntaxträds ekvivalens
+
+        hur kan man bevisa att deriveringsfunktionen håller sina egenskaper matematiskt
+
+        egenskaper för vektorer
+
+        quickcheck kan vara pedagogiskt för man måste definiera vilka egenskaper som ska gälla
+
+        kan bli för tidskrävande att fixa cononisering för allt?
+            simplify av syntaxträd?
+
+            enklare att stoppa in värden och evaluera?
+
+Patrik slår aldrig ihop alla DSLs till något monster DSL, utan gör flera små enskiljda DSLs.
+
+    vi verkar välja att köra på mini DSLs.
+
+    man kan ha ett typ-uppgifts bibliotek
+
+    vissa moduler som SI-units kanske kan användas i andra moduler.
+        

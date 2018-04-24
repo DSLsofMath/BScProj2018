@@ -66,7 +66,9 @@ expressions for validity.
 Look, we'll demonstrate. Let's say we want to model a language that is
 a subset to the common algebra we're all familiar with. Our language
 will consist expressions of a single variable and addition. For
-example, these are valid expressions in such a language:
+example, the following three expressions are all valid in such a language:
+
+$$x + x$$
 
 $$x$$
 
@@ -90,7 +92,7 @@ or two expressions added together.
 
 And that's it, kind of! A DSL without any associated functions for
 validation, symbolic manipulation, evaluation, or somesuch, is really
-no DSL at all! We mush DO something with it, or there is no point!
+no DSL at all! We must DO something with it, or there is no point!
 
 One thing we can do with expressions such as these, is compare whether
 two of them are equal. Even without using any numbers, we can test

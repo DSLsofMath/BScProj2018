@@ -34,16 +34,12 @@ tydligt sätt. Dessutom är urval och omfång tydligt 
 kopplade till studiens syfte och övrigt innehåll i en 
 välbalanserad rapport.
 
-Vad betyder denna ens?
-
 ### (!) Formalia
 
 Rapportens längd och formalia följer Chalmers 
 centrala anvisningar och är effektivt anpassade 
 till uppgiften. Formaliaaspekter i texten 
 förstärker läsandet och är inte iögonfallande.
-
-Väntar på svar från Fackspråk om vad de tycker om detta på vår rapport
 
 ## Innehåll och förståelse
 

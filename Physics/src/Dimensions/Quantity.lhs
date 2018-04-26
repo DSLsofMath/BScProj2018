@@ -2,7 +2,7 @@
 Quantities
 ==========
 
-We'll now create a data type for quantities and combine dimensions on value-level and type-level. Just as before, a bunch of GHC-extensions are necessary.
+\ignore{
 
 > {-# LANGUAGE UndecidableInstances #-}
 > {-# LANGUAGE FlexibleInstances #-}
@@ -11,42 +11,31 @@ We'll now create a data type for quantities and combine dimensions on value-leve
 > {-# LANGUAGE TypeOperators #-}
 > {-# LANGUAGE KindSignatures #-}
 
-TODO: The module header is overly long. Please group several (related) operations on each line
+}
 
 > module Dimensions.Quantity
-> ( Quantity
-> , length
-> , mass
-> , time
-> , current
-> , temperature
-> , substance
-> , luminosity
-> , one
-> , velocity
-> , acceleration
-> , force
-> , momentum
-> , (~=)
-> , isZero
-> , (#)
-> , (+#)
-> , (-#)
-> , (*#)
-> , (/#)
-> , sinq
-> , cosq
-> , asinq
-> , acosq
-> , atanq
-> , expq
-> , logq
-> )
-> where
-
+>     ( Quantity
+>     , length, mass, time, current, temperature, substance, luminosity, one
+>     , velocity, acceleration, force, momentum
+>     , (~=)
+>     , isZero
+>     , (#)
+>     , (+#), (-#), (*#), (/#)
+>     , sinq, cosq, asinq, acosq, atanq, expq, logq
+>     ) where
+> 
 > import qualified Dimensions.ValueLevel as V
 > import           Dimensions.TypeLevel  as T
 > import           Prelude               as P hiding (length, div)
+
+We'll now create a data type for quantities and combine dimensions on value-level and type-level. Just as before, a bunch of GHC-extensions are necessary.
+
+< {-# LANGUAGE UndecidableInstances #-}
+< {-# LANGUAGE FlexibleInstances #-}
+< {-# LANGUAGE GADTs #-}
+< {-# LANGUAGE DataKinds #-}
+< {-# LANGUAGE TypeOperators #-}
+< {-# LANGUAGE KindSignatures #-}
 
 First we create the data type for quantities.
 
@@ -102,7 +91,7 @@ TODO: (here and elsewhere) use "print" or "pretty print" or "pretty-print", not 
 
 Note that the `Quantity` data type has both value-level and type-level dimensions. As previosuly mentioned, value-level in order to print prettily and type-level to only permit legal operations.
 
-**Exercise.** Create a data type which has two type-level dimensions, always use `Rational` as the value-holding type (the role of `v`) but which has no value-level dimensions.
+**Exercise** Create a data type which has two type-level dimensions, always use `Rational` as the value-holding type (the role of `v`) but which has no value-level dimensions.
 
 TODO: What is the purpose (semantics, intended meaning or use) of Quantity'?
 
@@ -142,9 +131,9 @@ Multiplication is
 
 The type has the following interpretation: two values of type `Quantity dx v` is input, where `dx` are two types representing (potentially different) dimensions. As output, a value of type `Quantity` is returned. The type in the `Quantity` will be the type that is the product of the two dimensions in.
 
-**Exercise.** Implement subtraction and division.
+**Exercise** Implement subtraction and division.
 
-![Are you a cowboy?](Cowboy.png){.float-img-right}
+![](Cowboy.png "Are you a cowboy?"){.float-img-right}
 
 <details>
 <summary>**Solution**</summary>
@@ -152,8 +141,8 @@ The type has the following interpretation: two values of type `Quantity dx v` is
 
 Hold on cowboy! Not so fast. We'll come back later to subtraction and division, so check your solution then.
 
-</div>
-</details>
+ </div>
+ </details>
 
 Now on to some example values and types.
 
@@ -198,7 +187,7 @@ The type-level dimensions are used below to enforce, at compile-time, that only 
 
 If the dimensions had been value-level only, this error would go undetected until run-time.
 
-**Exercise.** What is the volume of a cuboid with sides $1.2\ m$, $0.4\ m$ and $1.9\ m$? Create values for the involved quantities. Use `Float` instead of `Double`.
+**Exercise** What is the volume of a cuboid with sides $1.2\ m$, $0.4\ m$ and $1.9\ m$? Create values for the involved quantities. Use `Float` instead of `Double`.
 
 <details>
 <summary>**Solution**</summary>
@@ -218,8 +207,8 @@ If the dimensions had been value-level only, this error would go undetected unti
 > volume :: Quantity Volume Float
 > volume = quantityMul side1 (quantityMul side2 side3)
 
-</div>
-</details>
+ </div>
+ </details>
 
 Pretty-printer
 --------------
@@ -243,7 +232,7 @@ It's useful to be able to compare quantities. Perhaps one wants to know which of
 > instance (Eq v) => Eq (Quantity d v) where
 >   (==) = quantityEq
 
-**Exercise.** Make `Quantity` an instance of `Ord`.
+**Exercise** Make `Quantity` an instance of `Ord`.
 
 <details>
 <summary>**Solution**</summary>
@@ -257,8 +246,8 @@ It's useful to be able to compare quantities. Perhaps one wants to know which of
 > instance (Ord v) => Ord (Quantity d v) where
 >   compare = quantityCompare
 
-</div>
-</details>
+ </div>
+ </details>
 
 We often use `Double` as the value holding type. Doing exact comparsions isn't always possible to due rounding errors. Therefore, we'll create a `~=` function for testing if two quantities are almost equal.
 
@@ -346,7 +335,7 @@ The input here may actually be of *different* types, and the output has a type d
 
 However, operations with only scalars (type `One`) has types compatible with `Num`.
 
-**Exercise.** `Quantity One` has compatible types. Make it an instance of `Num`, `Fractional`, `Floating` and `Functor`.
+**Exercise** `Quantity One` has compatible types. Make it an instance of `Num`, `Fractional`, `Floating` and `Functor`.
 
 <details>
 <summary>**Solution**</summary>
@@ -382,8 +371,8 @@ However, operations with only scalars (type `One`) has types compatible with `Nu
 > instance Functor (Quantity One) where
 >   fmap = qmap
 
-</div>
-</details>
+ </div>
+ </details>
 
 Syntactic sugar
 ---------------
@@ -413,7 +402,7 @@ TODO: Please use "1" instead of "0" in all the dimensions. That signifies an amo
 > time :: (Num v) => Quantity Time v
 > time = Quantity V.time 0
 
-**Exercise.** Do the rest.
+**Exercise** Do the rest.
 
 <details>
 <summary>**Solution**</summary>
@@ -434,8 +423,8 @@ TODO: Please use "1" instead of "0" in all the dimensions. That signifies an amo
 > one :: (Num v) => Quantity One v
 > one = Quantity V.one 0
 
-</div>
-</details>
+ </div>
+ </details>
 
 And now the sugar.
 
@@ -488,9 +477,7 @@ TODO: Dessa har alla Double som värdetyp. Hur förhindra det? Explicita typsign
 
 Just for convenience sake we'll define a bunch of common composite dimensions. Erm, *you'll* define.
 
----
-
-**Exericse.** Define pre-made values for velocity, acceleration, force, momentum and energy.
+**Exericse** Define pre-made values for velocity, acceleration, force, momentum and energy.
 
 <details>
 <summary>**Solution**</summary>
@@ -502,10 +489,8 @@ Just for convenience sake we'll define a bunch of common composite dimensions. E
 > momentum     = force    *# time
 > energy       = force    *# length
 
-</div>
-</details>
-
----
+ </div>
+ </details>
 
 Alternative sugar with support for units
 ----------------------------------------
@@ -543,8 +528,8 @@ Notice how the value is multiplied with the "base value" of the unit. This funct
 < ghci> velocity1 +# velocity2
 < 67.77 m/s
 
-</div>
-</details>
+ </div>
+ </details>
 
 A physics example
 -----------------
@@ -557,7 +542,7 @@ The exercise is "A dog runs, jumps and lands sliding on a carriage. The dog weig
 
 This is illustrated in the painting below.
 
-<img src="Exercise.png" alt="" style="width: 600px;"/>
+![](Exercise.png "Dog on a cart"){.img-center}
 
 a) Calculate the (shared) final velocity of the dog and the carriage.
 

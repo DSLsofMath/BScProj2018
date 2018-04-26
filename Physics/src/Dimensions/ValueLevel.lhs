@@ -162,7 +162,7 @@ We use `showDim` to make `Dim` an instance of `Show`
 > instance Show Dim where
 >   show = showDim
 
-Now dimensions are printed quite prettily in GHCi
+Now dimensions are printed in a quite pretty way in GHCi
 
 < ghci> momentum
 < kg*m/s

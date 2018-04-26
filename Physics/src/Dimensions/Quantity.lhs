@@ -113,8 +113,8 @@ TODO: What is the purpose (semantics, intended meaning or use) of Quantity'?
 < data Quantity' (d1 :: T.Dim) (d2 :: T.Dim) where
 <   Quantity' :: Rational -> Rational -> Quantity' d1 d2
 
-</div>
-</details>
+ </div>
+ </details>
 
 A taste of types
 ----------------

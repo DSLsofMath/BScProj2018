@@ -16,7 +16,7 @@ The dimension of a quantity is often implicitly understood given its unit. If I 
 
 There are 7 *base dimensions*, each with a corresponding SI-unit.
 
-![The 7 base dimensions](Base_dimensions.png)
+![](Base_dimensions.png "The 7 base dimensions")
 
 - Length (metre)
 - Mass (kilogram)

@@ -5,7 +5,7 @@
 About this tutorial
 ======================================================================
 
-You've arrived at **Learn You a Physics for Great Good**,
+You've arrived at **Learn You a Physics for Great Good!**,
 the #1 stop for all your beginner-to-intermediate needs of learning
 **Physics** through the use of **Domain Specifc Languages**
 (hereinafter DSLs (mostly but not always)).
@@ -164,3 +164,34 @@ If there's some part of the material that you still think is unclear
 (or maybe even wrong? Blasphemy!), please [open an issue on the github
 repo!](https://github.com/DSLsofMath/BScProj2018/issues). We'll look
 into it!
+
+A note on hidden and un-hidden code
+===================================
+
+Some of code needed for all this to work is hidden from you! Why? Because that code is often very tedious *and* not meaningful for learing physics. Don't worry though, since its really not any critical code hidden and we always tell you what's missing when it's missing.
+
+We include the module heders for all files so you can get a feeling for where in the source code you are. You can read more about the Haskell module syntax at [Learn You a Haskell for Great Good!](http://learnyouahaskell.com/modules#making-our-own-modules)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

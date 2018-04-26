@@ -2,15 +2,6 @@
 Value-level dimensions
 ======================
 
-From the introduction, two things became apparanent:
-
-1. Given the unit of a quantity, its dimension is known implicitly.
-2. If we only work with SI-units, there is a one-to-one correspondence between dimensions and units.
-
-We'll use these facts when implementing dimensions. More precisely, "length" and "metre" will be interchangable, and so on.
-
-What you see below is the [Haskell module syntax](http://learnyouahaskell.com/modules#making-our-own-modules). Why do we show it to you? Because we don't want to hide any code from you if you follow along this tutorial.
-
 > module Dimensions.ValueLevel
 >     ( Dim(..)
 >     , mul
@@ -24,10 +15,17 @@ What you see below is the [Haskell module syntax](http://learnyouahaskell.com/mo
 >     , luminosity
 >     , one
 >     ) where
-
+> 
 > import Prelude hiding (length, div)
 
-A dimension can be seen as a product of the base dimensions, with an individual exponent on each base dimension. Since the 7 base dimensions are known in advance, we can design our data type using this fact.
+From the introduction, two things became apparanent:
+
+1. Given the unit of a quantity, its dimension is known implicitly.
+2. If we only work with SI-units, there is a one-to-one correspondence between dimensions and units.
+
+We'll use these facts when implementing dimensions. More precisely, "length" and "metre" will be interchangable, and so on.
+
+A dimension can be seen as a product of the base dimensions, with an individual exponent on each base dimension. Because the 7 base dimensions are known in advance, we can design our data type using this fact.
 
 > data Dim = Dim Integer -- Length
 >                Integer -- Mass
@@ -64,8 +62,8 @@ Noticed how we used "m" (for metre) for implicitly refering to the dimension "le
 > area         = Dim 2 0 0    0 0 0 0
 > charge       = Dim 0 0 1    1 0 0 0
 
-</div>
-</details>
+ </div>
+ </details>
 
 Multiplication and division
 ---------------------------
@@ -86,8 +84,8 @@ Dimensions can be multiplied and divided. Velocity is, as we just saw, a divisio
 > (Dim le1 ma1 ti1 cu1 te1 su1 lu1) `div` (Dim le2 ma2 ti2 cu2 te2 su2 lu2) =
 >   Dim (le1-le2) (ma1-ma2) (ti1-ti2) (cu1-cu2) (te1-te2) (su1-su2) (lu1-lu2)
 
-</div>
-</details>
+ </div>
+ </details>
 
 It's now possible to construct dimensions in the following fashion.
 
@@ -95,8 +93,6 @@ It's now possible to construct dimensions in the following fashion.
 > area'     = length `mul` length
 > force     = mass   `mul` acceleration
 > momentum  = force  `mul` time
-
-TODO: try to replace "since" by "because" (in many places) to avoid confusion with the meaning of "since" in the time-domain.
 
 A dimension we so far haven't mentioned is the *scalar*, which shows up when working with, for example, coefficients of friction. It's dimensionless because it arises from division of two equal dimensions. The case of coefficients of friction looks like
 
@@ -113,19 +109,21 @@ A dimension we so far haven't mentioned is the *scalar*, which shows up when wor
 > one  = Dim 0 0 0 0 0 0 0
 > one' = force `div` force
 
-</div>
-</details>
+ </div>
+ </details>
 
 Pretty-printer
 --------------
 
-![A not so pretty printer](Printer.png){.float-img-left}
+![](Printer.png "A not so pretty printer"){.float-img-left}
 
 The purpose of value-level dimensions is to be able to print 'em nicely. The pretty printer should be function with the type
 
 < showDim :: Dim -> String
 
-meaning it shows a dimension as a string. How to actually implement this is not the interesting part in this tutorial, so you may with good conscience skip this implementation. However, if you're curios, you can still take a look at it.
+meaning it shows a dimension as a string. But how to actually implement this is not the interesting part of this tutorial. Hence we skip it.
+
+\ignore{
 
 > showDim :: Dim -> String
 > showDim (Dim le ma ti cu te su lu)
@@ -156,11 +154,15 @@ meaning it shows a dimension as a string. How to actually implement this is not 
 >     len :: (Integral n) => [a] -> n
 >     len [] = 0
 >     len (a:as) = 1 + len as
->
+
+}
+
+We use `showDim` to make `Dim` an instance of `Show`
+
 > instance Show Dim where
 >   show = showDim
 
-Now dimensions are printed quite pretty in GHCi.
+Now dimensions are printed quite prettily in GHCi
 
 < ghci> momentum
 < kg*m/s

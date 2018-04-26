@@ -158,20 +158,15 @@ From this module, we export a function `runTests`. That function runs all the te
 
 > runTests :: IO ()
 > runTests = do
->   putStrLn "Dimensions value-level: Multiplication commutative"
 >   quickCheck prop_mulCommutative
->   putStrLn "Dimensions value-level: Multiplication associative"
 >   quickCheck prop_mulAssociative
->   putStrLn "Dimensions value-level: `one` is unit for multiplication"
 >   quickCheck prop_mulOneUnit
->   putStrLn "Dimensions value-level: Dividing by a division brings up the lowest denominator"
->   quickCheck prop_divTwice
->   putStrLn "Dimensions value-level: Multiplication and divison cancel each other out"
 >   quickCheck prop_mulDivCancel
->   putStrLn "Dimensions value-level: Dividing by `one` does nothing"
 >   quickCheck prop_divOne
->   putStrLn "Dimensions value-level: Multiplication by x is the same as dividing by the inverse of x"
+>   quickCheck prop_divTwice
 >   quickCheck prop_mulDivInv
+>   quickCheck prop_correctDim
+>   putStrLn "Value-level dimensions tests passed!"
 
 }
 

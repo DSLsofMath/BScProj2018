@@ -159,12 +159,12 @@ function.
 
 ...
 
-Wait, didn't we just look at instantaneous rates of changes (blarh my
-tounge is getting tired) in the previous section on differences? Well
-yes, and the difference quotient for a function at a point with a very
-small step $h$ is indeed a good way to numerically approximate the
-derivative of a function. From what we found then, we can derive a
-general expression for instantaneous rate of change
+Wait, didn't we just look at instantaneous rates of changes in the
+previous section on differences? Well yes, and the difference quotient
+for a function at a point with a very small step $h$ is indeed a good
+way to numerically approximate the derivative of a function. From what
+we found then, we can derive a general expression for instantaneous
+rate of change
 
 $$\frac{(\Delta f)(h, x)}{(\Delta id)(h, x)} = \frac{f(x + h) - f(x)}{h}$$
 
@@ -281,15 +281,15 @@ For example, how do we derive `f :+ g`? Let's start by doing it
 mathematically.
 
 \begin{align*}
-D(f + g) &= a \mapsto lim_{h \to 0} \frac{(f + g)[a + h] - (f + g)[a]}{h} \\
-         & \text{ \{ Addition of functions \} } \\
-         &= a \mapsto lim_{h \to 0} \frac{f(a + h) + g(a + h) - (f(a) + g(a))}{h} \\
-         &= a \mapsto lim_{h \to 0} \frac{f(a + h) + g(a + h) - f(a) - g(a)}{h} \\
-         &= a \mapsto lim_{h \to 0} (\frac{f(a + h) - f(a)}{h} + \frac{g(a + h) - g(a)}{h}) \\
-         &= a \mapsto ((lim_{h \to 0} \frac{f(a + h) - f(a)}{h}) + (lim_{h \to 0} \frac{g(a + h) - g(a)}{h})) \\
-         &= (a \mapsto lim_{h \to 0} \frac{f(a + h) - f(a)}{h}) + (a \mapsto lim_{h \to 0} \frac{g(a + h) - g(a)}{h}) \\
-         & \text{ \{ Definition of derivative \} } \\
-         &= D(f) + D(g)
+D(f + g) = &a \mapsto lim_{h \to 0} \frac{(f + g)[a + h] - (f + g)[a]}{h} \\
+           &\text{ \{ Addition of functions \} } \\
+         = &a \mapsto lim_{h \to 0} \frac{f(a + h) + g(a + h) - (f(a) + g(a))}{h} \\
+         = &a \mapsto lim_{h \to 0} \frac{f(a + h) + g(a + h) - f(a) - g(a)}{h} \\
+         = &a \mapsto lim_{h \to 0} (\frac{f(a + h) - f(a)}{h} + \frac{g(a + h) - g(a)}{h}) \\
+         = &a \mapsto ((lim_{h \to 0} \frac{f(a + h) - f(a)}{h}) + (lim_{h \to 0} \frac{g(a + h) - g(a)}{h})) \\
+         = &(a \mapsto lim_{h \to 0} \frac{f(a + h) - f(a)}{h}) + (a \mapsto lim_{h \to 0} \frac{g(a + h) - g(a)}{h}) \\
+           &\text{ \{ Definition of derivative \} } \\
+         = &D(f) + D(g)
 \end{align*}
 
 Oh, it's just the sum of the derivatives of both functions! The
@@ -306,29 +306,43 @@ And the limit
 
 $$\lim_{x \to 0} \frac{sin x}{x} = 1$$
 
-which can be proved using the unit circle and squeeze theorem, but we
-won't do that here.
+the proof of which is left as an exercise to the reader
+
+**Exercise.** Prove the limit $\lim_{x \to 0} \frac{sin x}{x} = 1$
+
+<details>
+<summary>**Hint**</summary>
+<div>
+
+This limit can be proven using the [unit circle](https://en.wikipedia.org/wiki/Unit_circle) and [squeeze theorem](https://en.wikipedia.org/wiki/Squeeze_theorem)
+
+</div>
+</details>
 
 Then, the differentiation
 
 \begin{align*}
-D(sin) &= a \mapsto lim_{h \to 0} \frac{sin(a + h) - sin(a)}{h} \\
-       & \text{ \{ trig. sum-to-product \} } \\
-       &= a \mapsto lim_{h \to 0} \frac{2 \sin\left(\frac{a + h - a}{2}\right) \cos\left(\frac{a + h + a}{2}\right)}{h} \\
-       &= a \mapsto lim_{h \to 0} \frac{2 \sin\left(\frac{h}{2}\right) \cos\left(\frac{2a + h}{2}\right)}{h} \\
-       &= a \mapsto lim_{h \to 0} \frac{2 \sin\left(\frac{h}{2}\right) \cos\left(\frac{2a + h}{2}\right)}{h} \\
-       &= a \mapsto lim_{h \to 0} \frac{\sin\left(\frac{h}{2}\right)}{\frac{h}{2}} \cos\left(\frac{2a + h}{2}\right) \\
-       & \text{\{} h \text{ approaches } 0 \text{\}} \\
-       &= a \mapsto 1 \cos\left(\frac{2a + 0}{2}\right) \\
-       &= a \mapsto \cos(a) \\
-       &= \cos \\
+D(sin) = &a \mapsto lim_{h \to 0} \frac{sin(a + h) - sin(a)}{h} \\
+         &\text{ \{ trig. sum-to-product \} } \\
+       = &a \mapsto lim_{h \to 0} \frac{2 \sin\left(\frac{a + h - a}{2}\right) \cos\left(\frac{a + h + a}{2}\right)}{h} \\
+       = &a \mapsto lim_{h \to 0} \frac{2 \sin\left(\frac{h}{2}\right) \cos\left(\frac{2a + h}{2}\right)}{h} \\
+       = &a \mapsto lim_{h \to 0} \frac{2 \sin\left(\frac{h}{2}\right) \cos\left(\frac{2a + h}{2}\right)}{h} \\
+       = &a \mapsto lim_{h \to 0} \frac{\sin\left(\frac{h}{2}\right)}{\frac{h}{2}} \cos\left(\frac{2a + h}{2}\right) \\
+         &\text{\{} h \text{ approaches } 0 \text{\}} \\
+       = &a \mapsto 1 \cos\left(\frac{2a + 0}{2}\right) \\
+       = &a \mapsto \cos(a) \\
+       = &\cos \\
 \end{align*}
 
 Again, trivial definition in Haskell
 
 > derive Sin = Cos
 
-I'll leave the proving of the rest of the implementations as an exercise to you, the reader.
+**Exercise.** Derive the rest of the cases using the definition of the derivative
+
+<details>
+<summary>**Solution**</summary>
+<div>
 
 > derive Exp = Exp
 > derive Log = Const 1 :/ Id
@@ -338,7 +352,8 @@ I'll leave the proving of the rest of the implementations as an exercise to you,
 > derive (f :- g) = derive f :- derive g
 > derive (f :* g) = derive f :* g :+ f :* derive g
 > derive (f :/ g) = (derive f :* g :- f :* derive g) :/ (g:^(Const 2))
-> derive (f :^ g) = f:^(g :- Const 1) :* (g :* derive f :+ f :* (Log :. f) :* derive g)
+> derive (f :^ g) =    f:^(g :- Const 1)
+>                   :* (g :* derive f :+ f :* (Log :. f) :* derive g)
 > derive Id = Const 1
 > derive (Const _) = Const 0
 > derive (f :. g) = derive g :* (derive f :. g)
@@ -352,7 +367,8 @@ for integral is *Antiderivative*...
 
 > derive (I c f) = f
 
-
+</div>
+</details>
 
 Keep it simple
 ----------------------------------------------------------------------
@@ -377,7 +393,7 @@ But still, we shouldn't have to do that manually! Let's have
 Mr. Computer help us out, by writing a function to simplify
 expressions.
 
-We'll write a `simplify` function will reduce an expression to a
+We'll write a `simplify` function which will reduce an expression to a
 simpler, equivalent expression. Sounds good, only... what exactly does
 "simpler" mean? Is $10$ simpler than $2 + 2 * 4$? Well, yes obviously,
 but there are other expressions where this is not the case. For
@@ -400,6 +416,8 @@ be, so we don't have to simplify those. When it comes to the
 arithmetic operations, most interesting is the cases of one operand
 being the identity element.
 
+For addition and subtraction, it's $0$
+
 > simplify (f :+ g) = case (simplify f, simplify g) of
 >     (Const 0, g') -> g'
 >     (f', Const 0) -> f'
@@ -407,17 +425,25 @@ being the identity element.
 >     (f', g') | f' == g' -> simplify (Const 2 :* f')
 >     (Const a :* f', g') | f' == g' -> simplify (Const (a + 1) :* f')
 >     (f', Const a :* g') | f' == g' -> simplify (Const (a + 1) :* f')
->     (Const a :* f', Const b :* g') | f' == g' -> simplify (Const (a + b) :* f')
+>     (Const a :* f', Const b :* g') | f' == g'
+>       -> simplify (Const (a + b) :* f')
 >     (f', g') -> f' :+ g'
 > simplify (f :- g) = case (simplify f, simplify g) of
 >     (f', Const 0 :- g') -> f' :+ g'
 >     (f', Const 0) -> f'
->     (Const a, Const b) -> if a > b then Const (a - b) else Const 0 :- Const (b - a)
+>     (Const a, Const b) -> if a > b
+>                           then Const (a - b)
+>                           else Const 0 :- Const (b - a)
 >     (f', g') | f' == g' -> Const 0
 >     (Const a :* f', g') | f' == g' -> simplify (Const (a - 1) :* f')
->     (f', Const a :* g') | f' == g' -> Const 0 :- simplify (Const (a - 1) :* f')
->     (Const a :* f', Const b :* g') | f' == g' -> simplify ((Const a :- Const b) :* f')
+>     (f', Const a :* g') | f' == g'
+>       -> Const 0 :- simplify (Const (a - 1) :* f')
+>     (Const a :* f', Const b :* g') | f' == g'
+>       -> simplify ((Const a :- Const b) :* f')
 >     (f', g') -> f' :- g'
+
+For multiplication and division, the identity element is $1$, but the case of one operand being $0$ is also interesting
+
 > simplify (f :* g) = case (simplify f, simplify g) of
 >     (Const 0, g') -> Const 0
 >     (f', Const 0) -> Const 0
@@ -435,13 +461,35 @@ being the identity element.
 >     (f', Const 1) -> f'
 >     (f', g') | f' == g' -> Const 1
 >     (f', g') -> f' :/ g'
+
+Exponentiation is not commutative, and further has no (two-sided) identity element. However, it does have an "asymmetric" identity element: the right identity $1$!
+
 > simplify (f :^ g) = case (simplify f, simplify g) of
 >     (f', Const 1) -> f'
 >     (f', g') -> f' :^ g'
+
+**Exercises.** Look up (or prove by yourself) more identities (of
+  expressions, not identity elements) for exponentiation and implement
+  them.
+
+<details>
+<summary>**Solution**</summary>
+<div>
+
+For example, there is the identity of negative exponents. For any integer $n$ and nonzero $b$
+
+$$b^{-n} = \frac{1}{b^n}$$
+
+</div>
+</details>
+
+Intuitively, the identity function is the identity element for function composition
+
 > simplify (f :. g) = case (simplify f, simplify g) of
 >     (Id, g') -> g'
 >     (f', Id) -> f'
 >     (f', g') -> f' :. g'
+
 > simplify (Delta h f) = Delta h (simplify f)
 > simplify (D f) = D (simplify f)
 > simplify (I c f) = I c (simplify f)
@@ -456,3 +504,5 @@ With this new function, many expressions become much more readable!
 < (cos + (2 * id))
 
 A sight for sore eyes!
+
+**Exercise.** Think of more ways an expression can be "simplified", and add your cases to the implementation.

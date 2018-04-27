@@ -4,7 +4,7 @@
 \begin{draft}
 
 I detta kapitel beskrivs fyra områden av central betydelse för projektet. Dessa
-områden är domänspecifika språk, begreppen syntax, semantik och syntaxträd,
+områden är domänspecifika språk, begreppen syntax, syntaxträd och semantik,
 literat progammering samt ARCS-modellen och annan didaktik.
 
 \section{Domänspecifika språk}
@@ -26,19 +26,19 @@ förklaras i termer av grimmor, boxar och galopper.
 Domänspecifika språk är vanligt förekommande i programmeringssammanhang. HTML är
 ett domänspecifikt språk för textformatering, SQL för databashantering och
 CSV för tabeller. Precis som domänspecifika språk i vardagen passar
-domänspecifika språk inom programmering bäst för sitt egna domän. SQL är bra för
+domänspecifika språk inom programmering bäst för sin egen domän. SQL är bra för
 databaser men inte att göra ett spel i.
 
 Motsatsen till ett domänspecifikt språk är ett generellt språk. I vardagen är
 naturliga språk som svenska och engelska generella medan ryttar-begreppen ovan
 är domänspecifika. Precis som i vardagen finns det i datavärlden generella
-programmeringsspråk som C++ och Java. Dessa är turingkompletta, vilket betyder
+programmeringsspråk, till exempel C++ och Java. Dessa är turingkompletta, vilket betyder
 att det går att uttrycka alla beräkningsbara problem i dem och även lösa dem
 givet tillräckligt med tid och
 minnestillgångar\cite{turing_ne}\cite{turing_book}. Begränsningen med dessa
-generella språk är just deras egen generaliserbarhet, eftersom de har stöd för
+generella språk är att de är just generella. Eftersom de har stöd för
 alla typer av beräkningar så blir både läsbarheten och användarvänligheten
-lidande. Ett exempel på ett domänspecifikt språk i datavärlden är \textit{syntaxträd}. Syntaxträd har
+lidande. Ett exempel på en form av domänspecifika språk i datavärlden är \textit{syntaxträd}. Syntaxträd har
 använts mycket i projektet och beskrivs mer utförligt i
 avsnitt~\ref{sec:syntax}.
 
@@ -47,7 +47,7 @@ eller bäddas in i ett redan existerande språk. De domänspecifika språk som
 utvecklats inom detta projekt är inbäddade i programmeringsspråket
 \textit{Haskell}. Haskell är ett lämpligt val eftersom det är enkelt att skapa
 datatyper som bygger upp det domänspecifika språket. Att Haskell är ett
-högnivå-språk är också en fördel då man slipper programerings-tekniska detaljer,
+högnivå-språk är också en fördel då man slipper programeringstekniska detaljer,
 till exempel minneshantering, och istället kan fokusera på programmets innehåll
 och betydelse. Slutligen gör dess mönstermatchning att de datatyper som utgör
 det domänspecifika språket enkelt kan brytas isär och manipuleras.
@@ -86,7 +86,7 @@ Syntaxträdet innehåller \textit{datakonstruktorer} för att representera
 \textit{löv} (ändpunkter) och \textit{förgreningar}. I detta exempel är
 \texttt{:+:} och \texttt{:*:} förgreningar. Med hjälp av dem kan man uttrycka
 summan respektive produkten av två andra uttryck. Löven representeras av
-\texttt{Const}, det är en konstant som man ej kan bygga vidare på.
+\texttt{Const}. Det är en konstant som man ej kan bygga vidare på.
 
 Med datakonstruktorerna kan man konstruera uttryck i språket. Ett exempeluttryck
 från den tidigare datatypen visas i figur~\ref{fig:syntax_exempel_varde}.
@@ -95,15 +95,15 @@ från den tidigare datatypen visas i figur~\ref{fig:syntax_exempel_varde}.
   \begin{lstlisting}
 expr = Const 7 :*: (Const 3 :+: Const 10)
   \end{lstlisting}
-  \caption{Ett exempelvärde ur det tidigare syntaxträdet. Detta modellerar det
+  \caption{Ett exempeluttryck ur det tidigare syntaxträdet. Detta modellerar det
            matematiska uttrycket $7 * (3 + 10)$}\label{fig:syntax_exempel_varde}
 \end{figure}
 
 Figur~\ref{fig:syntax_exempel_varde} visar hur det aritmetiska uttrycket $7 * (3
 + 10)$ modelleras. Konstruktorn \texttt{:*:} får som sina två argument uttrycken
 \texttt{Const 7} och \texttt{Const 3 :+: Const 10}. Det är alltså en produkt av
-två deluttryck. Syntaxträd brukar illusteras med just träddiagram. Detta
-exempelvärde illustreras i figur \ref{fig:syntax_exempel_bild}.
+två deluttryck. Syntaxträd brukar illusteras med träddiagram. Detta
+exempeluttryck illustreras i figur \ref{fig:syntax_exempel_bild}.
 
 \begin{figure}[tph]
   \centering
@@ -131,12 +131,12 @@ evaluate (Const v)   = v
 Det finns tre saker som är speciellt värda att notera i
 figur~\ref{fig:eval_tree}. Den första är att eftersom syntaxen innehåller tre olika
 typer av element, här motsvarat av de tre datakonstruktorerna, krävs tre fall i
-beräkningsfunktionen som beräknar vardera av dem. \textit{evaluate} har
+beräkningsfunktionen som beräknar vardera av dem. \texttt{evaluate} har
 därför ett fall för \texttt{:+:}, ett för \texttt{:*:} och ett för
 \texttt{Const}. 
 
 Den andra saken att notera ur figur~\ref{fig:eval_tree} är hur ett fall
-beräknas. Hur beräkningen ska ses ut får man genom att ta hänsyn till
+beräknas. Hur beräkningen ska se ut får man genom att ta hänsyn till
 semantiken hos det syntaktiska elementet. \texttt{e1 :+: e2} är syntax för
 addition av de två uttrycken \texttt{e1} och \texttt{e2}. Därför blir
 semantiken, värdet, av \texttt{e1 :+: e2} lika med värdet hos \texttt{e1} och
@@ -159,8 +159,8 @@ kan läsas både av människor och datorer. Det visar sig på följande två sä
 
 Det ena sättet är att jämfört med traditionella program får dokumentationen en
 ökad betydelse. I traditionella program är programkoden den viktiga delen. I
-litterata program däremot är dokumentationen minst lika viktig. Den används till
-att förklara koden, sätta den i relationen till andra delar och så vidare.
+litterata program är däremot dokumentationen minst lika viktig. Den används till
+att förklara koden, sätta den i relationen till andra delar, med mera.
 Detta jämnbördiga förhållande syns konkret genom att titta på hur källkoden är
 skriven i ett literat program. Det kan till exempel se ut som i
 figur~\ref{fig:litterate_haskell_exempel} där man ser att källkoden och
@@ -178,20 +178,20 @@ then a value of that type is created
 > exampleValue :: ExampleType
 > exampleValue = Quantity V.length 5.3
 
-Note that the Quantity data type has both value-level and type-level dimensions.
-As previosuly mentioned, value-level in order to pretty print and type-level to only permit legal operations.
+Note that the Quantity data type has both value-level and type-level dimensions. As previosuly mentioned, value-level in order to pretty print and type-level to only permit legal operations.
 \end{lstlisting}
   \caption{Ett exempel på hur en källfil till litterat programmering kan se ut.
            Exemplet är Litterate Haskell. Rader som börjar med \texttt{>}
            markerar att det är progamkod, medan rader utan markerar att det är
            dokumentation.}\label{fig:litterate_haskell_exempel} 
 \end{figure}
+% OBS! Raden med "note that the quantity..." måste vara en lång rad. Annars blir det fel i PDF:en
 
 Det andra sättet ett litterat program skiljer sig åt är ordningen programkoden
 står i. Traditionell programmering börjar oftast med att definiera små funktioner
-och metoder med snäva användningsområden och använder sen dessa för att senare
+och metoder med snäva användningsområden och använder sedan dessa för att senare
 bygga ihop mer komplexa strukturer. Med literat programmering börjar man hellre
-med den komplexa strukturer först och skriver text som förklarar den generella
+med komplexa strukturer först och skriver text som förklarar den generella
 struktureren utan att gå in på detaljerna, för att sedan presentera de små
 delarna var för sig med tillhörande förklarande text.
 
@@ -203,8 +203,8 @@ se ut som i figur~\ref{fig:litterate_haskell_exempel}. Filen, med tillägget
 ignoreras och programkoden behandlas som om den var en vanlig
 Haskell-fil. \texttt{.lhs}-filen kan också kompileras till material avsett för
 mäniskor. Det finns flera verktyg som gör det men det som används i detta
-projekt är \textit{Pandoc}\cite{pandoc}. Med \textit{Pandoc} kan texten märkas
-up med både \texttt{markdown} (används i projektet) och \texttt{Latex}. Det går
+projekt är \textit{Pandoc}\cite{pandoc}. Med Pandoc kan texten märkas
+up med både \textit{Markdown} (används i projektet) och \textit{Latex}. Det går
 att exportera till bland annat HTML och PDF.
 \end{draft}
 
@@ -217,10 +217,10 @@ studenten tycker materialet är intressant eller att det finns belöningar i for
 av tillfredsställelsen att få att högt betyg. 
 
 \textit{Motiverande design} innebär att systematiskt utforma undervisningen på
-ett sådant sätt att studenten blir motiverad till att lära sig. Det handlar om
+ett sådant sätt att studenten blir motiverad till att vilja lära sig. Det handlar om
 att använda olika tekniker för att väcka och behålla motivation. Det finns ett
 flertal olika modeller för detta men i detta projekt används enbart den så
-kallade \textit{ARCS}-modellen.\cite{arcs_book}
+kallade \textit{ARCS-modellen}~\cite{arcs_book}.
 
 \textit{ARCS} är en förkortning av ``Attention, Relevance, Confidence and
 Satisfaction'', på svenska ``uppmärksamhet, relevans, självförtroende och
@@ -234,9 +234,8 @@ tillfredställelse efter att ha lärt sig något så att hen vill fortsätta lä
 sig. Det finns strategier för hur man genomför de olika delarna i praktiken och
 här följer en översikt för \textit{Attention}.\footnote{Eftersom projektet har
 ett begränsat fokus på de pedagogiska aspekterna, se
-avsnitt~\ref{sec:avgransningar}, har enbart \textit{Attention} och
-\textit{Confidence} tagits hänsyn till. Av det skälet är det enbart de två
-delarna beskrivna här.}
+avsnitt~\ref{sec:avgransningar}, har enbart \textit{Attention}  tagits hänsyn till. Av detta skäl är det enbart denna
+del beskriven här.}
 
 Utifrån det sociokulturella perspektivet som Vygotskij utvecklade\cite{LSB_kap5}
 lär sig elever av varandra. Eleverna befinner sig vid sin närmsta 
@@ -259,7 +258,6 @@ om olika struktur och ordning på utlärningen, till exempel att inte alltid
 utforma en lektion som föreläsning, demonstration och sedan övning, utan variera
 det med andra inslag, exempelvis ett filmklipp.
 
-
 %Jean Piaget - Kognitivismen (lära sig A, B, A + B -> C, alternativt att eleven utmanas med något den trodde var sant, och tvingas omformulera en lösning som stödjer den presenterade situationen). s157
 
 Då internetplattformars interaktion med eleven är begränsad i jämförelse med då
@@ -277,7 +275,37 @@ boken ``Dansa på deadline: Uppskjutandets psykologi''\cite{DPD}. Detta är änn
 orsak till varför det är bra med belöning exempelvis i formen av glädje då man
 ser att koden kompilerar. Läromaterialet innefattar även strategiskt placerade
 roliga bilder, för att ge impulsiva reaktioner av glädje. Sporadiska belöningar
+=======
+Utifrån det sociokulturella perspektivet som Vygotskij utvecklade~\cite{LSB_kap5}
+lär sig elever av varandra. Eleverna befinner sig vid sin proximala
+utvecklingszon, där eleverna kan hjälpa varandra att förstå innebörden av
+definitioner och uttryck genom att sätta ord på det de vill kommunicera. Denna
+typ av kommunikation skulle kunna tänkas hjälpa elever sätta fingret på det de
+inte förstår. Med denna bakgrunden skulle parprogrammering kunna vara
+fördelaktigt. Dels för att eleverna kan lära sig av varandra, dels att de genom att
+kommunicera sin förståelse internaliserar ämnet och bygger en djupare
+förståelse. Parprogrammering lämpar sig antagligen även för att begränsa
+flyktförsök, där elever medvetet eller mindre medvetet börjar göra något annat.
+
+%Jean Piaget - Kognitivismen (lära sig A, B, A + B -> C, alternativt att eleven utmanas med något den trodde var sant, och tvingas omformulera en lösning som stödjer den presenterade situationen). s157
+
+Då internetplattformars interaktion med eleven är begränsad, i jämförelse med då
+eleven är i skolan och har tillgång till lärare, brukar internetbaserade
+läroplattformar förlita sig på behavioristiska element i form av rätt eller fel
+svar~\cite{LSB_und}. Projketets läromaterial har visserligen ingen interaktiv sida,
+men typsystemet i Haskell skulle ändå tänkas kunna fungera som en fingervisare
+när studenten gör rätt eller fel. Det går exempelvis inte att addera olika fysikaliska dimensioner, och funktionskomposition fungerar endast om funktionens
+typdefinitioner (typer på argument och returvärde) stämmer överrens.
+
+Evolutionärt sett har snabba belöningar varit fördelaktiga gentemot långsiktiga
+som kräver långsiktigt engagemang (exempelvis öva inför en tenta) vilket beskrivs i
+boken \textit{Dansa på deadline: Uppskjutandets psykolog}~\cite{DPD}. Detta är ännu en
+orsak till varför det är bra med belöning, exempelvis i formen av glädje då studenten
+ser att koden kompilerar. Läromaterialet innefattar även sporadiskt placerade
+roliga bilder, för att ge sporadiska reaktioner av glädje. Sporadiska belöningar
 är något som enligt författarna påverkar oss människor extra mycket, och som de
-menar även används inom ex.v. spelbranchen.
+menar även används inom exempelvis spelbranchen.
+
+TODO: Flytta en del till genomförande.
 
 \end{draft}

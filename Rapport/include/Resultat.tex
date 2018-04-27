@@ -1,7 +1,7 @@
 \chapter{Resultat}
 
 I detta kapitel redovisas kortfattat det resulterande läromaterialet. Även
-resultaten från utvärderingen med testgruppen och möten med Fäldt redovisas.
+resultaten från utvärderingen med testgruppen och mötena med Fäldt redovisas.
 
 \begin{draft}
 
@@ -27,7 +27,7 @@ läromaterialet. Notera speciellt den medvetet oseriösa ritningstekniken som ä
 tänkt att vara rolig och muntra upp läsaren. Övningar ligger både i den löpande
 texten och i slutet av kapitlet. Övningarna i den löpande texten innebär oftast
 att läsaren ska implementera en liten del av det aktuella domänspecifika språket
-på egen hand. Det här illustreras i figur~\ref{fig:smakprov_ovning}.
+på egen hand, vilket illustreras i figur~\ref{fig:smakprov_ovning}. Övningarna i slutet av kapitlet innebär ofta större vidareutvecklingsmöjligheter på de domänspecifika språken.
 
 \begin{figure}[tph]
     \centering
@@ -56,10 +56,11 @@ sin fullständighet är de behandlade områdena:
   \item Dimensioner
   \item Matematisk analys
   \item Vektorer
-  \item Kompositioner och tillämpningar av ovanstående
+  \item Exempelproblem
+  \item Partikelmekanik
 \end{itemize}
 
-\textit{Dimensioner} behandlar dimensioner, storheter och enheter inom fysiken.
+\textit{Dimensioner} behandlar fysikaliska dimensioner, storheter och enheter inom fysiken.
 Fysikaliska dimensioner införs på typnivå i Haskell för att visa likheten mellan
 Haskells typsystem och hur man måste förhålla sig till dimensioner inom fysiken.
 Typnivå-programmering\footnote{Vanligtvis manipuleras \textit{värden} när man
@@ -79,32 +80,22 @@ syntaxträdet. Slutligen appliceras de implementerade funktionerna för
 att visualisera grafer av operationerna.
 
 \textit{Vektorer} behandlar vektorer och vektoroperationer. Vektorer modelleras
-som med hjälp av en typklass som dikterar vilka funktioner som varje
+med hjälp av en typklass som dikterar vilka funktioner som varje
 modell av en vektor måste implementera. Generella vektoroperationer såsom
-addition och skalärprodukt implementerades sedan med hjälp av dessa funktioner
-vilket skapade ett mycket generellt och lättanvänt gränssnitt. Quickcheck
+addition och skalärprodukt implementeras sedan med hjälp av dessa funktioner
+vilket skapade ett mycket generellt och lättanvänt gränssnitt. QuickCheck
 användes för att verifiera lagarna som gäller för olika vektoroperationer,
 vilket gav en generell säkerhet kring att implementationerna var korrekta.
 
-I läromataterialet finns, förutom de fyra ovanstående grundläggande områdena,
-även tillämpningar av dem på exempelproblem. Till exempel används dimensioner
-till att lösa problem med fritt fall. De tillämpningar som behandlats är
+I \textit{exempelproblem} tillämpas de tre tidigare kapitlena på två vanliga mekanikproblem, nämligen \textit{krafter på lådor} och \textit{gungbräda}. I krafter på lådor används det domänspecifika språket för vektorer till att beräkna de krafter som verkar på en låda som glider ner för ett plan. I grungbräda visas hur momentjämviktsberäkningar kan göras med det domänspecifika språket för dimensioner.
 
-\begin{itemize}
-  \item Gundbräda
-  \item Krafter på lådor
-\end{itemize}
+\textbf{TODO:} \textit{Partikelmekanik} 
 
-\textbf{TODO:} Gör PSSSO\footnote{På Samma Sätt Som Ovan} för de kompisita områdena, dvs skriv
-vad varje handlar om.
-
-\textbf{TODO:} \textit{Single particle mechanics} 
-
-Läromaterialet blev publicerat på en hemsida\cite{LYAP} och all källkod finns
-tillgänglig på projektets GitHub-repository.\cite{LYAP_repo} Texten är skriven
+Läromaterialet blev publicerat på en hemsida~\cite{LYAP} och all källkod finns
+tillgänglig på projektets GitHub-repository~\cite{LYAP_repo}. Texten är skriven
 på engelska.
 
-Förutom de områden som nämnts hittills finns ett antal delvis färdigställda områden, till exempel bevisföring. Den intresserade läsaren hänvisas till projektets GitHub-repository\cite{LYAP_repo}.
+Förutom de områden som nämnts hittills finns ett antal delvis färdigställda områden, till exempel bevisföring. Den intresserade läsaren hänvisas till projektets GitHub-repository~\cite{LYAP_repo}.
 
 \section{Utvärderingen med testgruppen}\label{sec:res_test}
 
@@ -129,7 +120,7 @@ uppmuntrade testgruppen att vilja lära sig mer fysik.
 påpekas att det som är återgivet här självklart har tolkats, och kan ha
 missuppfattats, av projektgruppen. Fäldt ska med andra ord inte behöva stå till
 svars för vad som står här.} Fäldt tyckte att det fanns flera saker
-läromaterialet kunde bidra med. En bra sak var att läromaterialet ger att annat
+läromaterialet kunde bidra med. En bra sak var att läromaterialet ger ett annat
 perspektiv på fysiken, ett annat sätt att förklara den genom att göra det med
 hjälp av domänspecifika språk. En annan bra sak var den rigorösitet som
 domänspecifika språk leder till. Eftersom de domänspecifika språken måste vara

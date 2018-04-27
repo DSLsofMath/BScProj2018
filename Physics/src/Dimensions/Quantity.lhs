@@ -23,7 +23,7 @@ Quantities
 >     , (+#), (-#), (*#), (/#)
 >     , sinq, cosq, asinq, acosq, atanq, expq, logq
 >     ) where
-> 
+
 > import qualified Dimensions.ValueLevel as V
 > import           Dimensions.TypeLevel  as T
 > import           Prelude               as P hiding (length, div)
@@ -37,75 +37,125 @@ We'll now create a data type for quantities and combine dimensions on value-leve
 < {-# LANGUAGE TypeOperators #-}
 < {-# LANGUAGE KindSignatures #-}
 
-First we create the data type for quantities.
+So what exactly does a physical "quantity" contain? Have a look at this picture
 
-TODO: A bit confusing to use the same name for both the type constructor and the value constructor.
+![](QuantityImg.png "Anatomy of a quantity")
 
-TODO: Please explain the purpose of Quantity? (semantics, intended meaning or use, problem avoided, etc.).
+This is what quantities look like in physics calculations. They have a *numerical value* and a *dimension* (which is often given by instead writing its *unit*). The whole thing combined is the *quantity*. This combined thing is what we want to have a data type for in Haskell.
 
-TODO: Perhaps also note that the intended use is with a side-condition (which you don't check) that the value-level dimension matches the type-level dimensions.
+It's evident the data type should have a numerical value and a dimension. But so far we have created two dimensions! Which should we use? Both! The value-level dimension of the quantity is used to print it nicely. The type-level dimension of the quantity is to get some type-safety. Just like this
+\begin{align}
+  25 m + 7 kg = ...
+\end{align}
+should upset you, this (in pseudo-Haskell)
+
+< ghci> let q1 = 25 m -- A value of the quantity type
+< ghci> let q2 = 7 kg -- Another value of the quantity type
+< ghci> q1 + q2
+< ...
+
+should upset the compiler!
+
+We can't cover all everything at once, but we guarantee you that by the end of this chaper, you'll know exactly how the above ideas are actually implemented.
+
+Let's get on to the actual data type declaration.
 
 > data Quantity (d :: T.Dim) (v :: *) where
->   Quantity :: V.Dim -> v -> Quantity d v
+>   ValQuantity :: V.Dim -> v -> Quantity d v
 
-`data Quantity` creates a *type constructor*. Which means it takes two *types* (of certain *kinds*) to create another *type* (of a certain *kind*). For comparsion, here's a *value constructor* which takes two *values* (of certain *types*) as input to create another *value* (of a certain *type*).
-
-< data MyDataType = MyValueConstructor String Int
-
-TODO: MyValueConstructor is the value constructor, not MyDataType
-
-< ghci> :t MyValueConstructor
-< MyDataType :: String -> Int -> MyDataType
-
-So this `Quantity` type constructor takes two *types* (of certain *kinds*) as input to create another *type* (of a certain *kind*). See the parallell to the value constructor? It's the same thing, but "one step up" to the type-level.
-
-< ghci> :k Quantity
-< Quantity :: T.Dim -> * -> *
-
-Instead of checking the *type* (like we do on the value constructor above), we check the *kind*. The kind of `Quantity` shows, just as we said, that it takes two types as input. We also see that the *kind* of the first *type* must be `T.Dim`, i.e., a type-level dimension. The kind of the second type is `*`, which is the kind of types that can have values. Such types are for instance `Double`, `Integer` and `String` (but not `T.Dim`).
-
-The definition of `Quantity` tells us this too. In it, `(d :: T.Dim) (v :: *)` signifies that the type constructor `Quantity` takes a type `u` of kind `T.Dim` and a type of kind `*`. In this context, `u :: T.Dim` is read as "`u` has kind `T.Dim`".
-
-So the first row was a *type constructor*. The second row is a *value constructor*. It takes two values, one of type `V.Unit` and the other of type `v` (`v` will be bound when the type of the whole thing is decided). This is the same deal as "your average data type" value constructor, like the `MyDataType` example above.
-
-Both the type constructor and the value constructor have the same name `Quantity`. This is legal syntax. Just like the following is legal:
-
-< data YourAverageDataType = YourAverageDataType Double
-
-The left-hand-side type constructor (that happens to take no arguments) and the right-hand-side value constructor have the same name.
-
-Okay, so how does all this tie together? First the *type* is decided, for instance
+That was sure a mouthful! Let's break it down. `data Quantity (d :: T.Dim) (v :: *)` creates the *type constructor* `Quantity`. A type constructor takes types to create another type. In this case, the type constructor `Quantity` takes a type `d` of *kind* `T.Dim` and a type `v` of *kind* `*` to create the type `Quantity d v`. Let's see it in action
 
 < type ExampleType = Quantity T.Length Double
 
-then a *value* of that type is created
+`ExampleType` is the type representing quantites of the physical dimension length and where the numerical value is of the type `Double`.
 
-TODO: This examples comes too late (too far from the type definition). I suggest you start in the opposite order, from example values, and only then introduce the "heavier machinery". This would also save you from inventing a phony type "MyDataType" - that could become "MyLength" or something like that.
+How do we create values of this type? That's where the second row comes in! `ValQuantity` is a *value constructor*, which means it takes values to create another value. In this case, the value constructor `ValQuantity` takes a value of *type* `V.Dim` and `v`. Let's see this one in action as well
+
+< exampleValue = ValQuantity V.length 25.0
+
+`exampleValue` is a value for the quantity representing a length with the numerical value $25.0$.
+
+We can combine the two and write this
 
 < exampleValue :: ExampleType
-< exampleValue = Quantity V.length 5.3
 
-TODO: Please rephrase. The definition of "ExampleType" uses the type level and "exampleValue" uses the value level.
+or
 
-TODO: (here and elsewhere) use "print" or "pretty print" or "pretty-print", not "print prettily".
+> exampleValue :: Quantity T.Length Double
+> exampleValue = ValQuantity V.length 25.0
 
-Note that the `Quantity` data type has both value-level and type-level dimensions. As previosuly mentioned, value-level in order to print prettily and type-level to only permit legal operations.
+to get the full picture. So, here we are, with a way to create quantity values (`ValQuantity`) of the type `Quantity t1 t2` where `t1` is the type-level dimension of the quantity and `t2` the type of the numerical value. If you still find it confusing, don't worry! Over the course of this chapter, it'll become more concrete as we work more with `Quantity`.
 
-**Exercise** Create a data type which has two type-level dimensions, always use `Rational` as the value-holding type (the role of `v`) but which has no value-level dimensions.
+Also note that the type-level dimension and value-level dimension are intented to match when used with `Quantity`! So far nothing enforces this. We'll tackle this problem later.
 
-TODO: What is the purpose (semantics, intended meaning or use) of Quantity'?
+**Exercise** create `Quantity` values for $2.5$ meters, $6.7$ seconds and $9$ mol. Recall that the three mentioned SI-units here, and all SI-units in this tutorial in general, have a one-to-one correspondence with their respective dimension.
 
 <details>
 <summary>**Solution**</summary>
 <div>
 
-< data Quantity' (d1 :: T.Dim) (d2 :: T.Dim) where
-<   Quantity' :: Rational -> Rational -> Quantity' d1 d2
+> theDistance :: Quantity T.Length Double
+> theDistance = ValQuantity V.length 2.5
+
+> theTime :: Quantity T.Time Double
+> theTime = ValQuantity V.time 6.7
+
+> theAmountOfSubstance :: Quantity T.Substance Integer
+> theAmountOfSubstance = ValQuantity V.substance 9
 
  </div>
  </details>
 
-A taste of types
+
+**Exercise** Create a data type which has two type-level dimensions, always use `Rational` as the value-holding type (the role of `v`) but which has no value-level dimensions. It should have three numerical values. Create some values of that type.
+
+<details>
+<summary>**Solution**</summary>
+<div>
+
+> data Quantity' (d1 :: T.Dim) (d2 :: T.Dim) where
+>   ValQuantity' :: Rational -> Rational -> Rational -> Quantity' d1 d2
+
+> val1 :: Quantity' T.Luminosity T.Mass
+> val1 = ValQuantity' 8 7 3
+
+> val2 :: Quantity' T.Substance T.Temperature
+> val2 = ValQuantity' 2 3 1
+
+ </div>
+ </details>
+
+
+Pretty-printer
+--------------
+
+Let's do a pretty-printer for quantities. Most of the work is already done by the value-level dimensions.
+
+> showQuantity :: (Show v) => Quantity d v -> String
+> showQuantity (ValQuantity d v) = show v ++ " " ++ show d
+
+> instance (Show v) => Show (Quantity d v) where
+>   show = showQuantity
+
+**Exercise** In a previous exercise, you created some example values of the `Quantity` type. Write them in GHCi and see how they look.
+
+<details>
+<summary>**Solution**</summary>
+<div>
+
+< ghci> theDistance
+< 2.5 m
+< ghci> theTime
+< 6.7 s
+< ghci> theAmountOfSubstance
+< 9 mol
+
+ </div>
+ </details>
+
+Pretty, huh?
+
+A taste of typos
 ----------------
 
 We'll implement all arithmetic operations on `Quantity`, but for now, to get a taste of types, we show here addition and multiplication and some examples of values of type `Quantity`.
@@ -113,21 +163,19 @@ We'll implement all arithmetic operations on `Quantity`, but for now, to get a t
 > quantityAdd :: (Num v) => Quantity d v ->
 >                           Quantity d v ->
 >                           Quantity d v
-> quantityAdd (Quantity d v1) (Quantity _ v2) = Quantity d (v1+v2)
+> quantityAdd (ValQuantity d v1) (ValQuantity _ v2) = ValQuantity d (v1+v2)
 
 The type is interpreted as follows: two values of type `Quantity d v` is the input, where `d` is the type-level dimension. The output is also a value of type `Quantity d v`.
 
-The type of the function forces the inputs to have the same dimensions. For this reason, the dimension on value-level doesn't matter on one of the arguments, because they will be the same. (It's possible to create values where the dimensions on value-level and type-level don't match. We'll come back to this later. TODO: perhaps this comment needs to come earlier to give the reader a feeling for where it is all heading.)
+The type of the function forces the inputs to have the same dimensions. For this reason, the dimension on value-level doesn't matter on one of the arguments, because they will be the same. As was already mentioned when the `Quantity` type was created, it's possible to create values where the dimensions on value-level and type-level don't match. Just like then, we ignore this problem for now and fix it later!
 
-`Quantity d v` in the type and `Quantity d v1` as a value pattern shouldn't be confused (TODO: then rename one!). The first `d` is a type variable, holding the type-level dimension while the second `d` is a (value) variable holding the value-level dimension. Similary, the first `v` is a type variable holding the type of values (e.g. `Double`) and the second `v` holds the actual value.
-
-Multiplication is
+Multiplication is implemented as
 
 > quantityMul :: (Num v) => Quantity d1 v ->
 >                           Quantity d2 v ->
 >                           Quantity (d1 `Mul` d2) v
-> quantityMul (Quantity d1 v1) (Quantity d2 v2) =
->   Quantity (d1 `V.mul` d2) (v1*v2)
+> quantityMul (ValQuantity d1 v1) (ValQuantity d2 v2) =
+>   ValQuantity (d1 `V.mul` d2) (v1*v2)
 
 The type has the following interpretation: two values of type `Quantity dx v` is input, where `dx` are two types representing (potentially different) dimensions. As output, a value of type `Quantity` is returned. The type in the `Quantity` will be the type that is the product of the two dimensions in.
 
@@ -147,10 +195,10 @@ Hold on cowboy! Not so fast. We'll come back later to subtraction and division, 
 Now on to some example values and types.
 
 > width :: Quantity T.Length Double
-> width = Quantity V.length 0.5
+> width = ValQuantity V.length 0.5
 
 > height :: Quantity T.Length Double
-> height = Quantity V.length 0.3
+> height = ValQuantity V.length 0.3
 
 > type Area = Mul T.Length T.Length
 
@@ -194,13 +242,13 @@ If the dimensions had been value-level only, this error would go undetected unti
 <div>
 
 > side1 :: Quantity Length Float
-> side1 = Quantity V.length 1.2
+> side1 = ValQuantity V.length 1.2
 
 > side2 :: Quantity Length Float
-> side2 = Quantity V.length 0.4
+> side2 = ValQuantity V.length 0.4
 
 > side3 :: Quantity Length Float
-> side3 = Quantity V.length 1.9
+> side3 = ValQuantity V.length 1.9
 
 > type Volume = Length `Mul` (Length `Mul` Length)
 
@@ -210,16 +258,6 @@ If the dimensions had been value-level only, this error would go undetected unti
  </div>
  </details>
 
-Pretty-printer
---------------
-
-Let's do a pretty-printer for quantities. Most of the work is already done by the value-level dimensions.
-
-> showQuantity :: (Show v) => Quantity d v -> String
-> showQuantity (Quantity d v) = show v ++ " " ++ show d
-
-> instance (Show v) => Show (Quantity d v) where
->   show = showQuantity
 
 Comparsions
 -----------
@@ -227,7 +265,7 @@ Comparsions
 It's useful to be able to compare quantities. Perhaps one wants to know which of two amounts of energy is the largest. But what's the largest of `1 J` and `1 m`? That's no meaningful comparsion since the dimensions don't match. This behaviour is prevented by having type-level dimensions.
 
 > quantityEq :: (Eq v) => Quantity d v -> Quantity d v -> Bool
-> quantityEq (Quantity _ v1) (Quantity _ v2) = v1 == v2
+> quantityEq (ValQuantity _ v1) (ValQuantity _ v2) = v1 == v2
 
 > instance (Eq v) => Eq (Quantity d v) where
 >   (==) = quantityEq
@@ -240,7 +278,7 @@ It's useful to be able to compare quantities. Perhaps one wants to know which of
 
 > quantityCompare :: (Ord v) => Quantity d v ->
 >                               Quantity d v -> Ordering
-> quantityCompare (Quantity _ v1) (Quantity _ v2) =
+> quantityCompare (ValQuantity _ v1) (ValQuantity _ v2) =
 >   compare v1 v2
 
 > instance (Ord v) => Ord (Quantity d v) where
@@ -253,12 +291,13 @@ We often use `Double` as the value holding type. Doing exact comparsions isn't a
 
 > infixl 4 ~=
 > (~=) :: Quantity d Double -> Quantity d Double -> Bool
-> (Quantity _ v1) ~= (Quantity _ v2) = abs (v1-v2) < 0.001
+> (ValQuantity _ v1) ~= (ValQuantity _ v2) = abs (v1-v2) < 0.001
 
 Testing if a quantity is zero is something which might be a common operation. So we define it here.
 
-> isZero :: (Num v, Eq v) => Quantity d v -> Bool
-> isZero (Quantity _ v) =  v == 0
+> isZero :: (Fractional v, Ord v) => Quantity d v -> Bool
+> isZero (ValQuantity _ v) = (abs v) < 0.001
+
 
 Arithmetic on quantities
 ------------------------
@@ -273,7 +312,7 @@ Let's implement the arithmetic operations on `Quantity`. Basically it's all abou
 > infixl 6 -#
 > (-#) :: (Num v) => Quantity d v -> Quantity d v ->
 >                    Quantity d v
-> (Quantity d v1) -# (Quantity _ v2) = Quantity d (v1-v2)
+> (ValQuantity d v1) -# (ValQuantity _ v2) = ValQuantity d (v1-v2)
 
 > infixl 7 *#
 > (*#) :: (Num v) => Quantity d1 v -> Quantity d2 v ->
@@ -284,8 +323,8 @@ Let's implement the arithmetic operations on `Quantity`. Basically it's all abou
 > (/#) :: (Fractional  v) => Quantity d1 v ->
 >                            Quantity d2 v ->
 >                            Quantity (d1 `Div` d2) v
-> (Quantity d1 v1) /# (Quantity d2 v2) =
->   Quantity (d1 `V.div` d2) (v1 / v2)
+> (ValQuantity d1 v1) /# (ValQuantity d2 v2) =
+>   ValQuantity (d1 `V.div` d2) (v1 / v2)
 
 For all operations on quantities, one does the operation on the value and, in the case of multiplication and division, on the dimensions separetly. For addition and subtraction the in-dimensions must be the same. Nothing then happens with the dimension.
 
@@ -302,15 +341,15 @@ The dimension of *every* term must be the same. The only way for that to be case
 The other functions can be written as similar power series and we'll see on those too that the input and output must be dimensionless.
 
 < sinq :: (Floating v) => Quantity One v -> Quantity One v
-< sinq (Quantity dl v) = Quantity d1 (sin v)
+< sinq (ValQuantity dl v) = ValQuantity d1 (sin v)
 <
 < cosq :: (Floating v) => Quantity One v -> Quantity One v
-< cosq (Quantity dl v) = Quantity d1 (cos v)
+< cosq (ValQuantity dl v) = ValQuantity d1 (cos v)
 
 We quickly realize a pattern, so let's generalize a bit.
 
 > qmap :: (a -> b) -> Quantity One a -> Quantity One b
-> qmap f (Quantity d1 v) = Quantity d1 (f v)
+> qmap f (ValQuantity d1 v) = ValQuantity d1 (f v)
 
 > sinq, cosq, asinq, acosq, atanq, expq, logq :: (Floating v) =>
 >   Quantity One v -> Quantity One v
@@ -347,14 +386,14 @@ However, operations with only scalars (type `One`) has types compatible with `Nu
 >   (*) = (*#)
 >   abs = qmap abs
 >   signum = qmap signum
->   fromInteger n = Quantity V.one (fromInteger n)
+>   fromInteger n = ValQuantity V.one (fromInteger n)
 
 > instance (Fractional v) => Fractional (Quantity One v) where
 >   (/) = (/#)
->   fromRational r = Quantity V.one (fromRational r)
+>   fromRational r = ValQuantity V.one (fromRational r)
 
 > instance (Floating v) => Floating (Quantity One v) where
->   pi    = Quantity V.one pi
+>   pi    = ValQuantity V.one pi
 >   exp   = expq
 >   log   = logq
 >   sin   = sinq
@@ -380,12 +419,12 @@ Syntactic sugar
 In order to create a value representing a certain distance (5 metres, for example) one does the following
 
 < distance :: Quantity T.Length Double
-< distance = Quantity V.length 5.0
+< distance = ValQuantity V.length 5.0
 
 Writing that way each time is very clumsy. You can also do "dumb" things such as
 
 < distance :: Quantity T.Length Double
-< distance = Quantity V.time 5.0
+< distance = ValQuantity V.time 5.0
 
 with different dimensions on value-level and type-level.
 
@@ -394,13 +433,13 @@ To solve these two problems we will introduce some syntactic sugar. First some p
 TODO: Please use "1" instead of "0" in all the dimensions. That signifies an amount of the "unit" (SI-units => always 1).
 
 > length :: (Num v) => Quantity Length v
-> length = Quantity V.length 0
+> length = ValQuantity V.length 0
 
 > mass :: (Num v) => Quantity Mass v
-> mass = Quantity V.mass 0
+> mass = ValQuantity V.mass 0
 
 > time :: (Num v) => Quantity Time v
-> time = Quantity V.time 0
+> time = ValQuantity V.time 0
 
 **Exercise** Do the rest.
 
@@ -409,19 +448,19 @@ TODO: Please use "1" instead of "0" in all the dimensions. That signifies an amo
 <div>
 
 > current :: (Num v) => Quantity Current v
-> current = Quantity V.current 0
+> current = ValQuantity V.current 0
 
 > temperature :: (Num v) => Quantity Temperature v
-> temperature = Quantity V.temperature 0
+> temperature = ValQuantity V.temperature 0
 
 > substance :: (Num v) => Quantity Substance v
-> substance = Quantity V.substance 0
+> substance = ValQuantity V.substance 0
 
 > luminosity :: (Num v) => Quantity Luminosity v
-> luminosity = Quantity V.luminosity 0
+> luminosity = ValQuantity V.luminosity 0
 
 > one :: (Num v) => Quantity One v
-> one = Quantity V.one 0
+> one = ValQuantity V.one 0
 
  </div>
  </details>
@@ -431,7 +470,7 @@ And now the sugar.
 TODO: Please multiply the values instead of throwing them away. I'm pretty sure (#) should behave as "scale" of a vector space. So that (x#(y#z)) == ((x*y)#z).
 
 > (#) :: (Num v) => v -> Quantity d v -> Quantity d v
-> v # (Quantity d _) = Quantity d v
+> v # (ValQuantity d _) = ValQuantity d v
 
 The intended usage of the function is the following
 
@@ -519,7 +558,7 @@ Each of these pre-made quantites has as numerical value the corresponding value 
 The sugar function would then look like
 
 > (##) :: (Num v) => v -> Quantity d v -> Quantity d v
-> v ## (Quantity d bv) = Quantity d (v*bv)
+> v ## (ValQuantity d bv) = ValQuantity d (v*bv)
 
 Notice how the value is multiplied with the "base value" of the unit. This function is intended to be used as follows.
 

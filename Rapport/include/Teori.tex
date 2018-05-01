@@ -5,7 +5,7 @@
 
 I detta kapitel beskrivs fyra områden av central betydelse för projektet. Dessa
 områden är domänspecifika språk, begreppen syntax, syntaxträd och semantik,
-literat progammering samt ARCS-modellen och annan didaktik.
+literat programmering samt ARCS-modellen och annan didaktik.
 
 \section{Domänspecifika språk}
 
@@ -19,7 +19,7 @@ Domänspecifika språk används inte bara i programmering utan förekommer även
 andra mer vardagliga sammanhang. Inom domänen matlagning är steka, grilla och
 fritera användbara ord. Likaså inom domänen ridning är grimma, box och galopp
 användbara ord. Befinner man sig inom domänen vet man vad som menas med grimma
-och det är ett kort och väldefinerat sätt att uttrycka sig. Men detta språk (här
+och det är ett kort och väldefinierat sätt att uttrycka sig. Men detta språk (här
 i form av ord och begrepp) blir svårtolkat utanför domänen. Ett recept kan inte
 förklaras i termer av grimmor, boxar och galopper.
 
@@ -47,12 +47,12 @@ eller bäddas in i ett redan existerande språk. De domänspecifika språk som
 utvecklats inom detta projekt är inbäddade i programmeringsspråket
 \textit{Haskell}. Haskell är ett lämpligt val eftersom det är enkelt att skapa
 datatyper som bygger upp det domänspecifika språket. Att Haskell är ett
-högnivå-språk är också en fördel då man slipper programeringstekniska detaljer,
+högnivå-språk är också en fördel då man slipper programmeringstekniska detaljer,
 till exempel minneshantering, och istället kan fokusera på programmets innehåll
 och betydelse. Slutligen gör dess mönstermatchning att de datatyper som utgör
 det domänspecifika språket enkelt kan brytas isär och manipuleras.
 
-För vidare läsning om domänspecifka språk rekommenderas \textit{DSL for the Uninitiated} \cite{DSLU}. 
+För vidare läsning om domänspecifika språk rekommenderas \textit{DSL for the Uninitiated} \cite{DSLU}. 
 
 \section{Syntax, syntaxträd och semantik}\label{sec:syntax}
 
@@ -66,7 +66,7 @@ eftersom det är det som det syntaktiska uttrycket \textit{betyder}.
 Domänspecifika språk har med syntax att göra eftersom många domänspecifika språk
 används för att modellera just syntax.
 
-En form av domänspecika språk är syntaxträd, och som redan nämnts har de en stor
+En form av domänspecifika språk är syntaxträd, och som redan nämnts har de en stor
 betydelse i detta projekt. Ett syntaxträd är en trädrepresentation av en syntax.
 För att illustrera begreppet visas här ett domänspecifikt språk som är ett
 syntaxträd som modellerar aritmetiska uttryck. Det är implementerat i Haskell.
@@ -181,8 +181,8 @@ then a value of that type is created
 Note that the Quantity data type has both value-level and type-level dimensions. As previosuly mentioned, value-level in order to pretty print and type-level to only permit legal operations.
 \end{lstlisting}
   \caption{Ett exempel på hur en källfil till litterat programmering kan se ut.
-           Exemplet är Litterate Haskell. Rader som börjar med \texttt{>}
-           markerar att det är progamkod, medan rader utan markerar att det är
+           Exemplet är Literate Haskell. Rader som börjar med \texttt{>}
+           markerar att det är programkod, medan rader utan markerar att det är
            dokumentation.}\label{fig:litterate_haskell_exempel} 
 \end{figure}
 % OBS! Raden med "note that the quantity..." måste vara en lång rad. Annars blir det fel i PDF:en
@@ -192,19 +192,19 @@ står i. Traditionell programmering börjar oftast med att definiera små funkti
 och metoder med snäva användningsområden och använder sedan dessa för att senare
 bygga ihop mer komplexa strukturer. Med literat programmering börjar man hellre
 med komplexa strukturer först och skriver text som förklarar den generella
-struktureren utan att gå in på detaljerna, för att sedan presentera de små
+strukturen utan att gå in på detaljerna, för att sedan presentera de små
 delarna var för sig med tillhörande förklarande text.
 
-\textit{Litterate Haskell} är literat programmering för Haskell.\cite{litterate_haskell}
-Att programmera i Litterate Haskell går till på samma sätt som vanlig Haskell,
-med skillndaden att programkod och text vävs ihop i en och samma fil. Det kan
+\textit{Literate Haskell} är literat programmering för Haskell.\cite{litterate_haskell}
+Att programmera i Literate Haskell går till på samma sätt som vanlig Haskell,
+med skillnaden att programkod och text vävs ihop i en och samma fil. Det kan
 se ut som i figur~\ref{fig:litterate_haskell_exempel}. Filen, med tillägget
 \texttt{.lhs}, går att använda direkt med Haskell-kompilatorn GHC. All text
 ignoreras och programkoden behandlas som om den var en vanlig
 Haskell-fil. \texttt{.lhs}-filen kan också kompileras till material avsett för
-mäniskor. Det finns flera verktyg som gör det men det som används i detta
+människor Det finns flera verktyg som gör det men det som används i detta
 projekt är \textit{Pandoc}\cite{pandoc}. Med Pandoc kan texten märkas
-up med både \textit{Markdown} (används i projektet) och \textit{Latex}. Det går
+upp med både \textit{Markdown} (används i projektet) och \textit{Latex}. Det går
 att exportera till bland annat HTML och PDF.
 \end{draft}
 
@@ -230,7 +230,7 @@ fånga uppmärksamhet och väcka nyfikenhet. \textit{Relevance} handlar om att
 tillgodose studentens behov så att materialet upplevs som relevant för hen.
 \textit{Confidence} handlar om att övertyga studenten att hen kommer kunna
 lyckas lära sig materialet. \textit{Satisfaction} handlar om att ge studenten
-tillfredställelse efter att ha lärt sig något så att hen vill fortsätta lära
+tillfredsställelse efter att ha lärt sig något så att hen vill fortsätta lära
 sig. Det finns strategier för hur man genomför de olika delarna i praktiken och
 här följer en översikt för \textit{Attention}.\footnote{Eftersom projektet har
 ett begränsat fokus på de pedagogiska aspekterna, se
@@ -248,7 +248,7 @@ kommunicera sin förståelse internaliserar ämnet och bygger en djupare
 förståelse. Parprogrammering lämpar sig antagligen även för att begränsa
 flyktförsök, där elever medvetet eller mindre medvetet börjar göra något annat.
 
-För att fånga studentens uppmärksamhet och intresse finns tre allmäna
+För att fånga studentens uppmärksamhet och intresse finns tre allmänna
 strategier. Den första är varselblivning, att något plötsligt händer som man
 blir medveten om. Det kan till exempel åstadkommas genom överraskande
 information, en förändring i ljuset i en föreläsning eller att humor vävs in.
@@ -267,10 +267,10 @@ svar\cite{LSB_und}. Vårt läromaterial har visserligen ingen interaktiv sida,
 men typsystemet i Haskell skulle ändå tänkas kunna fungera som en fingervisare
 när man gör rätt eller fel. Det går exempelvis inte att räkna med dimensioner
 på ett olämpligt sätt, och funktionskomposition fungerar endast om båda funktionernas
-typdefinitioner (typer på argument och returvärde) stämmer överrens. 
+typdefinitioner (typer på argument och returvärde) stämmer överens 
 
 Evolutionärt sett har snabba belöningar varit fördelaktigt framför långsiktiga
-som kräver långsiktigt engagemang (exv. öva inför en tenta) vilket beskrivs i
+som kräver långsiktigt engagemang (exempelvis öva inför en tenta) vilket beskrivs i
 boken ``Dansa på deadline: Uppskjutandets psykologi''\cite{DPD}. Detta är ännu en
 orsak till varför det är bra med belöning exempelvis i formen av glädje då man
 ser att koden kompilerar. Läromaterialet innefattar även strategiskt placerade

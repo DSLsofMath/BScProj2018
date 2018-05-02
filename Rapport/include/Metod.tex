@@ -14,8 +14,6 @@
 
 \chapter{Genomförande}
 
-\begin{draft}
-
 Projektets genomförande bestod av fyra delar. Den största delen var
 konstruktionen av själva läromaterialet, och där ingick sökande efter fysikaliska
 områden, implementation av domänspecifika språk och skrivande av lärotext. De
@@ -163,28 +161,24 @@ blev exempelproblem och partikelmekanik. Här följer en kortfattad motivering a
 
 \textit{Exempelproblem} för att visa hur ett par typuppgifter i klassisk mekanik kan modelleras i läromaterialets domänspecifika språk. Närmare bestämt tillämpas de domänspecifika språken på \textit{krafter på lådor} och \textit{gungbräda}.
 
-\textit{Partikelmekanik}. Här gås mycket av den gymnasiala fysiken igenom.
-Lägesenergi, rörelseenergi, gravitation och så vidare. Den modelleras med vektorer vars
-komponenter består av matematiska uttryck tagna från kapitlet om matematisk
-analys. Förhoppningen är att detta område inte ska presentera någon ny fysik för
-läsaren utan istället visa hur redan känd fysik direkt går att översätta till läromaterialets domänspecifika språk.
+\textit{Partikelmekanik} för att visa hur de grundläggande områdena kan kombineras till ett domänspecifikt språk som är mer fysik-orienterat än de tre grundläggande.
 
 \subsection{Implementation av domänspecifika språk för områdena}
 
-Implementationen var en av domänspecifika språk var en iterativ process. 
-Implementationen av område inleddes med att
-bygga vidare på den experimentering som gjorts under urvalsfasen Det finns inte
+Implementationen av domänspecifika språk var en iterativ process. 
+Den inleddes med att
+bygga vidare på den experimentering som gjorts under urvalsfasen Det finns inte bara
 ett rätt sätt att skriva ett domänspecifikt språk på, därav gjordes försök med
 flera olika varianter för att se vad som fungerade bäst.  I flera fall har implementationer gjorts om från grunden om
 det visat sig först en bit in att implementationen kunde gjorts bättre eller
-hade brister. Dessutom gjordes, i varierande mån, inläsning av domänspecifika
+hade brister. Dessutom gjordes, i varierande mån, fördjupande litteraturstudier av domänspecifika
 språk, fysik och Haskell för att kunna implementera på bästa sätt.
 
 Vad som ansågs vara en bra, eller åtminstone tillräckligt bra, implementation
 var i huvudsak baserat på gruppmedlemmarnas intuition om Haskell och diskussion
 inom gruppen och med handledaren. Det viktigaste var att de skulle vara
 lättförståeliga Den programtekniskt elegantaste implementationen användes därför
-inte alltid, utan den mer verbosa versionen föredrogs för att göra
+inte alltid, utan den längre versionen föredrogs för att göra
 läromaterialet så lättläst som möjligt. Dock avstods det inte från användning av
 mer avancerade funktioner i Haskell när de var motiverade av materialet som
 beskrevs, men då alltid med en uttömmande förklaring av hur det fungerade och
@@ -275,7 +269,7 @@ BaseDim Le
 läromaterialet. Nyckeln ligger i att betrakta dimensioner som en multiplikation
 av basdimensioner med exponenter. Ta till exempel hastighet
 \begin{align*}
-  \frac{Längd}{Tid} \iff Längd^1 * Tid^{-1}
+  \frac{\textit{Längd}}{\textit{Tid}} \iff \textit{Längd}^1 * Tid^{-1}
 \end{align*}
 Då kan följande representation användas för dimensioner
 
@@ -312,8 +306,8 @@ motsvarande sätt
 mulDim :: Dim -> Dim -> Dim
 mulDim (Dim le1 ma1 ti1 cu1 te1 su1 lu1) 
        (Dim le2 ma2 ti2 cu2 te2 su2 lu2) =
-       Dim (le1+le2) (ma1+ma2) (ti1+ti2) (cu1+cu2) 
-           (te1+te2) (su1+su2) (lu1+lu2)
+        Dim (le1+le2) (ma1+ma2) (ti1+ti2) (cu1+cu2) 
+            (te1+te2) (su1+su2) (lu1+lu2)
 \end{lstlisting}
 
 Exponenterna hos de två dimensionerna som multipliceras adderas i enlighet med
@@ -338,10 +332,10 @@ kombinerades. Anledningen till detta var att partiklars position, hastighet och
 acceleration modelleras med vektorer, dessutom är de krafter som påverkar
 partiklar även modellerade som vektorer. Sedan används matematisk analys för att
 göra dessa beräkningar. Därför var det naturligt att modellera partikelmekanik
-med hjälp av vektorer vars komponenter var datatypen för uttryck som
+med hjälp av vektorer vars komponenter var uttryck som
 implementerades av matematisk analys.
 
-Exempel från läromaterialet
+Exempel från läromaterialet:
 \begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
 type Mass    = FunExpr
 type VectorE = Vector3 FunExpr -- Vector of functional 
@@ -373,7 +367,7 @@ lättförståeligt var det också viktigt att presentera materialet i den ordnin
 som en mänsklig läsare, och inte datorn, tyckte var enklast. Avsnitt \ref{sec:lhs} beskriver hur litterat programmering fungerar i allmänhet och ger
 en bra bild hur det såg ut även i detta projekt.
 
-Under skrivandet av lärotexten passades övningar på att läggas till. Oftast
+Under skrivandet av lärotexten lades övningar till. Oftast
 skapades övningar genom att befintlig lärotext modifierades till att istället
 för att bara förklara allt, då och då uppmana läsaren att göra nästa steg i
 implementationen själv. Nästa steg behölls alltid för att fungera som facit. När
@@ -406,11 +400,8 @@ Haskell-kod med hjälp av de grundläggande områdena. Beskrivning av relationen
 
 Implementation kan kompileras och testas och ska då visa på att
 implementationerna av de grundläggande områdena är både rigorösa och korrekta.
-Dessutom visar det att går att använda det material som presenteras tidigare
+Dessutom visar det att det går att använda det material som presenteras tidigare
 till  att implementera och lösa mer komplexa problem.
-
-\end{draft}
-\begin{draft}
 
 \section{Skapande av och publicering på hemsidan}
 
@@ -418,15 +409,15 @@ Läromaterialet kompilerades med hjälp av ett bygg-skript och
 publicerades på en internethemsida. Bygg-skriptet anropar
 Pandoc för att konvertera från källkod och text i Literate
 Haskell-formatet till HTML, redo att visas på en hemsida. Pandoc
-packeterar även med \textit{MathJax} som använder JavaScript för att
+paketerar även med \textit{MathJax} som använder JavaScript för att
 rendera matematiska formler i LaTeX-format på fint och läsbart
 vis. Utan stöd för JavaScript skrivs matematik ut som omodifierad
 LaTeX-kod, vilket är mer svårläst, men fortfarande tolkningsbart. Det
 skrevs även CSS-kod manuellt för att modifiera utseendet av
 hemsidan så att den skulle bli prydligare och mer lättläst.
 
-Varje källfil betraktades som ett kapitel och publicerades som
-separata undersidor. Med hjälp av ett index beskrivet i bygg-skriptet
+Varje källfil betraktades som ett kapitel och publicerades som en
+separat undersida. Med hjälp av ett index beskrivet i bygg-skriptet
 konstruerades navigationselement mellan kapitel på varje undersida
 och en innehållsförteckning.
 
@@ -436,9 +427,6 @@ visas som en hemsida med hjälp av \textit{GitHub
   Pages}. Publiceringen skedde inte kontinuerligt eller automatiskt,
 utan krävde en manuell synkronisering vid varje önskad uppdatering av
 hemsidan.
-
-\end{draft}
-\begin{draft}
 
 \section{Utvärdering med testgrupp}
 
@@ -471,11 +459,9 @@ reaktioner och svar på frågor noterades.
 
 För att få återkoppling på läromaterialet hölls två möten med Åke Fäldt,
 föreläsare och examinator för Fysik för ingenjörer. Ett möte hölls relativt
-tidigt i projektets skede, 2018-03-02, och ett andra relativt sent, 2018-04-11.
+tidigt i projektet, 2018-03-02, och ett andra relativt sent, 2018-04-11.
 Under mötena presenterades läromaterialet i sig och tanken med det, nämligen att
 presentera fysik på ur ett annat perspektiv, ett funktionellt
 programmeringsperspektiv. Det diskuterades också svåra områden i Fysik för
 ingenjörer (se avsnitt \ref{sec:kontakt_faldt}), vad läromaterialet skulle kunna bidra med för kunskaper till
 studenter samt dess eventuella roll i relation till fysikkursen i övrigt.
-
-\end{draft}

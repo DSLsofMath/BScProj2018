@@ -2,15 +2,7 @@
 Type-level dimensions
 =====================
 
-We will now implement *type-level* dimensions. What is type-level? Programs (in Haskell) normally operatate on (e.g. add) values (e.g. `1` and `2`). This is on *value-level*. Now we'll do the same thing but on *type-level*, that is, perform operations on types.
-
-What's the purpose of type-level dimensions? It's so we'll notice as soon as compile-time if we've written something incorrect. E.g. adding a length and an area is not allowed since they have different dimensions.
-
-![Adding lengths is OK. Adding lengths and areas is not OK.](Lengths_and_area.png)
-
-This implemention is very similar to the value-level one. It would be possible to only have one implementation by using `Data.Proxy`. But it would be trickier. This way is lengthier but easier to understand.
-
-To be able to do type-level programming, we'll need a nice stash of GHC-extensions.
+\ignore{
 
 > {-# LANGUAGE DataKinds #-}
 > {-# LANGUAGE GADTs #-}
@@ -19,7 +11,7 @@ To be able to do type-level programming, we'll need a nice stash of GHC-extensio
 > {-# LANGUAGE UndecidableInstances #-}
 > {-# LANGUAGE TypeOperators #-}
 
-See the end of the next chapter to read what they do.
+}
 
 > module Dimensions.TypeLevel
 >     ( Dim(..)
@@ -34,6 +26,25 @@ See the end of the next chapter to read what they do.
 >     , Luminosity
 >     , One
 >     ) where
+
+We will now implement *type-level* dimensions. What is type-level? Programs (in Haskell) normally operatate on (e.g. add) values (e.g. `1` and `2`). This is on *value-level*. Now we'll do the same thing but on *type-level*, that is, perform operations on types.
+
+What's the purpose of type-level dimensions? It's so we'll notice as soon as compile-time if we've written something incorrect. E.g. adding a length and an area is not allowed since they have different dimensions.
+
+![](Lengths_and_area.png "Adding lengths is OK. Adding lengths and areas is not OK."){.img-center}
+
+This implemention is very similar to the value-level one. It would be possible to only have one implementation by using `Data.Proxy`. But it would be trickier. This way is lengthier but easier to understand.
+
+To be able to do type-level programming, we'll need a nice stash of GHC-extensions.
+
+< {-# LANGUAGE DataKinds #-}
+< {-# LANGUAGE GADTs #-}
+< {-# LANGUAGE KindSignatures #-}
+< {-# LANGUAGE TypeFamilies #-}
+< {-# LANGUAGE UndecidableInstances #-}
+< {-# LANGUAGE TypeOperators #-}
+
+See the end of the next chapter to read what they do.
 
 We'll need to be able to operate on integers on the type-level. Instead of implementing it ourselves, we will just import the machinery so we can focus on the physics-part.
 
@@ -87,7 +98,7 @@ This may sound confusing, but the point of this will become clear over time. Let
 
 `Pos1`, `Neg1` and so on corresponds to `1` and `-1` in the imported package, which operates on type-level integers.
 
-**Exercise.** Create types for velocity, acceleration and the scalar.
+**Exercise** Create types for velocity, acceleration and the scalar.
 
 <details>
 <summary>**Solution**</summary>
@@ -98,8 +109,8 @@ This may sound confusing, but the point of this will become clear over time. Let
 
 > type One = 'Dim Zero Zero Zero Zero Zero Zero Zero
 
-</div>
-</details>
+ </div>
+ </details>
 
 Multiplication and division
 ---------------------------
@@ -116,7 +127,7 @@ Let's implement multiplication and division on the type-level. After such an ope
 - `Mul` is the name of the function.
 - `d1 :: Dim` is read as "the *type* `d1` has *kind* `Dim`".
 
-**Exercise.** As you would suspect, division is very similar, so why don't you try 'n implement it yourself?
+**Exercise** As you would suspect, division is very similar, so why don't you try 'n implement it yourself?
 
 <details>
 <summary>**Solution**</summary>
@@ -128,10 +139,10 @@ Let's implement multiplication and division on the type-level. After such an ope
 >       'Dim (le1-le2) (ma1-ma2) (ti1-ti2) (cu1-cu2)
 >         (te1-te2) (su1-su2) (lu1-lu2)
 
-</div>
-</details>
+ </div>
+ </details>
 
-**Exercise.** Implement a type-level function for raising a dimension to the power of some integer.
+**Exercise** Implement a type-level function for raising a dimension to the power of some integer.
 
 <details>
 <summary>**Solution**</summary>
@@ -141,12 +152,12 @@ Let's implement multiplication and division on the type-level. After such an ope
 <   Power ('Dim le ma ti cu te su lu) n =
 <     'Dim (le*n) (ma*n) (ti*n) (cu*n) (te*n) (su*n) (lu*n)
 
-</div>
-</details>
+ </div>
+ </details>
 
 Now types for dimensions can be created by combining exisiting types, much like we did for values in the previous chapter.
 
-**Exercise.** Create types for velocity, area, force and impulse.
+**Exercise** Create types for velocity, area, force and impulse.
 
 <details>
 <summary>**Solution**</summary>
@@ -157,7 +168,7 @@ Now types for dimensions can be created by combining exisiting types, much like 
 > type Force     = Mass   `Mul` Length
 > type Impulse   = Force  `Mul` Time
 
-</div>
-</details>
+ </div>
+ </details>
 
 Perhaps not very exiting so far. But just wait 'til we create a data type for quantities. Then the strenghts of type-level dimensions will be clearer.

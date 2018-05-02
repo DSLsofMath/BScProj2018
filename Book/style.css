@@ -105,6 +105,12 @@ div#toc ol > li > ul {
     float: left;
     margin-right: 10px;
 }
+.img-center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
 
 figcaption {
     font-size: 70%;

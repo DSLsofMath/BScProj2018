@@ -1,13 +1,11 @@
 \chapter{Resultat}
 
-I detta kapitel redovisas kortfattat det resulterande läromaterialet. Även
+I detta kapitel redovisas kortfattat det resulterande läromaterialet, vilket består av ett antal område som är både roliga och lättlästa. Även
 resultaten från utvärderingen med testgruppen och mötena med Fäldt redovisas.
-
-\begin{draft}
 
 \section{Läromaterialet}\label{sec:res_laromaterial}
 
-Läromaterialet blev i slutändan en sammanvävning av domänspecifika språk som
+Läromaterialet blev till slut en sammanvävning av domänspecifika språk som
 modellerar fysik, och en lärotext som förklarar kopplingen mellan fysiken och de
 domänspecifika språken. Figur~\ref{fig:smakprov_laromaterial} visar ett kort
 utdrag ur läromaterialet. Där ses hur domänspecifika språk och lärotext
@@ -15,10 +13,7 @@ utdrag ur läromaterialet. Där ses hur domänspecifika språk och lärotext
 
 \begin{figure}[tph]
   \includegraphics[width=\linewidth]{figure/smakprov_laromaterial.png}
-  \caption{Ett smakprov över hur det resulterande läromaterialet ser ut.
-           Lärotexten ligger mot den ljusgrå bakgrunden medan det
-           domänspecifika språket ligger mot den
-           mörkgrå.}~\label{fig:smakprov_laromaterial} 
+  \caption{Ett smakprov över hur det resulterande läromaterialet ser ut. Lärotexten ligger mot den ljusgrå bakgrunden medan det domänspecifika språket ligger mot den mörkgrå. Notera att detta exemplets källkod (i Litterate Haskell) har visats tidigare i avsnitt \ref{sec:lhs}.}~\label{fig:smakprov_laromaterial} 
 \end{figure}
 
 Språket i lärotexten är någorlunda lättsamt\footnote{Diskuteras utförligare i avsnitt \ref{sec:res_disk}.} och det finns även bilder och övningar.
@@ -71,7 +66,7 @@ förklaring.} används för att göra likheterna så tydliga som möjligt.
 
 I \textit{matematisk analys} behandlas differentialkalkyl och
 integralkalkyl för en variabel. Först bestäms den semantiska domänen
-för analys i en variabel: unära, reella funktioner; och ett syntaxträd
+för analys i en variabel: reella funktioner av ett argument; och ett syntaxträd
 för uttryck av funktioner inom denna domän konstrueras. Därefter
 analyseras syntax och semantik för differenser, derivator, och
 integraler; och funktioner implementeras för att utföra dessa
@@ -89,7 +84,11 @@ vilket gav en generell säkerhet kring att implementationerna var korrekta.
 
 I \textit{exempelproblem} tillämpas de tre tidigare kapitlena på två vanliga mekanikproblem, nämligen \textit{krafter på lådor} och \textit{gungbräda}. I krafter på lådor används det domänspecifika språket för vektorer till att beräkna de krafter som verkar på en låda som glider ner för ett plan. I gungbräda visas hur momentjämviktsberäkningar kan göras med det domänspecifika språket för dimensioner.
 
-\textbf{TODO:} \textit{Partikelmekanik} 
+\textit{Partikelmekanik}. Här gås mycket av gymnasiets fysik igenom.
+Lägesenergi, rörelseenergi, gravitation och så vidare. Den modelleras med vektorer vars
+komponenter består av matematiska uttryck tagna från kapitlet om matematisk
+analys. Förhoppningen är att detta område inte ska presentera någon ny fysik för
+läsaren utan istället visa hur redan känd fysik direkt går att översätta till läromaterialets domänspecifika språk.
 
 Läromaterialet blev publicerat på en hemsida~\cite{LYAP} och all källkod finns
 tillgänglig på projektets GitHub-repository~\cite{LYAP_repo}. Texten är skriven
@@ -133,5 +132,3 @@ som förmedlas hade varit till nytta för problemlösning i fysikkursen.
 
 Förutom ovanstående framgick även vilka områden i Fysik för ingenjörer som var
 svåra för studenter. Detta finns redovisat i avsnitt~\ref{sec:kontakt_faldt}
-
-\end{draft}

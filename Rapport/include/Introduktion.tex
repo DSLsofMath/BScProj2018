@@ -8,26 +8,21 @@
 
 \begin{draft}
 
-På civilingenjörsprogrammet Datateknik på Chalmers ingår den obligatoriska
+På civilingenjörsprogrammet Datateknik på Chalmers tekniska högskola ingår den obligatoriska
 fysikkursen \textit{Fysik för ingenjörer}. Tentastatistiken för denna kurs är
-betydligt sämre än för andra kurser på datateknik.\footnote{Andel underkänt på
+betydligt sämre~\cite{tentastatistik} än för andra kurser på Datateknik\footnote{Andel underkänt på
 ordinarie tentamen från läsår 2014 till 2017: 34\%, 76\%, 18\%, 57\%.
-}\cite{tentastatistik}. Vi tror att många studenter på datateknik finner denna
+}. Projektgruppen tror att många studenter på Datateknik finner denna
 kurs svår eller ointressant, och att detta leder till att en betydande andel får
-underkänt på tentamen.
+underkänt.
 
 Detta tror projektgruppen kan lösas med avstamp från kursen \textit{Domain
 Specific Languages of Mathematics} (``DSLsofMath''), med den svenska titeln
-\textit{Matematikens domänspecifika språk} vilket är en valbar kurs på
-kandidatnivå för studenter på Chalmers och Göteborgs Universitet. Konkret så
-presenterar kursen DSLsofMath matematik så som derivator, komplexa tal och
-matriser ur ett funktionellt programmeringsperspektiv i det funktionella
-programmeringsspråket Haskell. Dessa för datastudenterna redan bekanta begrepp
-och verktyg från tidigare kurser presenteras då på ett nytt och tänkvärt sätt.
+\textit{Matematikens domänspecifika språk}. Kursen är valbar på kandidatnivå för studenter på Chalmers och Göteborgs universitet. Konkret
+presenterar DSLsofMath matematik som derivator, komplexa tal och
+matriser ur ett funktionellt programmeringsperspektiv i Haskell, vilket är ett programmeringsspråk datastudenterna redan är bekanta med.
 
-I kursen DSLsofMath, var år 2016 Cezar Ionescu huvudföreläsare, och från
-2017 är Patrik Jansson huvudföreläsare, de har beskrivit avseendet med kursen
-genom en artikel~\cite{tfpie2015}. Det direkta målet med kursen DSLSofMath är
+DSLsofMath-kursens skapare, Cezar Ionescu och Patrik Jansson, har beskrivit avsikten med kursen i en artikel~\cite{tfpie2015}. Det direkta målet med kursen är
 att förbättra den matematiska utbildningen för datavetare och den
 datavetenskapliga utbildningen för matematiker, där den grundläggande idéen
 bakom kursen är:
@@ -36,67 +31,65 @@ bakom kursen är:
   domäner från ett funktionellt programmeringsperspektiv: att ge beräkningsbevis
   (calculational proofs); att vara uppmärksamma på syntaxen för matematiska
   uttryck; och, slutligen, att organisera de resulterande funktionerna och
-typerna i domänspecifika språk.''\cite{lecture-notes}\cite{tfpie2015}
+typerna i domänspecifika språk.''~cite{tfpie2015}~\cite{lecture-notes}\
 \end{center}
 
-De funktionella programmeringsperspektivet som kursen använder sig av bottnar i
+Det funktionella programmeringsperspektivet som kursen använder sig av bottnar i
 så kallade domänspecifika språk. Kortfattat kan ett domänspecifikt språk
 beskrivas som ett programmeringsspråk som skapats för ett väl avgränsat
-område. Detta område kan vara databashantering, algebraiska uttryck, eller till
+område. Detta område kan vara databashantering, algebraiska uttryck eller till
 och med fysik. Språket kan antingen vara implementerat inuti ett annat
-programmeringsspråk eller implementerat helt fristående, i kursen och projektet 
+programmeringsspråk eller implementerat helt fristående. I kursen och projektet 
 är det implementerat i Haskell.
 
-Vi vill på samma sätt 
-% använda domänspecifika språk för att 
-presentera fysik ur ett alternativt perspektiv likt det sättet DSLsofMath
-presenterar kopplingar mellan matematik och programmering. Förhoppningen är att
-läromaterialet ska visa på kopplingar mellan programmering och fysik och därmed
-underlätta lärandet.
+Idéen bakom projektet är att på motsvarande sätt använda domänspecifika språk för att ur ett alternativt perspektiv, likt det sättet DSLsofMath
+presenterar kopplingar mellan matematik och programmering. Förhoppningen är att kunna visa på kopplingar mellan programmering och fysik och därmed
+underlätta lärandet. För att förtydliga ges här en analogi:
 
 %PaJa:Trevligt!
-En analogi:
 
-Studenterna hade svårt för matte $\rightarrow $ DSLsofMath.\\ 
-Studenterna har svårt för fysik $\rightarrow $ Learn you a physics.
+\begin{center}
+Studenterna har svårt för matematik $\rightarrow $ DSLsofMath.\\ 
+Studenterna har svårt för fysik $\rightarrow $ Detta projekt.
+\end{center}
 
-Vi tror att att detta projekt kan vara av intresse för studenter, pedagoger och
-föreläsare inom de berörda områdena eftersom det här projektet ger ett nytt
+Detta projekt kan vara av intresse för studenter, pedagoger och
+föreläsare inom de berörda områdena eftersom projektet ger ett nytt
 perspektiv på fysik som inte bara är annorlunda utan också mer rigoröst.
-Förhoppningsvis blir det också relevant för de som är intresserade av
+Förhoppningsvis blir det även relevant för de som är intresserade av
 domänspecifika språk i stort och kanske till och med för programledningen som
-kan se vår rapport som ett skäl att introducera innehåll av detta slag i
+kan se denna rapport som ett skäl att introducera innehåll av detta slag i
 fysikkurser.
 
 Angående tidigare forskning och studier har en kurs på MIT, inte helt olik
 DSLsofMath, tidigare givits som berör både fysik och 
-%domänspecifika språk (''DSL'').
-funktionell programmering.
-``Classical Mechanics: A Computational Approach'' gavs av Prof.  Gerald Sussman
-och Prof. Jack Wisdom bl.a. år 2008.\cite{classical-mechanics-course-mit-2008}
-Denna kurs på avancerad nivå studerar de fundamentala principerna av klassisk
+domänspecifika språk.
+%funktionell programmering.
+\textit{Classical Mechanics: A Computational Approach} gavs av professor Gerald Sussman
+och professor Jack Wisdom senast år 2008~\cite{classical-mechanics-course-mit-2008}.
+Denna kurs på avancerad nivå studerar de fundamentala principerna för klassisk
 mekanik med hjälp av beräkningsidéer för att precist formulera principerna av
 mekanik, med början i Lagranges ekvationer och avslut i perturbationsteori
-(teori för approximationer av matematiska lösningar). I kursboken\cite{SICM}
+(teori för approximationer av matematiska lösningar). I kursboken~\cite{SICM}
 förklaras fysikaliska fenomen genom att visa datorprogram för att simulera dem,
-skrivna i språket Scheme.  Denna typ av kurser ter sig ovanliga, och är, till
-vår kännedom, den enda kursen bortsett från DSLsofMath på Chalmers som knyter
+skrivna i språket Scheme. Denna typ av kurs ter sig ovanliga och är, till
+projektgruppens kännedom, den enda kursen bortsett från DSLsofMath på Chalmers som knyter
 samman matematik, fysik och programmering.
 
-Utöver DSLsofMath-kursen har det även tidigare gjorts ett liknande kandidatarbete 
-här på Chalmers. Vårterminen 2016 utfördes kandidatarbetet ``Programmering som
+Även tidigare har det genomförts ett kandidatarbete på Chalmers med anknytning till DSLsofMath.
+Vårterminen 2016 genomfördes kandidatarbetet \textit{Programmering som
 undervisningsverktyg för Transformer, signaler och system. Utvecklingen av
-läromaterialet TSS med DSL'' av fem studenter från Datateknik och Teknisk
-Matematik på Chalmers. Arbetet bestod av utveckling av läromaterial med
+läromaterialet TSS med DSL} av fem studenter från Datateknik och Teknisk
+Matematik på Chalmers~\cite{kandidat2016}. Arbetet bestod av utveckling av läromaterial med
 tillhörande programmeringskod, uppgifter och lösningar, som komplement till
-existerande kurser i signallära.\cite{kandidat2016}
+existerande kurser i signallära.
 
 \section{Projektets mål}
 
 Tanken med detta kandidatarbete är att angripa fysik från ett funktionellt
-programeringsperspektiv. På detta sätt är förhoppningen att ämnet blir både
-roligt och intressant för datastudenter, och därmed förhoppningsvis också
-enklare. Detta är likt premissen bakom kursen DSLsofMath och kandidatarbetet
+programmeringsperspektiv. Förhoppningen är då att fysik ska bli både
+roligt och intressant för datastudenter, och därmed också
+enklare. Detta liknar premissen bakom kursen DSLsofMath och kandidatarbetet
 från 2016, som istället för fysik behandlade matematik respektive signallära.
 
 Mer konkret ska ovanstående genomföras genom att skapa ett läromaterial.
@@ -110,20 +103,20 @@ språk, publicering på en hemsida samt fri tillgång till källkoden.
 
 Ett parallellt mål är att, efter att ha tillägnat sig erfarenhet, diskutera
 huruvida fysik och domänspecifika språk går att kombinera och om det finns en
-pedagogisk nytta i det.
+pedagogisk nytta i att göra det.
 
 \section{Avgränsningar}\label{sec:avgransningar}
 
 Läromaterialet ska begränsa sig till att enbart beskriva de fysikaliska områden
 som ingår i kursen Fysik för ingenjörer. Denna avgränsning valdes dels för att
-det är den fysik gruppmedlemmarnas kunskapar är begränsad till, dels för att
+det är den fysik gruppmedlemmarnas kunskaper är begränsad till, dels för att
 det är för Fysik för ingenjörer detta projekt kan bli mest relevant för, då
 kursen ingår i datastudenternas obligatoriska kursplan.
 
 Vidare kommer en prioritering av innehållet i Fysik för ingenjörer att göras.
 Kursen behandlar grunderna inom klassisk mekanik, termodynamik och
 vågrörelselära. Det ingår även en stor mängd tillämpad matematik, exempelvis
-differentilkalkyl. I första hand kommer mekaniken behandlas, för att sedan i mån
+differentialkalkyl I första hand kommer mekaniken behandlas, för att sedan i mån
 av tid även behandla termodynamik och vågrörelselära. Fokuset kommer också att
 vara på de områden datastudenter haft svårt för.
 
@@ -132,10 +125,10 @@ att göras. Detta då en rigorös undersökning hade krävt mycket tid för att 
 lämpliga testgrupper, analysera återkopplingen samt dokumentera
 testningsförloppet.
 
-Projeketet kommer fokusera mer på innehållet än att det är skrivet på ett, ur
+Projektet kommer fokusera mer på innehållet än att det är skrivet på ett, ur
 ett pedagogiskt perspektiv, bra sätt. Denna avgränsning valdes eftersom hur
 innehållet kan se ut är intressantare än att det är skrivet på det mest
 pedagogiska sättet. Den pedagogiska aspekten kommer inte ignoreras helt. Fokuset
-på den kommer bara vara mindre.
+på den kommer bara att vara mindre.
 
 \end{draft}

@@ -17,6 +17,7 @@ Quantities
 >     ( Quantity
 >     , length, mass, time, current, temperature, substance, luminosity, one
 >     , velocity, acceleration, force, momentum
+>     , meter, kilogram, second, ampere, kelvin, mole, candela, unitless
 >     , (~=)
 >     , isZero
 >     , (#)
@@ -465,8 +466,6 @@ To solve these two problems we'll introduce some syntactic sugar. First some pre
 
 And now the sugar.
 
-TODO: Please multiply the values instead of throwing them away. I'm pretty sure (#) should behave as "scale" of a vector space. So that (x#(y#z)) == ((x*y)#z).
-
 > (#) :: (Num v) => v -> Quantity d v -> Quantity d v
 > v # (ValQuantity d bv) = ValQuantity d (v*bv)
 
@@ -490,6 +489,8 @@ But let's not stop there. It would be prettier if you could actually write `mete
 
 **Exercise** Make it so that one can write the SI-units instead of the base dimensions when one uses the sugar. Then show how to write $4$ seconds.
 
+![](Mole.png "A different kind of mole..."){.float-img-right}
+
 <details>
 <summary>**Solution**</summary>
 <div>
@@ -501,7 +502,7 @@ But let's not stop there. It would be prettier if you could actually write `mete
 > kelvin   = temperature
 > mole     = substance
 > candela  = luminosity
-> unitless = 
+> unitless = one
 
 > fourSeconds = 4 # second
 

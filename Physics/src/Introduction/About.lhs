@@ -37,3 +37,10 @@ The book is aimed at you who have some knowledge of
 [Haskell](https://www.haskell.org/). If you know what a `class` and an
 `instance` is, you're probably good to go! Even if you don't we're
 sure you could pick it up as we go. We believe in you!
+
+If you wonder about the weird code blocks at the start of many
+chapters, they are there to declare the chapters as Haskell
+modules. All chapters are written in *Literate Haskell*, and can be
+used with GHC/GHCi directly as source code. Therefore, you may choose
+to read each chapter as documented source code, rather than text with
+examples.

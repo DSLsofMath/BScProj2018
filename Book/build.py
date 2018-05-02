@@ -97,17 +97,17 @@ def build_index(sources):
 
 sources = [
     ("Introduction", [
-        ("Introduction'", "Physics/src/Introduction/Introduction.lhs"),
+        (">> Start here <<", "Physics/src/Introduction/Introduction.lhs"),
     ]),
     ("Calculus", [
         ("Introduction", "Physics/src/Calculus/Intro.lhs"),
         ("Function expressions", "Physics/src/Calculus/FunExpr.lhs"),
         ("Differential calculus", "Physics/src/Calculus/DifferentialCalc.lhs"),
         ("Integral calculus", "Physics/src/Calculus/IntegralCalc.lhs"),
-        ("Visualization", "Physics/src/Calculus/VisVerApp.lhs"),
+        ("Plotting graphs", "Physics/src/Calculus/VisVerApp.lhs"),
     ]),
-    ("Vectors", [
-        ("Vector", "Physics/src/Vector/Vector.lhs")
+    ("Linear algebra", [
+        ("Vectors", "Physics/src/Vector/Vector.lhs")
     ]),
     ("Dimensions", [
         ("Introduction", "Physics/src/Dimensions/Intro.lhs"),
@@ -116,15 +116,14 @@ sources = [
         "Physics/src/Dimensions/ValueLevel/Test.lhs"),
         ("Type-level dimensions", "Physics/src/Dimensions/TypeLevel.lhs"),
         ("Quantities", "Physics/src/Dimensions/Quantity.lhs"),
-        ("Testing of Quantity",
+        ("Testing of Quantities",
         "Physics/src/Dimensions/Quantity/Test.lhs"),
         ("Usage", "Physics/src/Dimensions/Usage.lhs"),
-    ]),
-    ("Examples", [
-        ("Gungbräda", "Physics/src/Examples/Gungbraeda.lhs"),
-        ("krafter på lådor", "Physics/src/Examples/krafter_pa_lador.lhs"),
-
     ])
+    # ("Examples", [
+    #     ("Gungbräda", "Physics/src/Examples/Gungbraeda.lhs"),
+    #     ("krafter på lådor", "Physics/src/Examples/krafter_pa_lador.lhs"),
+    # ])
 
 ]
 

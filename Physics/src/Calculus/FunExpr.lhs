@@ -157,7 +157,7 @@ Try modifying `FunExpr` to derive `Show`, so that our expressions can be printed
 
 <   deriving Eq, Show
 
-Consider now how GHCI prints out a function expression we create
+Consider now how GHCi prints out a function expression we create
 
 < ghci> carAccel = Const 20
 < ghci> carSpeed = Const 50 :+ carAccel :* Id

@@ -111,7 +111,7 @@ define the syntax for them as
 
 >     | Delta RealNum FunExpr
 >     | D FunExpr
->     | I RealNum FunExpr
+>     | I FunExpr
 
 Even more finally, we add a `deriving` modifier to automatically allow
 for equality tests between `FunExpr`s.
@@ -157,7 +157,7 @@ Try modifying `FunExpr` to derive `Show`, so that our expressions can be printed
 
 <   deriving Eq, Show
 
-Consider now how GHCI prints out a function expression we create
+Consider now how GHCi prints out a function expression we create
 
 < ghci> carAccel = Const 20
 < ghci> carSpeed = Const 50 :+ carAccel :* Id
@@ -186,7 +186,7 @@ So if the `Show` is bad, we'll just have to make our own `Show`!
 >   show (f :. g) = "(" ++ show f ++ " . " ++ show g ++ ")"
 >   show (Delta h f) = "(delta_" ++ showReal h ++ " " ++ show f ++ ")"
 >   show (D f) = "(D " ++ show f ++ ")"
->   show (I c f) = "(I at " ++ show c ++ " for " ++ show f ++ ")"
+>   show (I f) = "(I " ++ show f ++ ")"
 >
 > showReal x = if isInt x then show (round x) else show x
 >   where isInt x = x == fromInteger (round x)
@@ -228,7 +228,7 @@ generated expressions in complexity.
 >         , (10, genBinaryApp (:.))
 >         , (5 , genBinaryApp Delta)
 >         , (5 , fmap D arbitrary)
->         , (5 , genBinaryApp I) ]
+>         , (5 , fmap I arbitrary) ]
 >     where genElementary = elements [Exp, Log, Sin, Cos, Asin, Acos]
 >           genBinaryApp op = fmap (\(f, g) -> f `op` g) arbitrary
 >           genBinaryOperation =     elements [(:+), (:-), (:*), (:/), (:^)]

@@ -116,7 +116,7 @@ that's our the type of our semantics!). So, we simply say that when
 integrating a function, the constant term must be supplied in order to
 nail the result down to a single function!
 
-<     | I RealNum FunExpr
+<     | I FunExpr
 
 
 
@@ -265,10 +265,8 @@ Let's implement these rules as a function for symbolic (indefinite)
 integration of functions. We'll start with the nicer cases, and
 progress to the not so nice ones.
 
-`integrate` takes a function to symbolically integrate, and a real
-number that decides the vertical offset (i.e. the value of $f(0)$ /
-the constant term) of the function. The antiderivative with the given
-vertical offset is returned.
+`integrate` takes a function to symbolically integrate, and returns
+the antiderivative where $F(0) = 0$.
 
 Important to note is that not all functions are integrable. Unlike
 derivatives, some antiderivatives of elementary functions simply
@@ -276,55 +274,58 @@ cannot be expressed as elementary functions themselves, according to
 [Liouville's
 theorem](https://en.wikipedia.org/wiki/Liouville%27s_theorem_%28differential_algebra%29). Some examples include $e^{-x^2}$, $\frac{sin(x)}{x}$, and $x^x$.
 
-> integrate :: FunExpr -> RealNum -> FunExpr
+> integrate :: FunExpr -> FunExpr
 
 First, our elementary functions. You can prove them using the methods
 described above, but the easiest way to find them is to just look them
 up in some table of integrals (dust of that old calculus cheat sheet)
 or on WolframAlpha (or Wikipedia, or whatever. Up to you).
 
-> integrate Exp c = Exp :+ Const c
-> integrate Log c = Id :* (Log :- Const 1) :+ Const c
-> integrate Sin c = Const 0 :- Cos :+ Const c
-> integrate Cos c = Sin :+ Const c
-> integrate Asin c =    (Const 1 :- Id:^(Const 2)):^(Const 0.5)
->                    :+ Id :* Asin
->                    :+ Const c
-> integrate Acos c =    Id :* Acos
->                    :- (Const 1 :- Id:^(Const 2)):^(Const 0.5)
->                    :+ Const c
+> integrate Exp = Exp :- Const 1
+
+Note that $log(x)$ is not defined in $x=0$, so we don't have to add
+any corrective constant as $F(0)$ wouldn't make sense anyways.
+
+> integrate Log  = Id :* (Log :- Const 1)
+> integrate Sin  = Const 1 :- Cos
+> integrate Cos  = Sin
+> integrate Asin =    (Const 1 :- Id:^(Const 2)):^(Const 0.5)
+>                  :+ Id :* Asin
+>                  :- Const 0
+> integrate Acos =    Id :* Acos
+>                  :- (Const 1 :- Id:^(Const 2)):^(Const 0.5)
+>                  :+ Const 1
 
 These two good boys. Very simple as well.
 
-> integrate Id c = Id:^Const 2 :/ Const 2 :+ Const c
-> integrate (Const d) c = Const d :* Id :+ Const c
+> integrate Id        = Id:^Const 2 :/ Const 2
+> integrate (Const d) = Const d :* Id
 
 Addition and subtraction is trivial. Just use the backwards method and
 compare to how sums and differences are differentiated.
 
-> integrate (f :+ g) c = integrate f c :+ integrate g 0
-> integrate (f :- g) c = integrate f c :- integrate g 0
+> integrate (f :+ g) = integrate f :+ integrate g
+> integrate (f :- g) = integrate f :- integrate g
 
 Delta is easy. Just expand it to the difference that it is, and
 integrate.
 
-> integrate (Delta h f) c = integrate (f :. (Id :+ Const h) :- f) c
+> integrate (Delta h f) = integrate (f :. (Id :+ Const h) :- f)
 
 A derivative? That's trivial, the integration and differentiation
-cancel each other, right? Nope, not so simple! We have to make sure
-that the constant coefficient is equal to `c`, which it might not be
-if we just cancel the operations and add the `c`. The simplest way to
-solve this is to evaluate the function at $x=0$, and check the
-value. We then add a term that corrects the function such that
-$I(D(f), c)[0] = c$. As we haven't implemented an evaluator yet, you
-can leave this "incorrect" for now, and fix it later!
+cancel each other, right? Nope, not so simple! To conform to our
+specification of `integrate` that $F(0)=0$, we have to make sure that
+the constant coefficient is equal to $0$, which it might not be if we
+just cancel the operations. The simplest way to solve this is to
+evaluate the function at $x=0$, and check the value. We then subtract
+a term that corrects the function such that $I(D(f))[0] = 0$. We'll
+write a simple function `center` for this later.
 
-> integrate (D f) c = f :+ Const (c - (eval f) 0) -- Correct, but requires `eval`
-> -- integrate (D f) c = f -- Incorrect (unless we don't care about `c`)
+> integrate (D f) = center f
 
 Integrating an integral? Just integrate the integral!
 
-> integrate (I d f) c = integrate (integrate f d) c 
+> integrate (I f) = integrate (integrate f)
 
 Aaaaaand now it starts to get complicated.
 
@@ -333,7 +334,7 @@ not for integration. There just isn't any nice way to integrate a
 product that always works! The integration rule that's most analogous
 to the product rule for differentiation, is integration by parts:
 
-$$ \int f(x) g(x) dx = f(x) G(x) - \int f'(x) g(x) dx $$
+$$ \int f(x) g(x) dx = f(x) G(x) - \int f'(x) G(x) dx $$
 
 Hmm, this doesn't look quite as helpful as the differentiation product
 rule, does it?  We want this rule to give us an expression of simpler
@@ -348,9 +349,9 @@ the expressions, we get a case where the integration by parts rule
 only makes things worse:
 
 \begin{align*}
-\int e^x x dx = &e^x x^2 - \int e^x x dx \\
-              = &e^x x^2 - (e^x x^2 - \int e^x x dx) \\
-              = &e^x x^2 - (e^x x^2 - (e^x x^2 - \int e^x x dx)) \\
+\int e^x x dx = &e^x \frac{x^2}{2} - \int e^x \frac{x^2}{2} dx \\
+              = &e^x \frac{x^2}{2} - (e^x \frac{x^3}{3!} - \int e^x \frac{x^3}{3} dx) \\
+              = &e^x \frac{x^2}{2} - (e^x \frac{x^3}{3!} - (e^x \frac{x^4}{4!} - \int e^x \frac{x^4}{4!} dx)) \\
               = &...
 \end{align*}
 
@@ -363,38 +364,40 @@ scope for this book.
 Further, as a consequence of Liouville's theorem, the integration by
 parts rule is simply not defined in the case of $g(x)$ not being
 integrable to $G(x)$. And so, as there exists no definitely good way
-to do it, we're forced to settle for a solution that works sometimes
-but not always.  We'll define the integration of a product to use
-integration by parts, but before integrating we'll simplify the
-expression in the hopes that it will become better suited for
-integration.
+to do it in ALL cases, we're forced to settle for a conservative approach.
 
-> integrate (f :* g) c =
->   let simplified = simplify (f :* g)
->   in if simplified == f :* g
->      then f :* integrate g 0 :- integrate (derive f :* g) 0 :+ Const c
->      else integrate simplified c
+If we look at the formula for integration by parts
+
+$$ \int f(x) g(x) dx = f(x) G(x) - \int f'(x) G(x) dx $$
+
+We see that there are two cases where the integral is well defined:
+
+$$ \int f(x) g'(x) dx = f(x) g(x) - \int f'(x) g(x) dx $$
+
+and
+
+$$ \int f'(x) g(x) dx = f(x) g(x) - \int f(x) g'(x) dx $$
+
+I.e., if we already know the integral of one factor, we can integrate the product.
+
+> integrate (D f :* g) = center (f :* g :- integrate (f :* derive g))
+> integrate (f :* D g) = center (f :* g :- integrate (derive f :* g))
+
+Also, we can add a few cases for integrals we know, like multiplication with a constant
+
+> integrate (Const c :* f) = Const c :* integrate f
 
 The rule for quotients is very similar
 
-> integrate (f :/ g) c =
->   let simplified = simplify (f :/ g)
->   in if simplified == f :/ g
->      then let _F = integrate f 0
->           in    _F :/ g
->              :+ integrate (_F :* (derive g :/ (g:^Const 2))) 0
->              :+ Const c
->      else integrate simplified c
+> integrate (D f :/ g) =
+>   center (f :/ g :+ integrate (f :* (D g :/ (g:^Const 2))))
 
 There is no good rule for exponentials in general. Only for certain
 combinations of functions in the base and exponent is symbolic
 integration well defined. We'll only treat the special case of $x^c$,
 which at least implies that we can use polynomials.
 
-> integrate (f :^ g) c =
->   case (simplify f, simplify g) of
->     (Id, Const c) -> Id:^(Const (c+1)) :/ Const (c+1)
->     (_, _)        -> error "Can't integrate integrals like that!"
+> integrate (Id :^ Const c) = Id:^(Const (c+1)) :/ Const (c+1)
 
 **Exercise.** Find more rules of integrating exponentials and add to
   the implementation.
@@ -416,13 +419,23 @@ differentiation. This method is tricky to implement, as the way humans
 execute this method is highly dependent on intuition and a mind for
 patterns. A brute-force solution would be possible to implement, but
 is out of scope for this book, and not really relevant to what we want
-to learn here. We'll leave integration of composition undefined.
+to learn here. We'll leave symbolic integration of composition undefined.
 
-As long as we ensure our input functions are not composed functions,
-`integrate` will still be well behaved.
+And if we couldn't integrate the expression as is, first try
+simplifying it and see if we know how to integrate the new
+expression. If that fails, just wrap the expression in the `I`
+constructor, unchanged. This will signify that we don't know how to
+symbolically integrate the expression. During evaluation, we can use
+`integrateApprox` to compute the integral numerically.
 
-> integrate (f :. g) c
->   = error "Please don't try to integrate function compositions!"
+> integrate f = let fsim = simplify f
+>               in if f == fsim
+>                  then I f
+>                  else integrate fsim
+
+Finally, the helper function `center` to center functions such that $f(0) = 0$.
+
+> center f = f :- Const ((eval f) 0)
 
 
 
@@ -477,8 +490,16 @@ Delta is just expanded to the difference that it really is
 
 > eval (Delta h f) = eval (f :. (Id :+ Const h) :- f)
 
-For derivatives and integrals, we apply the symbolic operations we
-wrote, and then evaluate the result.
+For derivatives, we just apply the symbolic operation we wrote, and
+then evaluate the result.
 
 > eval (D f) = eval (derive f)
-> eval (I c f) = eval (integrate f c)
+
+With integrals, we first symbolically integrate the expression as far
+as possible, then apply the numerical `integrateApprox` if we can't
+figure out the integral further.
+
+> eval (I f) = let _F = simplify (integrate f)
+>              in if _F == (I f)
+>                 then integrateApprox (eval f) 0.01 0
+>                 else eval _F

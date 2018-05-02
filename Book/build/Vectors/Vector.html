@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Learn You a Physics for Great Good!</title>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  </head>
+
+  <body>
+    <header>
+      <a href="../index.html"><h1>Learn You a <span class="physics">Physics</span> for Great Good!</h1></a>
+      <h1>&gt;&gt;&gt; WORK IN PROGRESS &lt;&lt;&lt;</h1>
+      <h2>Vectors / Vector</h2>
+      <nav>
+	<span>[src: <a href="https://github.com/DSLsofMath/BScProj2018/blob/master/Physics/src/Vector/Vector.lhs">Vector/Vector.lhs</a>]</span>
+        <span>Previous: <a href="../Calculus/Visualization.html">Visualization</a></span>
+        <a href="../index.html">Table of contents</a>
+        <span>Next: <a href="../Dimensions/Introduction.html">Introduction</a></span>
+      </nav>
+    </header>
+
+    <main>
+      <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">Vector.Vector</span> <span class="kw">where</span>
+
+<span class="kw">import </span><span class="dt">Test.QuickCheck</span> <span class="kw">hiding</span> (scale)</code></pre></div>
+<h2 id="vectors-in-two-dimensions.">Vectors in two dimensions.</h2>
+A physical quantity that has only a magnitude is called a scalar. In Haskell we'll represent this using a Double.
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">type</span> <span class="dt">Scalar</span> <span class="fu">=</span> <span class="dt">Double</span></code></pre></div>
+<p>A vector is a quantity that has both a magnitude and a direction. For instance the  of a moving body involves its speed (magnitude) and the direction of motion.</p>
+We cen represent the direction of a vector in two dimensions using its <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> coordinates, which are both scalars. The direction is then given by the angle between these coordinates and the origin (0,0).
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Vector2</span> <span class="fu">=</span> <span class="dt">V2</span> <span class="dt">Scalar</span> <span class="dt">Scalar</span></code></pre></div>
+The magnitude of the vector is it's length. We can calculate this using Pythagorean theorem:
+<span class="math display">\[\begin{equation}
+  x^2 + y^2 = mag^2
+\end{equation}\]</span>
+<p>In haskell this would be: &lt; magnitude :: Vector2 -&gt; Scalar &lt; magnitude (V2 x y) = sqrt (x^2 + y^2)</p>
+<p>And now we can calulate the magnitude of a vector in two dimensions:</p>
+<pre><code>  Vector&gt; let vec = V2 5 3
+  Vector&gt; magnitude vec
+  7.0710678118654755</code></pre>
+<p>Addition and subtraction of vectors is acamplished using the components of the vectors. For instance when adding the forces (vectors) acting on a body we would add the components of the forces acting in the <span class="math inline">\(x\)</span> direction and the components in the <span class="math inline">\(y\)</span> direction. So our functions for adding and subtracting vectors in two dimensions are:</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">add2 ::</span> <span class="dt">Vector2</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span>
+add2 (<span class="dt">V2</span> x1 y1) (<span class="dt">V2</span> x2 y2) <span class="fu">=</span> <span class="dt">V2</span> (x1 <span class="fu">+</span> x2) (y1 <span class="fu">+</span> y2)
+
+<span class="ot">sub2 ::</span> <span class="dt">Vector2</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span>
+sub2 (<span class="dt">V2</span> x1 y1) (<span class="dt">V2</span> x2 y2) <span class="fu">=</span> <span class="dt">V2</span> (x1 <span class="fu">-</span> x2) (y1 <span class="fu">-</span> y2)</code></pre></div>
+But this only works for two vectors. In reality we might be working with several hundreds of vectors so it would be useful to add, for instance a list of vectors together and get one final vector as a result. We can use  using the zero vector as a starting value. to acomplish this.
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">addListOfVectors ::</span> [<span class="dt">Vector2</span>] <span class="ot">-&gt;</span> <span class="dt">Vector2</span>
+addListOfVectors <span class="fu">=</span> foldr add zeroVector
+  <span class="kw">where</span>
+    zeroVector <span class="fu">=</span> <span class="dt">V2</span> <span class="dv">0</span> <span class="dv">0</span></code></pre></div>
+<p>Let's try it out!</p>
+<pre><code>  *Vector&gt; let vec1 = V2 5 3
+  *Vector&gt; let vec2 = V2 6 5
+  *Vector&gt; sub2 vec1 vec2
+
+  &lt;interactive&gt;:23:1: error:
+      • No instance for (Show Vector2) arising from a use of ‘print’
+      • In a stmt of an interactive GHCi command: print it</code></pre>
+<p>The interpreter is complaining that it doesn't know how to interpret our datatype for vectors as a string. The easy solution would be to just derive our instance for Show, but to really solidify the fact that we are working with coordinates let's make our own instance for Show.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">instance</span> <span class="dt">Show</span> <span class="dt">Vector2</span> <span class="kw">where</span>
+  show (<span class="dt">V2</span> x y) <span class="fu">=</span> <span class="st">&quot;(&quot;</span> <span class="fu">++</span> show x <span class="fu">++</span> <span class="st">&quot; x, &quot;</span> <span class="fu">++</span> show y <span class="fu">++</span> <span class="st">&quot; y)&quot;</span></code></pre></div>
+<p>And let's try our example again:</p>
+<pre><code>  *Vector&gt; let vec1 = V2 5 3
+  *Vector&gt; let vec2 = V2 6 5
+  *Vector&gt; sub2 vec1 vec2
+  (-1.0 x, -2.0 y)</code></pre>
+<p>And let's also try adding a list of vectors using our new function:</p>
+<pre><code>  *Vector&gt; let vec3 = V2 8 9
+  *Vector&gt; let vectors = [vec1, vec2, vec3]
+  *Vector&gt; addListOfVectors vectors
+  (19.0 x, 17.0 y)</code></pre>
+<p>It works!</p>
+<p>We can also multiply a vector by a scalar. This is also done componentwise. We'll call this scaling a vector. So we could make double a vector by multiplying it with <span class="math inline">\(2.0\)</span> and halving it by multiplying it with <span class="math inline">\(0.5\)</span>.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">scale ::</span> <span class="dt">Scalar</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span>
+scale factor (<span class="dt">V2</span> x y) <span class="fu">=</span> <span class="dt">V2</span> (factor <span class="fu">*</span> x) (factor <span class="fu">*</span> y)</code></pre></div>
+<p>Combining this with the unit vectors:</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">unitX ::</span> <span class="dt">Vector2</span>
+unitX <span class="fu">=</span> <span class="dt">V2</span> <span class="dv">1</span> <span class="dv">0</span>
+
+<span class="ot">unitY ::</span> <span class="dt">Vector2</span>
+unitY <span class="fu">=</span> <span class="dt">V2</span> <span class="dv">0</span> <span class="dv">1</span></code></pre></div>
+<p>We get a new way of making vectors, namely by scaling the unit vectors and adding them together. Let's create the vector (5 x, 3 y) using this approach.</p>
+<pre class="shell"><code>  *Vector&gt; add (scale 5 unitX) (scale 3 unitY)
+  (5.0 x, 3.0 y)</code></pre>
+<p>In order to check that this vector is actually equal to the vector created using the contructor  we need to make our vector an instance of .</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">instance</span> <span class="dt">Eq</span> <span class="dt">Vector2</span> <span class="kw">where</span>
+  (<span class="dt">V2</span> x1 y1) <span class="fu">==</span> (<span class="dt">V2</span> x2 y2) <span class="fu">=</span> (x1 <span class="fu">==</span> x2) <span class="fu">&amp;&amp;</span> (y1 <span class="fu">==</span> y2)</code></pre></div>
+<p>Let's try it out:</p>
+<pre><code>  *Vector&gt; let vec1 = V2 5 3
+  *Vector&gt; let vec2 =  add (scale 5 unitX) (scale 3 unitY)
+  *Vector&gt; vec1 == vec2
+  True</code></pre>
+<div class="figure">
+<img src="http://i.imgur.com/GMCn5mi.png" />
+
+</div>
+We have one final important operation left to define for vectors in two dimensions, the dot product. The formula is quite simple:
+<span class="math display">\[\begin{equation}
+  \vec{a} \cdot \vec{b} = a_x \cdot b_x + a_y \cdot b_y
+\end{equation}\]</span>
+<p>And our function simply becomes:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">dotProd ::</span> <span class="dt">Vector2</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span> <span class="ot">-&gt;</span> <span class="dt">Scalar</span>
+dotProd (<span class="dt">V2</span> ax ay) (<span class="dt">V2</span> bx by) <span class="fu">=</span> ax <span class="fu">*</span> bx <span class="fu">+</span> ay <span class="fu">*</span> by</code></pre></div>
+<p>But this doesn't give us any intuition about what it means to take the dot product between vectors. The common interpretation is &quot;geometric projection&quot;, but that only makes sense if you already understand the dot product. Let's try to give an easier analogy using the dash panels (boost pads) from . The dash panel is designed to give you boost of speed in a specific direction, usually straight forward. So the vector associated with the dash panel can be represented with a unit vector multiplied with some factor of boost, say 10.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">dashPanel ::</span> <span class="dt">Vector2</span>
+dashPanel <span class="fu">=</span> scale <span class="dv">10</span> unitY</code></pre></div>
+<p>Now let's say that your cart has this arbitrarily chosen velocity vector:</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">cart ::</span> <span class="dt">Vector2</span>
+cart <span class="fu">=</span> <span class="dt">V2</span> <span class="dv">3</span> <span class="dv">5</span></code></pre></div>
+<p>Depending on which angle you hit the dash panel you'll receive different amounts of boost. Since the <span class="math inline">\(x\)</span>-component of the dashPanel is 0 any component of speed on the <span class="math inline">\(x\)</span>-direction will be reduced to zero. Only the speed in the direction of <span class="math inline">\(y\)</span> will be boosted. But there are worse ways to hit the dash panel. We could for instance create a new velocity vector with the exact same magnitude of speed but which would recieve a worse boost.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">worseCart ::</span> <span class="dt">Vector2</span>
+worseCart <span class="fu">=</span> <span class="dt">V2</span> <span class="dv">5</span> <span class="dv">3</span></code></pre></div>
+<p>Let's see this in action.</p>
+<pre><code>*Vector&gt; magnitude cart == magnitude worseCart
+True
+*Vector&gt; dotProd dashPanel cart
+50.0
+*Vector&gt; dotProd dashPanel worseCart
+30.0</code></pre>
+<p>We talked a lot about angles between vectors but we havn't used it in our code, so lets make a function which calculates the angle of a vector. The formula is as follows: %TODO </p>
+We'll use Doubles to represent the angle.
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">type</span> <span class="dt">Angle</span>  <span class="fu">=</span> <span class="dt">Double</span>
+
+<span class="ot">angle ::</span> <span class="dt">Vector2</span> <span class="ot">-&gt;</span> <span class="dt">Scalar</span>
+angle (<span class="dt">V2</span> x y) <span class="fu">=</span> atan y<span class="fu">/</span>x</code></pre></div>
+<p>Using angles and magnitudes we can even make a new function for making vectors:</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">mkVector ::</span> <span class="dt">Scalar</span> <span class="ot">-&gt;</span> <span class="dt">Angle</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span>
+mkVector mag angle <span class="fu">=</span> <span class="dt">V2</span> x y
+  <span class="kw">where</span>
+    x <span class="fu">=</span> mag <span class="fu">*</span> cos angle
+    y <span class="fu">=</span> mag <span class="fu">*</span> sin angle</code></pre></div>
+<p>%-- Angle between two vectors %angleG :: Vector vec =&gt; vec -&gt; vec -&gt; Scalar %angleG v1 v2 = (dotProd v1 v2) / ((magnitude v1) * (magnitude v2))</p>
+<h2 id="vectors-in-three-dimensions.">Vectors in three dimensions.</h2>
+<p>The datatype for a vector in three dimensions is basically the same as vector in two dimensions, we'll just add a <span class="math inline">\(z\)</span>-component.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Vector3</span> <span class="fu">=</span> <span class="dt">V3</span> <span class="dt">Scalar</span> <span class="dt">Scalar</span> <span class="dt">Scalar</span></code></pre></div>
+Similarily the functions for adding three dimensional vectors:
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">add3 ::</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Vector3</span>
+add3 (<span class="dt">V3</span> x1 y1 z1) (<span class="dt">V3</span> x2 y2 z2) <span class="fu">=</span> <span class="dt">V3</span> (x1 <span class="fu">+</span> x2) (y1 <span class="fu">+</span> y2) (z1 <span class="fu">+</span> z2)</code></pre></div>
+Multiplying with a scalar:
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">scale3 ::</span> <span class="dt">Scalar</span> <span class="ot">-&gt;</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Vector3</span>
+scale3 fac (<span class="dt">V3</span> x y z) <span class="fu">=</span> <span class="dt">V3</span> (fac <span class="fu">*</span> x) (fac <span class="fu">*</span> y) (fac <span class="fu">*</span> z)</code></pre></div>
+And for calculating the magnitude:
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">mag3 ::</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Scalar</span>
+mag3 (<span class="dt">V3</span> x y z) <span class="fu">=</span> sqrt <span class="fu">$</span> x<span class="fu">**</span><span class="dv">2</span> <span class="fu">+</span> y<span class="fu">**</span><span class="dv">2</span> <span class="fu">+</span> z<span class="fu">**</span><span class="dv">2</span></code></pre></div>
+<p>Looks earily similar to our functions for vectors in two dimensions. This suggest that there might be a better way to handle this, in order to avoid repeating ourselves.</p>
+<p>Addition and subtraction on vectors works by &quot;unpacking&quot; the vectors, taking their components, applying some function to them (+/-) and then packing them up as a new vector. This is very similar to the Haskell function  which works over lists instead of vectors.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">zipWith<span class="ot"> ::</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> c) <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [b] <span class="ot">-&gt;</span> [c]</code></pre></div>
+<p>When we're multiplying with a scalar we again unpack the vector and then apply mulitiplication with a factor to each component before packing it up again. This is quite similar to the Haskell function , which again works over lists.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">map<span class="ot"> ::</span> (a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [b]</code></pre></div>
+<p>When calculating the magnitude of a vector we first unpack the vector and then apply <span class="math inline">\(^2\)</span> to each component of the vector. This is doable with aformentioned . We then  the components together using <span class="math inline">\(+\)</span> which results in a final scalar value. Those of you familliar with functional languages will know where I'm going with this, those of you who aren't will hopefully understand where I'm going when reading the examples.</p>
+<p>Using this information we will now create a new class for vectors which implement this functionality:</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">class</span> <span class="dt">Vector</span> vector <span class="kw">where</span>
+<span class="ot">  vmap      ::</span> (<span class="dt">Scalar</span> <span class="ot">-&gt;</span> <span class="dt">Scalar</span>) <span class="ot">-&gt;</span> vector  <span class="ot">-&gt;</span> vector
+<span class="ot">  vzipWith  ::</span> (<span class="dt">Scalar</span> <span class="ot">-&gt;</span> <span class="dt">Scalar</span>  <span class="ot">-&gt;</span> <span class="dt">Scalar</span>) <span class="ot">-&gt;</span> vector <span class="ot">-&gt;</span> vector <span class="ot">-&gt;</span> vector
+<span class="ot">  vfold     ::</span> (<span class="dt">Scalar</span> <span class="ot">-&gt;</span> <span class="dt">Scalar</span>  <span class="ot">-&gt;</span> <span class="dt">Scalar</span>) <span class="ot">-&gt;</span> vector <span class="ot">-&gt;</span> <span class="dt">Scalar</span></code></pre></div>
+Now we have a blueprint for what vector is, so let's implement it for our own vector datatypes.
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">instance</span> <span class="dt">Vector</span> <span class="dt">Vector2</span> <span class="kw">where</span>
+  vmap     f (<span class="dt">V2</span> x y)            <span class="fu">=</span> <span class="dt">V2</span> (f x)    (f y)
+  vzipWith f (<span class="dt">V2</span> x y) (<span class="dt">V2</span> x&#39; y&#39;) <span class="fu">=</span> <span class="dt">V2</span> (f x x&#39;) (f y y&#39;)
+  vfold    f (<span class="dt">V2</span> x y)            <span class="fu">=</span> f x y
+
+<span class="kw">instance</span> <span class="dt">Vector</span> <span class="dt">Vector3</span> <span class="kw">where</span>
+  vmap     f (<span class="dt">V3</span> x y z)               <span class="fu">=</span> <span class="dt">V3</span> (f x)    (f y)    (f z)
+  vzipWith f (<span class="dt">V3</span> x y z) (<span class="dt">V3</span> x&#39; y&#39; z&#39;) <span class="fu">=</span> <span class="dt">V3</span> (f x x&#39;) (f y y&#39;) (f z z&#39;)
+  vfold    f (<span class="dt">V3</span> x y z)               <span class="fu">=</span> f z <span class="fu">$</span> f x y</code></pre></div>
+<p>Now we're finally leveraging the power of the Haskell typesystem!</p>
+<p>We can now implement more generalized functions for addition and subtraction between vectors.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">add ::</span> <span class="dt">Vector</span> vec <span class="ot">=&gt;</span> vec <span class="ot">-&gt;</span> vec <span class="ot">-&gt;</span> vec
+add <span class="fu">=</span> vzipWith (<span class="fu">+</span>)
+
+<span class="ot">sub ::</span> <span class="dt">Vector</span> vec <span class="ot">=&gt;</span> vec <span class="ot">-&gt;</span> vec <span class="ot">-&gt;</span> vec
+sub <span class="fu">=</span> vzipWith (<span class="fu">-</span>)</code></pre></div>
+For multiplying with a scalar:
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">scale ::</span> <span class="dt">Vector</span> vec <span class="ot">=&gt;</span> <span class="dt">Scalar</span> <span class="ot">-&gt;</span> vec <span class="ot">-&gt;</span> vec
+scale factor <span class="fu">=</span> vmap (<span class="fu">*</span> factor)</code></pre></div>
+And for calculating the magnitude of a vector:
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">magnitude ::</span> <span class="dt">Vector</span> vec <span class="ot">=&gt;</span> vec <span class="ot">-&gt;</span> <span class="dt">Scalar</span>
+magnitude v <span class="fu">=</span> sqrt <span class="fu">.</span> vfold (<span class="fu">+</span>) <span class="fu">$</span> vmap (<span class="fu">**</span><span class="dv">2</span>) v</code></pre></div>
+We can even use it to make a generalized function for calculating the dot product.
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">dotProd ::</span> <span class="dt">Vector</span> vec <span class="ot">=&gt;</span> vec <span class="ot">-&gt;</span> vec <span class="ot">-&gt;</span> <span class="dt">Scalar</span>
+dotProd v1 v2 <span class="fu">=</span> vfold (<span class="fu">+</span>) <span class="fu">$</span> vzipWith (<span class="fu">*</span>) v1 v2</code></pre></div>
+
+<h2 id="cross-product">Cross Product</h2>
+We have one final function left to define, the cross product. The formula is as follows:
+<span class="math display">\[\begin{equation}
+  \vec{a} \times \vec{b} = |\vec{a}| \cdot |\vec{b}| \cdot sin(\theta)
+\end{equation}\]</span>
+<p>Where <span class="math inline">\(\theta\)</span> is the angle between the vectors. And <span class="math inline">\(|\vec{a}|\)</span>, <span class="math inline">\(|\vec{b}|\)</span> are the magnitudes of the vectors.</p>
+<p>So our function for calculating the cross product becomes:</p>
+<p>TODO: Generate normal vector as well. Codify right hand rule</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">crossProd ::</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Vector3</span>
+crossProd a b <span class="fu">=</span> (magnitude a) <span class="fu">*</span> (magnitude b) <span class="fu">*</span> sin (angleBetween a b)
+  <span class="kw">where</span>
+<span class="ot">    angleBetween ::</span> (<span class="dt">Vector</span> vec) <span class="ot">=&gt;</span> vec <span class="ot">-&gt;</span> vec <span class="ot">-&gt;</span> <span class="dt">Scalar</span>
+    angleBetween v1 v2 <span class="fu">=</span> acos ((dotProd v1 v2) <span class="fu">/</span> ((magnitude v1) <span class="fu">*</span> (magnitude v2)))</code></pre></div>
+<p>Working cross product using matrix rules.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">crossProd ::</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Vector3</span>
+crossProd (<span class="dt">V3</span> x y z) (<span class="dt">V3</span> x&#39; y&#39; z&#39;) <span class="fu">=</span> <span class="dt">V3</span> (y<span class="fu">*</span>z&#39; <span class="fu">-</span> z<span class="fu">*</span>y&#39;) <span class="co">-- X</span>
+                                        (z<span class="fu">*</span>x&#39; <span class="fu">-</span> x<span class="fu">*</span>z&#39;) <span class="co">-- Y</span>
+                                        (x<span class="fu">*</span>y&#39; <span class="fu">-</span> y<span class="fu">*</span>x&#39;) <span class="co">-- Z</span></code></pre></div>
+<h2 id="quickcheck">Quickcheck!</h2>
+<p>There are certain laws or preperties that vectors adher to, for example the jacobi identity:</p>
+<span class="math display">\[\begin{equation}
+ \vec{a} \times (\vec{b} \times \vec{c}) + \vec{b} \times (\vec{c} \times
+ \vec{a}) + \vec{c} \times (\vec{a} \times \vec{b}) = 0
+\end{equation}\]</span>
+<p>Or that the cross product is anticommutative. We can't actually prove these in a meaningful way without a whole bunch of packages and pragmas, but we can quickcheck them. But to do that we need to be able to generate vectors, so let's make our vectors an instance of .</p>
+We do this by generating arbitrary scalars and then constructing vectors with them.
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">instance</span> <span class="dt">Arbitrary</span> <span class="dt">Vector2</span> <span class="kw">where</span>
+  arbitrary <span class="fu">=</span> arbitrary <span class="fu">&gt;&gt;=</span> (\(s1, s2) <span class="ot">-&gt;</span> return <span class="fu">$</span> <span class="dt">V2</span> s1 s2)
+
+<span class="kw">instance</span> <span class="dt">Arbitrary</span> <span class="dt">Vector3</span> <span class="kw">where</span>
+  arbitrary <span class="fu">=</span> arbitrary <span class="fu">&gt;&gt;=</span> (\(s1, s2, s3) <span class="ot">-&gt;</span> return <span class="fu">$</span> <span class="dt">V3</span> s1 s2 s3)</code></pre></div>
+<p>Let's try it out!</p>
+<pre><code>ghci&gt; generate arbitrary :: IO Vector2
+(-26.349975377051404 x, 9.71134047527185 y)</code></pre>
+<p>Seems pretty random to me.</p>
+Now we can check some properties, lets' start with commutativity of vector addition:
+<span class="math display">\[\begin{equation}
+  \vec{a} + \vec{b} = \vec{b} + \vec{a}
+\end{equation}\]</span>
+Which translates to:
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">prop_CommutativityAddition ::</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+prop_CommutativityAddition v1 v2 <span class="fu">=</span> v1 <span class="fu">+</span> v2 <span class="fu">==</span> v2 <span class="fu">+</span> v1</code></pre></div>
+<p>And we test this in the .</p>
+<pre><code>ghci&gt; quickCheck prop_CommutativityAddition
++++ OK, passed 100 tests.</code></pre>
+And associativity of addition:
+<span class="math display">\[\begin{equation}
+  \vec{a} + (\vec{b} + \vec{c}) = (\vec{a} + \vec{b}) + \vec{c}
+\end{equation}\]</span>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">prop_AssociativityAddition ::</span> <span class="dt">Vector2</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+prop_AssociativityAddition a b c <span class="fu">=</span> a <span class="fu">+</span> (b <span class="fu">+</span> c) <span class="fu">==</span> (a <span class="fu">+</span> b) <span class="fu">+</span> c</code></pre></div>
+<pre><code>ghci&gt; quickCheck prop_AssociativityAddition
+*** Failed! Falsifiable (after 2 tests):
+(0.5240133611343812 x, -0.836882545823441 y, -4776.775557184785 z)
+(-0.17261751005585407 x, 0.7893754200476363 y, -0.19757165887775568 z)
+(0.3492200657348603 x, 0.10861834028920295 y, 0.45838513657221946 z)</code></pre>
+<p>This is very strange since the laws should always be correct. But this error stems from the fact that we're using a computer and that using doubles (Scalar) will introduce approximation errors. We can fix this by relaxing our instance for  and only requiring the components of the vectors to be approximately equal.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">eps ::</span> <span class="dt">Double</span>
+eps <span class="fu">=</span> <span class="dv">1</span> <span class="fu">*</span> (<span class="dv">10</span> <span class="fu">**</span> (<span class="fu">-</span><span class="dv">5</span>))
+
+<span class="kw">instance</span> <span class="dt">Eq</span> <span class="dt">Vector2</span> <span class="kw">where</span>
+  (<span class="dt">V2</span> x1 y1) <span class="fu">==</span> (<span class="dt">V2</span> x2 y2) <span class="fu">=</span> xCheck <span class="fu">&amp;&amp;</span> yCheck
+    <span class="kw">where</span>
+      xCheck <span class="fu">=</span> abs (x1 <span class="fu">-</span> x2) <span class="fu">&lt;=</span> eps
+      yCheck <span class="fu">=</span> abs (y1 <span class="fu">-</span> y2) <span class="fu">&lt;=</span> eps</code></pre></div>
+<p>Let's try again.</p>
+<pre><code>*Vector.Vector&gt; quickCheck prop_AssociativityAddition
++++ OK, passed 100 tests.</code></pre>
+<h2 id="more-laws">More laws</h2>
+<p>Dot product is commutative:</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">prop_dotProdCommutative ::</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+prop_dotProdCommutative a b <span class="fu">=</span> dotProd a b <span class="fu">==</span> dotProd b a</code></pre></div>
+In order to check some laws which depends on checking the equality of scalars we'll introduce a function which checks that two scalars are approximately equal.
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="co">-- Approx equal</span>
+<span class="ot">(~=) ::</span> <span class="dt">Scalar</span> <span class="ot">-&gt;</span> <span class="dt">Scalar</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+rhs <span class="fu">~=</span> lhs <span class="fu">=</span> abs (rhs <span class="fu">-</span> lhs) <span class="fu">&lt;=</span> eps</code></pre></div>
+<p>Dot product is distributive over addition: <img src="https://upload.wikimedia.org/wikipedia/commons/a/aa/Dot_product_distributive_law.svg" alt="Dot product distributive, (C)" /></p>
+<span class="math display">\[\begin{equation}
+\vec{a} \cdot (\vec{b} + \vec{c}) = (\vec{a} \cdot \vec{b}) + (\vec{a} \cdot
+\vec{c})
+\end{equation}\]</span>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">prop_dotProdDistrubitiveAddition ::</span>  <span class="dt">Vector2</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+prop_dotProdDistrubitiveAddition a b c <span class="fu">=</span> dotProd a (b <span class="fu">+</span> c) <span class="fu">~=</span> (dotProd a b <span class="fu">+</span> dotProd a c)</code></pre></div>
+The dot product is homogeneous under scaling in each variable:
+<span class="math display">\[\begin{equation}
+(x * \vec{a}) \cdot b = x * (\vec{a} \cdot \vec{b}) = \vec{a} \cdot (x * \vec{b})
+\end{equation}\]</span>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">prop_dotProdHomogeneousScaling ::</span> <span class="dt">Scalar</span> <span class="ot">-&gt;</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+prop_dotProdHomogeneousScaling x a b <span class="fu">=</span> e1 <span class="fu">==</span> e2 <span class="fu">&amp;&amp;</span> e2 <span class="fu">==</span> e3
+  <span class="kw">where</span>
+    e1 <span class="fu">=</span> dotProd (scale <span class="dv">0</span> a) b
+    e2 <span class="fu">=</span> <span class="dv">0</span> <span class="fu">*</span> dotProd a b
+    e3 <span class="fu">=</span> dotProd a (scale <span class="dv">0</span> b)</code></pre></div>
+The cross product of a vector with itself is the zero vector.
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">prop_crossProd_with_self ::</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+prop_crossProd_with_self v <span class="fu">=</span> crossProd v v <span class="fu">==</span> <span class="dv">0</span></code></pre></div>
+The crossproduct is anticommutative:
+<span class="math display">\[\begin{equation}
+\vec{a} \times \vec{b} = - (\vec{b} \times \vec{a})
+\end{equation}\]</span>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">prop_crossProdAntiCommutative ::</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+prop_crossProdAntiCommutative v1 v2 <span class="fu">=</span> v1 <span class="fu">*</span> v2 <span class="fu">==</span> <span class="fu">-</span> (v2 <span class="fu">*</span> v1)</code></pre></div>
+The cross product is distributive over addition:
+<span class="math display">\[\begin{equation}
+\vec{a} \times (\vec{b} + \vec{c}) = (\vec{a} \times \vec{b}) + (\vec{a} \times
+\vec{c})
+\end{equation}\]</span>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">prop_crossProdDistrubitiveAddition ::</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+prop_crossProdDistrubitiveAddition a b c <span class="fu">=</span> a <span class="fu">*</span> (b <span class="fu">+</span> c) <span class="fu">==</span> (a <span class="fu">*</span> b) <span class="fu">+</span> (a <span class="fu">*</span> c)</code></pre></div>
+<p>Vector triple product (Lagrange's formula).</p>
+<span class="math display">\[\begin{equation}
+\vec{a} \times (\vec{b} \times \vec{c}) = \vec{b}(\vec{a} \cdot \vec{c}) -
+                                \vec{c}(\vec{a} \cdot \vec{b})
+\end{equation}\]</span>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">prop_lagrange ::</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+prop_lagrange a b c <span class="fu">=</span> a <span class="fu">*</span> (b <span class="fu">*</span> c) <span class="fu">==</span> (scale (dotProd a c) b <span class="fu">-</span>
+                                      scale (dotProd a b) c)</code></pre></div>
+The Jacobi identity:
+<span class="math display">\[\begin{equation}
+\vec{a} \times (\vec{b} \times \vec{c}) +
+\vec{b} \times (\vec{c} \times \vec{a}) +
+\vec{v} \times (\vec{a} \times \vec{b})
+\end{equation}\]</span>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">prop_JacobiIdentity ::</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Vector3</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+prop_JacobiIdentity a b c <span class="fu">=</span> a <span class="fu">*</span> (b <span class="fu">*</span> c) <span class="fu">+</span>
+                            b <span class="fu">*</span> (c <span class="fu">*</span> a) <span class="fu">+</span>
+                            c <span class="fu">*</span> (a <span class="fu">*</span> b) <span class="fu">==</span> <span class="dv">0</span></code></pre></div>
+<h2 id="fun-instances">Fun instances</h2>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">instance</span> <span class="dt">Monoid</span> <span class="dt">Vector2</span> <span class="kw">where</span>
+  mempty  <span class="fu">=</span> zeroVector
+  mappend <span class="fu">=</span> (<span class="fu">+</span>)
+  mconcat <span class="fu">=</span> foldr mappend mempty
+
+<span class="kw">instance</span> <span class="dt">Monoid</span> <span class="dt">Vector3</span> <span class="kw">where</span>
+  mempty  <span class="fu">=</span> zeroVector
+  mappend <span class="fu">=</span> (<span class="fu">+</span>)
+  mconcat <span class="fu">=</span> foldr mappend mempty
+
+
+<span class="kw">instance</span> <span class="dt">Num</span> <span class="dt">Vector2</span> <span class="kw">where</span>
+  (<span class="fu">+</span>)           <span class="fu">=</span> vzipWith (<span class="fu">+</span>)
+  (<span class="fu">*</span>)           <span class="fu">=</span> undefined <span class="co">-- Crossproduct not defined for Vector2</span>
+  abs           <span class="fu">=</span> vmap abs
+  negate        <span class="fu">=</span> vmap (<span class="fu">*</span>(<span class="fu">-</span><span class="dv">1</span>))
+  <span class="co">-- | Signum can be though of as the direction of a vector</span>
+  signum        <span class="fu">=</span> vmap signum
+  fromInteger i <span class="fu">=</span> <span class="dt">V2</span> (fromInteger i) <span class="dv">0</span>
+
+<span class="kw">instance</span> <span class="dt">Num</span> <span class="dt">Vector3</span> <span class="kw">where</span>
+  (<span class="fu">+</span>)           <span class="fu">=</span> vzipWith (<span class="fu">+</span>)
+  (<span class="fu">*</span>)           <span class="fu">=</span> crossProd
+  abs           <span class="fu">=</span> vmap abs
+  negate        <span class="fu">=</span> vmap (<span class="fu">*</span>(<span class="fu">-</span><span class="dv">1</span>))
+  <span class="co">-- | Signum can be though of as the direction of a vector</span>
+  signum        <span class="fu">=</span> vmap signum
+  fromInteger i <span class="fu">=</span> <span class="dt">V3</span> (fromInteger i) <span class="dv">0</span> <span class="dv">0</span>
+
+<span class="co">-- TODO: Explain why this works</span>
+<span class="ot">zeroVector ::</span> (<span class="dt">Vector</span> a, <span class="dt">Num</span> a) <span class="ot">=&gt;</span> a
+zeroVector <span class="fu">=</span> <span class="dv">0</span>
+
+<span class="kw">instance</span> <span class="dt">Show</span> <span class="dt">Vector3</span> <span class="kw">where</span>
+  show (<span class="dt">V3</span> x y z) <span class="fu">=</span> <span class="st">&quot;(&quot;</span> <span class="fu">++</span> show x <span class="fu">++</span> <span class="st">&quot; x, &quot;</span>
+                        <span class="fu">++</span> show y <span class="fu">++</span> <span class="st">&quot; y, &quot;</span>
+                        <span class="fu">++</span> show z <span class="fu">++</span> <span class="st">&quot; z)&quot;</span>
+<span class="kw">instance</span> <span class="dt">Ord</span> <span class="dt">Vector2</span> <span class="kw">where</span>
+  compare v1 v2 <span class="fu">=</span> compare (magnitude v1) (magnitude v2)
+
+<span class="kw">instance</span> <span class="dt">Ord</span> <span class="dt">Vector3</span> <span class="kw">where</span>
+  compare v1 v2 <span class="fu">=</span> compare (magnitude v1) (magnitude v2)
+
+<span class="kw">instance</span> <span class="dt">Eq</span> <span class="dt">Vector3</span> <span class="kw">where</span>
+  (<span class="dt">V3</span> x y z) <span class="fu">==</span> (<span class="dt">V3</span> x&#39; y&#39; z&#39;) <span class="fu">=</span> xCheck <span class="fu">&amp;&amp;</span> yCheck <span class="fu">&amp;&amp;</span> zCheck
+    <span class="kw">where</span>
+    xCheck <span class="fu">=</span> abs (x <span class="fu">-</span> x&#39;) <span class="fu">&lt;=</span> eps
+    yCheck <span class="fu">=</span> abs (y <span class="fu">-</span> y&#39;) <span class="fu">&lt;=</span> eps
+    zCheck <span class="fu">=</span> abs (z <span class="fu">-</span> z&#39;) <span class="fu">&lt;=</span> eps</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">runTests ::</span> <span class="dt">IO</span> ()
+runTests <span class="fu">=</span> <span class="kw">do</span>
+  putStrLn <span class="st">&quot;Commutativity of vector addition:&quot;</span>
+  quickCheck prop_CommutativityAddition
+  putStrLn <span class="st">&quot;Associativity of vector addition:&quot;</span>
+  quickCheck prop_AssociativityAddition
+  putStrLn <span class="st">&quot;Dot product distributive over addition:&quot;</span>
+  quickCheck prop_dotProdDistrubitiveAddition
+  putStrLn <span class="st">&quot;Homogeneous scaling:&quot;</span>
+  quickCheck prop_dotProdHomogeneousScaling
+  putStrLn <span class="st">&quot;Commutative dot product:&quot;</span>
+  quickCheck prop_dotProdCommutative
+  putStrLn <span class="st">&quot;Crossproduct of a vector with itself:&quot;</span>
+  quickCheck prop_crossProd_with_self
+  putStrLn <span class="st">&quot;Cross product is anticommutative&quot;</span>
+  quickCheck prop_crossProdAntiCommutative
+  putStrLn <span class="st">&quot;Cross product distributive over addition&quot;</span>
+  quickCheck prop_crossProdDistrubitiveAddition
+  putStrLn <span class="st">&quot;Lagrange formula&quot;</span>
+  quickCheck prop_lagrange
+  putStrLn <span class="st">&quot;Jacobi identity&quot;</span>
+  quickCheck prop_JacobiIdentity</code></pre></div>
+
+    </main>
+
+    <footer>
+      <nav>
+	<span>[src: <a href="https://github.com/DSLsofMath/BScProj2018/blob/master/Physics/src/Vector/Vector.lhs">Vector/Vector.lhs</a>]</span>
+        <span>Previous: <a href="../Calculus/Visualization.html">Visualization</a></span>
+        <a href="../index.html">Table of contents</a>
+        <span>Next: <a href="../Dimensions/Introduction.html">Introduction</a></span>
+      </nav>
+      © Kandidatboisen (2018), GPL
+    </footer>
+  </body>
+</html>

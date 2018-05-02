@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Learn You a Physics for Great Good!</title>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  </head>
+
+  <body>
+    <header>
+      <a href="../index.html"><h1>Learn You a <span class="physics">Physics</span> for Great Good!</h1></a>
+      <h1>&gt;&gt;&gt; WORK IN PROGRESS &lt;&lt;&lt;</h1>
+      <h2>Dimensions / Quantities</h2>
+      <nav>
+	<span>[src: <a href="https://github.com/DSLsofMath/BScProj2018/blob/master/Physics/src/Dimensions/Quantity.lhs">Dimensions/Quantity.lhs</a>]</span>
+        <span>Previous: <a href="../Dimensions/Type-level dimensions.html">Type-level dimensions</a></span>
+        <a href="../index.html">Table of contents</a>
+        <span>Next: <a href="../Dimensions/Testing of Quantity.html">Testing of Quantity</a></span>
+      </nav>
+    </header>
+
+    <main>
+      <h1 id="quantities">Quantities</h1>
+
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">Dimensions.Quantity</span>
+    ( <span class="dt">Quantity</span>
+    , length, mass, time, current, temperature, substance, luminosity, one
+    , velocity, acceleration, force, momentum
+    , (<span class="fu">~=</span>)
+    , isZero
+    , (<span class="fu">#</span>)
+    , (<span class="fu">+#</span>), (<span class="fu">-#</span>), (<span class="fu">*#</span>), (<span class="fu">/#</span>)
+    , sinq, cosq, asinq, acosq, atanq, expq, logq
+    ) <span class="kw">where</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">import qualified</span> <span class="dt">Dimensions.ValueLevel</span> <span class="kw">as</span> <span class="dt">V</span>
+<span class="kw">import           </span><span class="dt">Dimensions.TypeLevel</span>  <span class="kw">as</span> <span class="dt">T</span>
+<span class="kw">import           </span><span class="dt">Prelude</span>               <span class="kw">as</span> <span class="dt">P</span> <span class="kw">hiding</span> (length, div)</code></pre></div>
+<p>We'll now create a data type for quantities and combine dimensions on value-level and type-level. Just as before, a bunch of GHC-extensions are necessary.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">{-# LANGUAGE UndecidableInstances #-}</span>
+<span class="ot">{-# LANGUAGE FlexibleInstances #-}</span>
+<span class="ot">{-# LANGUAGE GADTs #-}</span>
+<span class="ot">{-# LANGUAGE DataKinds #-}</span>
+<span class="ot">{-# LANGUAGE TypeOperators #-}</span>
+<span class="ot">{-# LANGUAGE KindSignatures #-}</span></code></pre></div>
+<p>So what exactly does a physical &quot;quantity&quot; contain? Have a look at this picture</p>
+<div class="figure">
+<img src="QuantityImg.png" title="Anatomy of a quantity" class="img-center" />
+
+</div>
+<p>This is what quantities look like in physics calculations. They have a <em>numerical value</em> and a <em>dimension</em> (which is often given by instead writing its <em>unit</em>). The whole thing combined is the <em>quantity</em>. This combined thing is what we want to have a data type for in Haskell.</p>
+It's evident the data type should have a numerical value and a dimension. But so far we have created two dimensions! Which should we use? Both! The value-level dimension of the quantity is used to print it nicely. The type-level dimension of the quantity is to get some type-safety. Just like this
+<span class="math display">\[\begin{align}
+  25 m + 7 kg = ...
+\end{align}\]</span>
+<p>should upset you, this (in pseudo-Haskell)</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">ghci<span class="fu">&gt;</span> <span class="kw">let</span> q1 <span class="fu">=</span> <span class="dv">25</span> m <span class="co">-- A value of the quantity type</span>
+ghci<span class="fu">&gt;</span> <span class="kw">let</span> q2 <span class="fu">=</span> <span class="dv">7</span> kg <span class="co">-- Another value of the quantity type</span>
+ghci<span class="fu">&gt;</span> q1 <span class="fu">+</span> q2
+<span class="fu">...</span></code></pre></div>
+<p>should upset the compiler!</p>
+<p>We can't cover all everything at once, but we guarantee you that by the end of this chaper, you'll know exactly how the above ideas are actually implemented.</p>
+<p>Let's get on to the actual data type declaration.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Quantity</span> (<span class="ot">d ::</span> <span class="dt">T.Dim</span>) (<span class="ot">v ::</span> <span class="fu">*</span>) <span class="kw">where</span>
+  <span class="dt">ValQuantity</span><span class="ot"> ::</span> <span class="dt">V.Dim</span> <span class="ot">-&gt;</span> v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> d v</code></pre></div>
+<p>That was sure a mouthful! Let's break it down. <code>data Quantity (d :: T.Dim) (v :: *)</code> creates the <em>type constructor</em> <code>Quantity</code>. A type constructor takes types to create another type. In this case, the type constructor <code>Quantity</code> takes a type <code>d</code> of <em>kind</em> <code>T.Dim</code> and a type <code>v</code> of <em>kind</em> <code>*</code> to create the type <code>Quantity d v</code>. Let's see it in action</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">type</span> <span class="dt">ExampleType</span> <span class="fu">=</span> <span class="dt">Quantity</span> <span class="dt">T.Length</span> <span class="dt">Double</span></code></pre></div>
+<p><code>ExampleType</code> is the type representing quantites of the physical dimension length and where the numerical value is of the type <code>Double</code>.</p>
+<p>How do we create values of this type? That's where the second row comes in! <code>ValQuantity</code> is a <em>value constructor</em>, which means it takes values to create another value. In this case, the value constructor <code>ValQuantity</code> takes a value of <em>type</em> <code>V.Dim</code> and <code>v</code>. Let's see this one in action as well</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">exampleValue <span class="fu">=</span> <span class="dt">ValQuantity</span> V.length <span class="fl">25.0</span></code></pre></div>
+<p><code>exampleValue</code> is a value for the quantity representing a length with the numerical value <span class="math inline">\(25.0\)</span>.</p>
+<p>We can combine the two and write this</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">exampleValue ::</span> <span class="dt">ExampleType</span></code></pre></div>
+<p>or</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">exampleValue ::</span> <span class="dt">Quantity</span> <span class="dt">T.Length</span> <span class="dt">Double</span>
+exampleValue <span class="fu">=</span> <span class="dt">ValQuantity</span> V.length <span class="fl">25.0</span></code></pre></div>
+<p>to get the full picture. So, here we are, with a way to create quantity values (<code>ValQuantity</code>) of the type <code>Quantity t1 t2</code> where <code>t1</code> is the type-level dimension of the quantity and <code>t2</code> the type of the numerical value. If you still find it confusing, don't worry! Over the course of this chapter, it'll become more concrete as we work more with <code>Quantity</code>.</p>
+<p>Also note that the type-level dimension and value-level dimension are intented to match when used with <code>Quantity</code>! So far nothing enforces this. We'll tackle this problem later.</p>
+<p><strong>Exercise</strong> create <code>Quantity</code> values for <span class="math inline">\(2.5\)</span> meters, <span class="math inline">\(6.7\)</span> seconds and <span class="math inline">\(9\)</span> mol. Recall that the three mentioned SI-units here, and all SI-units in this tutorial in general, have a one-to-one correspondence with their respective dimension.</p>
+<details> <summary><strong>Solution</strong></summary>
+<div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">theDistance ::</span> <span class="dt">Quantity</span> <span class="dt">T.Length</span> <span class="dt">Double</span>
+theDistance <span class="fu">=</span> <span class="dt">ValQuantity</span> V.length <span class="fl">2.5</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">theTime ::</span> <span class="dt">Quantity</span> <span class="dt">T.Time</span> <span class="dt">Double</span>
+theTime <span class="fu">=</span> <span class="dt">ValQuantity</span> V.time <span class="fl">6.7</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">theAmountOfSubstance ::</span> <span class="dt">Quantity</span> <span class="dt">T.Substance</span> <span class="dt">Integer</span>
+theAmountOfSubstance <span class="fu">=</span> <span class="dt">ValQuantity</span> V.substance <span class="dv">9</span></code></pre></div>
+</div>
+<p></details></p>
+<p><strong>Exercise</strong> Create a data type which has two type-level dimensions, always use <code>Rational</code> as the value-holding type (the role of <code>v</code>) but which has no value-level dimensions. It should have three numerical values. Create some values of that type.</p>
+<details> <summary><strong>Solution</strong></summary>
+<div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Quantity&#39;</span> (<span class="ot">d1 ::</span> <span class="dt">T.Dim</span>) (<span class="ot">d2 ::</span> <span class="dt">T.Dim</span>) <span class="kw">where</span>
+  <span class="dt">ValQuantity&#39;</span><span class="ot"> ::</span> <span class="dt">Rational</span> <span class="ot">-&gt;</span> <span class="dt">Rational</span> <span class="ot">-&gt;</span> <span class="dt">Rational</span> <span class="ot">-&gt;</span> <span class="dt">Quantity&#39;</span> d1 d2</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">val1 ::</span> <span class="dt">Quantity&#39;</span> <span class="dt">T.Luminosity</span> <span class="dt">T.Mass</span>
+val1 <span class="fu">=</span> <span class="dt">ValQuantity&#39;</span> <span class="dv">8</span> <span class="dv">7</span> <span class="dv">3</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">val2 ::</span> <span class="dt">Quantity&#39;</span> <span class="dt">T.Substance</span> <span class="dt">T.Temperature</span>
+val2 <span class="fu">=</span> <span class="dt">ValQuantity&#39;</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">1</span></code></pre></div>
+</div>
+<p></details></p>
+<h2 id="pretty-printer">Pretty-printer</h2>
+<p>Let's do a pretty-printer for quantities. Most of the work is already done by the value-level dimensions.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">showQuantity ::</span> (<span class="dt">Show</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span> <span class="dt">String</span>
+showQuantity (<span class="dt">ValQuantity</span> d v) <span class="fu">=</span> show v <span class="fu">++</span> <span class="st">&quot; &quot;</span> <span class="fu">++</span> show d</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">instance</span> (<span class="dt">Show</span> v) <span class="ot">=&gt;</span> <span class="dt">Show</span> (<span class="dt">Quantity</span> d v) <span class="kw">where</span>
+  show <span class="fu">=</span> showQuantity</code></pre></div>
+<p><strong>Exercise</strong> In a previous exercise, you created some example values of the <code>Quantity</code> type. Write them in GHCi and see how they look.</p>
+<details> <summary><strong>Solution</strong></summary>
+<div>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">ghci<span class="fu">&gt;</span> theDistance
+<span class="fl">2.5</span> m
+ghci<span class="fu">&gt;</span> theTime
+<span class="fl">6.7</span> s
+ghci<span class="fu">&gt;</span> theAmountOfSubstance
+<span class="dv">9</span> mol</code></pre></div>
+</div>
+<p></details></p>
+<p>Pretty, huh?</p>
+<h2 id="a-taste-of-typos">A taste of typos</h2>
+<p>We'll implement all arithmetic operations on <code>Quantity</code>, but for now, to get a taste of types, we show here addition and multiplication and some examples of values of type <code>Quantity</code>.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">quantityAdd ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span>
+                          <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span>
+                          <span class="dt">Quantity</span> d v
+quantityAdd (<span class="dt">ValQuantity</span> d v1) (<span class="dt">ValQuantity</span> _ v2) <span class="fu">=</span> <span class="dt">ValQuantity</span> d (v1<span class="fu">+</span>v2)</code></pre></div>
+<p>The type is interpreted as follows: two values of type <code>Quantity d v</code> is the input, where <code>d</code> is the type-level dimension. The output is also a value of type <code>Quantity d v</code>.</p>
+<p>The type of the function forces the inputs to have the same dimensions. For this reason, the dimension on value-level doesn't matter on one of the arguments, because they will be the same. As was already mentioned when the <code>Quantity</code> type was created, it's possible to create values where the dimensions on value-level and type-level don't match. Just like then, we ignore this problem for now and fix it later!</p>
+<p>Multiplication is implemented as</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">quantityMul ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> d1 v <span class="ot">-&gt;</span>
+                          <span class="dt">Quantity</span> d2 v <span class="ot">-&gt;</span>
+                          <span class="dt">Quantity</span> (d1 <span class="ot">`Mul`</span> d2) v
+quantityMul (<span class="dt">ValQuantity</span> d1 v1) (<span class="dt">ValQuantity</span> d2 v2) <span class="fu">=</span>
+  <span class="dt">ValQuantity</span> (d1 <span class="ot">`V.mul`</span> d2) (v1<span class="fu">*</span>v2)</code></pre></div>
+<p>The type has the following interpretation: two values of type <code>Quantity dx v</code> is input, where <code>dx</code> are two types representing (potentially different) dimensions. As output, a value of type <code>Quantity</code> is returned. The type in the <code>Quantity</code> will be the type that is the product of the two dimensions in.</p>
+<p><strong>Exercise</strong> Implement subtraction and division.</p>
+<div class="figure">
+<img src="Cowboy.png" title="Are you a cowboy?" class="float-img-right" />
+
+</div>
+<details> <summary><strong>Solution</strong></summary>
+<div>
+<p>Hold on cowboy! Not so fast. We'll come back later to subtraction and division, so check your solution then.</p>
+</div>
+<p></details></p>
+<p>Now on to some example values and types.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">width ::</span> <span class="dt">Quantity</span> <span class="dt">T.Length</span> <span class="dt">Double</span>
+width <span class="fu">=</span> <span class="dt">ValQuantity</span> V.length <span class="fl">0.5</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">height ::</span> <span class="dt">Quantity</span> <span class="dt">T.Length</span> <span class="dt">Double</span>
+height <span class="fu">=</span> <span class="dt">ValQuantity</span> V.length <span class="fl">0.3</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">type</span> <span class="dt">Area</span> <span class="fu">=</span> <span class="dt">Mul</span> <span class="dt">T.Length</span> <span class="dt">T.Length</span></code></pre></div>
+<p>The following example shows that during a multiplication, the types will change, as they should. The dimensions change not only on value-level but also on type-level.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">area ::</span> <span class="dt">Quantity</span> <span class="dt">Area</span> <span class="dt">Double</span>
+area <span class="fu">=</span> quantityMul width height</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">ghci<span class="fu">&gt;</span> width
+<span class="fl">0.5</span> m
+ghci<span class="fu">&gt;</span> <span class="fu">:</span>t width
+<span class="ot">width ::</span> <span class="dt">Quantity</span> <span class="dt">Length</span> <span class="dt">Double</span>
+ghci<span class="fu">&gt;</span> area
+<span class="fl">0.15</span> m<span class="fu">^</span><span class="dv">2</span>
+ghci<span class="fu">&gt;</span> <span class="fu">:</span>t area
+area
+<span class="ot"> ::</span> <span class="dt">Quantity</span>
+      (<span class="ch">&#39;Dim</span>
+         <span class="ch">&#39;Numeric.NumType.DK.Integers.Pos2 -- The interesting line</span>
+         <span class="ch">&#39;Numeric.NumType.DK.Integers.Zero</span>
+         <span class="ch">&#39;Numeric.NumType.DK.Integers.Zero</span>
+         <span class="ch">&#39;Numeric.NumType.DK.Integers.Zero</span>
+         <span class="ch">&#39;Numeric.NumType.DK.Integers.Zero</span>
+         <span class="ch">&#39;Numeric.NumType.DK.Integers.Zero</span>
+         <span class="ch">&#39;Numeric.NumType.DK.Integers.Zero)</span>
+      <span class="dt">Double</span></code></pre></div>
+<p>Which is the same as <code>Area</code>.</p>
+<p>The type-level dimensions are used below to enforce, at compile-time, that only allowed operations are attempted.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- Doesn&#39;t even compile</span>
+weird <span class="fu">=</span> quantityAdd width area</code></pre></div>
+<p>If the dimensions had been value-level only, this error would go undetected until run-time.</p>
+<p><strong>Exercise</strong> What is the volume of a cuboid with sides <span class="math inline">\(1.2\ m\)</span>, <span class="math inline">\(0.4\ m\)</span> and <span class="math inline">\(1.9\ m\)</span>? Create values for the involved quantities. Use <code>Float</code> instead of <code>Double</code>.</p>
+<details> <summary><strong>Solution</strong></summary>
+<div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">side1 ::</span> <span class="dt">Quantity</span> <span class="dt">Length</span> <span class="dt">Float</span>
+side1 <span class="fu">=</span> <span class="dt">ValQuantity</span> V.length <span class="fl">1.2</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">side2 ::</span> <span class="dt">Quantity</span> <span class="dt">Length</span> <span class="dt">Float</span>
+side2 <span class="fu">=</span> <span class="dt">ValQuantity</span> V.length <span class="fl">0.4</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">side3 ::</span> <span class="dt">Quantity</span> <span class="dt">Length</span> <span class="dt">Float</span>
+side3 <span class="fu">=</span> <span class="dt">ValQuantity</span> V.length <span class="fl">1.9</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">type</span> <span class="dt">Volume</span> <span class="fu">=</span> <span class="dt">Length</span> <span class="ot">`Mul`</span> (<span class="dt">Length</span> <span class="ot">`Mul`</span> <span class="dt">Length</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">volume ::</span> <span class="dt">Quantity</span> <span class="dt">Volume</span> <span class="dt">Float</span>
+volume <span class="fu">=</span> quantityMul side1 (quantityMul side2 side3)</code></pre></div>
+</div>
+<p></details></p>
+<h2 id="comparsions">Comparsions</h2>
+<p>It's useful to be able to compare quantities. Perhaps one wants to know which of two amounts of energy is the largest. But what's the largest of <code>1 J</code> and <code>1 m</code>? That's no meaningful comparsion since the dimensions don't match. This behaviour is prevented by having type-level dimensions.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">quantityEq ::</span> (<span class="dt">Eq</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+quantityEq (<span class="dt">ValQuantity</span> _ v1) (<span class="dt">ValQuantity</span> _ v2) <span class="fu">=</span> v1 <span class="fu">==</span> v2</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">instance</span> (<span class="dt">Eq</span> v) <span class="ot">=&gt;</span> <span class="dt">Eq</span> (<span class="dt">Quantity</span> d v) <span class="kw">where</span>
+  (<span class="fu">==</span>) <span class="fu">=</span> quantityEq</code></pre></div>
+<p><strong>Exercise</strong> Make <code>Quantity</code> an instance of <code>Ord</code>.</p>
+<details> <summary><strong>Solution</strong></summary>
+<div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">quantityCompare ::</span> (<span class="dt">Ord</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span>
+                              <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span> <span class="dt">Ordering</span>
+quantityCompare (<span class="dt">ValQuantity</span> _ v1) (<span class="dt">ValQuantity</span> _ v2) <span class="fu">=</span>
+  compare v1 v2</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">instance</span> (<span class="dt">Ord</span> v) <span class="ot">=&gt;</span> <span class="dt">Ord</span> (<span class="dt">Quantity</span> d v) <span class="kw">where</span>
+  compare <span class="fu">=</span> quantityCompare</code></pre></div>
+</div>
+<p></details></p>
+<p>We often use <code>Double</code> as the value holding type. Doing exact comparsions isn't always possible to due rounding errors. Therefore, we'll create a <code>~=</code> function for testing if two quantities are almost equal.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">infixl</span> <span class="dv">4</span> <span class="fu">~=</span>
+<span class="ot">(~=) ::</span> <span class="dt">Quantity</span> d <span class="dt">Double</span> <span class="ot">-&gt;</span> <span class="dt">Quantity</span> d <span class="dt">Double</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+(<span class="dt">ValQuantity</span> _ v1) <span class="fu">~=</span> (<span class="dt">ValQuantity</span> _ v2) <span class="fu">=</span> abs (v1<span class="fu">-</span>v2) <span class="fu">&lt;</span> <span class="fl">0.001</span></code></pre></div>
+<p>Testing if a quantity is zero is something which might be a common operation. So we define it here.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">isZero ::</span> (<span class="dt">Fractional</span> v, <span class="dt">Ord</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+isZero (<span class="dt">ValQuantity</span> _ v) <span class="fu">=</span> (abs v) <span class="fu">&lt;</span> <span class="fl">0.001</span></code></pre></div>
+<h2 id="arithmetic-on-quantities">Arithmetic on quantities</h2>
+<p>Let's implement the arithmetic operations on <code>Quantity</code>. Basically it's all about creating functions with the correct type-level dimensions.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">infixl</span> <span class="dv">6</span> <span class="fu">+#</span>
+<span class="ot">(+#) ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span>
+                   <span class="dt">Quantity</span> d v
+(<span class="fu">+#</span>) <span class="fu">=</span> quantityAdd</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">infixl</span> <span class="dv">6</span> <span class="fu">-#</span>
+<span class="ot">(-#) ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span>
+                   <span class="dt">Quantity</span> d v
+(<span class="dt">ValQuantity</span> d v1) <span class="fu">-#</span> (<span class="dt">ValQuantity</span> _ v2) <span class="fu">=</span> <span class="dt">ValQuantity</span> d (v1<span class="fu">-</span>v2)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">infixl</span> <span class="dv">7</span> <span class="fu">*#</span>
+<span class="ot">(*#) ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> d1 v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> d2 v <span class="ot">-&gt;</span>
+                   <span class="dt">Quantity</span> (d1 <span class="ot">`Mul`</span> d2) v
+(<span class="fu">*#</span>) <span class="fu">=</span> quantityMul</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">infixl</span> <span class="dv">7</span> <span class="fu">/#</span>
+<span class="ot">(/#) ::</span> (<span class="dt">Fractional</span>  v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> d1 v <span class="ot">-&gt;</span>
+                           <span class="dt">Quantity</span> d2 v <span class="ot">-&gt;</span>
+                           <span class="dt">Quantity</span> (d1 <span class="ot">`Div`</span> d2) v
+(<span class="dt">ValQuantity</span> d1 v1) <span class="fu">/#</span> (<span class="dt">ValQuantity</span> d2 v2) <span class="fu">=</span>
+  <span class="dt">ValQuantity</span> (d1 <span class="ot">`V.div`</span> d2) (v1 <span class="fu">/</span> v2)</code></pre></div>
+<p>For all operations on quantities, one does the operation on the value and, in the case of multiplication and division, on the dimensions separetly. For addition and subtraction the in-dimensions must be the same. Nothing then happens with the dimension.</p>
+<p>How does one perform operations such as <code>sin</code> on a quantity with a <em>potential</em> dimension? The answer is that the quantity must be dimensionless, and with the dimension nothing happens.</p>
+<p>Why is that, one might wonder. Every function can be written as a power series. For <span class="math inline">\(sin\)</span> the series looks like</p>
+<span class="math display">\[\begin{align}
+  sin(x) = x - \frac{x^3}{3!} + \frac{x^5}{5!} - ...
+\end{align}\]</span>
+<p>The dimension of <em>every</em> term must be the same. The only way for that to be case is if the input <span class="math inline">\(x\)</span> is dimensionless. Then so will the output.</p>
+<p>The other functions can be written as similar power series and we'll see on those too that the input and output must be dimensionless.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">sinq ::</span> (<span class="dt">Floating</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">One</span> v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> <span class="dt">One</span> v
+sinq (<span class="dt">ValQuantity</span> dl v) <span class="fu">=</span> <span class="dt">ValQuantity</span> d1 (sin v)
+
+<span class="ot">cosq ::</span> (<span class="dt">Floating</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">One</span> v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> <span class="dt">One</span> v
+cosq (<span class="dt">ValQuantity</span> dl v) <span class="fu">=</span> <span class="dt">ValQuantity</span> d1 (cos v)</code></pre></div>
+<p>We quickly realize a pattern, so let's generalize a bit.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">qmap ::</span> (a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> <span class="dt">Quantity</span> <span class="dt">One</span> a <span class="ot">-&gt;</span> <span class="dt">Quantity</span> <span class="dt">One</span> b
+qmap f (<span class="dt">ValQuantity</span> d1 v) <span class="fu">=</span> <span class="dt">ValQuantity</span> d1 (f v)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">sinq, cosq, asinq, acosq, atanq, expq,<span class="ot"> logq ::</span> (<span class="dt">Floating</span> v) <span class="ot">=&gt;</span>
+  <span class="dt">Quantity</span> <span class="dt">One</span> v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> <span class="dt">One</span> v
+sinq  <span class="fu">=</span> qmap sin
+cosq  <span class="fu">=</span> qmap cos
+asinq <span class="fu">=</span> qmap asin
+acosq <span class="fu">=</span> qmap acos
+atanq <span class="fu">=</span> qmap atan
+expq  <span class="fu">=</span> qmap exp
+logq  <span class="fu">=</span> qmap log</code></pre></div>
+<p>Why not make <code>Quantity</code> an instance of <code>Num</code>, <code>Fractional</code>, <code>Floating</code> och <code>Functor</code>? The reason is that the functions of those type classes have the following type</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">(*) ::</span> (<span class="dt">Num</span> a) <span class="ot">=&gt;</span> a <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> a</code></pre></div>
+<p>which isn't compatible with <code>Quantity</code> since multiplication with <code>Quantity</code> has the following type</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">(*#) ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> d1 v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> d2 v <span class="ot">-&gt;</span>
+                   <span class="dt">Quantity</span> (d1 <span class="ot">`Mul`</span> d2) v</code></pre></div>
+<p>The input here may actually be of <em>different</em> types, and the output has a type depending on the types of the input. However, the <em>kind</em> of the inputs and output are the same, namely <code>Quantity</code>. We'll just have to live with not being able to make <code>Quantity</code> a <code>Num</code>-instance.</p>
+<p>However, operations with only scalars (type <code>One</code>) has types compatible with <code>Num</code>.</p>
+<p><strong>Exercise</strong> <code>Quantity One</code> has compatible types. Make it an instance of <code>Num</code>, <code>Fractional</code>, <code>Floating</code> and <code>Functor</code>.</p>
+<details> <summary><strong>Solution</strong></summary>
+<div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">instance</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Num</span> (<span class="dt">Quantity</span> <span class="dt">One</span> v) <span class="kw">where</span>
+  (<span class="fu">+</span>) <span class="fu">=</span> (<span class="fu">+#</span>)
+  (<span class="fu">-</span>) <span class="fu">=</span> (<span class="fu">-#</span>)
+  (<span class="fu">*</span>) <span class="fu">=</span> (<span class="fu">*#</span>)
+  abs <span class="fu">=</span> qmap abs
+  signum <span class="fu">=</span> qmap signum
+  fromInteger n <span class="fu">=</span> <span class="dt">ValQuantity</span> V.one (fromInteger n)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">instance</span> (<span class="dt">Fractional</span> v) <span class="ot">=&gt;</span> <span class="dt">Fractional</span> (<span class="dt">Quantity</span> <span class="dt">One</span> v) <span class="kw">where</span>
+  (<span class="fu">/</span>) <span class="fu">=</span> (<span class="fu">/#</span>)
+  fromRational r <span class="fu">=</span> <span class="dt">ValQuantity</span> V.one (fromRational r)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">instance</span> (<span class="dt">Floating</span> v) <span class="ot">=&gt;</span> <span class="dt">Floating</span> (<span class="dt">Quantity</span> <span class="dt">One</span> v) <span class="kw">where</span>
+  pi    <span class="fu">=</span> <span class="dt">ValQuantity</span> V.one pi
+  exp   <span class="fu">=</span> expq
+  log   <span class="fu">=</span> logq
+  sin   <span class="fu">=</span> sinq
+  cos   <span class="fu">=</span> cosq
+  asin  <span class="fu">=</span> asinq
+  acos  <span class="fu">=</span> acosq
+  atan  <span class="fu">=</span> atanq
+  sinh  <span class="fu">=</span> qmap sinh
+  cosh  <span class="fu">=</span> qmap cosh
+  asinh <span class="fu">=</span> qmap asinh
+  acosh <span class="fu">=</span> qmap acosh
+  atanh <span class="fu">=</span> qmap atanh</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">instance</span> <span class="dt">Functor</span> (<span class="dt">Quantity</span> <span class="dt">One</span>) <span class="kw">where</span>
+  fmap <span class="fu">=</span> qmap</code></pre></div>
+</div>
+<p></details></p>
+<h2 id="syntactic-sugar">Syntactic sugar</h2>
+<p>In order to create a value representing a certain distance (5 metres, for example) one does the following</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">distance ::</span> <span class="dt">Quantity</span> <span class="dt">T.Length</span> <span class="dt">Double</span>
+distance <span class="fu">=</span> <span class="dt">ValQuantity</span> V.length <span class="fl">5.0</span></code></pre></div>
+<p>Writing that way each time is very clumsy. You can also do &quot;dumb&quot; things such as</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">distance ::</span> <span class="dt">Quantity</span> <span class="dt">T.Length</span> <span class="dt">Double</span>
+distance <span class="fu">=</span> <span class="dt">ValQuantity</span> V.time <span class="fl">5.0</span></code></pre></div>
+<p>with different dimensions on value-level and type-level.</p>
+<p>To solve these two problems we'll introduce some syntactic sugar. First some pre-made values for the 7 base dimensions and the scalar.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">length<span class="ot"> ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Length</span> v
+length <span class="fu">=</span> <span class="dt">ValQuantity</span> V.length <span class="dv">1</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">mass ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Mass</span> v
+mass <span class="fu">=</span> <span class="dt">ValQuantity</span> V.mass <span class="dv">1</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">time ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Time</span> v
+time <span class="fu">=</span> <span class="dt">ValQuantity</span> V.time <span class="dv">1</span></code></pre></div>
+<p><strong>Exercise</strong> Do the rest.</p>
+<details> <summary><strong>Solution</strong></summary>
+<div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">current ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Current</span> v
+current <span class="fu">=</span> <span class="dt">ValQuantity</span> V.current <span class="dv">1</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">temperature ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Temperature</span> v
+temperature <span class="fu">=</span> <span class="dt">ValQuantity</span> V.temperature <span class="dv">1</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">substance ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Substance</span> v
+substance <span class="fu">=</span> <span class="dt">ValQuantity</span> V.substance <span class="dv">1</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">luminosity ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Luminosity</span> v
+luminosity <span class="fu">=</span> <span class="dt">ValQuantity</span> V.luminosity <span class="dv">1</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">one ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">One</span> v
+one <span class="fu">=</span> <span class="dt">ValQuantity</span> V.one <span class="dv">1</span></code></pre></div>
+</div>
+<p></details></p>
+<p>And now the sugar.</p>
+<p>TODO: Please multiply the values instead of throwing them away. I'm pretty sure (#) should behave as &quot;scale&quot; of a vector space. So that (x#(y#z)) == ((x*y)#z).</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">(#) ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> d v
+v <span class="fu">#</span> (<span class="dt">ValQuantity</span> d bv) <span class="fu">=</span> <span class="dt">ValQuantity</span> d (v<span class="fu">*</span>bv)</code></pre></div>
+<p>The intended usage of the function is the following</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">ghci<span class="fu">&gt;</span> <span class="kw">let</span> myDistance <span class="fu">=</span> <span class="dv">5</span> <span class="fu">#</span> length
+ghci<span class="fu">&gt;</span> <span class="fu">:</span>t myDistance
+<span class="ot">t ::</span> <span class="dt">Num</span> v <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Length</span> v
+ghci<span class="fu">&gt;</span> myDistance
+<span class="dv">5</span> m</code></pre></div>
+<p>To create a <code>Quantity</code> with a certain value (here <code>5</code>) and a certain dimension (here <code>length</code>), you write as above and get the correct dimension on both value-level and type-level.</p>
+<p>This way of writing in Haskell is similiar to what you do in traditional physics.</p>
+<div class="figure">
+<img src="Sugarmorphism.png" title="The correspondence between Haskell-physics and physics when it comes to sugar." class="img-center" />
+
+</div>
+<p>Both mean that &quot;now we get 5 pieces of the SI-unit meters&quot;. This is signified in the implementation by <code>b*bv</code> where <code>bv</code> stands for &quot;base value&quot;. The base value is the SI-unit, which is <span class="math inline">\(1\)</span>. Since &quot;length&quot; and &quot;meter&quot; are equivalent in our implementation, <code>length</code> <em>means</em> &quot;meter&quot;.</p>
+<p>But let's not stop there. It would be prettier if you could actually write <code>meter</code> instead of <code>length</code>. In fact, not much code is needed for this!</p>
+<p><strong>Exercise</strong> Make it so that one can write the SI-units instead of the base dimensions when one uses the sugar. Then show how to write <span class="math inline">\(4\)</span> seconds.</p>
+<details> <summary><strong>Solution</strong></summary>
+<div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">meter    <span class="fu">=</span> length
+kilogram <span class="fu">=</span> mass
+second   <span class="fu">=</span> time
+ampere   <span class="fu">=</span> current
+kelvin   <span class="fu">=</span> temperature
+mole     <span class="fu">=</span> substance
+candela  <span class="fu">=</span> luminosity</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">fourSeconds <span class="fu">=</span> <span class="dv">4</span> <span class="fu">#</span> second</code></pre></div>
+</div>
+<p></details></p>
+<p>That's nice and all, but we can actually take this way of thinking even further. The sugar-function <code>#</code> multiplies with the <em>base</em> value of a unit. Thanks to this, we can actually support more units than just the SI-units! (At least for input.)</p>
+<p><strong>Exercise</strong> Make it so that one can write units such as inch, foot and pound in the same way one can write the SI-units.</p>
+<details> <summary><strong>Hint</strong></summary>
+<div>
+<p><code>x # unit</code> multiplies <code>x</code>, how many pieces of the unit you want, with the base value of <code>unit</code>. So you want to think about how much of the corresponding SI-unit a unit corresponds to.</p>
+</div>
+<p></details></p>
+<details> <summary><strong>Solution</strong></summary>
+<div>
+<p>We just need to create pre-made values for the units we want to support.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">inch <span class="fu">=</span> <span class="fl">0.0254</span> <span class="fu">#</span> meter
+foot <span class="fu">=</span> <span class="fl">0.3048</span> <span class="fu">#</span> meter
+pound <span class="fu">=</span> <span class="fl">0.45359237</span> <span class="fu">#</span> kilogram</code></pre></div>
+</div>
+<p></details></p>
+<p>All right, so now we have tackled the problem of writing quantities easier than before. What about the second problem?</p>
+<p>We want to maintain the invariant that the dimension on value-level and type-level always match. The pre-made values from above maintain it, and so do the arithmetic operations we previously created. Therefore, we only export those from this module! The user will have no choice but to use these constructs and hence the invariant will be maintained.</p>
+<p>If the user needs other dimensions than the base dimensions (which it probably will), the follwing example shows how it's done.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">ghci<span class="fu">&gt;</span> <span class="kw">let</span> myLength <span class="fu">=</span> <span class="dv">5</span> <span class="fu">#</span> length
+ghci<span class="fu">&gt;</span> <span class="kw">let</span> myTime <span class="fu">=</span> <span class="dv">2</span> <span class="fu">#</span> time
+ghci<span class="fu">&gt;</span> <span class="kw">let</span> myVelocity <span class="fu">=</span> myLength <span class="fu">/#</span> myTime
+ghci<span class="fu">&gt;</span> myVelocity
+<span class="fl">2.5</span> m<span class="fu">/</span>s</code></pre></div>
+<p>New dimensions are created &quot;on demand&quot;. Furthermore</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">ghci<span class="fu">&gt;</span> <span class="kw">let</span> velocity <span class="fu">=</span> length <span class="fu">/#</span> time
+ghci<span class="fu">&gt;</span> <span class="kw">let</span> otherVelocity <span class="fu">=</span> <span class="dv">188</span> <span class="fu">#</span> velocity</code></pre></div>
+<p>it's possible to use the sugar from before on user-defined dimensions.</p>
+<p>Just for convenience sake we'll define a bunch of common composite dimensions. Erm, <em>you'll</em> define.</p>
+<p><strong>Exericse</strong> Define pre-made values for velocity, acceleration, force, momentum and energy.</p>
+<details> <summary><strong>Solution</strong></summary>
+<div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">velocity     <span class="fu">=</span> length   <span class="fu">/#</span> time
+acceleration <span class="fu">=</span> velocity <span class="fu">/#</span> time
+force        <span class="fu">=</span> mass     <span class="fu">*#</span> acceleration
+momentum     <span class="fu">=</span> force    <span class="fu">*#</span> time
+energy       <span class="fu">=</span> force    <span class="fu">*#</span> length</code></pre></div>
+</div>
+<p></details></p>
+<h2 id="a-physics-example">A physics example</h2>
+<p>To conclude this chapter, we show an example on how to code an exercise and its solution in this domain specific language we've created for quantities.</p>
+<p>The code comments show what GHCi prints for that line.</p>
+<p>The exercise is &quot;A dog runs, jumps and lands sliding on a carriage. The dog weighs <span class="math inline">\(40 \, kg\)</span> and runs in <span class="math inline">\(8 \, m/s\)</span>. The carriage weighs <span class="math inline">\(190 \, kg\)</span>. The coefficient of friction between the dog's paws and the carriage is <span class="math inline">\(0.7\)</span>.&quot;</p>
+<p>This is illustrated in the painting below.</p>
+<div class="figure">
+<img src="Exercise.png" title="Dog on a cart" class="img-center" />
+
+</div>
+<ol style="list-style-type: lower-alpha">
+<li>Calculate the (shared) final velocity of the dog and the carriage.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">mDog      <span class="fu">=</span> <span class="dv">40</span> <span class="fu">#</span> mass    <span class="co">-- 40 kg</span>
+viDog     <span class="fu">=</span> <span class="dv">8</span> <span class="fu">#</span> velocity <span class="co">-- 8 m/s</span>
+mCarriage <span class="fu">=</span> <span class="dv">190</span> <span class="fu">#</span> mass   <span class="co">-- 190 kg</span>
+u         <span class="fu">=</span> <span class="fl">0.7</span> <span class="fu">#</span> one    <span class="co">-- 0.7</span></code></pre></div>
+<p>No external forces are acting on the dog and the carriage. Hence the momentum of the system is preserved.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">piSystem <span class="fu">=</span> mDog <span class="fu">*#</span> viDog <span class="co">-- 320 kg*m/s</span>
+pfSystem <span class="fu">=</span> piSystem      <span class="co">-- 320 kg*m/s</span></code></pre></div>
+<p>In the end the whole system has a shared velocity of its shared mass.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">mSystem  <span class="fu">=</span> mDog <span class="fu">+#</span> mCarriage   <span class="co">-- 230 kg</span>
+vfSystem <span class="fu">=</span> pfSystem <span class="fu">/#</span> mSystem <span class="co">-- 1.39 m/s</span></code></pre></div>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Calculate the force of friction acting on the dog.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">fFriction <span class="fu">=</span> u <span class="fu">*#</span> fNormal        <span class="co">-- 275 kg*m/s^2</span>
+fNormal   <span class="fu">=</span> mDog <span class="fu">*#</span> g           <span class="co">-- 393 kg*m/s^2</span>
+g         <span class="fu">=</span> <span class="fl">9.82</span> <span class="fu">#</span> acceleration <span class="co">-- 9.82 m/s^2</span></code></pre></div>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>For how long time does the dog slide on the carriage?</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">aDog <span class="fu">=</span> fFriction <span class="fu">/#</span> mDog <span class="co">-- 6.87 m/s^2</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">vDelta <span class="fu">=</span> mDog <span class="fu">-#</span> vfSystem</code></pre></div>
+<pre><code>* Couldn&#39;t match type &#39;Numeric.NumType.DK.Integers.Neg1
+                 with &#39;Numeric.NumType.DK.Integers.Zero
+...</code></pre>
+<p>Whoops! That's not a good operation. Luckily the compiler caught it.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">vDelta <span class="fu">=</span> viDog <span class="fu">-#</span> vfSystem <span class="co">-- 6.60 m/s</span>
+tSlide <span class="fu">=</span> vDelta <span class="fu">/#</span> aDog    <span class="co">-- 0.96 s</span></code></pre></div>
+<h2 id="conclusion">Conclusion</h2>
+<p>Okay, so you've read a whole lot of text by now. But in order to really learn anything, you need to practise with some additional exercises. Some suggestions are</p>
+<ul>
+<li>Implement first value-level dimensions, then type-level dimensions and last quantites by yourself, without looking too much at this text.</li>
+<li>Implement a power function.</li>
+<li>Implement a square-root function. The regular square-root function in Haskell uses <code>exp</code> and <code>log</code>, which only work on <code>Quantity One</code>. But taking the the square-root of e.g. an area should be possible.</li>
+<li>Extending the <code>Quantity</code> data type here by adding support for prefixes and non-SI-units.</li>
+<li>Ditching the separate implementations of value-level and type-level, and only use one with <code>Data.Proxy</code>.</li>
+</ul>
+<p>After reading this text and doing some exercies, we hope you've learnt</p>
+<ul>
+<li>The relation between dimensions, quantities and units.</li>
+<li>How dimensions...</li>
+<li>...restrict operations such as comparsion to quantities of the same dimension.</li>
+<li>...change after operations such as multiplication.</li>
+<li>...can be implemented on the type-level in Haskell to enforce the two above at compile-time.</li>
+<li>The basics about kinds and type-level programming in Haskell.</li>
+</ul>
+<h2 id="further-reading">Further reading</h2>
+<p>The package <a href="https://hackage.haskell.org/package/dimensional">Dimensional</a> inspired a lot of what we did here. Our <code>Quantity</code> is like a &quot;lite&quot; version of Dimensional, which among other things, support different units and use <code>Data.Proxy</code>.</p>
+<p>The type-level progamming in this text was done with the help of the tutorial <a href="http://www.parsonsmatt.org/2017/04/26/basic_type_level_programming_in_haskell.html">Basic Type Level Programming in Haskell</a>. If you want to know more about kinds and type-level programming, it's a very good starting point.</p>
+
+    </main>
+
+    <footer>
+      <nav>
+	<span>[src: <a href="https://github.com/DSLsofMath/BScProj2018/blob/master/Physics/src/Dimensions/Quantity.lhs">Dimensions/Quantity.lhs</a>]</span>
+        <span>Previous: <a href="../Dimensions/Type-level dimensions.html">Type-level dimensions</a></span>
+        <a href="../index.html">Table of contents</a>
+        <span>Next: <a href="../Dimensions/Testing of Quantity.html">Testing of Quantity</a></span>
+      </nav>
+      © Kandidatboisen (2018), GPL
+    </footer>
+  </body>
+</html>

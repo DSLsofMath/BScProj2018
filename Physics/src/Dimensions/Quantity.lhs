@@ -39,7 +39,7 @@ We'll now create a data type for quantities and combine dimensions on value-leve
 
 So what exactly does a physical "quantity" contain? Have a look at this picture
 
-![](QuantityImg.png "Anatomy of a quantity")
+![](QuantityImg.png "Anatomy of a quantity"){.img-center}
 
 This is what quantities look like in physics calculations. They have a *numerical value* and a *dimension* (which is often given by instead writing its *unit*). The whole thing combined is the *quantity*. This combined thing is what we want to have a data type for in Haskell.
 
@@ -428,18 +428,16 @@ Writing that way each time is very clumsy. You can also do "dumb" things such as
 
 with different dimensions on value-level and type-level.
 
-To solve these two problems we will introduce some syntactic sugar. First some pre-made values for the 7 base dimensions and the scalar.
-
-TODO: Please use "1" instead of "0" in all the dimensions. That signifies an amount of the "unit" (SI-units => always 1).
+To solve these two problems we'll introduce some syntactic sugar. First some pre-made values for the 7 base dimensions and the scalar.
 
 > length :: (Num v) => Quantity Length v
-> length = ValQuantity V.length 0
+> length = ValQuantity V.length 1
 
 > mass :: (Num v) => Quantity Mass v
-> mass = ValQuantity V.mass 0
+> mass = ValQuantity V.mass 1
 
 > time :: (Num v) => Quantity Time v
-> time = ValQuantity V.time 0
+> time = ValQuantity V.time 1
 
 **Exercise** Do the rest.
 
@@ -448,19 +446,19 @@ TODO: Please use "1" instead of "0" in all the dimensions. That signifies an amo
 <div>
 
 > current :: (Num v) => Quantity Current v
-> current = ValQuantity V.current 0
+> current = ValQuantity V.current 1
 
 > temperature :: (Num v) => Quantity Temperature v
-> temperature = ValQuantity V.temperature 0
+> temperature = ValQuantity V.temperature 1
 
 > substance :: (Num v) => Quantity Substance v
-> substance = ValQuantity V.substance 0
+> substance = ValQuantity V.substance 1
 
 > luminosity :: (Num v) => Quantity Luminosity v
-> luminosity = ValQuantity V.luminosity 0
+> luminosity = ValQuantity V.luminosity 1
 
 > one :: (Num v) => Quantity One v
-> one = ValQuantity V.one 0
+> one = ValQuantity V.one 1
 
  </div>
  </details>
@@ -470,7 +468,7 @@ And now the sugar.
 TODO: Please multiply the values instead of throwing them away. I'm pretty sure (#) should behave as "scale" of a vector space. So that (x#(y#z)) == ((x*y)#z).
 
 > (#) :: (Num v) => v -> Quantity d v -> Quantity d v
-> v # (ValQuantity d _) = ValQuantity d v
+> v # (ValQuantity d bv) = ValQuantity d (v*bv)
 
 The intended usage of the function is the following
 
@@ -482,18 +480,61 @@ The intended usage of the function is the following
 
 To create a `Quantity` with a certain value (here `5`) and a certain dimension (here `length`), you write as above and get the correct dimension on both value-level and type-level.
 
-`length`, `mass` and so on are just dummy-values with the correct dimension (on both value-level and type-level) in order to easier create `Quantity` values. Any value with the correct dimension on both levels can be used as the right hand side argument.
+This way of writing in Haskell is similiar to what you do in traditional physics.
 
-TODO: (above): please change impl. so that it matters. Then you basically get units on the value level and dimensions at the type level. (you may also want to rename "length" to "meter", etc. to match this intuition. And you can support "inch", "foot", "lightyear", etc as well, of the same type)
+![](Sugarmorphism.png "The correspondence between Haskell-physics and physics when it comes to sugar."){.img-center}
 
-< ghci> let otherPersonsDistance = 10 # length
-< ghci> let myDistance = 5 # otherPersonsDistance
-< ghci> :t myDistance
-< t :: Num v => Quantity Length v
-< ghci> myDistance
-< 5 m
+Both mean that "now we get 5 pieces of the SI-unit meters". This is signified in the implementation by `b*bv` where `bv` stands for "base value". The base value is the SI-unit, which is $1$. Since "length" and "meter" are equivalent in our implementation, `length` *means* "meter".
 
-Precisely the same result.
+But let's not stop there. It would be prettier if you could actually write `meter` instead of `length`. In fact, not much code is needed for this!
+
+**Exercise** Make it so that one can write the SI-units instead of the base dimensions when one uses the sugar. Then show how to write $4$ seconds.
+
+<details>
+<summary>**Solution**</summary>
+<div>
+
+> meter    = length
+> kilogram = mass
+> second   = time
+> ampere   = current
+> kelvin   = temperature
+> mole     = substance
+> candela  = luminosity
+> unitless = 
+
+> fourSeconds = 4 # second
+
+ </div>
+ </details>
+
+That's nice and all, but we can actually take this way of thinking even further. The sugar-function `#` multiplies with the *base* value of a unit. Thanks to this, we can actually support more units than just the SI-units! (At least for input.)
+
+**Exercise** Make it so that one can write units such as inch, foot and pound in the same way one can write the SI-units.
+
+<details>
+<summary>**Hint**</summary>
+<div>
+
+`x # unit` multiplies `x`, how many pieces of the unit you want, with the base value of `unit`. So you want to think about how much of the corresponding SI-unit a unit corresponds to.
+
+ </div>
+ </details>
+
+<details>
+<summary>**Solution**</summary>
+<div>
+
+We just need to create pre-made values for the units we want to support.
+
+> inch = 0.0254 # meter
+> foot = 0.3048 # meter
+> pound = 0.45359237 # kilogram
+
+ </div>
+ </details>
+
+All right, so now we have tackled the problem of writing quantities easier than before. What about the second problem?
 
 We want to maintain the invariant that the dimension on value-level and type-level always match. The pre-made values from above maintain it, and so do the arithmetic operations we previously created. Therefore, we only export those from this module! The user will have no choice but to use these constructs and hence the invariant will be maintained.
 
@@ -507,12 +548,10 @@ If the user needs other dimensions than the base dimensions (which it probably w
 
 New dimensions are created "on demand". Furthermore
 
-< ghci> let velocity = myVelocity
+< ghci> let velocity = length /# time
 < ghci> let otherVelocity = 188 # velocity
 
 it's possible to use the sugar from before on user-defined dimensions.
-
-TODO: Dessa har alla Double som värdetyp. Hur förhindra det? Explicita typsignaturer löser det, men man vill inte att "användaren" ska behöva göra det varje gång.
 
 Just for convenience sake we'll define a bunch of common composite dimensions. Erm, *you'll* define.
 
@@ -531,44 +570,6 @@ Just for convenience sake we'll define a bunch of common composite dimensions. E
  </div>
  </details>
 
-Alternative sugar with support for units
-----------------------------------------
-
-**Exercise.** Using the idea of the previous sugar, it's possible to add support for non-SI units (at least for input), by using multiplication on some pre-made values. Define an operator and pre-made values to do this. It should work as follows.
-
-< ghci> let distance = 5 `op` mile
-< ghci> :t distance
-< distance :: Quantity Length Double
-< ghci> distance
-< 8046.72 m
-
-<details>
-<summary>**Solution**</summary>
-<div>
-
-> metre = 1 # length
-> kilometre = 1000 # length
-> second = 1 # time
-> hour = 3600 # time
-> metresPerSecond = metre /# second
-> kilometresPerHour = kilometre /# hour
-
-Each of these pre-made quantites has as numerical value the corresponding value in the SI-unit.
-
-The sugar function would then look like
-
-> (##) :: (Num v) => v -> Quantity d v -> Quantity d v
-> v ## (ValQuantity d bv) = ValQuantity d (v*bv)
-
-Notice how the value is multiplied with the "base value" of the unit. This function is intended to be used as follows.
-
-< ghci> let velocity1 = 100 ## kilometresPerHour
-< ghci> let velocity2 = 33 ## metersPerSecond
-< ghci> velocity1 +# velocity2
-< 67.77 m/s
-
- </div>
- </details>
 
 A physics example
 -----------------

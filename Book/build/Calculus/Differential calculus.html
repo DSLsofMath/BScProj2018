@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Learn You a Physics for Great Good!</title>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  </head>
+
+  <body>
+    <header>
+      <a href="../index.html"><h1>Learn You a <span class="physics">Physics</span> for Great Good!</h1></a>
+      <h1>&gt;&gt;&gt; WORK IN PROGRESS &lt;&lt;&lt;</h1>
+      <h2>Calculus / Differential calculus</h2>
+      <nav>
+	<span>[src: <a href="https://github.com/DSLsofMath/BScProj2018/blob/master/Physics/src/Calculus/DifferentialCalc.lhs">Calculus/DifferentialCalc.lhs</a>]</span>
+        <span>Previous: <a href="../Calculus/Function expressions.html">Function expressions</a></span>
+        <a href="../index.html">Table of contents</a>
+        <span>Next: <a href="../Calculus/Integral calculus.html">Integral calculus</a></span>
+      </nav>
+    </header>
+
+    <main>
+      <div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">Calculus.DifferentialCalc</span> (deriveApprox, derive, simplify) <span class="kw">where</span>
+
+<span class="kw">import </span><span class="dt">Calculus.FunExpr</span></code></pre></div>
+<h1 id="deep-dark-differences">Deep, dark, differences</h1>
+<div class="figure">
+<img src="delta.png" title="Feel the might if the illum-... the delta!" class="float-img-left" />
+
+</div>
+<p>A <em>difference</em> is, in it's essence, quite simply the result of applying the operation of subtraction to two real number terms.</p>
+<p><span class="math display">\[minuend - subtrahend = difference\]</span></p>
+<p>Nice, great job, we're done here, let's move on.</p>
+<p>...</p>
+<p>Just kidding, of course there's more to it than that.</p>
+<p>In calculus, the term <em>difference</em> carries more meaning than usual. More than just a subtraction of arbitrary values, differences lie at the heart of calculations regarding rate of change, both average and instantaneous.</p>
+<p>Quotients of differences of functions of the same time describe the average rate of change over the time period. For example, an average velocity can be described as the difference quotient of difference in position divided by difference in time.</p>
+<p><span class="math display">\[v_{avg} = \frac{p_2 - p_1}{t_2 - t_1}\]</span> where <span class="math inline">\(p_n\)</span> is the position at time <span class="math inline">\(t_n\)</span>.</p>
+<p>In the context of calculus, we use a special syntax for differences: the delta operator! With this, the previous definition can be rewritten as</p>
+<p><span class="math display">\[v_{avg} = \frac{p_2 - p_1}{t_2 - t_1} = \frac{\Delta p}{\Delta t}\]</span>.</p>
+<p>This is the informal definition of the delta operator used in <em>University Physics</em>:</p>
+<p><span class="math display">\[ \Delta x = x_2 - x_1 \]</span></p>
+<p>Ok, so it's a difference. But what does <span class="math inline">\(x_2\)</span> and <span class="math inline">\(x_1\)</span> mean, and what do they come from? <span class="math inline">\(x_2\)</span> and <span class="math inline">\(x_1\)</span> are not explicitly bound anywhere, but seems reasonable to assume that <span class="math inline">\(x_i \in x\)</span> or equivalently, that <span class="math inline">\(x\)</span> is a function with a subscript index as an argument, that returns a <span class="math inline">\(\mathbb{R}\)</span>.</p>
+<p>Further, the indices <span class="math inline">\(1,2\)</span> should not be thought of as specific constants, but rather arbitrary real number variables identified by these integers. Lets call them <span class="math inline">\(a,b\)</span> instead, to make it clear that they are not constants.</p>
+<p><span class="math display">\[\Delta x = x_b - x_a\]</span></p>
+<p>Now <span class="math inline">\(a,b\)</span> are implicitly bound. We make the binding explicit.</p>
+<p><span class="math display">\[ (\Delta x)(a, b) = x_b - x_a \]</span></p>
+<p>We compare this to the more formal definition of <em>forward difference</em> on wikipedia:</p>
+<p><span class="math display">\[\Delta_h[f](x) = f(x + h) - f(x)\]</span></p>
+<p>The parameter bindings are a bit all over the place here. To more easily compare to our definition, let's rename <span class="math inline">\(x\)</span> to <span class="math inline">\(a\)</span> and <span class="math inline">\(f\)</span> to <span class="math inline">\(x\)</span>, and change the parameter declaration syntax:</p>
+<p><span class="math display">\[ (\Delta x)(h)(a) = x(a + h) - x(a) \]</span></p>
+<p>This is almost identical to the definition we arrived at earlier, with the exception of expressing <span class="math inline">\(b\)</span> as <span class="math inline">\(a + h\)</span>. Why is this? Well, in calculus we mainly use differences to express two things, as mentioned previously. Average rate of change and instantaneous rate of change.</p>
+<p>Average rate of change is best described as the difference quotient of the difference in y-axis value over an interval of x, divided by the difference in x-axis value over the same interval.</p>
+<p><span class="math display">\[\frac{y(x_b) - y(x_a)}{x_b - x_a}\]</span>.</p>
+<p>In this case, the <span class="math inline">\(x\)</span>'s can be at arbitrary points on the axis, as long as <span class="math inline">\(b &gt; a\)</span>. Therefore, the definition of difference as <span class="math inline">\((\Delta x)(a, b) = x_b - x_a\)</span> seems a good fit. Applied to average velocity, our difference quotient</p>
+<p><span class="math display">\[v_{avg} = \frac{\Delta p}{\Delta t}\]</span></p>
+<p>will expand to</p>
+<p><span class="math display">\[v_{avg}(t_2, t_1) = \frac{(\Delta p)(t_2, t_1)}{(\Delta t)(t_2, t_1)}\]</span> for <span class="math inline">\(t_2 &gt; t_1\)</span>.</p>
+<p>Instantaneous rate of change is more complicated. At its heart, it too is defined in terms of differences. However, we are no longer looking at the average change over an interval delimited by two points, but rather the instantaneous change in a single point.</p>
+<p>Of course, you can't have a difference with only one point. You need two points to look at how the function value changes between them. But what if we make the second point reeeeeeeeealy close to the first? That's basically the same as the difference in a single point, for all intents and purposes. And so, for instantaneous rate of change, the definition of difference as <span class="math inline">\((\Delta x)(h)(a) = x(a + h) - x(a)\)</span> will make more sense, for very small <span class="math inline">\(h\)</span>'s. Applied to instantaneous velocity, our difference quotient</p>
+<p><span class="math display">\[v_{inst} = \frac{\Delta p}{\Delta t}\]</span></p>
+<p>for very small <span class="math inline">\(\Delta t\)</span>, will expand to</p>
+<p><span class="math display">\[v_{inst}(h, x) = \frac{(\Delta p)(h, x)}{(\Delta t)(h, x)}\]</span></p>
+<p>for very small <span class="math inline">\(h\)</span>.</p>
+<p>As <span class="math inline">\(h\)</span> gets closer to <span class="math inline">\(0\)</span>, our approximation of instantaneous rate of change gets better.</p>
+<p>And so, we have a method of computing average rate of change, and instantaneous rate of change (numerically approximatively). In Haskell, we can make shallow embeddings for differences in the context of rate of change as velocity.</p>
+<p>Average velocity is simply</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">v_avg pos t2 t1 <span class="fu">=</span> (pos(t2) <span class="fu">-</span> pos(t1)) <span class="fu">/</span> (t2 <span class="fu">-</span> t1)</code></pre></div>
+<p>which can be used as</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">ghci<span class="fu">&gt;</span> v_avg (\x <span class="ot">-&gt;</span> <span class="dv">5</span><span class="fu">*</span>x) <span class="dv">10</span> <span class="dv">0</span>
+<span class="fl">5.0</span></code></pre></div>
+<p>And instantaneous velocity is</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">v_inst pos h t <span class="fu">=</span> (pos(t <span class="fu">+</span> h) <span class="fu">-</span> pos(t)) <span class="fu">/</span> ((t <span class="fu">+</span> h) <span class="fu">-</span> t)</code></pre></div>
+<p>which can be used as</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">ghci<span class="fu">&gt;</span> carSpeed t <span class="fu">=</span> v_inst (\x <span class="ot">-&gt;</span> x <span class="fu">+</span> sin(x)) <span class="fl">0.00001</span> t
+ghci<span class="fu">&gt;</span> carSpeedAtPointsInTime <span class="fu">=</span> map carSpeed [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]
+ghci<span class="fu">&gt;</span> carSpeedAtPointsInTime
+[<span class="fl">1.9999999999833333</span>,<span class="fl">1.5402980985023251</span>,<span class="fl">0.5838486169602084</span>,<span class="fl">1.0006797790330592e-2</span>]</code></pre></div>
+<p>We'd also like to model one of the versions of the delta operator, finite difference, in our syntax tree. As the semantic value of our calculus language is the unary real function, the difference used for averages doesn't really fit in well, as it's a binary function (two arguments: <span class="math inline">\(t_2\)</span> and <span class="math inline">\(t_1\)</span>). Instead, we'll use the version of delta used for instantants, as it only takes a single point in time as an argument (assuming <span class="math inline">\(h\)</span> is already given).</p>
+<p>The constructor in our syntax tree is therefore</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">    <span class="fu">|</span> <span class="dt">Delta</span> <span class="dt">RealNum</span> <span class="dt">FunExpr</span></code></pre></div>
+<p>where the first argument is <span class="math inline">\(h\)</span>, and the second is the function.</p>
+<h1 id="derivatives">Derivatives</h1>
+<p>The <em>derivative</em> of a function is, according to wikipedia, &quot;the slope of the tangent line to the graph of [a] function at [a] point&quot; and can be described as the &quot;instantaneous rate of change&quot;, and <em>differentiation</em> is the method of finding a derivative for a function.</p>
+<p>...</p>
+<p>Wait, didn't we just look at instantaneous rates of changes in the previous section on differences? Well yes, and the difference quotient for a function at a point with a very small step <span class="math inline">\(h\)</span> is indeed a good way to numerically approximate the derivative of a function. From what we found then, we can derive a general expression for instantaneous rate of change</p>
+<p><span class="math display">\[\frac{(\Delta f)(h, x)}{(\Delta id)(h, x)} = \frac{f(x + h) - f(x)}{h}\]</span></p>
+<p>for very small <span class="math inline">\(h\)</span>.</p>
+<p>But what if we don't want just a numerical approximation, but THE derivative of a function at any arbitrary point? What if we make <span class="math inline">\(h\)</span> not just very small, but <em>infinitley</em> small?</p>
+<p>Introducing <em>infinitesimals</em>! From the wikipedia entry on <em>Leibniz's notation</em></p>
+<blockquote>
+<p>In calculus, Leibniz's notation, named in honor of the 17th-century German philosopher and mathematician Gottfried Wilhelm Leibniz, uses the symbols <span class="math inline">\(dx\)</span> and <span class="math inline">\(dy\)</span> to represent infinitely small (or infinitesimal) increments of x and y, respectively, just as <span class="math inline">\(\Delta x\)</span> and <span class="math inline">\(\Delta y\)</span> represent finite increments of x and y, respectively.</p>
+</blockquote>
+<div class="figure">
+<img src="shrinking.png" title="Real smol boi" class="float-img-right" />
+
+</div>
+<p>So there's a special syntax for differences where the step <span class="math inline">\(h\)</span> is infinitely small, and it's called Leibniz's notation. We interpret the above quote in mathematical terms:</p>
+<p><span class="math display">\[dx = lim_{\Delta x \to 0} \Delta x\]</span></p>
+<p>such that</p>
+<p><span class="math display">\[\forall y(x). D(y) = \frac{dy}{dx} = \frac{lim_{\Delta y \to 0} \Delta y}
+                                            {lim_{\Delta x \to 0} \Delta x}\]</span></p>
+<p>where <span class="math inline">\(D\)</span> is the function of differentiation.</p>
+<p>This definition of derivatives is very appealing, as it suggests a very simple and intuitive transition from finite differences to infinitesimal differentials. Also, it suggests the possibility of manipulating the infinitesimals of the derivative algebraically, which might be very useful. However, this concept is generally considered too imprecise to be used as the foundation of calculus.</p>
+<p>A later section on the same wikipedia entry elaborates a bit:</p>
+<blockquote>
+<p>Leibniz's concept of infinitesimals, long considered to be too imprecise to be used as a foundation of calculus, was eventually replaced by rigorous concepts developed by Weierstrass and others. Consequently, Leibniz's quotient notation was re-interpreted to stand for the limit of the modern definition. However, in many instances, the symbol did seem to act as an actual quotient would and its usefulness kept it popular even in the face of several competing notations.</p>
+</blockquote>
+<p>What is then the &quot;right&quot; way to do derivatives? As luck would have it, not much differently than Leibniz's suggested! The intuitive idea can be turned into a precise definition by defining the derivative to be the limit of difference quotients of real numbers. Again, from wikipedia - Leibniz's notation:</p>
+<blockquote>
+<p>In its modern interpretation, the expression dy/dx should not be read as the division of two quantities dx and dy (as Leibniz had envisioned it); rather, the whole expression should be seen as a single symbol that is shorthand for</p>
+<p><span class="math display">\[D(x) = lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x}\]</span></p>
+</blockquote>
+<p>which, when <span class="math inline">\(y\)</span> is a function of <span class="math inline">\(x\)</span>, and <span class="math inline">\(x\)</span> is the <span class="math inline">\(id\)</span> function for real numbers (which it is in the case of time), is:</p>
+<span class="math display">\[\begin{align*}
+D(y) &amp;= lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x} \\
+     &amp;= a \mapsto lim_{\Delta x \to 0} \frac{(\Delta y)(\Delta x, a)}{\Delta x} \\
+     &amp;= a \mapsto lim_{h \to 0} \frac{y(a + (\Delta x)(h, a)) - y(a)}{(\Delta x)(h, a)} \\
+     &amp;= a \mapsto lim_{h \to 0} \frac{y(a + ((a + h) - a)) - y(a)}{(a + h) - a} \\
+     &amp;= a \mapsto lim_{h \to 0} \frac{y(a + h) - y(a)}{h}
+\end{align*}\]</span>
+<p>There, the definition of derivatives! Not to complicated, was it? We can write a simple numerically approximative according to the definition like</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">deriveApprox f h x <span class="fu">=</span> (f(x <span class="fu">+</span> h) <span class="fu">-</span> f(x)) <span class="fu">/</span> h</code></pre></div>
+<p>Only when <span class="math inline">\(h\)</span> is infinitely small is <code>deriveApprox</code> fully accurate. However, as we can't really represent an infinitely small number in finite memory, the result will only be approximative, and the approximation will get better as <span class="math inline">\(h\)</span> gets smaller. For example, let's calculate the slope of <span class="math inline">\(f(x)=x^2\)</span> at <span class="math inline">\(f(3)\)</span>. As the slope of this parabola is calculated as <span class="math inline">\(k = 2x\)</span>, we expect the result of <code>deriveApprox</code> to approach <span class="math inline">\(k = 2x = 2*3 = 6\)</span> as <span class="math inline">\(h\)</span> gets smaller</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">ghci<span class="fu">&gt;</span> deriveApprox (\x <span class="ot">-&gt;</span> x<span class="fu">^</span><span class="dv">2</span>) <span class="dv">5</span>    <span class="dv">3</span>
+<span class="dv">11</span>
+ghci<span class="fu">&gt;</span> deriveApprox (\x <span class="ot">-&gt;</span> x<span class="fu">^</span><span class="dv">2</span>) <span class="dv">1</span>    <span class="dv">3</span>
+<span class="dv">7</span>
+ghci<span class="fu">&gt;</span> deriveApprox (\x <span class="ot">-&gt;</span> x<span class="fu">^</span><span class="dv">2</span>) <span class="fl">0.5</span>  <span class="dv">3</span>
+<span class="fl">6.5</span>
+ghci<span class="fu">&gt;</span> deriveApprox (\x <span class="ot">-&gt;</span> x<span class="fu">^</span><span class="dv">2</span>) <span class="fl">0.1</span>  <span class="dv">3</span>
+<span class="fl">6.100000000000012</span>
+ghci<span class="fu">&gt;</span> deriveApprox (\x <span class="ot">-&gt;</span> x<span class="fu">^</span><span class="dv">2</span>) <span class="fl">0.01</span> <span class="dv">3</span>
+<span class="fl">6.009999999999849</span></code></pre></div>
+<p>Ok, that works, but not well. By making use of that fancy definition for derivatives that we derived earlier, we can now derive things symbolically, which implies provable 100% perfect accuracy, no numeric approximations!</p>
+<p>We define a function to symbolically derive a function expression. <code>derive</code> takes a function expression, and returns the derived function expression.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">derive ::</span> <span class="dt">FunExpr</span> <span class="ot">-&gt;</span> <span class="dt">FunExpr</span></code></pre></div>
+<p>Using only the definition of derivatives, we can derive the definitions of <code>derive</code> for the various constructors in our syntax tree.</p>
+<p>For example, how do we derive <code>f :+ g</code>? Let's start by doing it mathematically.</p>
+<span class="math display">\[\begin{align*}
+D(f + g) = &amp;a \mapsto lim_{h \to 0} \frac{(f + g)[a + h] - (f + g)[a]}{h} \\
+           &amp;\text{ \{ Addition of functions \} } \\
+         = &amp;a \mapsto lim_{h \to 0} \frac{f(a + h) + g(a + h) - (f(a) + g(a))}{h} \\
+         = &amp;a \mapsto lim_{h \to 0} \frac{f(a + h) + g(a + h) - f(a) - g(a)}{h} \\
+         = &amp;a \mapsto lim_{h \to 0} (\frac{f(a + h) - f(a)}{h} + \frac{g(a + h) - g(a)}{h}) \\
+         = &amp;a \mapsto ((lim_{h \to 0} \frac{f(a + h) - f(a)}{h}) + (lim_{h \to 0} \frac{g(a + h) - g(a)}{h})) \\
+         = &amp;(a \mapsto lim_{h \to 0} \frac{f(a + h) - f(a)}{h}) + (a \mapsto lim_{h \to 0} \frac{g(a + h) - g(a)}{h}) \\
+           &amp;\text{ \{ Definition of derivative \} } \\
+         = &amp;D(f) + D(g)
+\end{align*}\]</span>
+<p>Oh, it's just the sum of the derivatives of both functions! The Haskell implementation is then trivially</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">derive (f <span class="fu">:+</span> g) <span class="fu">=</span> derive f <span class="fu">:+</span> derive g</code></pre></div>
+<p>Let's do one more, say, <span class="math inline">\(sin\)</span>. We will make use of the trigonometric identity of sum-to-product</p>
+<p><span class="math display">\[\sin \theta - \sin \varphi = 2 \sin\left(\frac{\theta - \varphi}{2}\right) \cos\left(\frac{\theta + \varphi}{2}\right)\]</span></p>
+<p>And the limit</p>
+<p><span class="math display">\[\lim_{x \to 0} \frac{sin x}{x} = 1\]</span></p>
+<p>the proof of which is left as an exercise to the reader</p>
+<p><strong>Exercise.</strong> Prove the limit <span class="math inline">\(\lim_{x \to 0} \frac{sin x}{x} = 1\)</span></p>
+<details> <summary><strong>Hint</strong></summary>
+<div>
+<p>This limit can be proven using the <a href="https://en.wikipedia.org/wiki/Unit_circle">unit circle</a> and <a href="https://en.wikipedia.org/wiki/Squeeze_theorem">squeeze theorem</a></p>
+</div>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">/</span>details<span class="fu">&gt;</span></code></pre></div>
+<p>Then, the differentiation</p>
+<span class="math display">\[\begin{align*}
+D(sin) = &amp;a \mapsto lim_{h \to 0} \frac{sin(a + h) - sin(a)}{h} \\
+         &amp;\text{ \{ trig. sum-to-product \} } \\
+       = &amp;a \mapsto lim_{h \to 0} \frac{2 \sin\left(\frac{a + h - a}{2}\right) \cos\left(\frac{a + h + a}{2}\right)}{h} \\
+       = &amp;a \mapsto lim_{h \to 0} \frac{2 \sin\left(\frac{h}{2}\right) \cos\left(\frac{2a + h}{2}\right)}{h} \\
+       = &amp;a \mapsto lim_{h \to 0} \frac{2 \sin\left(\frac{h}{2}\right) \cos\left(\frac{2a + h}{2}\right)}{h} \\
+       = &amp;a \mapsto lim_{h \to 0} \frac{\sin\left(\frac{h}{2}\right)}{\frac{h}{2}} \cos\left(\frac{2a + h}{2}\right) \\
+         &amp;\text{\{} h \text{ approaches } 0 \text{\}} \\
+       = &amp;a \mapsto 1 \cos\left(\frac{2a + 0}{2}\right) \\
+       = &amp;a \mapsto \cos(a) \\
+       = &amp;\cos \\
+\end{align*}\]</span>
+<p>Again, trivial definition in Haskell</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">derive <span class="dt">Sin</span> <span class="fu">=</span> <span class="dt">Cos</span></code></pre></div>
+<p><strong>Exercise.</strong> Derive the rest of the cases using the definition of the derivative</p>
+<details> <summary><strong>Solution</strong></summary>
+<div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">derive <span class="dt">Exp</span> <span class="fu">=</span> <span class="dt">Exp</span>
+derive <span class="dt">Log</span> <span class="fu">=</span> <span class="dt">Const</span> <span class="dv">1</span> <span class="fu">:/</span> <span class="dt">Id</span>
+derive <span class="dt">Cos</span> <span class="fu">=</span> <span class="dt">Const</span> <span class="dv">0</span> <span class="fu">:-</span> <span class="dt">Sin</span>
+derive <span class="dt">Asin</span> <span class="fu">=</span> <span class="dt">Const</span> <span class="dv">1</span> <span class="fu">:/</span> (<span class="dt">Const</span> <span class="dv">1</span> <span class="fu">:-</span> <span class="dt">Id</span><span class="fu">:^</span>(<span class="dt">Const</span> <span class="dv">2</span>))<span class="fu">:^</span>(<span class="dt">Const</span> <span class="fl">0.5</span>)
+derive <span class="dt">Acos</span> <span class="fu">=</span> <span class="dt">Const</span> <span class="dv">0</span> <span class="fu">:-</span> derive <span class="dt">Asin</span>
+derive (f <span class="fu">:-</span> g) <span class="fu">=</span> derive f <span class="fu">:-</span> derive g
+derive (f <span class="fu">:*</span> g) <span class="fu">=</span> derive f <span class="fu">:*</span> g <span class="fu">:+</span> f <span class="fu">:*</span> derive g
+derive (f <span class="fu">:/</span> g) <span class="fu">=</span> (derive f <span class="fu">:*</span> g <span class="fu">:-</span> f <span class="fu">:*</span> derive g) <span class="fu">:/</span> (g<span class="fu">:^</span>(<span class="dt">Const</span> <span class="dv">2</span>))
+derive (f <span class="fu">:^</span> g) <span class="fu">=</span>    f<span class="fu">:^</span>(g <span class="fu">:-</span> <span class="dt">Const</span> <span class="dv">1</span>)
+                  <span class="fu">:*</span> (g <span class="fu">:*</span> derive f <span class="fu">:+</span> f <span class="fu">:*</span> (<span class="dt">Log</span> <span class="fu">:.</span> f) <span class="fu">:*</span> derive g)
+derive <span class="dt">Id</span> <span class="fu">=</span> <span class="dt">Const</span> <span class="dv">1</span>
+derive (<span class="dt">Const</span> _) <span class="fu">=</span> <span class="dt">Const</span> <span class="dv">0</span>
+derive (f <span class="fu">:.</span> g) <span class="fu">=</span> derive g <span class="fu">:*</span> (derive f <span class="fu">:.</span> g)
+derive (<span class="dt">Delta</span> h f) <span class="fu">=</span> <span class="dt">Delta</span> h (derive f)
+derive (<span class="dt">D</span> f) <span class="fu">=</span> derive (derive f)</code></pre></div>
+<p>Oh right, I almost forgot: Integrals. How are you supposed to know how to derive these bad boys when we haven't even covered them yet! We'll prove why this works later, but for now, just know that another name for integral is <em>Antiderivative</em>...</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">derive (<span class="dt">I</span> c f) <span class="fu">=</span> f</code></pre></div>
+</div>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">/</span>details<span class="fu">&gt;</span></code></pre></div>
+<h2 id="keep-it-simple">Keep it simple</h2>
+<p>So we've got our differentiation function, great! Let's try it out by finding the derivative for a simple function, like <span class="math inline">\(f(x) = sin(x) + x^2\)</span>, which should be <span class="math inline">\(f&#39;(x) = cos(x) + 2x\)</span>:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">ghci<span class="fu">&gt;</span> f <span class="fu">=</span> <span class="dt">Sin</span> <span class="fu">:+</span> <span class="dt">Id</span><span class="fu">:^</span>(<span class="dt">Const</span> <span class="dv">2</span>)
+ghci<span class="fu">&gt;</span> derive f
+(cos <span class="fu">+</span> ((id<span class="fu">^</span>(<span class="dv">2</span> <span class="fu">-</span> <span class="dv">1</span>)) <span class="fu">*</span> ((<span class="dv">2</span> <span class="fu">*</span> <span class="dv">1</span>) <span class="fu">+</span> ((id <span class="fu">*</span> (log <span class="fu">.</span> id)) <span class="fu">*</span> <span class="dv">0</span>))))</code></pre></div>
+<p>Oh... that's not very readable. If we simplify it manually we get that the result is indeed as expected</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">(cos <span class="fu">+</span> ((id<span class="fu">^</span>(<span class="dv">2</span> <span class="fu">-</span> <span class="dv">1</span>)) <span class="fu">*</span> ((<span class="dv">2</span> <span class="fu">*</span> <span class="dv">1</span>) <span class="fu">+</span> ((id <span class="fu">*</span> (log <span class="fu">.</span> id)) <span class="fu">*</span> <span class="dv">0</span>))))
+cos <span class="fu">+</span> (id<span class="fu">^</span><span class="dv">1</span> <span class="fu">*</span> (<span class="dv">2</span> <span class="fu">+</span> (id <span class="fu">*</span> (log <span class="fu">.</span> id) <span class="fu">*</span> <span class="dv">0</span>)))
+cos <span class="fu">+</span> (id <span class="fu">*</span> (<span class="dv">2</span> <span class="fu">+</span> <span class="dv">0</span>))
+cos <span class="fu">+</span> <span class="dv">2</span><span class="fu">*</span>id</code></pre></div>
+<p>But still, we shouldn't have to do that manually! Let's have Mr. Computer help us out, by writing a function to simplify expressions.</p>
+<p>We'll write a <code>simplify</code> function which will reduce an expression to a simpler, equivalent expression. Sounds good, only... what exactly does &quot;simpler&quot; mean? Is <span class="math inline">\(10\)</span> simpler than <span class="math inline">\(2 + 2 * 4\)</span>? Well, yes obviously, but there are other expressions where this is not the case. For example, polynomials have two standard forms. The first is the sum of terms, which is appropriate when you want to add or subtract polynomials. The other standard form is the product of irreducible factors, which is a good fit for when you want to divide polynomials.</p>
+<p>So, our <code>simplify</code> function will not guarantee that every expression is reduced to <em>its most simple</em> form, but rather that many expressions will be reduced to <em>a simpler form</em>. As an exercise, you can implement more reduction rules to make expressions simpler to you. For example, the trigonometric identities like <span class="math inline">\(sin(\theta + \frac{\pi}{2}) = cos(\theta)\)</span>.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">simplify ::</span> <span class="dt">FunExpr</span> <span class="ot">-&gt;</span> <span class="dt">FunExpr</span></code></pre></div>
+<p>The elementary functions by themselves are already as simple as can be, so we don't have to simplify those. When it comes to the arithmetic operations, most interesting is the cases of one operand being the identity element.</p>
+<p>For addition and subtraction, it's <span class="math inline">\(0\)</span></p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">simplify (f <span class="fu">:+</span> g) <span class="fu">=</span> <span class="kw">case</span> (simplify f, simplify g) <span class="kw">of</span>
+    (<span class="dt">Const</span> <span class="dv">0</span>, g&#39;) <span class="ot">-&gt;</span> g&#39;
+    (f&#39;, <span class="dt">Const</span> <span class="dv">0</span>) <span class="ot">-&gt;</span> f&#39;
+    (<span class="dt">Const</span> a, <span class="dt">Const</span> b) <span class="ot">-&gt;</span> <span class="dt">Const</span> (a <span class="fu">+</span> b)
+    (f&#39;, g&#39;) <span class="fu">|</span> f&#39; <span class="fu">==</span> g&#39; <span class="ot">-&gt;</span> simplify (<span class="dt">Const</span> <span class="dv">2</span> <span class="fu">:*</span> f&#39;)
+    (<span class="dt">Const</span> a <span class="fu">:*</span> f&#39;, g&#39;) <span class="fu">|</span> f&#39; <span class="fu">==</span> g&#39; <span class="ot">-&gt;</span> simplify (<span class="dt">Const</span> (a <span class="fu">+</span> <span class="dv">1</span>) <span class="fu">:*</span> f&#39;)
+    (f&#39;, <span class="dt">Const</span> a <span class="fu">:*</span> g&#39;) <span class="fu">|</span> f&#39; <span class="fu">==</span> g&#39; <span class="ot">-&gt;</span> simplify (<span class="dt">Const</span> (a <span class="fu">+</span> <span class="dv">1</span>) <span class="fu">:*</span> f&#39;)
+    (<span class="dt">Const</span> a <span class="fu">:*</span> f&#39;, <span class="dt">Const</span> b <span class="fu">:*</span> g&#39;) <span class="fu">|</span> f&#39; <span class="fu">==</span> g&#39;
+      <span class="ot">-&gt;</span> simplify (<span class="dt">Const</span> (a <span class="fu">+</span> b) <span class="fu">:*</span> f&#39;)
+    (f&#39;, g&#39;) <span class="ot">-&gt;</span> f&#39; <span class="fu">:+</span> g&#39;
+simplify (f <span class="fu">:-</span> g) <span class="fu">=</span> <span class="kw">case</span> (simplify f, simplify g) <span class="kw">of</span>
+    (f&#39;, <span class="dt">Const</span> <span class="dv">0</span> <span class="fu">:-</span> g&#39;) <span class="ot">-&gt;</span> f&#39; <span class="fu">:+</span> g&#39;
+    (f&#39;, <span class="dt">Const</span> <span class="dv">0</span>) <span class="ot">-&gt;</span> f&#39;
+    (<span class="dt">Const</span> a, <span class="dt">Const</span> b) <span class="ot">-&gt;</span> <span class="kw">if</span> a <span class="fu">&gt;</span> b
+                          <span class="kw">then</span> <span class="dt">Const</span> (a <span class="fu">-</span> b)
+                          <span class="kw">else</span> <span class="dt">Const</span> <span class="dv">0</span> <span class="fu">:-</span> <span class="dt">Const</span> (b <span class="fu">-</span> a)
+    (f&#39;, g&#39;) <span class="fu">|</span> f&#39; <span class="fu">==</span> g&#39; <span class="ot">-&gt;</span> <span class="dt">Const</span> <span class="dv">0</span>
+    (<span class="dt">Const</span> a <span class="fu">:*</span> f&#39;, g&#39;) <span class="fu">|</span> f&#39; <span class="fu">==</span> g&#39; <span class="ot">-&gt;</span> simplify (<span class="dt">Const</span> (a <span class="fu">-</span> <span class="dv">1</span>) <span class="fu">:*</span> f&#39;)
+    (f&#39;, <span class="dt">Const</span> a <span class="fu">:*</span> g&#39;) <span class="fu">|</span> f&#39; <span class="fu">==</span> g&#39;
+      <span class="ot">-&gt;</span> <span class="dt">Const</span> <span class="dv">0</span> <span class="fu">:-</span> simplify (<span class="dt">Const</span> (a <span class="fu">-</span> <span class="dv">1</span>) <span class="fu">:*</span> f&#39;)
+    (<span class="dt">Const</span> a <span class="fu">:*</span> f&#39;, <span class="dt">Const</span> b <span class="fu">:*</span> g&#39;) <span class="fu">|</span> f&#39; <span class="fu">==</span> g&#39;
+      <span class="ot">-&gt;</span> simplify ((<span class="dt">Const</span> a <span class="fu">:-</span> <span class="dt">Const</span> b) <span class="fu">:*</span> f&#39;)
+    (f&#39;, g&#39;) <span class="ot">-&gt;</span> f&#39; <span class="fu">:-</span> g&#39;</code></pre></div>
+<p>For multiplication and division, the identity element is <span class="math inline">\(1\)</span>, but the case of one operand being <span class="math inline">\(0\)</span> is also interesting</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">simplify (f <span class="fu">:*</span> g) <span class="fu">=</span> <span class="kw">case</span> (simplify f, simplify g) <span class="kw">of</span>
+    (<span class="dt">Const</span> <span class="dv">0</span>, g&#39;) <span class="ot">-&gt;</span> <span class="dt">Const</span> <span class="dv">0</span>
+    (f&#39;, <span class="dt">Const</span> <span class="dv">0</span>) <span class="ot">-&gt;</span> <span class="dt">Const</span> <span class="dv">0</span>
+    (<span class="dt">Const</span> <span class="dv">1</span>, g&#39;) <span class="ot">-&gt;</span> g&#39;
+    (f&#39;, <span class="dt">Const</span> <span class="dv">1</span>) <span class="ot">-&gt;</span> f&#39;
+    (<span class="dt">Const</span> a, <span class="dt">Const</span> b) <span class="ot">-&gt;</span> <span class="dt">Const</span> (a <span class="fu">*</span> b)
+    (f&#39;, <span class="dt">Const</span> c) <span class="ot">-&gt;</span> <span class="dt">Const</span> c <span class="fu">:*</span> f&#39;
+    (f&#39;, g&#39;) <span class="fu">|</span> f&#39; <span class="fu">==</span> g&#39; <span class="ot">-&gt;</span> f&#39; <span class="fu">:^</span> <span class="dt">Const</span> <span class="dv">2</span>
+    (<span class="dt">Const</span> a, <span class="dt">Const</span> b <span class="fu">:*</span> g&#39;) <span class="ot">-&gt;</span> simplify (<span class="dt">Const</span> (a<span class="fu">*</span>b) <span class="fu">:*</span> g&#39;)
+    (<span class="dt">Const</span> a <span class="fu">:*</span> f&#39;, g&#39;) <span class="ot">-&gt;</span> simplify (f&#39; <span class="fu">:*</span> (<span class="dt">Const</span> a <span class="fu">:*</span> g&#39;))
+    (fa, g&#39; <span class="fu">:/</span> fb) <span class="fu">|</span> fa <span class="fu">==</span> fb <span class="ot">-&gt;</span> g&#39;
+    (f&#39;, g&#39;) <span class="ot">-&gt;</span> f&#39; <span class="fu">:*</span> g&#39;
+simplify (f <span class="fu">:/</span> g) <span class="fu">=</span> <span class="kw">case</span> (simplify f, simplify g) <span class="kw">of</span>
+    (<span class="dt">Const</span> <span class="dv">0</span>, g&#39;) <span class="ot">-&gt;</span> <span class="dt">Const</span> <span class="dv">0</span>
+    (f&#39;, <span class="dt">Const</span> <span class="dv">1</span>) <span class="ot">-&gt;</span> f&#39;
+    (f&#39;, g&#39;) <span class="fu">|</span> f&#39; <span class="fu">==</span> g&#39; <span class="ot">-&gt;</span> <span class="dt">Const</span> <span class="dv">1</span>
+    (f&#39;, g&#39;) <span class="ot">-&gt;</span> f&#39; <span class="fu">:/</span> g&#39;</code></pre></div>
+<p>Exponentiation is not commutative, and further has no (two-sided) identity element. However, it does have an &quot;asymmetric&quot; identity element: the right identity <span class="math inline">\(1\)</span>!</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">simplify (f <span class="fu">:^</span> g) <span class="fu">=</span> <span class="kw">case</span> (simplify f, simplify g) <span class="kw">of</span>
+    (f&#39;, <span class="dt">Const</span> <span class="dv">1</span>) <span class="ot">-&gt;</span> f&#39;
+    (f&#39;, g&#39;) <span class="ot">-&gt;</span> f&#39; <span class="fu">:^</span> g&#39;</code></pre></div>
+<p><strong>Exercises.</strong> Look up (or prove by yourself) more identities (of expressions, not identity elements) for exponentiation and implement them.</p>
+<details> <summary><strong>Solution</strong></summary>
+<div>
+<p>For example, there is the identity of negative exponents. For any integer <span class="math inline">\(n\)</span> and nonzero <span class="math inline">\(b\)</span></p>
+<p><span class="math display">\[b^{-n} = \frac{1}{b^n}\]</span></p>
+</div>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">/</span>details<span class="fu">&gt;</span></code></pre></div>
+<p>Intuitively, the identity function is the identity element for function composition</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">simplify (f <span class="fu">:.</span> g) <span class="fu">=</span> <span class="kw">case</span> (simplify f, simplify g) <span class="kw">of</span>
+    (<span class="dt">Id</span>, g&#39;) <span class="ot">-&gt;</span> g&#39;
+    (f&#39;, <span class="dt">Id</span>) <span class="ot">-&gt;</span> f&#39;
+    (f&#39;, g&#39;) <span class="ot">-&gt;</span> f&#39; <span class="fu">:.</span> g&#39;</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell">simplify (<span class="dt">Delta</span> h f) <span class="fu">=</span> <span class="dt">Delta</span> h (simplify f)
+simplify (<span class="dt">D</span> f) <span class="fu">=</span> <span class="dt">D</span> (simplify f)
+simplify (<span class="dt">I</span> c f) <span class="fu">=</span> <span class="dt">I</span> c (simplify f)
+simplify f <span class="fu">=</span> f</code></pre></div>
+<p>With this new function, many expressions become much more readable!</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">ghci<span class="fu">&gt;</span> f <span class="fu">=</span> <span class="dt">Sin</span> <span class="fu">:+</span> <span class="dt">Id</span><span class="fu">:^</span>(<span class="dt">Const</span> <span class="dv">2</span>)
+ghci<span class="fu">&gt;</span> derive f
+(cos <span class="fu">+</span> ((id<span class="fu">^</span>(<span class="dv">2</span> <span class="fu">-</span> <span class="dv">1</span>)) <span class="fu">*</span> ((<span class="dv">2</span> <span class="fu">*</span> <span class="dv">1</span>) <span class="fu">+</span> ((id <span class="fu">*</span> (log <span class="fu">.</span> id)) <span class="fu">*</span> <span class="dv">0</span>))))
+ghci<span class="fu">&gt;</span> simplify (derive f)
+(cos <span class="fu">+</span> (<span class="dv">2</span> <span class="fu">*</span> id))</code></pre></div>
+<p>A sight for sore eyes!</p>
+<p><strong>Exercise.</strong> Think of more ways an expression can be &quot;simplified&quot;, and add your cases to the implementation.</p>
+
+    </main>
+
+    <footer>
+      <nav>
+	<span>[src: <a href="https://github.com/DSLsofMath/BScProj2018/blob/master/Physics/src/Calculus/DifferentialCalc.lhs">Calculus/DifferentialCalc.lhs</a>]</span>
+        <span>Previous: <a href="../Calculus/Function expressions.html">Function expressions</a></span>
+        <a href="../index.html">Table of contents</a>
+        <span>Next: <a href="../Calculus/Integral calculus.html">Integral calculus</a></span>
+      </nav>
+      © Kandidatboisen (2018), GPL
+    </footer>
+  </body>
+</html>

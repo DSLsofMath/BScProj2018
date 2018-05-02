@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Learn You a Physics for Great Good!</title>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  </head>
+
+  <body>
+    <header>
+      <a href="../index.html"><h1>Learn You a <span class="physics">Physics</span> for Great Good!</h1></a>
+      <h1>&gt;&gt;&gt; WORK IN PROGRESS &lt;&lt;&lt;</h1>
+      <h2>Dimensions / Testing of value-level dimensions</h2>
+      <nav>
+	<span>[src: <a href="https://github.com/DSLsofMath/BScProj2018/blob/master/Physics/src/Dimensions/ValueLevel/Test.lhs">Dimensions/ValueLevel/Test.lhs</a>]</span>
+        <span>Previous: <a href="../Dimensions/Value-level dimensions.html">Value-level dimensions</a></span>
+        <a href="../index.html">Table of contents</a>
+        <span>Next: <a href="../Dimensions/Type-level dimensions.html">Type-level dimensions</a></span>
+      </nav>
+    </header>
+
+    <main>
+      <h1 id="testing-of-value-level-dimensions">Testing of value-level dimensions</h1>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">Dimensions.ValueLevel.Test</span>
+    ( runTests
+    ) <span class="kw">where</span>
+
+<span class="kw">import </span><span class="dt">Prelude</span> <span class="kw">hiding</span> (length, div)
+<span class="kw">import </span><span class="dt">Test.QuickCheck</span>
+<span class="kw">import </span><span class="dt">Data.List</span>
+
+<span class="kw">import </span><span class="dt">Dimensions.ValueLevel</span></code></pre></div>
+<div class="figure">
+<img src="Laws.png" title="Both you, me and dimensions need to obey the laws" class="float-img-left" />
+
+</div>
+<p>For operations on dimensions, there are a number of laws which should hold. We will here test that the value-level dimensions obey them. One way is to use <code>QuickCheck</code>, which produces lots o' random test cases.</p>
+<h2 id="generating-arbitrary-dimensions">Generating arbitrary dimensions</h2>
+<p>The first thing one needs in order to use <code>QuickCheck</code> is an instance of <code>Arbitrary</code> for the data type to be used in the tests. In this case it's <code>Dim</code>.</p>
+<p>An arbitrary example of an <code>Arbitrary</code> instance (get it?) could look like</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">IntPair</span> <span class="fu">=</span> <span class="dt">IntPair</span> (<span class="dt">Int</span>, <span class="dt">Int</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">genIntPair ::</span> <span class="dt">Gen</span> <span class="dt">IntPair</span>
+genIntPair <span class="fu">=</span> <span class="kw">do</span>
+  first  <span class="ot">&lt;-</span> arbitrary
+  second <span class="ot">&lt;-</span> arbitrary
+  return <span class="fu">$</span> <span class="dt">IntPair</span> (first, second)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">instance</span> <span class="dt">Arbitrary</span> <span class="dt">IntPair</span> <span class="kw">where</span>
+  arbitrary <span class="fu">=</span> genIntPair</code></pre></div>
+<p><strong>Exercise</strong> Now try to implement an <code>Arbitrary</code> instance of <code>Dim</code>.</p>
+<details> <summary><strong>Solution</strong></summary>
+<div>
+<p>Here's one way to do it.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="ot">genDim ::</span> <span class="dt">Gen</span> <span class="dt">Dim</span>
+genDim <span class="fu">=</span> <span class="kw">do</span>
+  le <span class="ot">&lt;-</span> arbitrary
+  ma <span class="ot">&lt;-</span> arbitrary
+  ti <span class="ot">&lt;-</span> arbitrary
+  cu <span class="ot">&lt;-</span> arbitrary
+  te <span class="ot">&lt;-</span> arbitrary
+  su <span class="ot">&lt;-</span> arbitrary
+  lu <span class="ot">&lt;-</span> arbitrary
+  return (<span class="dt">Dim</span> le ma ti cu te su lu)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="kw">instance</span> <span class="dt">Arbitrary</span> <span class="dt">Dim</span> <span class="kw">where</span>
+  arbitrary <span class="fu">=</span> genDim</code></pre></div>
+</div>
+<p></details></p>
+<h2 id="properties-for-operations-on-dimensions">Properties for operations on dimensions</h2>
+<p>Since dimensions are treated just like regular numbers when it comes to multiplication and division, the laws which ought to hold should be pretty clear. It's the &quot;obvious&quot; laws such as commutativity and so on.</p>
+<p>The laws to test are</p>
+<ul>
+<li>Multiplication is commutative</li>
+<li>Multiplication is associative</li>
+<li><code>one</code> is a unit for multiplication</li>
+<li>Multiplication and division cancel each other out</li>
+<li>Dividing by <code>one</code> does nothing</li>
+<li>Dividing by a division brings up the lowest denominator
+<span class="math display">\[\begin{align}
+  \frac{x}{\frac{x}{y}} = y
+\end{align}\]</span></li>
+<li>Multiplication by <span class="math inline">\(x\)</span> is the same as dividing by the inverse of <span class="math inline">\(x\)</span>.</li>
+</ul>
+<p>The implementation of the first law looks like</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="co">-- Property: multiplication is commutative</span>
+<span class="ot">prop_mulCommutative ::</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+prop_mulCommutative d1 d2 <span class="fu">=</span> d1 <span class="ot">`mul`</span> d2 <span class="fu">==</span> d2 <span class="ot">`mul`</span> d1</code></pre></div>
+<p><strong>Excercise.</strong> Implement the rest.</p>
+<details> <summary><strong>Solution</strong></summary>
+<div>
+<p>Here's what the rest could look like.</p>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="co">-- Property: multiplication is associative</span>
+<span class="ot">prop_mulAssociative ::</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+prop_mulAssociative d1 d2 d3 <span class="fu">=</span> d1 <span class="ot">`mul`</span> (d2 <span class="ot">`mul`</span> d3) <span class="fu">==</span>
+ (d1 <span class="ot">`mul`</span> d2) <span class="ot">`mul`</span> d3</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="co">-- Property: `one` is a unit for multiplication</span>
+<span class="ot">prop_mulOneUnit ::</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+prop_mulOneUnit d <span class="fu">=</span> d <span class="fu">==</span> one <span class="ot">`mul`</span> d</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="co">-- Property: multiplication and division cancel each other out</span>
+<span class="ot">prop_mulDivCancel ::</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+prop_mulDivCancel d1 d2 <span class="fu">=</span> (d1 <span class="ot">`mul`</span> d2) <span class="ot">`div`</span> d1 <span class="fu">==</span> d2</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="co">-- Property: dividing by `one` does noting</span>
+<span class="ot">prop_divOne ::</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+prop_divOne d <span class="fu">=</span> d <span class="ot">`div`</span> one <span class="fu">==</span> d</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="co">-- Property: dividing by a division brings up the lowest denominator</span>
+<span class="ot">prop_divTwice ::</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+prop_divTwice d1 d2 <span class="fu">=</span> d1 <span class="ot">`div`</span> (d1 <span class="ot">`div`</span> d2) <span class="fu">==</span> d2</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><span class="co">-- Property: multiplication same as division by inverse</span>
+<span class="ot">prop_mulDivInv ::</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Dim</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+prop_mulDivInv d1 d2 <span class="fu">=</span> d1 <span class="ot">`mul`</span> d2 <span class="fu">==</span>
+  d1 <span class="ot">`div`</span> (one <span class="ot">`div`</span> d2)</code></pre></div>
+</div>
+<p></details></p>
+<p>We should also test the pretty-printer. But just like how that function itself is implemented isn't interesting, neither is the code testing it. We therefore leave it out.</p>
+<p>From this module, we export a function <code>runTests</code>. That function runs all the tests implemented here and is used with Stack.</p>
+
+
+    </main>
+
+    <footer>
+      <nav>
+	<span>[src: <a href="https://github.com/DSLsofMath/BScProj2018/blob/master/Physics/src/Dimensions/ValueLevel/Test.lhs">Dimensions/ValueLevel/Test.lhs</a>]</span>
+        <span>Previous: <a href="../Dimensions/Value-level dimensions.html">Value-level dimensions</a></span>
+        <a href="../index.html">Table of contents</a>
+        <span>Next: <a href="../Dimensions/Type-level dimensions.html">Type-level dimensions</a></span>
+      </nav>
+      © Kandidatboisen (2018), GPL
+    </footer>
+  </body>
+</html>

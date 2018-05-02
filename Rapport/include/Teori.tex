@@ -1,8 +1,6 @@
 
 \chapter{Teori}
 
-\begin{draft}
-
 I detta kapitel beskrivs fyra områden av central betydelse för projektet. Dessa
 områden är domänspecifika språk, begreppen syntax, syntaxträd och semantik,
 literat programmering samt ARCS-modellen och annan didaktik.
@@ -85,7 +83,7 @@ Typen innehåller \textit{datakonstruktorer} för att representera
 summan respektive produkten av två andra uttryck. Löven representeras av
 \texttt{Const}. Det är en konstant som man ej kan bygga vidare på.
 
-Med datakonstruktorerna kan man konstruera uttryck i språket. Ett exempeluttryck
+Med datakonstruktorerna kan man konstruera uttryck representerade av syntaxträd. Ett exempeluttryck
 från den tidigare datatypen visas i figur~\ref{fig:syntax_exempel_varde}.
 
 \begin{figure}[tph]
@@ -145,10 +143,8 @@ typsignatur, \texttt{Expr -> Double}. Den gör nämligen att man kan tolka
 \texttt{evaluate}, och beräkningsfunktioner i allmänhet, som en översättning
 från syntax (här \texttt{Expr}) till semantik (här \texttt{Double}).
 
-\end{draft}
-
 \section{Litterat programmering och Literate Haskell}\label{sec:lhs}
-\begin{draft}
+
 \textit{Litterat programmering} (engelska \textit{literate programming}) är ett
 alternativt sätt att programmera som introducerats av Donald Knuth~\cite{knuth}.
 Istället för att skriva ett program för en dator, skriver man ett program som
@@ -203,10 +199,10 @@ Det finns flera verktyg som gör det men det som används i detta
 projekt är \textit{Pandoc}~\cite{pandoc}. Med Pandoc kan texten märkas
 upp med både \textit{Markdown} (används i projektet) och \LaTeX. Det går
 att exportera till bland annat HTML (som i läromaterialet) och PDF (som i den här rapporten).
-\end{draft}
+
 
 \section{Att skapa motiverande läromaterial}\label{sec:arcs}
-\begin{draft}
+
 Motivation är en persons vilja att göra något. I undervisningssammanhang vill
 man att studenten ska lära sig materialet. Studenten behöver alltså vara
 motiverad, att vilja, lära sig. Motivation kan ha flera källor. Till exempel att
@@ -244,7 +240,7 @@ om olika struktur och ordning på utlärningen, till exempel att inte alltid
 utforma en lektion som föreläsning, demonstration och sedan övning, utan variera
 det med andra inslag, exempelvis ett filmklipp.
 
-Utifrån det sociokulturella perspektivet som Vygotskij utvecklade~\cite{LSB_kap5}
+Utifrån det sociokulturella perspektivet som Vygotskij utvecklade~\cite{LSB_und}
 lär sig elever av varandra. Eleverna befinner sig vid sin närmsta 
 utvecklingszon, där eleverna kan hjälpa varandra att förstå innebörden av
 definitioner och uttryck genom att sätta ord på det de vill kommunicera. Denna
@@ -272,5 +268,3 @@ boken ``Dansa på deadline: Uppskjutandets psykologi''~\cite{DPD}. Detta är än
 orsak till varför det är bra med belöning exempelvis i formen av glädje då man
 ser att koden kompilerar. Läromaterialet innefattar även strategiskt placerade
 roliga bilder, för att ge impulsiva reaktioner av glädje. Sporadiska belöningar
-
-\end{draft}

@@ -18,7 +18,7 @@ First, we create some function expressions ready to be `show`n and
 
 > f  = Const 3 :* Id:^Const 2
 > f' = simplify (derive f)
-> _F = simplify (integrate f 0)
+> _F = simplify (integrate f)
 
 Then, we define a helper function to plot a list of function
 expressions with Hatlab.

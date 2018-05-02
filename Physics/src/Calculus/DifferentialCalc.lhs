@@ -365,7 +365,7 @@ to derive these bad boys when we haven't even covered them yet! We'll
 prove why this works later, but for now, just know that another name
 for integral is *Antiderivative*...
 
-> derive (I c f) = f
+> derive (I f) = f
 
 </div>
 </details>
@@ -492,7 +492,7 @@ Intuitively, the identity function is the identity element for function composit
 
 > simplify (Delta h f) = Delta h (simplify f)
 > simplify (D f) = D (simplify f)
-> simplify (I c f) = I c (simplify f)
+> simplify (I f) = I (simplify f)
 > simplify f = f
 
 With this new function, many expressions become much more readable!

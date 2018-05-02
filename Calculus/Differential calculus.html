@@ -14,9 +14,9 @@
       <h2>Calculus / Differential calculus</h2>
       <nav>
 	<span>[src: <a href="https://github.com/DSLsofMath/BScProj2018/blob/master/Physics/src/Calculus/DifferentialCalc.lhs">Calculus/DifferentialCalc.lhs</a>]</span>
-        <span>Previous: <a href="../Calculus/Function expressions.html">Function expressions</a></span>
+        <span>Previous: <a href="../Calculus/Function%20expressions.html">Function expressions</a></span>
         <a href="../index.html">Table of contents</a>
-        <span>Next: <a href="../Calculus/Integral calculus.html">Integral calculus</a></span>
+        <span>Next: <a href="../Calculus/Integral%20calculus.html">Integral calculus</a></span>
       </nav>
     </header>
 
@@ -192,7 +192,7 @@ D(sin) = &amp;a \mapsto lim_{h \to 0} \frac{sin(a + h) - sin(a)}{h} \\
 <a class="sourceLine" id="cb12-14" data-line-number="14">derive (<span class="dt">Delta</span> h f) <span class="fu">=</span> <span class="dt">Delta</span> h (derive f)</a>
 <a class="sourceLine" id="cb12-15" data-line-number="15">derive (<span class="dt">D</span> f) <span class="fu">=</span> derive (derive f)</a></code></pre></div>
 <p>Oh right, I almost forgot: Integrals. How are you supposed to know how to derive these bad boys when we haven’t even covered them yet! We’ll prove why this works later, but for now, just know that another name for integral is <em>Antiderivative</em>…</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb13-1" data-line-number="1">derive (<span class="dt">I</span> c f) <span class="fu">=</span> f</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb13-1" data-line-number="1">derive (<span class="dt">I</span> f) <span class="fu">=</span> f</a></code></pre></div>
 </div>
 </details>
 <h2 id="keep-it-simple">Keep it simple</h2>
@@ -271,7 +271,7 @@ D(sin) = &amp;a \mapsto lim_{h \to 0} \frac{sin(a + h) - sin(a)}{h} \\
 <a class="sourceLine" id="cb20-4" data-line-number="4">    (f&#39;, g&#39;) <span class="ot">-&gt;</span> f&#39; <span class="fu">:.</span> g&#39;</a></code></pre></div>
 <div class="sourceCode" id="cb21"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb21-1" data-line-number="1">simplify (<span class="dt">Delta</span> h f) <span class="fu">=</span> <span class="dt">Delta</span> h (simplify f)</a>
 <a class="sourceLine" id="cb21-2" data-line-number="2">simplify (<span class="dt">D</span> f) <span class="fu">=</span> <span class="dt">D</span> (simplify f)</a>
-<a class="sourceLine" id="cb21-3" data-line-number="3">simplify (<span class="dt">I</span> c f) <span class="fu">=</span> <span class="dt">I</span> c (simplify f)</a>
+<a class="sourceLine" id="cb21-3" data-line-number="3">simplify (<span class="dt">I</span> f) <span class="fu">=</span> <span class="dt">I</span> (simplify f)</a>
 <a class="sourceLine" id="cb21-4" data-line-number="4">simplify f <span class="fu">=</span> f</a></code></pre></div>
 <p>With this new function, many expressions become much more readable!</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb22-1" data-line-number="1">ghci<span class="fu">&gt;</span> f <span class="fu">=</span> <span class="dt">Sin</span> <span class="fu">:+</span> <span class="dt">Id</span><span class="fu">:^</span>(<span class="dt">Const</span> <span class="dv">2</span>)</a>
@@ -287,9 +287,9 @@ D(sin) = &amp;a \mapsto lim_{h \to 0} \frac{sin(a + h) - sin(a)}{h} \\
     <footer>
       <nav>
 	<span>[src: <a href="https://github.com/DSLsofMath/BScProj2018/blob/master/Physics/src/Calculus/DifferentialCalc.lhs">Calculus/DifferentialCalc.lhs</a>]</span>
-        <span>Previous: <a href="../Calculus/Function expressions.html">Function expressions</a></span>
+        <span>Previous: <a href="../Calculus/Function%20expressions.html">Function expressions</a></span>
         <a href="../index.html">Table of contents</a>
-        <span>Next: <a href="../Calculus/Integral calculus.html">Integral calculus</a></span>
+        <span>Next: <a href="../Calculus/Integral%20calculus.html">Integral calculus</a></span>
       </nav>
       © Kandidatboisen (2018), GPL
     </footer>

@@ -22,20 +22,20 @@
 
     <main>
       <h1 id="usage">Usage</h1>
-<p>In this module we’ll show how to use value-level dimensions, type-level dimensions and <code>Quantity</code> in an “actual” progam.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="ot">{-# LANGUAGE TypeOperators #-}</span></a></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">module</span> <span class="dt">Dimensions.Usage</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">(</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">)</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="kw">where</span></a></code></pre></div>
-<p>Let’s first import the things we have created.</p>
+
+<div class="sourceCode" id="cb1"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">module</span> <span class="dt">Dimensions.Usage</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">(</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">where</span></a></code></pre></div>
+<p>In this module we’ll show how to use value-level dimensions, type-level dimensions and <code>Quantity</code> in an “actual” progam. Let’s first use this fancy GHC-extension</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="ot">{-# LANGUAGE TypeOperators #-}</span></a></code></pre></div>
+<p>and then import the things we have created.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">import</span> <span class="dt">Dimensions.TypeLevel</span></a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">import</span> <span class="dt">Dimensions.Quantity</span></a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw">import</span> <span class="dt">Prelude</span> <span class="kw">hiding</span> (length)</a></code></pre></div>
 <p>We don’t need to import <code>Dimensions.ValueLevel</code> since all its features are available by using the <code>Quantity</code> data type. The same thing could be said about <code>Dimensions.TypeLevel</code>. So why do we import it? It’s so we can write explicit type signatures, the trick of trade in Haskell progamming.</p>
 <h2 id="values-and-types">Values and types</h2>
 <p>Let’s create a length, time and mass, in the way hinted in the previous chapter.</p>
-<p>TODO: Av okända skäl så blir de nedanstående av typ <code>Integer</code> om ej en decimal tas med. Man vill nog ha dom som <code>Double</code>. Idealt skulle de ha typ <code>(Num v) =&gt; v</code> men jag har inte fått till det så bra.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb4-1" data-line-number="1">myLength <span class="fu">=</span> <span class="fl">10.0</span> <span class="fu">#</span> length</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2">myTime   <span class="fu">=</span> <span class="fl">20.0</span> <span class="fu">#</span> time</a>
 <a class="sourceLine" id="cb4-3" data-line-number="3">myMass   <span class="fu">=</span> <span class="fl">30.0</span> <span class="fu">#</span> mass</a></code></pre></div>

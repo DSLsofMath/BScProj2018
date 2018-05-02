@@ -38,13 +38,21 @@
 <a class="sourceLine" id="cb3-2" data-line-number="2">plotFunExprs <span class="fu">=</span> plot <span class="fu">.</span> fmap (\f <span class="ot">-&gt;</span> <span class="dt">Fun</span> (eval f) (show f))</a></code></pre></div>
 <p>Now try it for yourself! Let’s see the fruits of our labour!</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb4-1" data-line-number="1">ghci<span class="fu">&gt;</span> plotFunExprs [f, f&#39;, _F]</a></code></pre></div>
+<p><img src="plotf.png" class="center-img" /></p>
 <p>For fun, we can also plot the same functions but using our approximative functions for differentiation and integration</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb5-1" data-line-number="1">g x  <span class="fu">=</span> <span class="dv">3</span> <span class="fu">*</span> x<span class="fu">^</span><span class="dv">2</span></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">g&#39; x <span class="fu">=</span> deriveApprox g <span class="fl">0.001</span> x</a>
 <a class="sourceLine" id="cb5-3" data-line-number="3">_G x <span class="fu">=</span> integrateApprox g <span class="fl">0.001</span> <span class="dv">0</span> x</a></code></pre></div>
 <p>Then plot with</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb6-1" data-line-number="1">ghci<span class="fu">&gt;</span> plot [<span class="dt">Fun</span> g <span class="st">&quot;3x^2&quot;</span>, <span class="dt">Fun</span> g&#39; <span class="st">&quot;D(3x^2)&quot;</span>, <span class="dt">Fun</span> _G <span class="st">&quot;I(3x^2)&quot;</span>]</a></code></pre></div>
+<p><img src="plotg.png" class="center-img" /></p>
 <p>Waddaya know! They look identical! I guess it just goes to show that a good approximation is often good enough.</p>
+<p>If we turn down the precision, we start to notice the errors</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb7-1" data-line-number="1">h x  <span class="fu">=</span> <span class="dv">3</span> <span class="fu">*</span> x<span class="fu">^</span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">h&#39; x <span class="fu">=</span> deriveApprox h <span class="fl">0.1</span> x</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">_H x <span class="fu">=</span> integrateApprox h <span class="fl">0.1</span> <span class="dv">0</span> x</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb8-1" data-line-number="1">ghci<span class="fu">&gt;</span> plot [<span class="dt">Fun</span> h <span class="st">&quot;3x^2&quot;</span>, <span class="dt">Fun</span> h&#39; <span class="st">&quot;D(3x^2)&quot;</span>, <span class="dt">Fun</span> _H <span class="st">&quot;I(3x^2)&quot;</span>]</a></code></pre></div>
+<p><img src="ploth.png" class="center-img" /></p>
 
     </main>
 

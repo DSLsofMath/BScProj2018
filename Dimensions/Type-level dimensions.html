@@ -22,33 +22,32 @@
 
     <main>
       <h1 id="type-level-dimensions">Type-level dimensions</h1>
+
+<div class="sourceCode" id="cb1"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">module</span> <span class="dt">Dimensions.TypeLevel</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">    ( <span class="dt">Dim</span>(<span class="fu">..</span>)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">    , <span class="dt">Mul</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">    , <span class="dt">Div</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">    , <span class="dt">Length</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">    , <span class="dt">Mass</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">    , <span class="dt">Time</span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">    , <span class="dt">Current</span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">    , <span class="dt">Temperature</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10">    , <span class="dt">Substance</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11">    , <span class="dt">Luminosity</span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">    , <span class="dt">One</span></a>
+<a class="sourceLine" id="cb1-13" data-line-number="13">    ) <span class="kw">where</span></a></code></pre></div>
 <p>We will now implement <em>type-level</em> dimensions. What is type-level? Programs (in Haskell) normally operatate on (e.g. add) values (e.g. <code>1</code> and <code>2</code>). This is on <em>value-level</em>. Now we’ll do the same thing but on <em>type-level</em>, that is, perform operations on types.</p>
 <p>What’s the purpose of type-level dimensions? It’s so we’ll notice as soon as compile-time if we’ve written something incorrect. E.g. adding a length and an area is not allowed since they have different dimensions.</p>
-<figure>
-<img src="Lengths_and_area.png" alt="Adding lengths is OK. Adding lengths and areas is not OK." /><figcaption>Adding lengths is OK. Adding lengths and areas is not OK.</figcaption>
-</figure>
+<p><img src="Lengths_and_area.png" title="Adding lengths is OK. Adding lengths and areas is not OK." class="img-center" /></p>
 <p>This implemention is very similar to the value-level one. It would be possible to only have one implementation by using <code>Data.Proxy</code>. But it would be trickier. This way is lengthier but easier to understand.</p>
 <p>To be able to do type-level programming, we’ll need a nice stash of GHC-extensions.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="ot">{-# LANGUAGE DataKinds #-}</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="ot">{-# LANGUAGE GADTs #-}</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="ot">{-# LANGUAGE KindSignatures #-}</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="ot">{-# LANGUAGE TypeFamilies #-}</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="ot">{-# LANGUAGE UndecidableInstances #-}</span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="ot">{-# LANGUAGE TypeOperators #-}</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="ot">{-# LANGUAGE DataKinds #-}</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="ot">{-# LANGUAGE GADTs #-}</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="ot">{-# LANGUAGE KindSignatures #-}</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="ot">{-# LANGUAGE TypeFamilies #-}</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="ot">{-# LANGUAGE UndecidableInstances #-}</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="ot">{-# LANGUAGE TypeOperators #-}</span></a></code></pre></div>
 <p>See the end of the next chapter to read what they do.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">module</span> <span class="dt">Dimensions.TypeLevel</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">    ( <span class="dt">Dim</span>(<span class="fu">..</span>)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">    , <span class="dt">Mul</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">    , <span class="dt">Div</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">    , <span class="dt">Length</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">    , <span class="dt">Mass</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">    , <span class="dt">Time</span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">    , <span class="dt">Current</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9">    , <span class="dt">Temperature</span></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10">    , <span class="dt">Substance</span></a>
-<a class="sourceLine" id="cb2-11" data-line-number="11">    , <span class="dt">Luminosity</span></a>
-<a class="sourceLine" id="cb2-12" data-line-number="12">    , <span class="dt">One</span></a>
-<a class="sourceLine" id="cb2-13" data-line-number="13">    ) <span class="kw">where</span></a></code></pre></div>
 <p>We’ll need to be able to operate on integers on the type-level. Instead of implementing it ourselves, we will just import the machinery so we can focus on the physics-part.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">import</span> <span class="dt">Numeric.NumType.DK.Integers</span></a></code></pre></div>
 <p>We make a <em>kind</em> for dimensions, just like we in the previous section made <em>type</em> for dimensions. On value-level we made a <em>type</em> with <em>values</em>. Now we make a <em>kind</em> with <em>types</em>. The meaning is exactly the same, except we have moved “one step up”.</p>
@@ -89,7 +88,7 @@
 <a class="sourceLine" id="cb7-7" data-line-number="7"><span class="kw">type</span> <span class="dt">Luminosity</span>  <span class="fu">=</span> <span class="ch">&#39;Dim Zero Zero Zero Zero Zero Zero Pos1</span></a></code></pre></div>
 <p><code>'Dim</code> is used to distinguish between the <em>type</em> <code>Dim</code> (left-hand-side of the <code>data Dim</code> definition) and the <em>type constructor</em> <code>Dim</code> (right-hand-side of the <code>data Dim</code> definition, with <code>DataKinds</code>-perspective). <code>'Dim</code> refers to the type constructor. Both are created when using <code>DataKinds</code>.</p>
 <p><code>Pos1</code>, <code>Neg1</code> and so on corresponds to <code>1</code> and <code>-1</code> in the imported package, which operates on type-level integers.</p>
-<p><strong>Exercise.</strong> Create types for velocity, acceleration and the scalar.</p>
+<p><strong>Exercise</strong> Create types for velocity, acceleration and the scalar.</p>
 <details>
 <summary><strong>Solution</strong></summary>
 <div>
@@ -110,7 +109,7 @@
 <li><code>Mul</code> is the name of the function.</li>
 <li><code>d1 :: Dim</code> is read as “the <em>type</em> <code>d1</code> has <em>kind</em> <code>Dim</code>”.</li>
 </ul>
-<p><strong>Exercise.</strong> As you would suspect, division is very similar, so why don’t you try ’n implement it yourself?</p>
+<p><strong>Exercise</strong> As you would suspect, division is very similar, so why don’t you try ’n implement it yourself?</p>
 <details>
 <summary><strong>Solution</strong></summary>
 <div>
@@ -121,7 +120,7 @@
 <a class="sourceLine" id="cb11-5" data-line-number="5">        (te1<span class="fu">-</span>te2) (su1<span class="fu">-</span>su2) (lu1<span class="fu">-</span>lu2)</a></code></pre></div>
 </div>
 </details>
-<p><strong>Exercise.</strong> Implement a type-level function for raising a dimension to the power of some integer.</p>
+<p><strong>Exercise</strong> Implement a type-level function for raising a dimension to the power of some integer.</p>
 <details>
 <summary><strong>Solution</strong></summary>
 <div>
@@ -131,7 +130,7 @@
 </div>
 </details>
 <p>Now types for dimensions can be created by combining exisiting types, much like we did for values in the previous chapter.</p>
-<p><strong>Exercise.</strong> Create types for velocity, area, force and impulse.</p>
+<p><strong>Exercise</strong> Create types for velocity, area, force and impulse.</p>
 <details>
 <summary><strong>Solution</strong></summary>
 <div>

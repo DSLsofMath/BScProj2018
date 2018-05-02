@@ -1,4 +1,4 @@
-> module Calculus.FunExpr (FunExpr (..), RealNum) where
+> module Calculus.FunExpr (FunExpr (..), RealNum, RealFunc) where
 >
 > import Test.QuickCheck
 
@@ -16,12 +16,12 @@ $$\frac{d f(x)}{dx} = f'(x)$$
 
 Hmm, these examples left me more confused than before. The
 differentiation function seems to take an expression as an argument,
-and return the derived expression, with regards to a variable. But
-what is an expression represented as a semantic value? It's not a
-number yet, the variable in the body needs to be substituted first in
-order for the expression to be computable. Is it some kind of function
-then? Well, yes it is! If we reinterpret the differentiation
-expressions above, it makes more sense.
+and return the differentiated expression, with regards to a
+variable. But what is an expression represented as a semantic value?
+It's not a number yet, the variable in the body needs to be
+substituted first in order for the expression to be computable. Is it
+some kind of function then? Well, yes it is! If we reinterpret the
+differentiation expressions above, it makes more sense.
 
 $$\frac{d x^2}{dx} = 2x$$
 
@@ -40,15 +40,14 @@ $$D(square) = double$$.
 So the type of unary real functions seems like a great fit for a
 semantic value for calculus, and it is! Great! But... how do we
 represent a real number in Haskell? There is no `Real` type to
-use. Well, for simplicitys sake we can just say that a real number is
-basically the same as a `Double`, and it is (basically). The problem
-with `Double` is that it's of finite precision, so rounding errors may
-occur. We'll have to keep that in mind when doing calculations!
+use. Well, for the sake of simplicity we can just say that a real
+number is basically the same as a `Double`, and really it is
+(basically). The problem with `Double` is that it's of finite
+precision, so rounding errors may occur. We'll have to keep that in
+mind when doing calculations!
 
 > type RealNum = Double
->
-> -- The type of the semantic value of calculus is the unary real function
-> --   RealNum -> RealNum
+> type RealFunc = RealNum -> RealNum
 
 Now, to the syntax. We've concluded that real functions are really
 what calculus is all about, so let's model them. We create a data type
@@ -59,20 +58,15 @@ language.
 
 > data FunExpr
 
-First of all, there's the elementary functions. We can't have them
+First of all, there are the elementary functions. We can't have them
 all, that would get too repetitive to implement, but we'll put in all
 the fun ones.
 
->     = Exp
->     | Log
->     | Sin
->     | Cos
->     | Asin
->     | Acos
+>     = Exp | Log | Sin | Cos | Asin | Acos
 
 Then, there are the arithmetic operators. "But wait", you say, "Aren't
-arithmetic operators used to combine expressions, not functions?". I
-hear you, Billy, but we will do it anyways. We could make a `Lambda`
+arithmetic operators used to combine expressions, not functions?". We
+hear you friend, but we will do it anyways. We could make a `Lambda`
 constructor for "VAR $\mapsto$ EXPR" expressions and define the
 arithmetic operators for the expression type, but this would make
 our language much more complicated! Instead, we'll restrain ourselves
@@ -80,7 +74,7 @@ to single variable expressions, which can be represented as
 compositions of unary functions, and define the arithmeric operators
 for the functions instead.
 
-$$f \text{ OP } g = x \mapsto (f(x) \text{ OP } g(x))$$
+$$f \text{ $OP_{r \to r}$ } g = x \mapsto (f(x) \text{ $OP_r$ } g(x))$$
 
 >     | FunExpr :+ FunExpr
 >     | FunExpr :- FunExpr
@@ -88,7 +82,7 @@ $$f \text{ OP } g = x \mapsto (f(x) \text{ OP } g(x))$$
 >     | FunExpr :/ FunExpr
 >     | FunExpr :^ FunExpr
 
-And then theres that single variable. As everything is a function
+And then there's that single variable. As everything is a function
 expression, the function that best represents "just a variable" would
 be $x \mapsto x$, which is the same as the $id$ function.
 
@@ -98,15 +92,15 @@ In a similar vein, the constant function. $const(c) = x \mapsto c$
 
 >     | Const RealNum
 
-Then theres function composition. If you didn't already know it, it's
+Then there's function composition. If you didn't already know it, it's
 defined as
 
-$$f . g = x \mapsto f(g(x))$$
+$$f \circ g = x \mapsto f(g(x))$$
 
 >     | FunExpr :. FunExpr
 
-Finally, the real heroes: The functions of difference, differentiation,
-and integration! They will be well explored later. But for now, we
+Finally, the real heroes: the functions of difference, differentiation,
+and integration! They will be well explored later. But for now, we just
 define the syntax for them as
 
 >     | Delta RealNum FunExpr
@@ -114,7 +108,7 @@ define the syntax for them as
 >     | I FunExpr
 
 Even more finally, we add a `deriving` modifier to automatically allow
-for equality tests between `FunExpr`s.
+for syntactic equality tests between `FunExpr`s.
 
 >   deriving Eq
 
@@ -141,7 +135,7 @@ left-associative, and set the precedence.
 > infixl 7 :/
 > -- Higher precedence
 > infixl 8 :^
-> -- Higherer precedence
+> -- Can't go higher than this precedence
 > infixl 9 :.
 
 
@@ -155,7 +149,7 @@ for: `Show` and `Arbitrary`.
 
 Try modifying `FunExpr` to derive `Show`, so that our expressions can be printed.
 
-<   deriving Eq, Show
+<   deriving (Eq, Show)
 
 Consider now how GHCi prints out a function expression we create
 
@@ -167,29 +161,32 @@ Consider now how GHCi prints out a function expression we create
 
 Well that's borderline unreadable. Further, the grokability of a printed expression is very inversely proportional to the size/complexity of the expression, as I'm sure you can imagine.
 
-So if the `Show` is bad, we'll just have to make our own `Show`!
+So if the derived `Show` is bad, we'll just have to make our own `Show`!
 
-> instance Show FunExpr where
->   show Exp = "exp"
->   show Log = "log"
->   show Sin = "sin"
->   show Cos = "cos"
->   show Asin = "asin"
->   show Acos = "acos"
->   show (f :+ g) = "(" ++ show f ++ " + " ++ show g ++ ")"
->   show (f :- g) = "(" ++ show f ++ " - " ++ show g ++ ")"
->   show (f :* g) = "(" ++ show f ++ " * " ++ show g ++ ")"
->   show (f :/ g) = "(" ++ show f ++ " / " ++ show g ++ ")"
->   show (f :^ g) = "(" ++ show f ++ "^" ++ show g ++ ")"
->   show Id = "x"
->   show (Const x) = showReal x
->   show (f :. g) = "(" ++ show f ++ " . " ++ show g ++ ")"
->   show (Delta h f) = "(delta_" ++ showReal h ++ " " ++ show f ++ ")"
->   show (D f) = "(D " ++ show f ++ ")"
->   show (I f) = "(I " ++ show f ++ ")"
+> showFe :: FunExpr -> String
+> showFe Exp = "exp"
+> showFe Log = "log"
+> showFe Sin = "sin"
+> showFe Cos = "cos"
+> showFe Asin = "asin"
+> showFe Acos = "acos"
+> showFe (f :+ g) = "(" ++ showFe f ++ " + " ++ showFe g ++ ")"
+> showFe (f :- g) = "(" ++ showFe f ++ " - " ++ showFe g ++ ")"
+> showFe (f :* g) = "(" ++ showFe f ++ " * " ++ showFe g ++ ")"
+> showFe (f :/ g) = "(" ++ showFe f ++ " / " ++ showFe g ++ ")"
+> showFe (f :^ g) = "(" ++ showFe f ++ "^" ++ showFe g ++ ")"
+> showFe Id = "id"
+> showFe (Const x) = showReal x
+> showFe (f :. g) = "(" ++ showFe f ++ " . " ++ showFe g ++ ")"
+> showFe (Delta h f) = "(delta_" ++ showReal h ++ " " ++ showFe f ++ ")"
+> showFe (D f) = "(D " ++ showFe f ++ ")"
+> showFe (I f) = "(I " ++ showFe f ++ ")"
 >
 > showReal x = if isInt x then show (round x) else show x
 >   where isInt x = x == fromInteger (round x)
+
+> instance Show FunExpr where
+>   show = showFe
 
 Not much to explain here. It's just one way to print our syntax tree
 in a more readable way. What's interesting is how we can now print our
@@ -200,7 +197,7 @@ expressions in a much more human friendly way!
 
 Still a bit noisy with all the parentheses, but much better!
 
-Another class we need to instance for our `FunExpr` is
+Another class we can instance for our `FunExpr` is
 `Arbitrary`. This class is associated with the testing library
 *QuickCheck*, and describes how to generate arbitrary values of a type
 for use when testing logical properties with `quickCheck`. For

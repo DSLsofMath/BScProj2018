@@ -26,7 +26,7 @@ average and instantaneous.
 Quotients of differences of functions of the same time describe the
 average rate of change over the time period. For example, an average
 velocity can be described as the difference quotient of difference in
-position divided by difference in time.
+position and difference in time.
 
 $$v_{avg} = \frac{p_2 - p_1}{t_2 - t_1}$$  where $p_n$ is the position
 at time $t_n$.
@@ -43,7 +43,7 @@ $$ \Delta x = x_2 - x_1 $$
 
 Ok, so it's a difference. But what does $x_2$ and $x_1$ mean, and what do they come from?
 $x_2$ and $x_1$ are not explicitly bound anywhere,
-but seems reasonable to assume that $x_i \in x$ or equivalently, that $x$
+but it seems reasonable to assume that $x_i \in \mathbb{R}$ or equivalently, that $x$
 is a function with a subscript index as an argument, that returns a $\mathbb{R}$.
 
 Further, the indices $1,2$ should not be thought of as specific constants,
@@ -73,7 +73,7 @@ calculus we mainly use differences to express two things, as mentioned
 previously. Average rate of change and instantaneous rate of change.
 
 Average rate of change is best described as the difference quotient of
-the difference in y-axis value over an interval of x, divided by the
+the difference in y-axis value over an interval of x, and the
 difference in x-axis value over the same interval.
 
 $$\frac{y(x_b) - y(x_a)}{x_b - x_a}$$.
@@ -138,7 +138,13 @@ which can be used as
 < ghci> carSpeedAtPointsInTime
 < [1.9999999999833333,1.5402980985023251,0.5838486169602084,1.0006797790330592e-2]
 
-We'd also like to model one of the versions of the delta operator, finite difference, in our syntax tree. As the semantic value of our calculus language is the unary real function, the difference used for averages doesn't really fit in well, as it's a binary function (two arguments: $t_2$ and $t_1$). Instead, we'll use the version of delta used for instantants, as it only takes a single point in time as an argument (assuming $h$ is already given).
+We'd also like to model one of the versions of the delta operator,
+finite difference, in our syntax tree. As the semantic value of our
+calculus language is the unary real function, the difference used for
+averages doesn't really fit in well, as it's a binary function (two
+arguments: $t_2$ and $t_1$). Instead, we'll use the version of delta
+used for instants, as it only takes a single point in time as an
+argument (assuming $h$ is already given).
 
 The constructor in our syntax tree is therefore
 
@@ -185,8 +191,8 @@ Introducing *infinitesimals*! From the wikipedia entry on *Leibniz's notation*
 ![](shrinking.png "Real smol boi"){.float-img-right}
 
 So there's a special syntax for differences where the step $h$ is
-infinitely small, and it's called Leibniz's notation. We interpret the
-above quote in mathematical terms:
+infinitely small, and it's called Leibniz's notation. We could naively
+interpret the above quote in mathematical terms as
 
 $$dx = lim_{\Delta x \to 0} \Delta x$$
 
@@ -195,14 +201,19 @@ such that
 $$\forall y(x). D(y) = \frac{dy}{dx} = \frac{lim_{\Delta y \to 0} \Delta y}
                                             {lim_{\Delta x \to 0} \Delta x}$$
 
-where $D$ is the function of differentiation.
+where $D$ is the function of differentiation. However, this doesn't
+quite make sense as $lim_{x \to 0} x = 0$ and we'd be dividing by
+0. The wording here is important: infinitesimals aren't $0$, but
+*infinitely* small! The result is that we can't define infinitesimals
+in terms of limits, but have to treat them as an orthogonal concept.
 
-This definition of derivatives is very appealing, as it suggests a
-very simple and intuitive transition from finite differences to
-infinitesimal differentials. Also, it suggests the possibility of
-manipulating the infinitesimals of the derivative algebraically, which
-might be very useful. However, this concept is generally considered
-too imprecise to be used as the foundation of calculus.
+Except for this minor road bump, this definition of derivatives is
+very appealing, as it suggests a very simple and intuitive transition
+from finite differences to infinitesimal differentials. Also, it
+suggests the possibility of manipulating the infinitesimals of the
+derivative algebraically, which might be very useful. However, this
+concept is generally considered too imprecise to be used as the
+foundation of calculus.
 
 A later section on the same wikipedia entry elaborates a bit:
 
@@ -216,17 +227,17 @@ A later section on the same wikipedia entry elaborates a bit:
  > notations.
 
 What is then the "right" way to do derivatives? As luck would have it,
-not much differently than Leibniz's suggested! The intuitive idea can
-be turned into a precise definition by defining the derivative to be
-the limit of difference quotients of real numbers. Again, from
-wikipedia - Leibniz's notation:
+not much differently than Leibniz's suggested and how we interpreted
+it above! The intuitive idea can be turned into a precise definition
+by defining the derivative to be the limit of difference quotients of
+real numbers. Again, from wikipedia - Leibniz's notation:
 
  > In its modern interpretation, the expression dy/dx should not be read
  > as the division of two quantities dx and dy (as Leibniz had envisioned
  > it); rather, the whole expression should be seen as a single symbol
  > that is shorthand for
  >
- > $$D(x) = lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x}$$
+ > $$D(y) = lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x}$$
 
 which, when $y$ is a function of $x$, and $x$ is the $id$ function for real numbers (which it is in the case of time), is:
 
@@ -238,7 +249,7 @@ D(y) &= lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x} \\
      &= a \mapsto lim_{h \to 0} \frac{y(a + h) - y(a)}{h}
 \end{align*}
 
-There, the definition of derivatives! Not to complicated, was it? We
+There, the definition of derivatives! Not too complicated, was it? We
 can write a simple numerically approximative according to the
 definition like
 
@@ -247,10 +258,11 @@ definition like
 Only when $h$ is infinitely small is `deriveApprox` fully
 accurate. However, as we can't really represent an infinitely small
 number in finite memory, the result will only be approximative, and
-the approximation will get better as $h$ gets smaller. For example,
-let's calculate the slope of $f(x)=x^2$ at $f(3)$. As the slope of
-this parabola is calculated as $k = 2x$, we expect the result of
-`deriveApprox` to approach $k = 2x = 2*3 = 6$ as $h$ gets smaller
+the approximation will (in most cases) get better as $h$ gets
+smaller. For example, let's calculate the slope of $f(x)=x^2$ at
+$x=3$. As the slope of this parabola is calculated as $k = 2x$, we
+expect the result of `deriveApprox` to approach $k = 2x = 2*3 = 6$ as
+$h$ gets smaller
 
 < ghci> deriveApprox (\x -> x^2) 5    3
 < 11
@@ -270,7 +282,7 @@ approximations!
 
 We define a function to symbolically derive a function
 expression. `derive` takes a function expression, and returns the
-derived function expression.
+differentiated function expression.
 
 > derive :: FunExpr -> FunExpr
 
@@ -491,6 +503,7 @@ Intuitively, the identity function is the identity element for function composit
 >     (f', g') -> f' :. g'
 
 > simplify (Delta h f) = Delta h (simplify f)
+> simplify (D (I f')) = simplify f'
 > simplify (D f) = D (simplify f)
 > simplify (I f) = I (simplify f)
 > simplify f = f

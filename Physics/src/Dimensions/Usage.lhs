@@ -2,16 +2,22 @@
 Usage
 =====
 
-In this module we'll show how to use value-level dimensions, type-level dimensions and `Quantity` in an "actual" progam.
+\ignore{
 
 > {-# LANGUAGE TypeOperators #-}
+
+}
 
 > module Dimensions.Usage
 > (
 > )
 > where
 
-Let's first import the things we have created.
+In this module we'll show how to use value-level dimensions, type-level dimensions and `Quantity` in an "actual" progam. Let's first use this fancy GHC-extension
+
+< {-# LANGUAGE TypeOperators #-}
+
+and then import the things we have created.
 
 > import Dimensions.TypeLevel
 > import Dimensions.Quantity
@@ -23,8 +29,6 @@ Values and types
 ----------------
 
 Let's create a length, time and mass, in the way hinted in the previous chapter.
-
-TODO: Av okända skäl så blir de nedanstående av typ `Integer` om ej en decimal tas med. Man vill nog ha dom som `Double`. Idealt skulle de ha typ `(Num v) => v` men jag har inte fått till det så bra.
 
 < myLength = 10.0 # length
 < myTime   = 20.0 # time

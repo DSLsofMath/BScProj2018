@@ -15,7 +15,7 @@ of value over time.
 
 Recall how we used derivatives before. If we know the distance
 traveled of a car and the time it took, we can use differentiation to
-calculate the velocity. Similarly but reversly, if we know the
+calculate the velocity. Similarly but reversely, if we know the
 velocity of the car and the time it travels for, we can use
 integration to calculate the distance traveled.
 
@@ -38,7 +38,7 @@ ask our kind friend Wikipedia for help. From the entry on *Integral*:
  > $x$-axis adds to the total and that below the $x$-axis subtracts
  > from the total.
  >
- > Roughly speaking, the operation of integration is the reverse of
+ > Roughly speaking, the operation of integration is the inverse of
  > differentiation. For this reason, the term integral may also refer to
  > the related notion of the antiderivative, a function $F$ whose
  > derivative is the given function $f$. In this case, it is called an
@@ -100,7 +100,7 @@ A thing to note is that while we may sometimes informally speak of the
 indefinite integral as a single unary function like any other, it's
 actually a set of functions, and the meaning of $F(x) = \int f(x) dx$
 is really ambiguous. The reason for this is that for some function
-$f$, there is no single function $F$ such that $D(F) = f$. A
+$f$, there is not just one function $F$ such that $D(F) = f$. A
 simple counterexample is
 
 $$D(x \mapsto x + 2) = 1 \text{ and } D(x \mapsto x + 3) = 1$$
@@ -109,12 +109,12 @@ The fact that adding a constant to a function does not change the the
 derivative, implies that the indefinite integral of a function is
 really a set of functions where the constant term differs.
 
-$$\int f = \{ F + const C | C \in \mathbb{R} \}$$
+$$\int f = \{ F + const\ C \ |\ C \in \mathbb{R} \}$$
 
 We don't want sets though. We want unary real functions (because
 that's our the type of our semantics!). So, we simply say that when
-integrating a function, the constant term must be supplied in order to
-nail the result down to a single function!
+integrating a function, the constant term will always be $0$ in order
+to nail the result down to a single function! I.e. $(I f) 0 = 0$
 
 <     | I FunExpr
 
@@ -151,7 +151,7 @@ Lebesgue integral is a better fit.
 All that considered, we will use Riemann integrals. While they may be
 lacking for many purposes, they are probably more familiar to most
 students (they are to me!), and will be sufficient for the level we're
-a.
+at.
 
 If we look back at the syntax of definite integrals
 
@@ -177,36 +177,37 @@ $$\int_a^b f = \int_a^b f(x) dx = lim_{dx \to 0} \sum_{x = a, a + dx, a + 2dx, .
 
 ![Smaller $dx$ result in better approximations. (C) KSmrq](https://upload.wikimedia.org/wikipedia/commons/2/2a/Riemann_sum_convergence.png){.float-img-right .img-border}
 
-Based on this definition, we could implement a function in haskell to
+Based on this definition, we could implement a function in Haskell to
 compute the numerical approximation of the integral by letting $dx$ be
 a very small, but finite, number instead of being infinitesimal. The
 smaller our $dx$, the better the approximation
 
+> integrateApprox :: RealFunc -> RealNum -> RealNum -> RealNum -> RealNum
 > integrateApprox f dx a b =
 
 $b$ must be greater than $a$ for a definite integral to make sense,
 but if that's not the case, we can just flip the order of $a$ and $b$
 and flip the sign of the area.
 
->   let xs = takeWhile (<b) [a + 0*dx, a + 1*dx ..]
->       area x = f x * dx
->   in if b >= a then sum (fmap area xs)
->               else (-(integrateApprox f dx b a))
+>   let area x = f x * dx
+>   in if b >= a
+>      then sum (fmap area (takeWhile (<b) [a + 0*dx, a + 1*dx ..]))
+>      else -sum (fmap area (takeWhile (>b) [a - 0*dx, a - 1*dx ..]))
 
 For example, let's calculate the area of the right-angled triangle under $y = x$
 between $x=0$ and $x=10$. As the area of a right-angled triangle is calculated as
 $A = \frac{b * h}{2}$, we expect the result of \texttt{integrateApprox} to approach
 $A = \frac{b * h}{2} = \frac{10 * 10}{2} = 50$ as $dx$ gets smaller
 
-< λ integrateApprox (\textbackslash x -> x) 5    0 10
+< λ integrateApprox (\x -> x) 5    0 10
 < 25
-< λ integrateApprox (\textbackslash x -> x) 1    0 10
+< λ integrateApprox (\x -> x) 1    0 10
 < 45
-< λ integrateApprox (\textbackslash x -> x) 0.5  0 10
+< λ integrateApprox (\x -> x) 0.5  0 10
 < 47.5
-< λ integrateApprox (\textbackslash x -> x) 0.1  0 10
+< λ integrateApprox (\x -> x) 0.1  0 10
 < 49.50000000000013
-< λ integrateApprox (\textbackslash x -> x) 0.01 0 10
+< λ integrateApprox (\x -> x) 0.01 0 10
 < 50.04999999999996
 
 Great, it works for numeric approximations! This can be useful at times,
@@ -223,7 +224,7 @@ Which function derives to $cos$? Think, think, think ... I got it! It's $sin$, i
 $$D(sin) = cos \implies \int cos = sin + const C$$
 
 So simple! The same method can be used to find the integral of
-polynomials and some other simple functions. Coupeled with some
+polynomials and some other simple functions. Coupled with some
 integration rules for products and exponents, this can get us quite
 far! But what if we're not superhumans and haven't memorized all the
 tables? What if we have to do integration without a cheat sheet for,
@@ -278,7 +279,7 @@ theorem](https://en.wikipedia.org/wiki/Liouville%27s_theorem_%28differential_alg
 
 First, our elementary functions. You can prove them using the methods
 described above, but the easiest way to find them is to just look them
-up in some table of integrals (dust of that old calculus cheat sheet)
+up in some table of integrals (dust off that old calculus cheat sheet)
 or on WolframAlpha (or Wikipedia, or whatever. Up to you).
 
 > integrate Exp = Exp :- Const 1
@@ -366,11 +367,11 @@ parts rule is simply not defined in the case of $g(x)$ not being
 integrable to $G(x)$. And so, as there exists no definitely good way
 to do it in ALL cases, we're forced to settle for a conservative approach.
 
-If we look at the formula for integration by parts
+If we rewrite the formula for integration by parts to use $g'$ instead of $g$
 
-$$ \int f(x) g(x) dx = f(x) G(x) - \int f'(x) G(x) dx $$
+$$ \int f(x) g'(x) dx = f(x) g(x) - \int f'(x) g(x) dx $$
 
-We see that there are two cases where the integral is well defined:
+we see that there are two cases where the integral is well defined:
 
 $$ \int f(x) g'(x) dx = f(x) g(x) - \int f'(x) g(x) dx $$
 
@@ -454,7 +455,7 @@ semantic value, i.e. `eval :: SYNTAX -> SEMANTICS`.
 
 In the case of our calculus language:
 
-> eval :: FunExpr -> (RealNum -> RealNum)
+> eval :: FunExpr -> (RealFunc)
 
 To then evaluate a `FunExpr` is not very complicated. The elementary
 functions and the `Id` function are simply substituted for their

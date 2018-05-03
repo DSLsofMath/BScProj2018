@@ -86,6 +86,12 @@ div#toc ol > li > ul {
     border-radius: 5px;
 }
 
+.center-img {
+    display: block;
+    border: 3px solid #F0F0F0;
+    border-radius: 5px;
+}
+
 .float-img-left, .float-img-right {
     width: 35%;
 }

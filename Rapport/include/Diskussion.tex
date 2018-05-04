@@ -194,11 +194,14 @@ förvånande eftersom båda områdena är varsin egen gren inom matematiken
 och lämpar sig därmed väl för implementering i Haskell som är ett språk med nära
 anknytning till matematik. En annan sak som dessa väl lämpade områden hade
 gemensamt var en tydlig syntax och en fix struktur som bestod av ``data och
-operationer''. Figur~\ref{fig:data_och_ops} visar några exempel på områden med
+operationer''. Tabell~\ref{tab:data_och_ops} visar några exempel på områden med
 sina data och operationer.
+
+\captionsetup[figure]{name=Tabell}
 
 \begin{figure}[tph]
 \centering
+\caption{Exempel på data och operationer i några domänspecifikaspråk.}\label{tab:data_och_ops} 
 \begin{tabular}{l|l}
 \toprule
 DSL / data & Exempel på operationer \\ \midrule
@@ -206,10 +209,11 @@ Dimensioner & Multiplikation, division \\
 Vektorer & Addition, skalärprodukt \\
 Analys, funktioner & Derivera, multiplicera \\ \bottomrule
 \end{tabular}
-\caption{Exempeltabell över data och operationer i några domänspecifikaspråk.}\label{fig:data_och_ops} 
 \end{figure}
 
-Att notera ur figur~\ref{fig:data_och_ops} är att operationerna inom ett område
+\captionsetup[figure]{name=Figur}
+
+Att notera ur tabell~\ref{tab:data_och_ops} är att operationerna inom ett område
 görs på en och samma slags data, och sedan resulterar i samma slags data igen.
 Det här exemplifieras i matematisk analys, där derivering är en operation, som
 görs på en funktion och sedan resulterar i en annan funktion. Detta illustreras

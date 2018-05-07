@@ -3,10 +3,12 @@ Vektorer:
     flygande fåglar (vind, flaxfrekvens, resultant)
 
     Mekanik som lådor o krafter
-
+        utöka befintligt krafter_på_lådor till svt
+        
 Calculus:
     Integrering o deriveringar:
         medelhastigher, sträcka över tid
+            (inge intergraler atm)
         
 
 rnd:

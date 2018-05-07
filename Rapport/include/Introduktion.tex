@@ -7,7 +7,7 @@ Detta kapitel beskriver projektets bakgrund, mål och avgränsningar.
 
 På civilingenjörsprogrammet Datateknik på Chalmers tekniska högskola ingår den obligatoriska
 fysikkursen \textit{Fysik för ingenjörer}. Tentastatistiken för denna kurs är
-betydligt sämre~\cite{tentastatistik} än för andra kurser på Datateknik\footnote{Andel underkänt på
+betydligt sämre~\cite{tentastatistik} än för andra kurser på Datateknik\footnote{Andel underkända på
 ordinarie tentamen från läsår 2014 till 2017: 34\%, 76\%, 18\%, 57\%.
 }. Projektgruppen tror att många studenter på Datateknik finner denna
 kurs svår eller ointressant, och att detta leder till att en betydande andel får
@@ -17,7 +17,7 @@ Detta tror projektgruppen kan lösas med avstamp från kursen \textit{Domain
 Specific Languages of Mathematics} (``DSLsofMath''), med den svenska titeln
 \textit{Matematikens domänspecifika språk}. Kursen är valbar på kandidatnivå för studenter på Chalmers och Göteborgs universitet. Konkret
 presenterar DSLsofMath matematik som derivator, komplexa tal och
-matriser ur ett funktionellt programmeringsperspektiv i Haskell, vilket är ett programmeringsspråk datastudenterna redan är bekanta med.
+matriser ur ett programmeringsperspektiv i Haskell, vilket är ett programmeringsspråk datastudenterna redan är bekanta med.
 
 DSLsofMath-kursens skapare, Cezar Ionescu och Patrik Jansson, har beskrivit avsikten med kursen i en artikel~\cite{tfpie2015}. Det direkta målet med kursen är
 att förbättra den matematiska utbildningen för datavetare och den
@@ -31,13 +31,13 @@ bakom kursen är:
 typerna i domänspecifika språk.''~\cite{tfpie2015}~\cite{lecture-notes}\
 \end{center}
 
-Det funktionella programmeringsperspektivet som kursen använder sig av bottnar i
+Det programmeringsperspektiv som kursen använder sig av bottnar i
 så kallade domänspecifika språk. Kortfattat kan ett domänspecifikt språk
 beskrivas som ett programmeringsspråk som skapats för ett väl avgränsat
 område. Detta område kan vara databashantering, algebraiska uttryck eller till
 och med fysik. Språket kan antingen vara implementerat inuti ett annat
 programmeringsspråk eller implementerat helt fristående. I kursen och projektet
-är det implementerat i Haskell.
+är de implementerat i Haskell.
 
 Idéen bakom projektet är att använda domänspecifika språk för att ur ett alternativt perspektiv presentera fysik. Likt det sätt DSLsofMath
 presenterar kopplingar mellan matematik och programmering ska projektet på motsvarande sätt visa på kopplingar mellan programmering och fysik och därmed
@@ -67,10 +67,10 @@ och professor Jack Wisdom senast år 2008~\cite{classical-mechanics-course-mit-2
 Denna kurs på avancerad nivå studerar de fundamentala principerna för klassisk
 mekanik med hjälp av beräkningsidéer för att precist formulera principerna av
 mekanik, med början i Lagranges ekvationer och avslut i perturbationsteori
-(teori för approximationer av matematiska lösningar). I kursboken~\cite{SICM}
+(teori för approximationer av matematiska lösningar). I kursens bok~\cite{SICM}
 förklaras fysikaliska fenomen genom att visa datorprogram för att simulera dem,
-skrivna i språket Scheme. Denna typ av kurs ter sig ovanliga och är, till
-projektgruppens kännedom, den enda kursen bortsett från DSLsofMath på Chalmers som knyter
+skrivna i språket Scheme. Denna typ av kurser ter sig ovanliga och är, till
+projektgruppens kännedom, den enda kursen bortsett från DSLsofMath  som knyter
 samman fysik, programmering och matematik på en symboliskt nivå för att förklara
 koncepten.
 
@@ -84,9 +84,9 @@ existerande kurser i signallära.
 
 \section{Projektets mål}
 
-Tanken med detta kandidatarbete är att angripa fysik från ett funktionellt
+Målet med detta kandidatarbete är att angripa fysik från ett 
 programmeringsperspektiv. Förhoppningen är då att fysik ska bli både
-roligt och intressant för datastudenter, och därmed också
+roligare och intressantare för datastudenter, och därmed också
 enklare. Detta liknar premissen bakom kursen DSLsofMath och kandidatarbetet
 från 2016, som istället för fysik behandlade matematik respektive signallära.
 
@@ -95,8 +95,8 @@ Läromaterialet ska bestå av
 domänspecifika språk, skrivna
 %programkod skriven
 i Haskell, som
-modellerar fysik sammanvävt med förklarande lärotext. Läromaterialet ska vara
-enkelt för läsaren att ta till sig. Det ska åstadkommas genom ett lättsamt
+modellerar fysik sammanvävt med en förklarande lärotext. Läromaterialet ska vara
+enkelt för läsaren att ta till sig, vilket ska åstadkommas genom ett lättsamt
 språk, publicering på en hemsida samt fri tillgång till källkoden.
 
 Ett parallellt mål är att, efter att ha tillägnat sig erfarenhet, diskutera
@@ -113,18 +113,14 @@ kursen ingår i datastudenternas obligatoriska kursplan.
 
 Vidare kommer en prioritering av innehållet i Fysik för ingenjörer att göras.
 Kursen behandlar grunderna inom klassisk mekanik, termodynamik och
-vågrörelselära. Det ingår även en stor mängd tillämpad matematik, exempelvis
-differentialkalkyl I första hand kommer mekaniken behandlas, för att sedan i mån
+vågrörelselära samt en stor mängd tillämpad matematik, exempelvis
+differentialkalkyl. I första hand kommer mekaniken behandlas, för att sedan i mån
 av tid även behandla termodynamik och vågrörelselära. Fokuset kommer också att
 vara på de områden datastudenter haft svårt för.
 
 För att utvärdera den pedagogiska nyttan kommer enbart en informell utvärdering
 att göras. Detta då en rigorös undersökning hade krävt mycket tid för att välja
 lämpliga testgrupper, analysera återkopplingen samt dokumentera
-testningsförloppet.
+testningsförloppet. Denna tid läggs istället på att skapa ett intressant innehåll.
 
-Projektet kommer fokusera mer på innehållet än att det är skrivet på ett, ur
-ett pedagogiskt perspektiv, bra sätt. Denna avgränsning valdes eftersom hur
-innehållet kan se ut är intressantare än att det är skrivet på det mest
-pedagogiska sättet. Den pedagogiska aspekten kommer inte ignoreras helt. Fokuset
-på den kommer bara att vara mindre.
+Projektet kommer fokusera mer på att skapa innehållet än att göra efterforskningar på, och tillämpa, pedagogiska teorier och riktlinjer. Denna avgränsning valdes eftersom det är hur innehållet kan se ut som är det intressanta och nya, inte hur man kan skriva ett pedagogiskt läromaterial. Den pedagogiska aspekten kommer inte ignoreras helt. Fokuset på den kommer bara att vara mindre.

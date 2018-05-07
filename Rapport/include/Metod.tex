@@ -15,7 +15,7 @@
 \chapter{Genomförande}
 
 Projektets genomförande bestod av fyra delar. Den största delen var
-konstruktionen av själva läromaterialet, och där ingick sökande efter fysikaliska
+konstruktionen av själva läromaterialet i vilken det ingick sökande efter fysikaliska
 områden, implementation av domänspecifika språk och skrivande av lärotext. De
 tre andra delarna var publicering av läromaterialet på en hemsida, utvärdering
 av läromaterialet med en testgrupp samt möten med Åke Fäldt, examinator och
@@ -26,7 +26,7 @@ problemområden i fysikkursen och att få återkoppling på läromaterialet. All
 
 Läromaterialet består av 5 kapitel som vardera behandlar separata
 områden. Skapandet av varje kapitel skedde därför till största delen fristående
-från andra kapitel. Skapandet av kapitlena bestod i sin tur av tre faser,
+från andra kapitel. Konstruktionen av kapitlena bestod i sin tur av tre faser,
 som såg likadana ut för alla kapitel. Dessa faser var sökande efter område,
 implementation av domänspecifika språk för området samt skrivande av lärotext.
 
@@ -50,7 +50,7 @@ arbetades med.
         implementation och skrivande \textit{alltid} var överlappande medan
       sökande \textit{ofta men inte alltid} var det.}~\label{fig:oversiktB}
     \end{subfigure}
-    \caption{Översikt över hur skapandeprocessen av läromaterialet såg ut.
+    \caption{Översikt över hur skapandeprocessen för läromaterialet såg ut.
   Processen delas upp utefter två axlar: kapitel och fas. Varje kombination
   är en del som arbetats med och är gråmarkerad.} 
 \end{figure}
@@ -62,11 +62,10 @@ figur~\ref{fig:oversiktB}. Där ser man att sökandet av områden skedde för fl
 kapitel samtidigt. Detta då arbetet med att hitta ett område ofta gav flera
 områden samtidigt. I figuren ser man också att implementationen av domänspecifika
 språk och skrivande av lärotext skedde samtidigt. Eftersom de i resultatet är
-sammanvävda var det också högst naturligt att processerna med att skapa dem
-även de var sammanvävda.
+sammanvävda var det också högst naturligt att även processerna med att skapa dem var sammanvävda.
 
 De tre följande avsnitten beskriver i detalj hur de tre faserna, sökande,
-implementation och skrivande, såg ut. Det är viktigt att minnas att det, som
+implementation och skrivande, såg ut. Det är värt att minnas att det, som
 nämndes ovan, fanns överlapp mellan både faserna och kapitlena.
 
 \subsection{Sökande efter områden att behandla}\label{sec:valet}
@@ -74,14 +73,13 @@ nämndes ovan, fanns överlapp mellan både faserna och kapitlena.
 Ett domänspecifikt språk modellerar ett specifikt och avgränsat område. Därför
 var det naturligt att söka och tänka i termer av avgränsade områden inom
 fysiken. För att rent praktiskt hitta områden att behandla kontaktades Åke
-Fäldt, examinator för Fysik för ingenjörer~\cite{tif085} och kursens bok (University
-Physics~\cite{UP}) och övrigt material studerades.
+Fäldt, examinator för Fysik för ingenjörer~\cite{tif085}. Dessutom studerades kursens bok (University
+Physics~\cite{UP}) och dess övriga material.
 
 Denna sökandeprocess innefattade inte bara att \textit{hitta} fysikaliska
 områden utan även \textit{organisera} dem i relation till varandra. Som framgår
-senare är till exempel vissa områden baserade på andra. Denna organisering
-var viktig för att kunna implementera de domänspecifika språken på bästa sätt
-och undvika överlappande implementationer.
+senare är vissa områden baserade på andra. Denna organisering
+var viktig för att kunna implementera de domänspecifika språken på bästa sätt utan överlappningar och presentera dem i en pedagogisk ordning.
 
 \subsubsection*{Kontakt med fysikläraren}
 \label{sec:kontakt_faldt}
@@ -90,16 +88,15 @@ Fäldt tillfrågades om vilka områden han i allmänhet anser studenter har
 svårt för. Detta för att i enlighet med projektets mål börja med de, för
 studenterna, problematiska områdena. Enligt Fäldt är ett allmänt problem att
 egna mentala modeller för problem är felaktiga eftersom studenter ofta tar
-genvägar som inte bygger på saker de är säkra gäller. En annan erfarenhet
-från honom är att så länge första raden i en uppgiftslösning är rätt, är
+genvägar som inte bygger på saker de är säkra stämmer. En annan erfarenhet
+från honom är att så länge den första raden i en uppgiftslösning är rätt, är
 resten också rätt. Med andra ord, har studenten väl identifierat vilken typ av
 problem det rör sig om brukar det inte vara några svårigheter att lösa
 uppgiften.
 
 Med hjälp av insikterna från Fäldt drogs två slutsatser. Den första slutsatsen
-var att matematisk analys var ett område värt att behandla i detalj. Den andra
-slutsatsen var att genom att ge struktur till olika typer av problem skulle det
-förhoppningsvis kunna underlätta för studenter att lära sig identifiera vilken
+var att matematisk analys var ett område värt att behandla i detalj. Den andra var att genom att ge struktur till olika typer av problem kan det
+förhoppningsvis underlätta för studenter att lära sig identifiera vilken
 typ av uppgift de handskas med.
 
 \subsubsection*{Studerande av kursbok och kursmaterial}
@@ -107,7 +104,7 @@ typ av uppgift de handskas med.
 Efter kontakten med Fäldt kunde ett sökande efter konkreta områden genomföras.
 Detta gjordes genom att studera kursboken och kursmaterialet tillhörande Fysik
 för ingenjörer. Innehållet som hittades delades upp i avgränsade områden för att
-de skulle bli lämpade till varsitt domänspecifikt språk. Av speciellt intresse
+de skulle bli lämpade för varsitt domänspecifikt språk. Av speciellt intresse
 var de kapitel som behandlade mekanik (i enlighet med projektets mål att börja
 med klassisk mekanik), matematisk analys samt de kapitel som använde sig av en
 specifik syntax. Domänspecifik syntax var av intresse att finna
@@ -121,7 +118,7 @@ områden, till exempel vektorer, fungerade bra att göra ett domänspecifikt spr
 av. Andra områden, till exempel lutande plan, var mindre lämpliga. Förenklat
 sagt var enbart områden med tydliga data och operationer lämpade. Detta
 diskuteras utförligare i avsnitt~\ref{sec:lampligt}. Det framgick också att det
-blev överlapp mellan olika domänspecifika språk trots att områdena var fristående.
+blev ett överlapp mellan olika domänspecifika språk trots att områdena var fristående.
 Ett exempel var det domänspecifika språk för partikelmekanik som till stor del
 liknade de domänspecifika språken för matematisk analys och vektorer.
 
@@ -134,15 +131,15 @@ på konkreta fysikaliska problem.
 \subsubsection*{Områden som valdes ut}
 
 När kunskap inhämtats om olika områden kunde ett urval göras. De områden som
-identifierades som grundläggande och hade en väl lämpad struktur (se
+identifierades som grundläggande och som hade en väl lämpad struktur (se
 avsnitt~\ref{sec:lampligt}) valdes ut. Med detta som grund blev områdena som valdes ut fysikaliska dimensioner, matematisk analys och vektorer. Här följer en kortfattad motivering av valet av dem.
 
-\textit{Dimensioner} eftersom det är viktigt för studenter att förstå sig på
+\textit{Dimensioner} eftersom det är viktigt för studenter att förstå
 hur dimensioner påverkas av algebraiska operationer. Det kan också vara
-hjälpsamt att kunna utföra automatisk, datorassisterad dimensionsanalys på
+hjälpsamt att utföra automatisk, datorassisterad dimensionsanalys på
 beräkningar.
 
-\textit{Matematisk analys} eftersom alla koncept i klassisk mekanik är
+\textit{Matematisk analys} eftersom alla koncept inom klassisk mekanik är
 relaterade genom matematisk analys. Mer specifikt används
 differenser\footnote{Till exempel används $\Delta(x)$ för att beskriva
 förflyttning i $x$-led} för att beskriva medelrörelse, och infinitesimaler
@@ -159,25 +156,25 @@ De komposita områdena identifierades som områden som byggde vidare på de reda
 implementerade grundläggande områdena. De komposita områdena som valdes ut
 blev exempelproblem och partikelmekanik. Här följer en kortfattad motivering av valet av dem.
 
-\textit{Exempelproblem} för att visa hur ett par typuppgifter i klassisk mekanik kan modelleras i läromaterialets domänspecifika språk. Närmare bestämt tillämpas de domänspecifika språken på \textit{krafter på lådor} och \textit{gungbräda}.
+\textit{Exempelproblem} för att visa hur ett par typuppgifter i klassisk mekanik kan modelleras i något av läromaterialets domänspecifika språk. Närmare bestämt tillämpas de domänspecifika språken på \textit{krafter på lådor} och \textit{gungbräda}.
 
-\textit{Partikelmekanik} för att visa hur de grundläggande områdena kan kombineras till ett domänspecifikt språk som är mer fysik-orienterat än de tre grundläggande.
+\textit{Partikelmekanik} för att visa hur de grundläggande områdena kan kombineras till ett domänspecifikt språk som är mer fysik-orienterat än de tre grundläggande. Dessutom är partikelmekanik fundamental i klassisk mekanik.
 
 \subsection{Implementation av domänspecifika språk för områdena}
 
 Implementationen av domänspecifika språk var en iterativ process. 
 Den inleddes med att
-bygga vidare på den experimentering som gjorts under urvalsfasen Det finns inte bara
+bygga vidare på den experimentering som gjorts under urvalsfasen. Det finns inte bara
 ett rätt sätt att skriva ett domänspecifikt språk på, därav gjordes försök med
 flera olika varianter för att se vad som fungerade bäst.  I flera fall har implementationer gjorts om från grunden om
-det visat sig först en bit in att implementationen kunde gjorts bättre eller
+det visat sig att implementationen kunde gjorts bättre eller
 hade brister. Dessutom gjordes, i varierande mån, fördjupande litteraturstudier av domänspecifika
-språk, fysik och Haskell för att kunna implementera på bästa sätt.
+språk, fysik och Haskell för att kunna implementera de domänspecifika språken på bästa sätt.
 
-Vad som ansågs vara en bra, eller åtminstone tillräckligt bra, implementation
-var i huvudsak baserat på gruppmedlemmarnas intuition om Haskell och diskussion
+Vad som ansågs vara en bra, eller åtminstone tillräckligt bra implementation
+var i huvudsak baserat på gruppmedlemmarnas erfarenhet av Haskell och diskussion
 inom gruppen och med handledaren. Det viktigaste var att de skulle vara
-lättförståeliga Den programtekniskt elegantaste implementationen användes därför
+lättförståeliga. Den programtekniskt elegantaste implementationen användes därför
 inte alltid, utan den längre versionen föredrogs för att göra
 läromaterialet så lättläst som möjligt. Dock avstods det inte från användning av
 mer avancerade funktioner i Haskell när de var motiverade av materialet som
@@ -185,18 +182,18 @@ beskrevs, men då alltid med en uttömmande förklaring av hur det fungerade och
 utan krav på tidigare kunskap hos läsaren.
 
 Efter att ett domänspecifikt språk implementerats skrevs tester till det. Det
-som var intressant att testa var olika lagar som skulle gälla. Eftersom de
+som var intressant att testa var olika lagar som skulle gälla, och  eftersom de
 domänspecifika språken i läromaterialet modellerade matematik var det matematiska lagar
 som skulle gälla. Ett exempel var att vektoraddition skulle vara kommutativ.
-Testerna gjordes med hjälp av \textit{QuickCheck}~\cite{QC}. QuickCheck är ett
+Testerna gjordes med hjälp av \textit{QuickCheck}~\cite{QC} vilket är ett
 testningsverktyg i Haskell som genererar många och slumpmässiga testfall. Att
 lagarna gällde för de domänspecifika språken verifierades med andra ord genom
-testa för många exempelvärden. Inga bevis av att lagarna gällde gjordes.
+testa för många exempelvärden. Inga bevis, utan enbart tester, gjordes för att kontrollera att lagarna gällde.
 
 \subsubsection*{Implementation av grundläggande områden}
 \label{sec:grund_impl}
 
-För att konkret visa hur en implementationen av ett grundläggande område ser ut
+För att konkret visa hur en implementation av ett grundläggande område ser ut
 och motiveringen bakom den visas här ett exempel. Exemplet kommer från
 läromaterialet och implementerar fysikaliska dimensioner i Haskell.
 
@@ -222,7 +219,7 @@ En första ansats till en implementation skulle därför kunna se ut som
 \end{lstlisting}
 
 där \texttt{BD} syntaktiskt representerar de sju basdimensionerna.
-Sammansatta dimensioner kan representeras med följande datatyp
+Sammansatta dimensioner kan representeras med ett syntaxträd med följande datatyp
 
 \begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
 data Dim = BaseDim BD   -- `Löv med grundläggande dimension'
@@ -284,7 +281,7 @@ data Dim = Dim Int    -- Exponent till `längd'
 \end{lstlisting}
 
 Datatypen har sju fält som vardera anger vilken exponent respektive
-basdimension ska ha. Värdet för hastighet är
+basdimension har. Hastighet representerat av datatypen är
 
 \begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
 hastighet = Dim 1 0 -1 0 0 0 0
@@ -331,7 +328,7 @@ där de grundläggande områdena vektorer och matematisk analys
 kombinerades. Anledningen till detta var att partiklars position, hastighet och
 acceleration modelleras med vektorer, dessutom är de krafter som påverkar
 partiklar även de modellerade som vektorer. Sedan används matematisk analys för att
-göra dessa beräkningar. Därför var det naturligt att modellera partikelmekanik
+göra beräkningar på dem. Därför var det naturligt att modellera partikelmekanik
 med hjälp av vektorer vars komponenter var uttryck som
 implementerades av matematisk analys.
 
@@ -355,7 +352,7 @@ lärotexten. Till en början skrevs lärotext som fokuserade på att förklara
 programkoden. Detta var ett naturligt val eftersom det var viktigt att
 programkoden gick att förstå innan kopplingar till matematik och fysik kunde
 förklaras. Det var nämligen lärotext av det slaget som skrevs senare.
-Avslutningsvis skrevs inledning och avslutning till kapitlet.
+Avslutningsvis skrevs en inledning och avslutning till kapitlet.
 
 Generellt under skrivningen togs det hänsyn till en specifik underaspekt i ARCS-modellen, nämligen \textit{humor}. Språket i lärotexten har varit lättsamt, vardagligt och talspråkligt för att hålla kvar uppmärksamheten hos läsaren. Det har även ritats roliga bilder för att ge ytterligare humoristiska drag.
 
@@ -381,8 +378,8 @@ de grundläggande områdena fokuserade lärotexten mer på Haskell eftersom det 
 ett helt nytt domänspecifikt språk som skulle konstrueras. Hur det fungerade var
 därför viktigt att förklara. I kontrast står lärotexten för de komposita
 områdena, där ett större fokus låg på fysik. För dessa områden visades hur de
-domänspecifika språken var praktiskt användbara och då förklarades fysik, för
-att sedan kunna visa hur den fysiken kunde representeras i de domänspecifika
+domänspecifika språken var praktiskt användbara och då förklarades fysiken, för
+att sedan visa hur den fysiken kunde representeras i de domänspecifika
 språken.
 
 Ett exempel på ovanstående är kapitlet kring det komposita området partikelmekanik. Dess implementation var en sammanslagning av området vektorer och
@@ -398,30 +395,30 @@ Haskell-kod med hjälp av de grundläggande områdena. Beskrivning av relationen
   \label{fig:komposit-ex}
 \end{figure}
 
-Implementation kan kompileras och testas och ska då visa på att
+Implementationen kan kompileras och testas och ska då visa på att
 implementationerna av de grundläggande områdena är både rigorösa och korrekta.
 Dessutom visar det att det går att använda det material som presenteras tidigare
 till  att implementera och lösa mer komplexa problem.
 
 \section{Skapande av och publicering på hemsidan}
 
-Läromaterialet kompilerades med hjälp av ett bygg-skript och
+Läromaterialet kompilerades med hjälp av ett skript och
 publicerades på en internethemsida. Bygg-skriptet anropar
-Pandoc för att konvertera från källkod och text i Literate
-Haskell-formatet till HTML, redo att visas på en hemsida. Pandoc
+Pandoc för att konvertera från källkod i Literate
+Haskell-format till HTML, redo att visas på en hemsida. Pandoc
 paketerar även med \textit{MathJax} som använder JavaScript för att
 rendera matematiska formler i LaTeX-format på fint och läsbart
 vis. Utan stöd för JavaScript skrivs matematik ut som omodifierad
 LaTeX-kod, vilket är mer svårläst, men fortfarande tolkningsbart. Det
-skrevs även CSS-kod manuellt för att modifiera utseendet av
+skrevs även CSS-kod för att modifiera utseendet av
 hemsidan så att den skulle bli prydligare och mer lättläst.
 
 Varje källfil betraktades som ett kapitel och publicerades som en
-separat undersida. Med hjälp av ett index beskrivet i bygg-skriptet
+separat undersida. Med hjälp av ett index beskrivet i skriptet
 konstruerades navigationselement mellan kapitel på varje undersida
 och en innehållsförteckning.
 
-För publicering lades all data producerad av bygg-skriptet i en ny git-gren (engelska \textit{git branch}) med namnet \texttt{gh-pages}. Att alla grenar synkroniseras
+För publicering lades all data producerad av skriptet i en ny git-gren (engelska \textit{git branch}) med namnet \texttt{gh-pages}. Att alla grenar synkroniseras
 mot GitHub medför att alla filer på \texttt{gh-pages} grenen
 visas som en hemsida med hjälp av \textit{GitHub
   Pages}. Publiceringen skedde inte kontinuerligt eller automatiskt,
@@ -446,8 +443,8 @@ hemsidan.
 
 För att utvärdera läromaterialet gjordes en kort och informell utvärdering med
 en testgrupp. Testgruppen bestod av tre andra studenter på Chalmers som gick
-tredje året på Datateknik eller Informationsteknik. De hade alla läst Fysik för
-ingenjörer eller motsvarande sedan innan och de hade läst en kurs i Haskell.
+tredje året på Datateknik och Informationsteknik. De hade alla läst Fysik för
+ingenjörer eller motsvarande sedan innan och de hade också läst en kurs i Haskell.
 Däremot hade de inte läst DSLsofMath eller motsvarande. Domänspecifika språk var
 med andra ord nytt för dem.
 
@@ -457,11 +454,10 @@ reaktioner och svar på frågor noterades.
 
 \section{Möten med fysikläraren}
 
-För att få återkoppling på läromaterialet hölls två möten med Åke Fäldt,
-föreläsare och examinator för Fysik för ingenjörer. Ett möte hölls relativt
+För att få återkoppling på läromaterialet hölls två möten med Åke Fäldt. Ett möte hölls relativt
 tidigt i projektet, 2018-03-02, och ett andra relativt sent, 2018-04-11.
 Under mötena presenterades läromaterialet i sig och tanken med det, nämligen att
-presentera fysik på ur ett annat perspektiv, ett funktionellt
+presentera fysik ur ett annat perspektiv, ett
 programmeringsperspektiv. Det diskuterades också svåra områden i Fysik för
 ingenjörer (se avsnitt \ref{sec:kontakt_faldt}), vad läromaterialet skulle kunna bidra med för kunskaper till
-studenter samt dess eventuella roll i relation till fysikkursen i övrigt.
+studenter samt dess eventuella roll i relation till fysikkursen.

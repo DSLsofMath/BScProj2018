@@ -96,7 +96,6 @@ $ enh_vekt (V2 0 0)
 Jag skulle anta att enh_vekt bara gäller då (magnitude v) =/= 0.
 
 
--- Fixed nollvektorn.
 
 
 *Main> fru fg (pi/4) 0
@@ -154,14 +153,36 @@ fru'
 (7.500000000000001 x, -4.330127018922193 y
 
 
-
-wtf händer? Hur kan fr ha samma x-vektor för två olika vinklar inom samma kvadrant?
-
 fn
 
 *Main> fn fg (pi/3)
 (-4.330127018922194 x, -2.500000000000001 y)
 *Main> fn fg (pi/6)
 (-4.330127018922193 x, -7.500000000000001 y)
+
+-------------------------------- SVT ------------------------------------
+
+Hur mycket bromsar friktionen?
+Med F = m N
+
+2.
+F = ma
+
+3.
+x = v0 * t + a * t^2 / 2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

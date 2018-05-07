@@ -135,7 +135,7 @@ på konkreta fysikaliska problem.
 
 När kunskap inhämtats om olika områden kunde ett urval göras. De områden som
 identifierades som grundläggande och hade en väl lämpad struktur (se
-avsnitt~\ref{sec:lampligt}) valdes ut. Med detta som grund blev områdena som valdes ut dimensioner, matematisk analys och vektorer. Här följer en kortfattad motivering av valet av dem.
+avsnitt~\ref{sec:lampligt}) valdes ut. Med detta som grund blev områdena som valdes ut fysikaliska dimensioner, matematisk analys och vektorer. Här följer en kortfattad motivering av valet av dem.
 
 \textit{Dimensioner} eftersom det är viktigt för studenter att förstå sig på
 hur dimensioner påverkas av algebraiska operationer. Det kan också vara
@@ -156,7 +156,7 @@ planet eller rummet, och dessa är alla fundamentala element inom klassisk
 mekanik.
 
 De komposita områdena identifierades som områden som byggde vidare på de redan
-implementerade grundläggande områdena. Det komposita områdena som valdes ut
+implementerade grundläggande områdena. De komposita områdena som valdes ut
 blev exempelproblem och partikelmekanik. Här följer en kortfattad motivering av valet av dem.
 
 \textit{Exempelproblem} för att visa hur ett par typuppgifter i klassisk mekanik kan modelleras i läromaterialets domänspecifika språk. Närmare bestämt tillämpas de domänspecifika språken på \textit{krafter på lådor} och \textit{gungbräda}.
@@ -265,7 +265,7 @@ kunna förenklas till
 BaseDim Le
 \end{lstlisting}
 
-Även om en sådan förenklare går att göra valdes en annan lösning till
+Även om en sådan förenklare går att göra valdes en annan lösning i
 läromaterialet. Nyckeln ligger i att betrakta dimensioner som en multiplikation
 av basdimensioner med exponenter. Ta till exempel hastighet
 \begin{align*}
@@ -330,7 +330,7 @@ Ett exempel på ett komposit område är implementationen av partikelmekanik
 där de grundläggande områdena vektorer och matematisk analys
 kombinerades. Anledningen till detta var att partiklars position, hastighet och
 acceleration modelleras med vektorer, dessutom är de krafter som påverkar
-partiklar även modellerade som vektorer. Sedan används matematisk analys för att
+partiklar även de modellerade som vektorer. Sedan används matematisk analys för att
 göra dessa beräkningar. Därför var det naturligt att modellera partikelmekanik
 med hjälp av vektorer vars komponenter var uttryck som
 implementerades av matematisk analys.
@@ -379,7 +379,7 @@ Skrivandet av lärotexten till de grundläggande och komposita områden var
 övergripande likadana. Skillnaden låg i balansen mellan Haskell och fysik. För
 de grundläggande områdena fokuserade lärotexten mer på Haskell eftersom det var
 ett helt nytt domänspecifikt språk som skulle konstrueras. Hur det fungerade var
-därför viktigt att förklara. I kontrast står lärotexten för det komposita
+därför viktigt att förklara. I kontrast står lärotexten för de komposita
 områdena, där ett större fokus låg på fysik. För dessa områden visades hur de
 domänspecifika språken var praktiskt användbara och då förklarades fysik, för
 att sedan kunna visa hur den fysiken kunde representeras i de domänspecifika
@@ -389,7 +389,7 @@ Ett exempel på ovanstående är kapitlet kring det komposita området partikelm
 matematisk analys, där istället för att visa och förklara hur områdena kunde
 implementeras i Haskell visade hur det direkt gick att översätta de
 fysikaliska formlerna som beskriver partiklars rörelse och energier till
-Haskell-kod med hjälp av de grundläggande områdena. Beskrivning av relationen arbete-energi (engelska \textit{Work-Energy theorem}) gick då till som i figur \ref{fig:komposit-ex}:
+Haskell-kod med hjälp av de grundläggande områdena. Beskrivning av relationen arbete-energi (engelska \textit{Work-Energy theorem}) gick då till som i figur \ref{fig:komposit-ex}.
 
 \begin{figure}[tph]
   \centering
@@ -461,7 +461,7 @@ För att få återkoppling på läromaterialet hölls två möten med Åke Fäld
 föreläsare och examinator för Fysik för ingenjörer. Ett möte hölls relativt
 tidigt i projektet, 2018-03-02, och ett andra relativt sent, 2018-04-11.
 Under mötena presenterades läromaterialet i sig och tanken med det, nämligen att
-presentera fysik på ur ett annat perspektiv, ett funktionellt
+presentera fysik på ur ett annat perspektiv, ett
 programmeringsperspektiv. Det diskuterades också svåra områden i Fysik för
 ingenjörer (se avsnitt \ref{sec:kontakt_faldt}), vad läromaterialet skulle kunna bidra med för kunskaper till
 studenter samt dess eventuella roll i relation till fysikkursen i övrigt.

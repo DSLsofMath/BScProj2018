@@ -1,8 +1,8 @@
 
 \chapter{Teori}
 
-I detta kapitel beskrivs fyra områden av central betydelse för projektet. Dessa
-områden är domänspecifika språk, begreppen syntax, syntaxträd och semantik,
+I detta kapitel beskrivs fyra koncept av central betydelse för projektet. Dessa
+koncept är domänspecifika språk, begreppen syntax, syntaxträd och semantik,
 litterat programmering samt lärandeteorier.
 
 \section{Domänspecifika språk}
@@ -13,6 +13,12 @@ textformatering eller matlagning. Specifikt syftar det på att det är \textit{j
 detta} område man lägger fokus på. Med språk menas ett sätt att uttrycka
 saker inom domänen. Svenska och Java är två exempel på språk.
 
+Domänspecifika språk är vanligt förekommande i programmeringssammanhang. HTML är
+ett domänspecifikt språk för textformatering, SQL för databashantering och
+CSV för tabeller. Precis som domänspecifika språk i vardagen passar
+domänspecifika språk inom programmering bäst för sin egen domän. SQL är bra för
+att hantera en databas men inte för att skapa ett spel.
+
 Domänspecifika språk används inte bara i programmering utan förekommer även i
 andra mer vardagliga sammanhang. Inom domänen matlagning är steka, grilla och
 fritera användbara ord. Likaså inom domänen ridning är grimma, box och galopp
@@ -21,22 +27,18 @@ och det är ett kort och väldefinierat sätt att uttrycka sig. Men detta språk
 i form av ord och begrepp) blir svårtolkat utanför domänen. Ett recept kan inte
 förklaras i termer av grimmor, boxar och galopper.
 
-Domänspecifika språk är vanligt förekommande i programmeringssammanhang. HTML är
-ett domänspecifikt språk för textformatering, SQL för databashantering och
-CSV för tabeller. Precis som domänspecifika språk i vardagen passar
-domänspecifika språk inom programmering bäst för sin egen domän. SQL är bra för
-databaser men inte att göra ett spel i.
-
-Motsatsen till ett domänspecifikt språk är ett generellt språk. I vardagen är
-naturliga språk som svenska och engelska generella medan ryttar-begreppen ovan
-är domänspecifika. Precis som i vardagen finns det i datavärlden generella
-programmeringsspråk, till exempel C++ och Java. Dessa är turingkompletta, vilket betyder
-att det går att uttrycka alla beräkningsbara problem i dem och även lösa dem
-givet tillräckligt med tid och
-minnestillgångar~\cite{turing_ne}~\cite{turing_book}. Begränsningen med dessa
-generella språk är att de är just generella. Eftersom de har stöd för
-alla typer av beräkningar blir både läsbarheten och användarvänligheten
-lidande.
+Motsatsen till ett domänspecifikt språk är ett generellt språk. I
+vardagen är naturliga språk som svenska och engelska generella medan
+ryttar-begreppen ovan är domänspecifika. Precis som i vardagen finns
+det i datavärlden generella programmeringsspråk, till exempel C++ och
+Java. Dessa är turingkompletta, vilket betyder att det går att
+uttrycka alla beräkningsbara problem i dem och även lösa dem givet
+tillräckligt med tid och
+minnestillgångar~\cite{turing_ne}~\cite{turing_book}. Nackdelen med
+dessa generella språk är just att de är så generella. Eftersom
+domänspecifika språk inte behöver vara användbära utanför den
+specifika domänen kan de inkludera speciell syntax och ha inbyggd
+funktionalitet som inte hade passat i ett generellt språk.
 
 Ett domänspecifikt språk kan antingen implementeras som ett fristående språk
 eller bäddas in i ett redan existerande språk. De domänspecifika språk som
@@ -53,16 +55,20 @@ För vidare läsning om domänspecifika språk rekommenderas \textit{DSL for the
 \section{Syntax, syntaxträd och semantik}\label{sec:syntax}
 
 I samband med domänspecifika språk dyker begreppen \textit{syntax} och
-\textit{semantik} upp. Syntax är grammatiken för ett språk medan semantiken är
-betydelsen av en konstruktion, en mening, i språket. Inom
-aritmetik\footnote{Aritmetik är den gren inom matematiken som behandlar
-räkning av tal.} är tal och operationer syntax medan värdet av uttrycket är semantiken.
-Till exempel är $((3 + 2) * 10)^4$ syntax medan $6.250.000$ är semantiken,
+\textit{semantik} upp. Syntax är reglerna för hur man sammanslår
+enheter, som ord, i språket till komplexa strukturer, som meningar och
+satser. Semantik är betydelsen av sådana komplexa strukturer i ett språk.
+Inom aritmetik\footnote{Aritmetik är
+  den gren inom matematiken som behandlar räkning av tal.} är tal och
+operationer syntax medan värdet av uttrycket är semantiken.  Till
+exempel har det syntaktiska uttrycket $((3 + 2) * 10)^4$ det semantiska värdet $6.250.000$,
 eftersom det är det som det syntaktiska uttrycket \textit{betyder}.
-Domänspecifika språk har med syntax att göra eftersom många domänspecifika språk
-används för att modellera just syntax.
+Domänspecifika språk har med syntax att göra eftersom många
+domänspecifika språk används för att modellera just syntax.
 
-En form av domänspecifika språk är syntaxträd, vilka har haft en stor betydelse i detta projekt. Ett syntaxträd är en trädrepresentation av en syntax.
+I domänspecifika språk som modellerar syntax, så kallade \textit{deep
+embeddings}, kan syntaxen representeras av trädstrukturer. Dessa
+strukturer kallas *syntaxträd*, och har haft stor betydelse i detta projekt.
 För att illustrera begreppet visas här ett domänspecifikt språk som består av ett
 syntaxträd som modellerar aritmetiska uttryck, implementerat i Haskell.
 Datatypen för syntaxträdet visas i figur~\ref{fig:syntax_exempel}.
@@ -84,7 +90,11 @@ summan respektive produkten av två andra uttryck. Löven representeras av
 \texttt{Const}. Det är en konstant som man ej kan bygga vidare på.
 
 Med datakonstruktorerna kan man konstruera uttryck representerade av syntaxträd. Ett exempeluttryck
-från den tidigare datatypen visas i figur~\ref{fig:syntax_exempel_varde}.
+från den tidigare datatypen visas i figur~\ref{fig:syntax_exempel_varde}, som visar hur det aritmetiska uttrycket $7 * (3
++ 10)$ modelleras. Konstruktorn \texttt{:*:} får som sina två argument uttrycken
+\texttt{Const 7} och \texttt{Const 3 :+: Const 10}. Det är alltså en produkt av
+två deluttryck. Syntaxträd brukar illusteras med träddiagram. Detta
+exempeluttryck illustreras i figur \ref{fig:syntax_exempel_bild}.
 
 \begin{figure}[tph]
   \begin{lstlisting}
@@ -93,12 +103,6 @@ expr = Const 7 :*: (Const 3 :+: Const 10)
   \caption{Ett exempeluttryck ur det tidigare syntaxträdet. Detta modellerar det
            matematiska uttrycket $7 * (3 + 10)$}\label{fig:syntax_exempel_varde}
 \end{figure}
-
-Figur~\ref{fig:syntax_exempel_varde} visar hur det aritmetiska uttrycket $7 * (3
-+ 10)$ modelleras. Konstruktorn \texttt{:*:} får som sina två argument uttrycken
-\texttt{Const 7} och \texttt{Const 3 :+: Const 10}. Det är alltså en produkt av
-två deluttryck. Syntaxträd brukar illusteras med träddiagram. Detta
-exempeluttryck illustreras i figur \ref{fig:syntax_exempel_bild}.
 
 \begin{figure}[tph]
   \centering
@@ -109,9 +113,9 @@ exempeluttryck illustreras i figur \ref{fig:syntax_exempel_bild}.
 
 Precis som semantik har en roll i samband med syntax, har semantik även en roll
 i samband med syntaxträd. I detta exempel är semantiken det värde som
-syntaxträdet betyder. Detta värde kan beräknas utifrån syntaxträdet. Det görs
-genom en \textit{beräkningsfunktion}. För exemplets syntaxträd kan
-beräkningsfunktionen se ut som i figur \ref{fig:eval_tree}
+syntaxträdet har. Detta värde kan beräknas utifrån syntaxträdet genom
+en \textit{evaluator}, också kallad \textit{beräkningsfunktion}. För exemplets
+syntaxträd kan beräkningsfunktionen se ut som i figur \ref{fig:eval_tree}
 
 \begin{figure}[tph]
   \begin{lstlisting}
@@ -123,22 +127,22 @@ evaluate (Const v)   = v
   \caption{En beräkningsfunktion för syntaxträdet.}\label{fig:eval_tree}
 \end{figure}
 
-Det finns tre saker som är speciellt värda att notera i
+Det finns tre speciella saker att observera i
 figur~\ref{fig:eval_tree}. Den första är att eftersom syntaxen innehåller tre olika
-typer av element, här motsvarat av de tre datakonstruktorerna, krävs tre fall i
+slag av element, här motsvarat av de tre datakonstruktorerna, krävs tre fall i
 beräkningsfunktionen som beräknar vardera av dem. \texttt{evaluate} har
 därför ett fall för \texttt{:+:}, ett för \texttt{:*:} och ett för
 \texttt{Const}. 
 
-Den andra saken att notera ur figur~\ref{fig:eval_tree} är hur ett fall
+Den andra saken att notera i figuren är hur ett fall
 beräknas. Hur beräkningen ska se ut får man genom att ta hänsyn till
-semantiken hos det syntaktiska elementet. \texttt{e1 :+: e2} är syntax för
+semantiken hos det syntaktiska uttrycket. \texttt{e1 :+: e2} är syntax för
 addition av de två uttrycken \texttt{e1} och \texttt{e2}. Därför blir
 semantiken, värdet, av \texttt{e1 :+: e2} lika med värdet hos \texttt{e1} och
 \texttt{e2} adderade. Ett liknande resonemang ger svaret på hur beräkningen av
 de två resterande fallen ska se ut.
 
-Den tredje saken i figur~\ref{fig:eval_tree} värd att poängtera är dess
+Den tredje saken värd att poängtera är beräkningsfunktionens
 typsignatur, \texttt{Expr -> Double}. Den gör nämligen att man kan tolka
 \texttt{evaluate}, och beräkningsfunktioner i allmänhet, som en översättning
 från syntax (här \texttt{Expr}) till semantik (här \texttt{Double}).
@@ -146,9 +150,9 @@ från syntax (här \texttt{Expr}) till semantik (här \texttt{Double}).
 \section{Litterat programmering och Literate Haskell}\label{sec:lhs}
 
 \textit{Litterat programmering} (engelska \textit{literate programming}) är ett
-alternativt sätt att programmera som introducerats av Donald Knuth~\cite{knuth}.
-Istället för att skriva ett program för en dator, skriver man ett program som
-kan läsas både av människor och datorer. Det visar sig bland annat på följande sätt.
+alternativt sätt att programmera som introducerades av Donald Knuth~\cite{knuth}.
+Istället för att skriva ett program främst för datorer att exekvera, så skriver man
+programmet främst för människor att läsa.
 
 Jämfört med traditionella program får dokumentationen en
 ökad betydelse. I traditionella program är programkoden den viktiga delen. I
@@ -173,8 +177,8 @@ then a value of that type is created
 
 Note that the Quantity data type has both value-level and type-level dimensions. As previosuly mentioned, value-level in order to pretty print and type-level to only permit legal operations.
 \end{lstlisting}
-  \caption{Ett exempel på hur en källfil till litterat programmering kan se ut, tagen direkt från det resulterande läromaterialet.
-           Exemplet är Literate Haskell. Rader som börjar med \texttt{>}
+  \caption{Ett exempel på hur en källfil till litterat programmering kan se ut, tagen direkt från källkoden till läromaterialet.
+           I exemplet är koden skriven i Literate Haskell. Rader som börjar med \texttt{>}
            markerar att det är programkod, medan rader utan markerar att det är
            dokumentation.}\label{fig:litterate_haskell_exempel} 
 \end{figure}
@@ -194,7 +198,7 @@ med skillnaden att programkod och text vävs ihop i en och samma fil. Det kan
 se ut som i figur~\ref{fig:litterate_haskell_exempel}. Filen, med tillägget
 \texttt{.lhs}, går att använda direkt med Haskell-kompilatorn GHC. All text
 ignoreras och programkoden behandlas som om den var en vanlig
-Haskell-fil. \texttt{.lhs}-filen kan också kompileras till en läsbar typsatt rapport eller hemsida.
+Haskell-fil. Filen kan också kompileras till en läsbar typsatt rapport eller hemsida.
 Det finns flera verktyg som gör det men det som används i detta
 projekt är \textit{Pandoc}~\cite{pandoc}. Med Pandoc kan texten märkas
 upp med både \textit{Markdown} (används i projektet) och \LaTeX. Det går
@@ -203,14 +207,14 @@ att exportera till bland annat HTML (som i läromaterialet) och PDF (som i den h
 
 \section{Att skapa motiverande läromaterial}\label{sec:arcs}
 
-Motivation är en persons vilja att göra något. I undervisningssammanhang vill
+Motivation är en persons vilja att göra något och i undervisningssammanhang vill
 man att studenten ska lära sig materialet. Studenten behöver alltså vara
-motiverad, att vilja, lära sig. Motivation kan ha flera källor. Till exempel att
+motiverad, ha vilja att, lära sig. Motivation kan ha flera källor, till exempel att
 studenten tycker materialet är intressant eller att det finns belöningar i form
 av tillfredsställelsen att få att högt betyg. 
 
 \textit{Motiverande design} innebär att systematiskt utforma undervisningen på
-ett sådant sätt att studenten blir motiverad till att vilja lära sig. Det handlar om
+ett sådant sätt att studenten blir motiverad till att lära sig. Det handlar om
 att använda olika tekniker för att väcka och behålla motivation. Det finns ett
 flertal olika modeller för detta men i detta projekt används enbart den så
 kallade \textit{ARCS-modellen}~\cite{arcs_book}.
@@ -220,11 +224,11 @@ Satisfaction'', på svenska ``uppmärksamhet, relevans, självförtroende och
 tillfredsställelse''. Precis som namnet antyder innehåller modellen fyra delar
 som vardera behandlar en aspekt av motivation. \textit{Attention} handlar om att
 fånga uppmärksamhet och väcka nyfikenhet. \textit{Relevance} handlar om att
-tillgodose studentens behov så att materialet upplevs som relevant för hen.
-\textit{Confidence} handlar om att övertyga studenten att hen kommer kunna
+tillgodose studentens behov så att materialet upplevs som relevant.
+\textit{Confidence} handlar om att övertyga studenten att hen kan
 lyckas lära sig materialet. \textit{Satisfaction} handlar om att ge studenten
 tillfredsställelse efter att ha lärt sig något så att hen vill fortsätta lära
-sig. Det finns strategier för hur man genomför de olika delarna i praktiken och
+sig. Det finns olika strategier för hur man genomför de olika delarna i praktiken och
 här följer en översikt för \textit{Attention}.\footnote{Eftersom projektet har
 ett begränsat fokus på de pedagogiska aspekterna, se
 avsnitt~\ref{sec:avgransningar}, har enbart \textit{Attention}  tagits hänsyn till. Av detta skäl är det enbart denna
@@ -244,16 +248,21 @@ Utifrån det sociokulturella perspektivet som Vygotskij utvecklade~\cite{LSB_und
 lär sig elever av varandra. Eleverna befinner sig vid sin närmsta 
 utvecklingszon, där eleverna kan hjälpa varandra att förstå innebörden av
 definitioner och uttryck genom att sätta ord på det de vill kommunicera. Denna
-typen av kommunikation skulle kunna tänkas hjälpa elever sätta fingret på det de
-inte förstår. Med denna bakgrunden skulle parprogrammering kunna vara
+typ av kommunikation kan hjälpa elever sätta fingret på vad de
+inte förstår. Med denna bakgrund kan parprogrammering vara
 fördelaktigt. Dels för att eleverna kan lära sig av varandra, att de genom att
 kommunicera sin förståelse internaliserar ämnet och bygger en djupare
-förståelse. Parprogrammering lämpar sig antagligen även för att begränsa
+förståelse. Parprogrammering kan även lämpa sig för att begränsa
 flyktförsök, där elever medvetet eller mindre medvetet börjar göra något annat.
 
 %Jean Piaget - Kognitivismen (lära sig A, B, A + B -> C, alternativt att eleven utmanas med något den trodde var sant, och tvingas omformulera en lösning som stödjer den presenterade situationen). s157
 
-Två andra aspekter på lärande är interaktion och snabba belöningar. Då internetplattformars interaktion med eleven är begränsad i jämförelse med då eleven är i skolan och har tillgång till lärare, så brukar internetbaserade läroplattformar förlita sig på behavioristiska element (former av respons) i form av rätt eller fel svar~\cite{LSB_und}. Evolutionärt sett har snabba belöningar varit fördelaktigt framför långsiktiga som kräver långsiktigt engagemang (exempelvis öva inför en tenta) vilket beskrivs i boken \textit{Dansa på deadline: Uppskjutandets psykologi}~\cite{DPD}. Sporadiska belöningar är något som enligt författarna påverkar oss människor extra mycket, och som de menar även används inom exempelvis spelbranchen.
-
-
-
+Två andra aspekter på lärande är interaktion och snabba
+belöningar. Eftersom internetplattformars interaktion med eleven är
+begränsad i jämförelse med då eleven är i skolan och har tillgång till
+lärare, så brukar internetbaserade läroplattformar förlita sig på
+behavioristiska element (former av respons) i form av rätt eller fel
+svar~\cite{LSB_und}. Evolutionärt sett har snabba belöningar varit
+fördelaktigt framför långsiktiga som kräver långsiktigt engagemang
+(exempelvis öva inför en tenta) vilket beskrivs i boken \textit{Dansa
+  på deadline: Uppskjutandets psykologi}~\cite{DPD}.

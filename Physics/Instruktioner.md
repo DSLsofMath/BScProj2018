@@ -13,7 +13,7 @@
 
 # Pandoc
 
-Komilera med ` pandoc FILNAMN.lhs -f markdown+lhs -t html -o FILNAMN.html -s --mathjax`.
+Komilera med `pandoc FILNAMN.lhs -f markdown+lhs -t html -o FILNAMN.html -s --mathjax`.
 
 # Python
 

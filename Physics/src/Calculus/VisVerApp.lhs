@@ -4,7 +4,7 @@
 > 
 > import Hatlab.Plot
 
-Visualization with Hatlab
+Plotting with Hatlab
 --------------------------------------------------------------------
 
 The brain likes seeing things. Let's give it a good looking reward!
@@ -18,7 +18,7 @@ First, we create some function expressions ready to be `show`n and
 
 > f  = Const 3 :* Id:^Const 2
 > f' = simplify (derive f)
-> _F = simplify (integrate f 0)
+> _F = simplify (integrate f)
 
 Then, we define a helper function to plot a list of function
 expressions with Hatlab.
@@ -29,6 +29,8 @@ expressions with Hatlab.
 Now try it for yourself! Let's see the fruits of our labour!
 
 < ghci> plotFunExprs [f, f', _F]
+
+![](plotf.png){.center-img}
 
 For fun, we can also plot the same functions but using our
 approximative functions for differentiation and integration
@@ -41,29 +43,17 @@ Then plot with
 
 < ghci> plot [Fun g "3x^2", Fun g' "D(3x^2)", Fun _G "I(3x^2)"]
 
+![](plotg.png){.center-img}
+
 Waddaya know! They look identical! I guess it just goes to
 show that a good approximation is often good enough.
 
+If we turn down the precision, we start to notice the errors
 
+> h x  = 3 * x^2
+> h' x = deriveApprox h 0.1 x
+> _H x = integrateApprox h 0.1 0 x
 
-TODO: Verification
----------------------------------------------------------------------
+< ghci> plot [Fun h "3x^2", Fun h' "D(3x^2)", Fun _H "I(3x^2)"]
 
-QuickCheck everything. Verify that simplified expressions evaluate to
-equivalent function as original
-
-
-
-
-TODO: Applying our DSL to solve physics problems!
-----------------------------------------------------------------------
-
-Mostly problems regarding position, velocity, acceleration, time.
-
-Average FOO vs. Instantaneous FOO -- Differences vs Derivatives.
-
-Integrating to get rid of /t:s.
-
-cool stuff here in general.
-
-Also, many pretty pictores
+![](ploth.png){.center-img}

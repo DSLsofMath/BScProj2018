@@ -207,6 +207,18 @@ function for taking the square of a vector and move on with our lives.
 > square :: VectorE -> FunExpr
 > square v = dotProd v v
 
+Pretty straightforward. So with this out of the way we can now define the
+function for calculating the kinetic energy of a particle, again this is almost
+the same as just writing down the mathmatical formula with the added benefit of
+types.
+
+> kineticEnergy :: Particle -> Energy
+> kineticEnergy p = Const 0.5 * m * v2
+>   where
+>     m  = mass p
+>     v  = velocity p
+>     v2 = square v
+
 Work and energy
 ---------------------
 
@@ -219,13 +231,6 @@ as the dot product of the force and the vector of displacement.
 \end{equation}
 
 where $\Delta \vec{r} = \vec{r_2} - \vec{r_1}$.
-
-< kineticEnergy :: Particle -> Energy
-< kineticEnergy p = Const 0.5 * m * v2
-<   where
-<     m  = mass p
-<     v  = velocity p
-<     v2 = square v
 
 The work-energy theorem states that for a particle of constant mass *m*, the
 total work *W* done on the particle as it moves from position $r_1$ to $r_2$ is

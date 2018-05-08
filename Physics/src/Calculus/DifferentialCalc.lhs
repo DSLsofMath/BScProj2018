@@ -26,7 +26,7 @@ average and instantaneous.
 Quotients of differences of functions of the same time describe the
 average rate of change over the time period. For example, an average
 velocity can be described as the difference quotient of difference in
-position divided by difference in time.
+position and difference in time.
 
 $$v_{avg} = \frac{p_2 - p_1}{t_2 - t_1}$$  where $p_n$ is the position
 at time $t_n$.
@@ -43,7 +43,7 @@ $$ \Delta x = x_2 - x_1 $$
 
 Ok, so it's a difference. But what does $x_2$ and $x_1$ mean, and what do they come from?
 $x_2$ and $x_1$ are not explicitly bound anywhere,
-but seems reasonable to assume that $x_i \in x$ or equivalently, that $x$
+but it seems reasonable to assume that $x_i \in \mathbb{R}$ or equivalently, that $x$
 is a function with a subscript index as an argument, that returns a $\mathbb{R}$.
 
 Further, the indices $1,2$ should not be thought of as specific constants,
@@ -73,7 +73,7 @@ calculus we mainly use differences to express two things, as mentioned
 previously. Average rate of change and instantaneous rate of change.
 
 Average rate of change is best described as the difference quotient of
-the difference in y-axis value over an interval of x, divided by the
+the difference in y-axis value over an interval of x, and the
 difference in x-axis value over the same interval.
 
 $$\frac{y(x_b) - y(x_a)}{x_b - x_a}$$.
@@ -138,7 +138,13 @@ which can be used as
 < ghci> carSpeedAtPointsInTime
 < [1.9999999999833333,1.5402980985023251,0.5838486169602084,1.0006797790330592e-2]
 
-We'd also like to model one of the versions of the delta operator, finite difference, in our syntax tree. As the semantic value of our calculus language is the unary real function, the difference used for averages doesn't really fit in well, as it's a binary function (two arguments: $t_2$ and $t_1$). Instead, we'll use the version of delta used for instantants, as it only takes a single point in time as an argument (assuming $h$ is already given).
+We'd also like to model one of the versions of the delta operator,
+finite difference, in our syntax tree. As the semantic value of our
+calculus language is the unary real function, the difference used for
+averages doesn't really fit in well, as it's a binary function (two
+arguments: $t_2$ and $t_1$). Instead, we'll use the version of delta
+used for instants, as it only takes a single point in time as an
+argument (assuming $h$ is already given).
 
 The constructor in our syntax tree is therefore
 
@@ -159,12 +165,12 @@ function.
 
 ...
 
-Wait, didn't we just look at instantaneous rates of changes (blarh my
-tounge is getting tired) in the previous section on differences? Well
-yes, and the difference quotient for a function at a point with a very
-small step $h$ is indeed a good way to numerically approximate the
-derivative of a function. From what we found then, we can derive a
-general expression for instantaneous rate of change
+Wait, didn't we just look at instantaneous rates of changes in the
+previous section on differences? Well yes, and the difference quotient
+for a function at a point with a very small step $h$ is indeed a good
+way to numerically approximate the derivative of a function. From what
+we found then, we can derive a general expression for instantaneous
+rate of change
 
 $$\frac{(\Delta f)(h, x)}{(\Delta id)(h, x)} = \frac{f(x + h) - f(x)}{h}$$
 
@@ -185,8 +191,8 @@ Introducing *infinitesimals*! From the wikipedia entry on *Leibniz's notation*
 ![](shrinking.png "Real smol boi"){.float-img-right}
 
 So there's a special syntax for differences where the step $h$ is
-infinitely small, and it's called Leibniz's notation. We interpret the
-above quote in mathematical terms:
+infinitely small, and it's called Leibniz's notation. We could naively
+interpret the above quote in mathematical terms as
 
 $$dx = lim_{\Delta x \to 0} \Delta x$$
 
@@ -195,14 +201,19 @@ such that
 $$\forall y(x). D(y) = \frac{dy}{dx} = \frac{lim_{\Delta y \to 0} \Delta y}
                                             {lim_{\Delta x \to 0} \Delta x}$$
 
-where $D$ is the function of differentiation.
+where $D$ is the function of differentiation. However, this doesn't
+quite make sense as $lim_{x \to 0} x = 0$ and we'd be dividing by
+0. The wording here is important: infinitesimals aren't $0$, but
+*infinitely* small! The result is that we can't define infinitesimals
+in terms of limits, but have to treat them as an orthogonal concept.
 
-This definition of derivatives is very appealing, as it suggests a
-very simple and intuitive transition from finite differences to
-infinitesimal differentials. Also, it suggests the possibility of
-manipulating the infinitesimals of the derivative algebraically, which
-might be very useful. However, this concept is generally considered
-too imprecise to be used as the foundation of calculus.
+Except for this minor road bump, this definition of derivatives is
+very appealing, as it suggests a very simple and intuitive transition
+from finite differences to infinitesimal differentials. Also, it
+suggests the possibility of manipulating the infinitesimals of the
+derivative algebraically, which might be very useful. However, this
+concept is generally considered too imprecise to be used as the
+foundation of calculus.
 
 A later section on the same wikipedia entry elaborates a bit:
 
@@ -216,17 +227,17 @@ A later section on the same wikipedia entry elaborates a bit:
  > notations.
 
 What is then the "right" way to do derivatives? As luck would have it,
-not much differently than Leibniz's suggested! The intuitive idea can
-be turned into a precise definition by defining the derivative to be
-the limit of difference quotients of real numbers. Again, from
-wikipedia - Leibniz's notation:
+not much differently than Leibniz's suggested and how we interpreted
+it above! The intuitive idea can be turned into a precise definition
+by defining the derivative to be the limit of difference quotients of
+real numbers. Again, from wikipedia - Leibniz's notation:
 
  > In its modern interpretation, the expression dy/dx should not be read
  > as the division of two quantities dx and dy (as Leibniz had envisioned
  > it); rather, the whole expression should be seen as a single symbol
  > that is shorthand for
  >
- > $$D(x) = lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x}$$
+ > $$D(y) = lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x}$$
 
 which, when $y$ is a function of $x$, and $x$ is the $id$ function for real numbers (which it is in the case of time), is:
 
@@ -238,7 +249,7 @@ D(y) &= lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x} \\
      &= a \mapsto lim_{h \to 0} \frac{y(a + h) - y(a)}{h}
 \end{align*}
 
-There, the definition of derivatives! Not to complicated, was it? We
+There, the definition of derivatives! Not too complicated, was it? We
 can write a simple numerically approximative according to the
 definition like
 
@@ -247,10 +258,11 @@ definition like
 Only when $h$ is infinitely small is `deriveApprox` fully
 accurate. However, as we can't really represent an infinitely small
 number in finite memory, the result will only be approximative, and
-the approximation will get better as $h$ gets smaller. For example,
-let's calculate the slope of $f(x)=x^2$ at $f(3)$. As the slope of
-this parabola is calculated as $k = 2x$, we expect the result of
-`deriveApprox` to approach $k = 2x = 2*3 = 6$ as $h$ gets smaller
+the approximation will (in most cases) get better as $h$ gets
+smaller. For example, let's calculate the slope of $f(x)=x^2$ at
+$x=3$. As the slope of this parabola is calculated as $k = 2x$, we
+expect the result of `deriveApprox` to approach $k = 2x = 2*3 = 6$ as
+$h$ gets smaller
 
 < ghci> deriveApprox (\x -> x^2) 5    3
 < 11
@@ -270,7 +282,7 @@ approximations!
 
 We define a function to symbolically derive a function
 expression. `derive` takes a function expression, and returns the
-derived function expression.
+differentiated function expression.
 
 > derive :: FunExpr -> FunExpr
 
@@ -281,15 +293,15 @@ For example, how do we derive `f :+ g`? Let's start by doing it
 mathematically.
 
 \begin{align*}
-D(f + g) &= a \mapsto lim_{h \to 0} \frac{(f + g)[a + h] - (f + g)[a]}{h} \\
-         & \text{ \{ Addition of functions \} } \\
-         &= a \mapsto lim_{h \to 0} \frac{f(a + h) + g(a + h) - (f(a) + g(a))}{h} \\
-         &= a \mapsto lim_{h \to 0} \frac{f(a + h) + g(a + h) - f(a) - g(a)}{h} \\
-         &= a \mapsto lim_{h \to 0} (\frac{f(a + h) - f(a)}{h} + \frac{g(a + h) - g(a)}{h}) \\
-         &= a \mapsto ((lim_{h \to 0} \frac{f(a + h) - f(a)}{h}) + (lim_{h \to 0} \frac{g(a + h) - g(a)}{h})) \\
-         &= (a \mapsto lim_{h \to 0} \frac{f(a + h) - f(a)}{h}) + (a \mapsto lim_{h \to 0} \frac{g(a + h) - g(a)}{h}) \\
-         & \text{ \{ Definition of derivative \} } \\
-         &= D(f) + D(g)
+D(f + g) = &a \mapsto lim_{h \to 0} \frac{(f + g)[a + h] - (f + g)[a]}{h} \\
+           &\text{ \{ Addition of functions \} } \\
+         = &a \mapsto lim_{h \to 0} \frac{f(a + h) + g(a + h) - (f(a) + g(a))}{h} \\
+         = &a \mapsto lim_{h \to 0} \frac{f(a + h) + g(a + h) - f(a) - g(a)}{h} \\
+         = &a \mapsto lim_{h \to 0} (\frac{f(a + h) - f(a)}{h} + \frac{g(a + h) - g(a)}{h}) \\
+         = &a \mapsto ((lim_{h \to 0} \frac{f(a + h) - f(a)}{h}) + (lim_{h \to 0} \frac{g(a + h) - g(a)}{h})) \\
+         = &(a \mapsto lim_{h \to 0} \frac{f(a + h) - f(a)}{h}) + (a \mapsto lim_{h \to 0} \frac{g(a + h) - g(a)}{h}) \\
+           &\text{ \{ Definition of derivative \} } \\
+         = &D(f) + D(g)
 \end{align*}
 
 Oh, it's just the sum of the derivatives of both functions! The
@@ -306,29 +318,43 @@ And the limit
 
 $$\lim_{x \to 0} \frac{sin x}{x} = 1$$
 
-which can be proved using the unit circle and squeeze theorem, but we
-won't do that here.
+the proof of which is left as an exercise to the reader
+
+**Exercise.** Prove the limit $\lim_{x \to 0} \frac{sin x}{x} = 1$
+
+<details>
+<summary>**Hint**</summary>
+<div>
+
+This limit can be proven using the [unit circle](https://en.wikipedia.org/wiki/Unit_circle) and [squeeze theorem](https://en.wikipedia.org/wiki/Squeeze_theorem)
+
+</div>
+</details>
 
 Then, the differentiation
 
 \begin{align*}
-D(sin) &= a \mapsto lim_{h \to 0} \frac{sin(a + h) - sin(a)}{h} \\
-       & \text{ \{ trig. sum-to-product \} } \\
-       &= a \mapsto lim_{h \to 0} \frac{2 \sin\left(\frac{a + h - a}{2}\right) \cos\left(\frac{a + h + a}{2}\right)}{h} \\
-       &= a \mapsto lim_{h \to 0} \frac{2 \sin\left(\frac{h}{2}\right) \cos\left(\frac{2a + h}{2}\right)}{h} \\
-       &= a \mapsto lim_{h \to 0} \frac{2 \sin\left(\frac{h}{2}\right) \cos\left(\frac{2a + h}{2}\right)}{h} \\
-       &= a \mapsto lim_{h \to 0} \frac{\sin\left(\frac{h}{2}\right)}{\frac{h}{2}} \cos\left(\frac{2a + h}{2}\right) \\
-       & \text{\{} h \text{ approaches } 0 \text{\}} \\
-       &= a \mapsto 1 \cos\left(\frac{2a + 0}{2}\right) \\
-       &= a \mapsto \cos(a) \\
-       &= \cos \\
+D(sin) = &a \mapsto lim_{h \to 0} \frac{sin(a + h) - sin(a)}{h} \\
+         &\text{ \{ trig. sum-to-product \} } \\
+       = &a \mapsto lim_{h \to 0} \frac{2 \sin\left(\frac{a + h - a}{2}\right) \cos\left(\frac{a + h + a}{2}\right)}{h} \\
+       = &a \mapsto lim_{h \to 0} \frac{2 \sin\left(\frac{h}{2}\right) \cos\left(\frac{2a + h}{2}\right)}{h} \\
+       = &a \mapsto lim_{h \to 0} \frac{2 \sin\left(\frac{h}{2}\right) \cos\left(\frac{2a + h}{2}\right)}{h} \\
+       = &a \mapsto lim_{h \to 0} \frac{\sin\left(\frac{h}{2}\right)}{\frac{h}{2}} \cos\left(\frac{2a + h}{2}\right) \\
+         &\text{\{} h \text{ approaches } 0 \text{\}} \\
+       = &a \mapsto 1 \cos\left(\frac{2a + 0}{2}\right) \\
+       = &a \mapsto \cos(a) \\
+       = &\cos \\
 \end{align*}
 
 Again, trivial definition in Haskell
 
 > derive Sin = Cos
 
-I'll leave the proving of the rest of the implementations as an exercise to you, the reader.
+**Exercise.** Derive the rest of the cases using the definition of the derivative
+
+<details>
+<summary>**Solution**</summary>
+<div>
 
 > derive Exp = Exp
 > derive Log = Const 1 :/ Id
@@ -338,7 +364,8 @@ I'll leave the proving of the rest of the implementations as an exercise to you,
 > derive (f :- g) = derive f :- derive g
 > derive (f :* g) = derive f :* g :+ f :* derive g
 > derive (f :/ g) = (derive f :* g :- f :* derive g) :/ (g:^(Const 2))
-> derive (f :^ g) = f:^(g :- Const 1) :* (g :* derive f :+ f :* (Log :. f) :* derive g)
+> derive (f :^ g) =    f:^(g :- Const 1)
+>                   :* (g :* derive f :+ f :* (Log :. f) :* derive g)
 > derive Id = Const 1
 > derive (Const _) = Const 0
 > derive (f :. g) = derive g :* (derive f :. g)
@@ -350,9 +377,10 @@ to derive these bad boys when we haven't even covered them yet! We'll
 prove why this works later, but for now, just know that another name
 for integral is *Antiderivative*...
 
-> derive (I c f) = f
+> derive (I f) = f
 
-
+</div>
+</details>
 
 Keep it simple
 ----------------------------------------------------------------------
@@ -377,7 +405,7 @@ But still, we shouldn't have to do that manually! Let's have
 Mr. Computer help us out, by writing a function to simplify
 expressions.
 
-We'll write a `simplify` function will reduce an expression to a
+We'll write a `simplify` function which will reduce an expression to a
 simpler, equivalent expression. Sounds good, only... what exactly does
 "simpler" mean? Is $10$ simpler than $2 + 2 * 4$? Well, yes obviously,
 but there are other expressions where this is not the case. For
@@ -400,6 +428,8 @@ be, so we don't have to simplify those. When it comes to the
 arithmetic operations, most interesting is the cases of one operand
 being the identity element.
 
+For addition and subtraction, it's $0$
+
 > simplify (f :+ g) = case (simplify f, simplify g) of
 >     (Const 0, g') -> g'
 >     (f', Const 0) -> f'
@@ -407,17 +437,25 @@ being the identity element.
 >     (f', g') | f' == g' -> simplify (Const 2 :* f')
 >     (Const a :* f', g') | f' == g' -> simplify (Const (a + 1) :* f')
 >     (f', Const a :* g') | f' == g' -> simplify (Const (a + 1) :* f')
->     (Const a :* f', Const b :* g') | f' == g' -> simplify (Const (a + b) :* f')
+>     (Const a :* f', Const b :* g') | f' == g'
+>       -> simplify (Const (a + b) :* f')
 >     (f', g') -> f' :+ g'
 > simplify (f :- g) = case (simplify f, simplify g) of
 >     (f', Const 0 :- g') -> f' :+ g'
 >     (f', Const 0) -> f'
->     (Const a, Const b) -> if a > b then Const (a - b) else Const 0 :- Const (b - a)
+>     (Const a, Const b) -> if a > b
+>                           then Const (a - b)
+>                           else Const 0 :- Const (b - a)
 >     (f', g') | f' == g' -> Const 0
 >     (Const a :* f', g') | f' == g' -> simplify (Const (a - 1) :* f')
->     (f', Const a :* g') | f' == g' -> Const 0 :- simplify (Const (a - 1) :* f')
->     (Const a :* f', Const b :* g') | f' == g' -> simplify ((Const a :- Const b) :* f')
+>     (f', Const a :* g') | f' == g'
+>       -> Const 0 :- simplify (Const (a - 1) :* f')
+>     (Const a :* f', Const b :* g') | f' == g'
+>       -> simplify ((Const a :- Const b) :* f')
 >     (f', g') -> f' :- g'
+
+For multiplication and division, the identity element is $1$, but the case of one operand being $0$ is also interesting
+
 > simplify (f :* g) = case (simplify f, simplify g) of
 >     (Const 0, g') -> Const 0
 >     (f', Const 0) -> Const 0
@@ -435,16 +473,39 @@ being the identity element.
 >     (f', Const 1) -> f'
 >     (f', g') | f' == g' -> Const 1
 >     (f', g') -> f' :/ g'
+
+Exponentiation is not commutative, and further has no (two-sided) identity element. However, it does have an "asymmetric" identity element: the right identity $1$!
+
 > simplify (f :^ g) = case (simplify f, simplify g) of
 >     (f', Const 1) -> f'
 >     (f', g') -> f' :^ g'
+
+**Exercises.** Look up (or prove by yourself) more identities (of
+  expressions, not identity elements) for exponentiation and implement
+  them.
+
+<details>
+<summary>**Solution**</summary>
+<div>
+
+For example, there is the identity of negative exponents. For any integer $n$ and nonzero $b$
+
+$$b^{-n} = \frac{1}{b^n}$$
+
+</div>
+</details>
+
+Intuitively, the identity function is the identity element for function composition
+
 > simplify (f :. g) = case (simplify f, simplify g) of
 >     (Id, g') -> g'
 >     (f', Id) -> f'
 >     (f', g') -> f' :. g'
+
 > simplify (Delta h f) = Delta h (simplify f)
+> simplify (D (I f')) = simplify f'
 > simplify (D f) = D (simplify f)
-> simplify (I c f) = I c (simplify f)
+> simplify (I f) = I (simplify f)
 > simplify f = f
 
 With this new function, many expressions become much more readable!
@@ -456,3 +517,5 @@ With this new function, many expressions become much more readable!
 < (cos + (2 * id))
 
 A sight for sore eyes!
+
+**Exercise.** Think of more ways an expression can be "simplified", and add your cases to the implementation.

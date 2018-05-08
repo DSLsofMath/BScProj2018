@@ -7,6 +7,7 @@ mostly using basic templating
 
 import os
 import shutil
+from urllib.parse import quote
 from subprocess import Popen, PIPE
 
 def read_file(filepath):
@@ -54,7 +55,7 @@ def build_sections(sources):
         next_chap_name = "Table of contents"
         if (i + 1) < len(chapters):
             next_section, next_chap_name, _ = chapters[i + 1]
-            next_chap_href = "../{}/{}.html".format(next_section, next_chap_name)
+            next_chap_href = "../{}/{}.html".format(quote(next_section, safe=''), quote(next_chap_name, safe=''))
         if not os.path.exists(section):
             os.makedirs(section)
         chapter_path = "../../" + chapter_source
@@ -75,10 +76,11 @@ def build_sections(sources):
                 "lhs-source-href": lhs_source_href,
                 "lhs-source-name": lhs_source_name,
             })
-        out_path = "{}/{}.html".format(section, chapter_name)
+        out_path   = "{}/{}.html".format(section, chapter_name)
+        out_path_u = "{}/{}.html".format(quote(section, safe=''), quote(chapter_name, safe=''))
         write_string_to_file(chapter, out_path)
         copy_images(os.path.dirname(chapter_path), section)
-        prev_chap_href = "../" + out_path
+        prev_chap_href = "../" + out_path_u
         prev_chap_name = chapter_name
 
 def build_index(sources):
@@ -88,7 +90,7 @@ def build_index(sources):
         toc += "<div>" + section_name + "</div>\n"
         toc += "<ul>\n"
         for (chapter_name, _) in chapter_sources:
-            chapter_path = "{}/{}.html".format(section_name, chapter_name)
+            chapter_path = "{}/{}.html".format(quote(section_name, safe=''), quote(chapter_name, safe=''))
             toc += "<li><a href=\"{}\">{}</a></li>\n".format(chapter_path, chapter_name)
         toc += "</ul>\n</li>\n"
     index_template = open_template("index")
@@ -97,7 +99,19 @@ def build_index(sources):
 
 sources = [
     ("Introduction", [
-        ("Introduction'", "Physics/src/Introduction/Introduction.lhs"),
+        ("About this book", "Physics/src/Introduction/About.lhs"),
+        ("So what's a DSL?", "Physics/src/Introduction/WhatIsADsl.lhs"),
+        ("Getting started", "Physics/src/Introduction/GettingStarted.lhs"),
+    ]),
+    ("Calculus", [
+        ("Introduction", "Physics/src/Calculus/Intro.lhs"),
+        ("Function expressions", "Physics/src/Calculus/FunExpr.lhs"),
+        ("Differential calculus", "Physics/src/Calculus/DifferentialCalc.lhs"),
+        ("Integral calculus", "Physics/src/Calculus/IntegralCalc.lhs"),
+        ("Plotting graphs", "Physics/src/Calculus/VisVerApp.lhs"),
+    ]),
+    ("Linear algebra", [
+        ("Vectors", "Physics/src/Vector/Vector.lhs")
     ]),
     ("Dimensions", [
         ("Introduction", "Physics/src/Dimensions/Intro.lhs"),
@@ -106,7 +120,7 @@ sources = [
         "Physics/src/Dimensions/ValueLevel/Test.lhs"),
         ("Type-level dimensions", "Physics/src/Dimensions/TypeLevel.lhs"),
         ("Quantities", "Physics/src/Dimensions/Quantity.lhs"),
-        ("Testing of Quantity",
+        ("Testing of Quantities",
         "Physics/src/Dimensions/Quantity/Test.lhs"),
         ("Usage", "Physics/src/Dimensions/Usage.lhs"),
     ]),
@@ -122,13 +136,11 @@ sources = [
     ]),
     ("Newtonian Mechanics", [
         ("Single particle mechanics", "Physics/src/NewtonianMechanics/SingleParticle.lhs")
-    ]),
-    ("Examples", [
-        ("Gungbräda", "Physics/src/Examples/Gungbraeda.lhs"),
-        ("krafter på lådor", "Physics/src/Examples/krafter_pa_lador.lhs"),
-
     ])
-
+    # ("Examples", [
+    #     ("Gungbräda", "Physics/src/Examples/Gungbraeda.lhs"),
+    #     ("krafter på lådor", "Physics/src/Examples/krafter_pa_lador.lhs"),
+    # ])
 ]
 
 if not os.path.exists("build"):

@@ -1,3 +1,5 @@
+> module Introduction.WhatIsADsl where
+
 So what's a DSL?
 ======================================================================
 

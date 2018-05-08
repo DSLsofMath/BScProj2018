@@ -144,8 +144,8 @@ A structure with class
 ----------------------------------------------------------------------
 
 Now that we've defined the basic structure of our language, we can
-instantiate some useful classes. There are two in particular we care
-for: `Show` and `Arbitrary`.
+instantiate some useful classes. There are three in particular we care
+for: `Show`, `Num`, and `Arbitrary`.
 
 Try modifying `FunExpr` to derive `Show`, so that our expressions can be printed.
 
@@ -197,17 +197,33 @@ expressions in a much more human friendly way!
 
 Still a bit noisy with all the parentheses, but much better!
 
-Another class we can instance for our `FunExpr` is
-`Arbitrary`. This class is associated with the testing library
-*QuickCheck*, and describes how to generate arbitrary values of a type
-for use when testing logical properties with `quickCheck`. For
-example, a property function could be formulated that states that the
-`:*` constructor of `FunExpr` is associative.
+Another class we can instantiate for our `FunExpr` is `Num`. This
+class allows us to make use of the native Haskell functions and
+operators for numeric operations, instead of writing our own
+constructors. This sometimes improves the readability of the code.
+
+> instance Num FunExpr where
+>   negate e    = Const 0 :- e
+>   (+)         = (:+)
+>   (*)         = (:*)
+>   fromInteger = Const . fromInteger
+>   abs         = undefined
+>   signum      = undefined
+
+Third but not least, we'll instantiate `Arbitrary`. This class is
+associated with the testing library *QuickCheck*, and describes how to
+generate arbitrary values of a type for use when testing logical
+properties with `quickCheck`. For example, a property function could
+be formulated that states that the `:*` constructor of `FunExpr` is
+associative.
 
 The implementation itself is not very interesting. We generate a
 function expression that tends to contain mostly elementary functions,
 arithmetic operations, and a generous dose of constants; with a light
-sprinkle of differences, derivatives, and integrals.
+sprinkle of differences. We won't include derivatives as all
+elementary functions have elementary derivatives anyways, and
+integrals may cause cause approximation errors if we have to
+numerically compute them at evaluation.
 
 > instance Arbitrary FunExpr where
 >   arbitrary =
@@ -223,10 +239,9 @@ generated expressions in complexity.
 >         , (10, return Id)
 >         , (20, fmap Const arbitrary)
 >         , (10, genBinaryApp (:.))
->         , (5 , genBinaryApp Delta)
->         , (5 , fmap D arbitrary)
->         , (5 , fmap I arbitrary) ]
+>         , (5 , genBinaryApp Delta) ]
 >     where genElementary = elements [Exp, Log, Sin, Cos, Asin, Acos]
 >           genBinaryApp op = fmap (\(f, g) -> f `op` g) arbitrary
 >           genBinaryOperation =     elements [(:+), (:-), (:*), (:/), (:^)]
 >                                >>= genBinaryApp
+

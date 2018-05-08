@@ -12,7 +12,7 @@ Laws:
 We will begin our journey into classical mechanics by studying point particles.
 A point particle has a mass and it's position is given as vector in three
 dimensions. Of course it could exist in any number of dimensions but we'll stay
-in three dimensions since it is more intuitive and easier to understand. 
+in three dimensions since it is more intuitive and easier to understand.
 
 The components of the vector are functions over time that gives the particles
 position in each dimension, x, y, and z. Since we've already defined vectors and
@@ -60,7 +60,7 @@ P {pos = (((3 * id) * id) x, (2 * id) y, 1 z), mass = 3}
 We've created our first particle! And as we can see from the print out it's
 accelerating by $3t^2$ in the x-dimension, has a constant velocity of $2
 t$ in the y-dimension, is positioned at $1$ in the z-dimension, and has a
-mass of $3$. 
+mass of $3$.
 
 Velocity & Acceleration
 ------------------
@@ -96,7 +96,7 @@ acceleration of a particle.
 
 <details>
 <summary>
-**Solution** 
+**Solution**
 </summary>
 
 We already know how to get the velocity of a particle, so the the
@@ -160,15 +160,52 @@ must be acting on it, in code this would be:
 <     m = mass p
 <     a = acceleration p
 
-> type Energy = FunExpr
-
 Where the acceleration of particle is found by deriving the velocity of that
 same particle with respect to $t$:
 
-TODO: Write something here
+Kinetic energy
+---------------
 
-< square :: VectorE -> FunExpr
-< square v = dotProd v v
+Kinetic stands for motion, so the kinetic energy of a particle is the energy it
+gains through movement. Energy is a scalar quantity so we'll model it using a
+$FunExpr$.
+
+> type Energy = FunExpr
+
+In classical mechanics the kinetic energy of particle is equal to $\frac{1}{2}$
+of the product of its mass and the square of its velocity. In mathmatical
+notation this would be.
+
+\begin{equation}
+    E_k = mv^2
+\end{equation}
+
+But what does it mean to take the square of speed? We know of an operator to
+take the square of a number, but velocity is not a number it's a vector. So
+there seems to be a double meaning to what taking the square of something
+actually means depending on the type of the expression.
+
+More concrete what we actually mean when we say ``the square of vector'' is to
+take the dot product of the vector with itself. This may seem fairly
+straightforward and obvious on paper but when we start working with types this
+overloading of the word ``square'' looks a bit strange. For numbers it has the
+type
+
+< square :: Num a => a -> a
+
+but for vectors it has the type
+
+< square :: Num a => Vector a -> a
+
+same name, vastly different meanings. If we were to encode this double meaning
+of the function we would have to create a type class which would encode this
+ability to be squared and then make Num and Vector instances of this class.
+
+But enough yammering about types and double meanings! Let's actually define the
+function for taking the square of a vector and move on with our lives.
+
+> square :: VectorE -> FunExpr
+> square v = dotProd v v
 
 Work and energy
 ---------------------

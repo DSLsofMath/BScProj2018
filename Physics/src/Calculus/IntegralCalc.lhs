@@ -502,5 +502,5 @@ figure out the integral further.
 
 > eval (I f) = let _F = simplify (integrate f)
 >              in if _F == (I f)
->                 then integrateApprox (eval f) 0.01 0
+>                 then integrateApprox (eval f) 0.001 0
 >                 else eval _F

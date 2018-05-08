@@ -368,7 +368,17 @@ Again, trivial definition in Haskell
 >                   :* (g :* derive f :+ f :* (Log :. f) :* derive g)
 > derive Id = Const 1
 > derive (Const _) = Const 0
-> derive (f :. g) = derive g :* (derive f :. g)
+
+For a function composition $f \circ g$ we have to handle the case
+where $f$ is a constant function, as we may get division by zero if we
+naively apply the chain rule. We'll make use of the `simplify` function,
+which we'll define later, to reduce compositions of constant functions to
+just constant functions.
+
+> derive (f :. g) =
+>   case simplify f of
+>     Const a -> Const 0
+>     sf      -> (derive sf :. g) :* derive g
 > derive (Delta h f) = Delta h (derive f)
 > derive (D f) = derive (derive f)
 
@@ -441,7 +451,7 @@ For addition and subtraction, it's $0$
 >       -> simplify (Const (a + b) :* f')
 >     (f', g') -> f' :+ g'
 > simplify (f :- g) = case (simplify f, simplify g) of
->     (f', Const 0 :- g') -> f' :+ g'
+>     (f', Const 0 :- g') -> simplify (f' :+ g')
 >     (f', Const 0) -> f'
 >     (Const a, Const b) -> if a > b
 >                           then Const (a - b)
@@ -498,9 +508,10 @@ $$b^{-n} = \frac{1}{b^n}$$
 Intuitively, the identity function is the identity element for function composition
 
 > simplify (f :. g) = case (simplify f, simplify g) of
->     (Id, g') -> g'
->     (f', Id) -> f'
->     (f', g') -> f' :. g'
+>     (Const a, _) -> Const a
+>     (Id, g')     -> g'
+>     (f', Id)     -> f'
+>     (f', g')     -> f' :. g'
 
 > simplify (Delta h f) = Delta h (simplify f)
 > simplify (D (I f')) = simplify f'

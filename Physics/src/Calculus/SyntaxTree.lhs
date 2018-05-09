@@ -1,13 +1,71 @@
 > module Calculus.SyntaxTree where
 
-> import           Calculus.Calculus as C
+> import           Calculus.FunExpr
+> import           Calculus.DifferentialCalc
+> import           Calculus.IntegralCalc
+
+A fun and useful way to visualize expressions is to model them as trees. In our
+case we want to model $FunExpr$ where the nodes and leaves will be our
+constructors.
+
+In order to do this will import two packages, one for constructing trees and one
+for pretty printing them.
+
 > import           Data.Tree         as T
 > import           Data.Tree.Pretty  as P
 
-Pretty prints expressions as trees
+Now we can construct the function that takes a FunExpr and builds a tree from it.
+Every node is a string representation of the constructor and a list of its
+sub trees (branches).
+
+> makeTree :: FunExpr -> Tree String
+> makeTree (e1 :+ e2)  = Node "+"    [makeTree e1, makeTree e2]
+> makeTree (e1 :- e2)  = Node "-"    [makeTree e1, makeTree e2]
+> makeTree (e1 :* e2)  = Node "*"    [makeTree e1, makeTree e2]
+> makeTree (e1 :/ e2)  = Node "Div"  [makeTree e1, makeTree e2]
+> makeTree (e1 :^ e2)  = Node "**"   [makeTree e1, makeTree e2]
+> makeTree (e1 :. e2)  = Node "o"    [makeTree e1, makeTree e2]
+> makeTree (D e)       = Node "d/dx" [makeTree e]
+> makeTree (Delta r e) = Node "Δ"    [makeTree (Const r), makeTree e]
+> makeTree (I e)       = Node "I"    [makeTree e]
+> makeTree Id          = Node "Id"   []
+> makeTree Exp         = Node "Exp"  []
+> makeTree Log         = Node "Log"  []
+> makeTree Sin         = Node "Sin"  []
+> makeTree Cos         = Node "Cos"  []
+> makeTree Asin        = Node "Asin" []
+> makeTree Acos        = Node "Acos" []
+> makeTree (Const num) = Node (show num) [] --(show (floor num)) [] -- | Note the use of floor
+
+Now we construct trees from our expressions but we still need to print them out.
+For this we'll use the function `drawVerticalTree` which does exactly what its
+name suggests. We can then construct a function to draw expressions.
 
 > printExpr :: FunExpr -> IO ()
 > printExpr = putStrLn . drawVerticalTree . makeTree
+
+Now let's construct a mildly complicated expression
+
+> e = Delta 3 (Delta (negate 5) (I Acos) :. (Acos :* Exp))
+
+And print it out.
+
+< ghci > printExpr e
+<           Δ
+<           |
+<   -----------
+<  /           \
+<  3           o
+<              |
+<         ----------
+<         /          \
+<         Δ          *
+<         |          |
+<        ----       -----
+<       /    \     /     \
+<      -5    I   Acos   Exp
+<            |
+<           Acos
 
 Pretty prints the steps taken when canonifying an expression
 
@@ -34,43 +92,21 @@ Pretty prints syntactic checking of equality
 >     putStrLn $ drawVerticalForest [makeTree e1, makeTree e2]
 >     let c1 = canonify e1
 >         c2 = canonify e2
->       in if c1 == e1 && c2 == e2 then putStrLn "Can't simplify no more" 
+>       in if c1 == e1 && c2 == e2 then putStrLn "Can't simplify no more"
 >                                         >> return False
 >                                  else prettyEqual c1 c2
 
 Syntactic checking of equality
 
 > equal :: FunExpr -> FunExpr -> Bool
-> equal e1 e2 = case e1 == e2 of
->   True  -> True
->   False -> let c1 = canonify e1
->                c2 = canonify e2
->             in case e1 == c1 && c2 == e2 of
->               True  -> False
->               False -> equal c1 c2
+> equal e1 e2 = (e1 == e2) ||
+>                  (let c1 = canonify e1
+>                       c2 = canonify e2
+>                     in (not (e1 == c1 && c2 == e2) && equal c1 c2))
 
 Parse an expression as a Tree of Strings
 
-> makeTree :: FunExpr -> Tree String
-> makeTree (e1 :+ e2)  = Node "+"    [makeTree e1, makeTree e2]
-> makeTree (e1 :- e2)  = Node "-"    [makeTree e1, makeTree e2]
-> makeTree (e1 :* e2)  = Node "*"    [makeTree e1, makeTree e2]
-> makeTree (e1 :/ e2)  = Node "Div"  [makeTree e1, makeTree e2]
-> makeTree (e1 :^ e2)  = Node "**"   [makeTree e1, makeTree e2]
-> makeTree (e1 :. e2)  = Node "o"    [makeTree e1, makeTree e2]
-> makeTree (D e)       = Node "d/dx" [makeTree e]
-> makeTree (Delta r e) = Node "Δ"    [makeTree (Const r), makeTree e]
-> makeTree (I r e)     = Node "I"    [makeTree (Const r), makeTree e]
-> makeTree Id          = Node "Id"   []
-> makeTree Exp         = Node "Exp"  []
-> makeTree Log         = Node "Log"  []
-> makeTree Sin         = Node "Sin"  []
-> makeTree Cos         = Node "Cos"  []
-> makeTree Asin        = Node "Asin" []
-> makeTree Acos        = Node "Acos" []
-> makeTree (Const num) = Node (show (floor num)) [] -- | Note the use of floor
-
-Of course this is all bit too verbose, but I'm keeping it that way until every 
+Of course this is all bit too verbose, but I'm keeping it that way until every
 case is covered, Calculus is a bit of a black box for me right now
 
 > canonify :: FunExpr -> FunExpr
@@ -175,5 +211,3 @@ Dummy expressions
 > e4 = (Const 1 :+ Const 2) :* (Const 3 :+ Const 4)
 > e5 = (Const 1 :+ Const 2) :* (Const 4 :+ Const 3)
 > e6 = Const 2 :+ Const 3 :* Const 8 :* Const 19
-> e7 = (Delta 3 ((Delta (0 - 5) (I 7 Acos)) :. (Acos :* Exp)))
-

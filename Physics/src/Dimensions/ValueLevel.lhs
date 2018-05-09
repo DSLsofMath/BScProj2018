@@ -15,7 +15,7 @@ Value-level dimensions
 >     , luminosity
 >     , one
 >     ) where
-> 
+>
 > import Prelude hiding (length, div)
 
 From the introduction, two things became apparanent:

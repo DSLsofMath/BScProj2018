@@ -109,6 +109,7 @@ sources = [
         ("Differential calculus", "Physics/src/Calculus/DifferentialCalc.lhs"),
         ("Integral calculus", "Physics/src/Calculus/IntegralCalc.lhs"),
         ("Plotting graphs", "Physics/src/Calculus/VisVerApp.lhs"),
+        ("Syntax trees", "Physics/src/Calculus/SyntaxTree.lhs"),
     ]),
     ("Linear algebra", [
         ("Vectors", "Physics/src/Vector/Vector.lhs")

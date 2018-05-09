@@ -1,6 +1,6 @@
 > module NewtonianMechanics.SingleParticle where
 
-< import           Calculus.SyntaxTree
+%< import           Calculus.SyntaxTree
 
 > import           Test.QuickCheck
 
@@ -19,19 +19,15 @@ position in each dimension, x, y, and z. Since we've already defined vectors and
 mathmatical functions in previous chapters we won't spend any time on them here
 and instead just import those two modules.
 
-> import           Calculus
+> import           Calculus.FunExpr
+> import           Calculus.DifferentialCalc -- Maybe remove
+> import           Calculus.IntegralCalc     -- Maybe remove
 > import           Vector.Vector as V
 
- The mass of a particle is just a numerical value so we'll model it using
- doubles.
-
-< type Mass = Double
-
-\ignore{
+ The mass of a particle is just a scalar value so we'll model it using
+ $FunExpr$.
 
 > type Mass = FunExpr
-
-}
 
 We combine the constructor for vectors in three dimensions with the function
 expressions defined in the chapter on mathmatical analysis. We'll call this new
@@ -49,13 +45,13 @@ of function expressions. So our data type is simply:
 
 So now we can create our particles! Let's try it out!
 
-**TODO: IMPLEMENT NUM INSTANCE FOR FunExpr AND REWRITE**
+> particle :: Particle
+> particle = P (V3 (3 * Id * Id) (2 * Id) 1) 3
 
-```
-ghci > let particle = P (V3 (3 :* Id :* Id) (2 :* Id) 1) 3
-ghci > particle
-P {pos = (((3 * id) * id) x, (2 * id) y, 1 z), mass = 3}
-```
+Let's see what happens when we run this in the interpreter.
+
+< ghci > particle
+< P {pos = (((3 * id) * id) x, (2 * id) y, 1 z), mass = 3}
 
 We've created our first particle! And as we can see from the print out it's
 accelerating by $3t^2$ in the x-dimension, has a constant velocity of $2
@@ -84,7 +80,15 @@ rather elegant way of computing the velocity of a particle.
 > velocity :: Particle -> VectorE
 > velocity = vmap D . pos
 
-Acceleration is defined as the derivative of the velocity with respect to time,
+We can try this out in the interpreter with our newly created particle.
+
+< ghci > velocity particle
+< ((D ((3 * id) * id)) x, (D (2 * id)) y, (D 1) z)
+
+Not very readable but at least we can see that it correctly maps the derivative
+over the components of the vector.
+
+*Acceleration* is defined as the derivative of the velocity with respect to time,
 or the second derivative of the position. More formally:
 
 \begin{equation*}
@@ -140,6 +144,10 @@ mathematically defined as follows:
   \vec{F} = \frac{d \vec{p}}{d t} = \frac{d(m \cdot \vec{v})}{d t}
 \end{equation}
 
+Force is a vector so let's create a type synonym to make this clearer.
+
+> type Force = VectorE
+
 The quantity $m \cdot \vec{v}$ is what we mean when we say momentum. So the law
 states that the net force on a particle is equal to the rate of change of the
 momentum with respect to time. And since the definition of acceleration is
@@ -153,12 +161,11 @@ namely:
 And thus if the particle is accelerating we can calculate the force that
 must be acting on it, in code this would be:
 
-
-< force :: Particle -> VectorE
-< force p = vmap (* m) a
-<   where
-<     m = mass p
-<     a = acceleration p
+> force :: Particle -> Force
+> force p = vmap (* m) a
+>   where
+>     m = mass p
+>     a = acceleration p
 
 Where the acceleration of particle is found by deriving the velocity of that
 same particle with respect to $t$:
@@ -219,12 +226,45 @@ types.
 >     v  = velocity p
 >     v2 = square v
 
-Work and energy
----------------------
+Potential energy
+-----------------
+
+In classical mechanics potential energy is defined as the energy possed by a
+particle because of its position relative to other particles, its electrical
+charge and other factors. This means that to actually calculate the potential
+energy of a particle we'd have to take into account all other particles that
+populate the system no matter how far apart they are.
+
+Potential energy near Earth
+------------------------------------
+
+Thankfully if we're close to the Earths gravitational field it's ok
+to simplify this problem and only take into account the Earths gravitational
+pull since all other factors are negliable in comparison.
+
+The potential energy for particles affected by gravity is defined with
+mathmatical notation as:
+
+\begin{equation}
+    E_p = m \cdot g \cdot h
+\end{equation}
+where $m$ is the mass of the particle, $h$ its height, and $g$ is the
+acceleration due to gravity (9.82 $m/s^2$).
+
+> potentialEnergy :: Particle -> Energy
+> potentialEnergy p = m * g * h
+>   where
+>     m          = mass p
+>     g          = Const 9.82
+>     (V3 _ _ h) = pos p
+
+Work
+----
 
 If a constant force $\vec{F}$ is applied to a particle that moves from
 position $\vec{r_1}$ to $\vec{r_2}$ then the *work* done by the force is defined
-as the dot product of the force and the vector of displacement.
+as the dot product of the force and the vector of displacement. In mathmatical
+notation this is written as
 
 \begin{equation}
   W = \vec{F} \cdot \Delta \vec{r}
@@ -309,8 +349,8 @@ magnitude of the vector, if the gravitational force originates from O. Hmmm
 
 This seems weird since I don't know what the frame of reference is...
 
-> potentialEnergy :: Particle -> Energy
-> potentialEnergy p = undefined
->   where
->     m          = mass p
->     (V3 x _ _) = pos p
+< potentialEnergy :: Particle -> Energy
+< potentialEnergy p = undefined
+<   where
+<     m          = mass p
+<     (V3 x _ _) = pos p

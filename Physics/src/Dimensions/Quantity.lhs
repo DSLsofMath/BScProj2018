@@ -28,7 +28,7 @@ Quantities
 
 > import qualified Dimensions.ValueLevel as V
 > import           Dimensions.TypeLevel  as T
-> import           Prelude               as P hiding (length, div)
+> import           Prelude               as P hiding (length)
 
 We'll now create a data type for quantities and combine dimensions on value-level and type-level. Just as before, a bunch of GHC-extensions are necessary.
 
@@ -65,14 +65,7 @@ Let's get on to the actual data type declaration.
 > data Quantity (d :: T.Dim) (v :: *) where
 >   ValQuantity :: V.Dim -> v -> Quantity d v
 
-<<<<<<< HEAD
-> lift :: Quantity dim a -> a
-> lift (Quantity _ v) = v
-
-`data Quantity` creates a *type constructor*. Which means it takes two *types* (of certain *kinds*) to create another *type* (of a certain *kind*). For comparsion, here's a *value constructor* which takes two *values* (of certain *types*) as input to create another *value* (of a certain *type*).
-=======
 That was sure a mouthful! Let's break it down. `data Quantity (d :: T.Dim) (v :: *)` creates the *type constructor* `Quantity`. A type constructor takes types to create another type. In this case, the type constructor `Quantity` takes a type `d` of *kind* `T.Dim` and a type `v` of *kind* `*` to create the type `Quantity d v`. Let's see it in action
->>>>>>> master
 
 < type ExampleType = Quantity T.Length Double
 
@@ -305,7 +298,7 @@ We often use `Double` as the value holding type. Doing exact comparsions isn't a
 Testing if a quantity is zero is something which might be a common operation. So we define it here.
 
 > isZero :: (Fractional v, Ord v) => Quantity d v -> Bool
-> isZero (ValQuantity _ v) = (abs v) < 0.001
+> isZero (ValQuantity _ v) = abs v < 0.001
 
 
 Arithmetic on quantities
@@ -361,10 +354,10 @@ We quickly realize a pattern, so let's generalize a bit.
 > qmap f (ValQuantity d1 v) = ValQuantity d1 (f v)
 
 > qmap' :: (a -> b) -> Quantity dim a -> Quantity dim b
-> qmap' f (Quantity d v) = Quantity d (f v)
+> qmap' f (ValQuantity d v) = ValQuantity d (f v)
 
 > qfold :: (a -> a -> b) -> Quantity dim a -> Quantity dim a -> Quantity dim b
-> qfold f (Quantity d v1) (Quantity _ v2) = Quantity d (f v1 v2)
+> qfold f (ValQuantity d v1) (ValQuantity _ v2) = ValQuantity d (f v1 v2)
 
 > sinq, cosq, asinq, acosq, atanq, expq, logq :: (Floating v) =>
 >   Quantity One v -> Quantity One v

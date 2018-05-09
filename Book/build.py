@@ -109,6 +109,7 @@ sources = [
         ("Differential calculus", "Physics/src/Calculus/DifferentialCalc.lhs"),
         ("Integral calculus", "Physics/src/Calculus/IntegralCalc.lhs"),
         ("Plotting graphs", "Physics/src/Calculus/VisVerApp.lhs"),
+        ("Syntax trees", "Physics/src/Calculus/SyntaxTree.lhs"),
     ]),
     ("Linear algebra", [
         ("Vectors", "Physics/src/Vector/Vector.lhs")
@@ -123,6 +124,19 @@ sources = [
         ("Testing of Quantities",
         "Physics/src/Dimensions/Quantity/Test.lhs"),
         ("Usage", "Physics/src/Dimensions/Usage.lhs"),
+    ]),
+    ("Vectors", [
+        ("Vector", "Physics/src/Vector/Vector.lhs")
+    ]),
+    ("Calculus", [
+        ("Introduction", "Physics/src/Calculus/Intro.lhs"),
+        ("Function expressions", "Physics/src/Calculus/FunExpr.lhs"),
+        ("Differential calculus", "Physics/src/Calculus/DifferentialCalc.lhs"),
+        ("Integral calculus", "Physics/src/Calculus/IntegralCalc.lhs"),
+        ("Visualization, Verification, and Application", "Physics/src/Calculus/VisVerApp.lhs"),
+    ]),
+    ("Newtonian Mechanics", [
+        ("Single particle mechanics", "Physics/src/NewtonianMechanics/SingleParticle.lhs")
     ])
     # ("Examples", [
     #     ("Gungbräda", "Physics/src/Examples/Gungbraeda.lhs"),

@@ -25,9 +25,10 @@ Quantities
 >     , sinq, cosq, asinq, acosq, atanq, expq, logq
 >     ) where
 
+
 > import qualified Dimensions.ValueLevel as V
 > import           Dimensions.TypeLevel  as T
-> import           Prelude               as P hiding (length, div)
+> import           Prelude               as P hiding (length)
 
 We'll now create a data type for quantities and combine dimensions on value-level and type-level. Just as before, a bunch of GHC-extensions are necessary.
 
@@ -297,7 +298,7 @@ We often use `Double` as the value holding type. Doing exact comparsions isn't a
 Testing if a quantity is zero is something which might be a common operation. So we define it here.
 
 > isZero :: (Fractional v, Ord v) => Quantity d v -> Bool
-> isZero (ValQuantity _ v) = (abs v) < 0.001
+> isZero (ValQuantity _ v) = abs v < 0.001
 
 
 Arithmetic on quantities
@@ -351,6 +352,12 @@ We quickly realize a pattern, so let's generalize a bit.
 
 > qmap :: (a -> b) -> Quantity One a -> Quantity One b
 > qmap f (ValQuantity d1 v) = ValQuantity d1 (f v)
+
+> qmap' :: (a -> b) -> Quantity dim a -> Quantity dim b
+> qmap' f (ValQuantity d v) = ValQuantity d (f v)
+
+> qfold :: (a -> a -> b) -> Quantity dim a -> Quantity dim a -> Quantity dim b
+> qfold f (ValQuantity d v1) (ValQuantity _ v2) = ValQuantity d (f v1 v2)
 
 > sinq, cosq, asinq, acosq, atanq, expq, logq :: (Floating v) =>
 >   Quantity One v -> Quantity One v

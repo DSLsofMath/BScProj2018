@@ -16,7 +16,7 @@
 	<span>[src: <a href="https://github.com/DSLsofMath/BScProj2018/blob/master/Physics/src/Calculus/IntegralCalc.lhs">Calculus/IntegralCalc.lhs</a>]</span>
         <span>Previous: <a href="../Calculus/Differential%20calculus.html">Differential calculus</a></span>
         <a href="../index.html">Table of contents</a>
-        <span>Next: <a href="../Calculus/Plotting%20graphs.html">Plotting graphs</a></span>
+        <span>Next: <a href="../Calculus/Visualization%2C%20Verification%2C%20and%20Application.html">Visualization, Verification, and Application</a></span>
       </nav>
     </header>
 
@@ -227,7 +227,7 @@
 <p>With integrals, we first symbolically integrate the expression as far as possible, then apply the numerical <code>integrateApprox</code> if we can’t figure out the integral further.</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb27-1" data-line-number="1">eval (<span class="dt">I</span> f) <span class="fu">=</span> <span class="kw">let</span> _F <span class="fu">=</span> simplify (integrate f)</a>
 <a class="sourceLine" id="cb27-2" data-line-number="2">             <span class="kw">in</span> <span class="kw">if</span> _F <span class="fu">==</span> (<span class="dt">I</span> f)</a>
-<a class="sourceLine" id="cb27-3" data-line-number="3">                <span class="kw">then</span> integrateApprox (eval f) <span class="fl">0.01</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb27-3" data-line-number="3">                <span class="kw">then</span> integrateApprox (eval f) <span class="fl">0.001</span> <span class="dv">0</span></a>
 <a class="sourceLine" id="cb27-4" data-line-number="4">                <span class="kw">else</span> eval _F</a></code></pre></div>
 
     </main>
@@ -237,7 +237,7 @@
 	<span>[src: <a href="https://github.com/DSLsofMath/BScProj2018/blob/master/Physics/src/Calculus/IntegralCalc.lhs">Calculus/IntegralCalc.lhs</a>]</span>
         <span>Previous: <a href="../Calculus/Differential%20calculus.html">Differential calculus</a></span>
         <a href="../index.html">Table of contents</a>
-        <span>Next: <a href="../Calculus/Plotting%20graphs.html">Plotting graphs</a></span>
+        <span>Next: <a href="../Calculus/Visualization%2C%20Verification%2C%20and%20Application.html">Visualization, Verification, and Application</a></span>
       </nav>
       © Kandidatboisen (2018), GPL
     </footer>

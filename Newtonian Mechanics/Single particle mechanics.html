@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Learn You a Physics for Great Good!</title>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  </head>
+
+  <body>
+    <header>
+      <a href="../index.html"><h1>Learn You a <span class="physics">Physics</span> for Great Good!</h1></a>
+      <h1>&gt;&gt;&gt; WORK IN PROGRESS &lt;&lt;&lt;</h1>
+      <h2>Newtonian Mechanics / Single particle mechanics</h2>
+      <nav>
+	<span>[src: <a href="https://github.com/DSLsofMath/BScProj2018/blob/master/Physics/src/NewtonianMechanics/SingleParticle.lhs">NewtonianMechanics/SingleParticle.lhs</a>]</span>
+        <span>Previous: <a href="../Calculus/Visualization%2C%20Verification%2C%20and%20Application.html">Visualization, Verification, and Application</a></span>
+        <a href="../index.html">Table of contents</a>
+        <span>Next: <a href="../index.html">Table of contents</a></span>
+      </nav>
+    </header>
+
+    <main>
+      <div class="sourceCode" id="cb1"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">module</span> <span class="dt">NewtonianMechanics.SingleParticle</span> <span class="kw">where</span></a></code></pre></div>
+<p>%&lt; import Calculus.SyntaxTree</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">import</span>           <span class="dt">Test.QuickCheck</span></a></code></pre></div>
+<p>Laws:</p>
+<ul>
+<li>A body remains at rest or in uniform motion unless acted upon by a force.</li>
+<li>If two bodies exert forces on each other, these forces are equal in magnitude and opposite in direction.</li>
+</ul>
+<p>We will begin our journey into classical mechanics by studying point particles. A point particle has a mass and it’s position is given as vector in three dimensions. Of course it could exist in any number of dimensions but we’ll stay in three dimensions since it is more intuitive and easier to understand.</p>
+<p>The components of the vector are functions over time that gives the particles position in each dimension, x, y, and z. Since we’ve already defined vectors and mathmatical functions in previous chapters we won’t spend any time on them here and instead just import those two modules.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">import</span>           <span class="dt">Calculus.FunExpr</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">import</span>           <span class="dt">Calculus.DifferentialCalc</span> <span class="co">-- Maybe remove</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw">import</span>           <span class="dt">Calculus.IntegralCalc</span>     <span class="co">-- Maybe remove</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="kw">import</span>           <span class="dt">Vector.Vector</span> <span class="kw">as</span> <span class="dt">V</span></a></code></pre></div>
+<p>The mass of a particle is just a scalar value so we’ll model it using <span class="math inline">\(FunExpr\)</span>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">type</span> <span class="dt">Mass</span> <span class="fu">=</span> <span class="dt">FunExpr</span></a></code></pre></div>
+<p>We combine the constructor for vectors in three dimensions with the function expressions defined in the chapter on mathmatical analysis. We’ll call this new type <code>VectorE</code> to signify that it’s a vector of expressions.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">type</span> <span class="dt">VectorE</span> <span class="fu">=</span> <span class="dt">Vector3</span> <span class="dt">FunExpr</span></a></code></pre></div>
+<p>Now we are ready to define what the data type for a particle is. As we previously stated a point particle has a mass, and a position given as a vector of function expressions. So our data type is simply:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">data</span> <span class="dt">Particle</span>  <span class="fu">=</span> <span class="dt">P</span> {<span class="ot"> pos  ::</span> <span class="dt">VectorE</span> <span class="co">-- Position as a function of time, unit m</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">                   ,<span class="ot"> mass ::</span> <span class="dt">Mass</span>    <span class="co">-- Mass, unit kg</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">                   } <span class="kw">deriving</span> <span class="dt">Show</span></a></code></pre></div>
+<p>So now we can create our particles! Let’s try it out!</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="ot">particle ::</span> <span class="dt">Particle</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">particle <span class="fu">=</span> <span class="dt">P</span> (<span class="dt">V3</span> (<span class="dv">3</span> <span class="fu">*</span> <span class="dt">Id</span> <span class="fu">*</span> <span class="dt">Id</span>) (<span class="dv">2</span> <span class="fu">*</span> <span class="dt">Id</span>) <span class="dv">1</span>) <span class="dv">3</span></a></code></pre></div>
+<p>Let’s see what happens when we run this in the interpreter.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb8-1" data-line-number="1">ghci <span class="fu">&gt;</span> particle</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="dt">P</span> {pos <span class="fu">=</span> (((<span class="dv">3</span> <span class="fu">*</span> id) <span class="fu">*</span> id) x, (<span class="dv">2</span> <span class="fu">*</span> id) y, <span class="dv">1</span> z), mass <span class="fu">=</span> <span class="dv">3</span>}</a></code></pre></div>
+<p>We’ve created our first particle! And as we can see from the print out it’s accelerating by <span class="math inline">\(3t^2\)</span> in the x-dimension, has a constant velocity of <span class="math inline">\(2 t\)</span> in the y-dimension, is positioned at <span class="math inline">\(1\)</span> in the z-dimension, and has a mass of <span class="math inline">\(3\)</span>.</p>
+<h2 id="velocity-acceleration">Velocity &amp; Acceleration</h2>
+<p>Velocity is defined as the derivative of the position with respect to time. More formally, (<span class="math inline">\(\vec{r}\)</span> denotes the position vector):</p>
+<span class="math display">\[\begin{equation*}
+\vec{v} = \frac{d\vec{r}}{dt}
+\end{equation*}\]</span>
+<p>And since the position of our particles are given as vectors we’ll do the derivation component-wise. We need not worry about the details of the derivation at all since this is all take care of by the Calculus module, all we need to to is use the constructor <code>D</code> for the derivative and apply it to each of the components of the vector. The business of applying something to each component of a vector has also already been taken care of! This was the point of <code>vmap</code> to map a function over the components of the vector. So if we combine them we get a rather elegant way of computing the velocity of a particle.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="ot">velocity ::</span> <span class="dt">Particle</span> <span class="ot">-&gt;</span> <span class="dt">VectorE</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">velocity <span class="fu">=</span> vmap <span class="dt">D</span> <span class="fu">.</span> pos</a></code></pre></div>
+<p>We can try this out in the interpreter with our newly created particle.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb10-1" data-line-number="1">ghci <span class="fu">&gt;</span> velocity particle</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">((<span class="dt">D</span> ((<span class="dv">3</span> <span class="fu">*</span> id) <span class="fu">*</span> id)) x, (<span class="dt">D</span> (<span class="dv">2</span> <span class="fu">*</span> id)) y, (<span class="dt">D</span> <span class="dv">1</span>) z)</a></code></pre></div>
+<p>Not very readable but at least we can see that it correctly maps the derivative over the components of the vector.</p>
+<p><em>Acceleration</em> is defined as the derivative of the velocity with respect to time, or the second derivative of the position. More formally:</p>
+<span class="math display">\[\begin{equation*}
+\vec{a} = \frac{d\vec{v}}{dt} = \frac{d^2\vec{r}}{dt^2}
+\end{equation*}\]</span>
+<p><strong>Exercise</strong> Try to figure out how to define the function for calculating the acceleration of a particle.</p>
+<details>
+<p><summary> <strong>Solution</strong> </summary></p>
+<p>We already know how to get the velocity of a particle, so the the only step we need to take is to take the derivative of the velocity.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="ot">acceleration ::</span> <span class="dt">Particle</span> <span class="ot">-&gt;</span> <span class="dt">VectorE</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">acceleration <span class="fu">=</span> vmap <span class="dt">D</span> <span class="fu">.</span> velocity</a></code></pre></div>
+<p>Which is the same as:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="ot">acceleration ::</span> <span class="dt">Particle</span> <span class="ot">-&gt;</span> <span class="dt">VectorE</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2">acceleration <span class="fu">=</span> vmap <span class="dt">D</span> <span class="fu">.</span> vmap <span class="dt">D</span> <span class="fu">.</span> pos</a></code></pre></div>
+<details>
+<p><summary> <strong>Trivia</strong> </summary></p>
+<p>Those of you familiar with functor laws will probably see that the code for calculating the acceleration could also be written as:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="ot">acceleration ::</span> <span class="dt">Particle</span> <span class="ot">-&gt;</span> <span class="dt">VectorE</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">acceleration <span class="fu">=</span> vmap (<span class="dt">D</span> <span class="fu">.</span> <span class="dt">D</span>) <span class="fu">.</span> pos</a></code></pre></div>
+</details>
+</details>
+<h2 id="forces-newtons-second-law">Forces &amp; Newton’s second law</h2>
+Newton’s second law states that
+<blockquote>
+A body acted upon by a force moves in such a manner that the time rate of change of the momentum equals the force.
+</blockquote>
+<p>This law expresses the relationship between force and momentum and is mathematically defined as follows:</p>
+<span class="math display">\[\begin{equation}
+  \vec{F} = \frac{d \vec{p}}{d t} = \frac{d(m \cdot \vec{v})}{d t}
+\end{equation}\]</span>
+<p>Force is a vector so let’s create a type synonym to make this clearer.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">type</span> <span class="dt">Force</span> <span class="fu">=</span> <span class="dt">VectorE</span></a></code></pre></div>
+<p>The quantity <span class="math inline">\(m \cdot \vec{v}\)</span> is what we mean when we say momentum. So the law states that the net force on a particle is equal to the rate of change of the momentum with respect to time. And since the definition of acceleration is <span class="math inline">\(\vec{a} = \frac{d \vec{v}}{d t}\)</span> we can write this law in a more familiar form, namely:</p>
+<span class="math display">\[\begin{equation}
+  \vec{F} = m \cdot \vec{a}
+\end{equation}\]</span>
+<p>And thus if the particle is accelerating we can calculate the force that must be acting on it, in code this would be:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="ot">force ::</span> <span class="dt">Particle</span> <span class="ot">-&gt;</span> <span class="dt">Force</span></a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">force p <span class="fu">=</span> vmap (<span class="fu">*</span> m) a</a>
+<a class="sourceLine" id="cb15-3" data-line-number="3">  <span class="kw">where</span></a>
+<a class="sourceLine" id="cb15-4" data-line-number="4">    m <span class="fu">=</span> mass p</a>
+<a class="sourceLine" id="cb15-5" data-line-number="5">    a <span class="fu">=</span> acceleration p</a></code></pre></div>
+<p>Where the acceleration of particle is found by deriving the velocity of that same particle with respect to <span class="math inline">\(t\)</span>:</p>
+<h2 id="kinetic-energy">Kinetic energy</h2>
+<p>Kinetic stands for motion, so the kinetic energy of a particle is the energy it gains through movement. Energy is a scalar quantity so we’ll model it using a <span class="math inline">\(FunExpr\)</span>.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">type</span> <span class="dt">Energy</span> <span class="fu">=</span> <span class="dt">FunExpr</span></a></code></pre></div>
+<p>In classical mechanics the kinetic energy of particle is equal to <span class="math inline">\(\frac{1}{2}\)</span> of the product of its mass and the square of its velocity. In mathmatical notation this would be.</p>
+<span class="math display">\[\begin{equation}
+    E_k = mv^2
+\end{equation}\]</span>
+<p>But what does it mean to take the square of speed? We know of an operator to take the square of a number, but velocity is not a number it’s a vector. So there seems to be a double meaning to what taking the square of something actually means depending on the type of the expression.</p>
+<p>More concrete what we actually mean when we say <code>the square of vector'' is to take the dot product of the vector with itself. This may seem fairly straightforward and obvious on paper but when we start working with types this overloading of the word</code>square’’ looks a bit strange. For numbers it has the type</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="ot">square ::</span> <span class="dt">Num</span> a <span class="ot">=&gt;</span> a <span class="ot">-&gt;</span> a</a></code></pre></div>
+<p>but for vectors it has the type</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="ot">square ::</span> <span class="dt">Num</span> a <span class="ot">=&gt;</span> <span class="dt">Vector</span> a <span class="ot">-&gt;</span> a</a></code></pre></div>
+<p>same name, vastly different meanings. If we were to encode this double meaning of the function we would have to create a type class which would encode this ability to be squared and then make Num and Vector instances of this class.</p>
+<p>But enough yammering about types and double meanings! Let’s actually define the function for taking the square of a vector and move on with our lives.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="ot">square ::</span> <span class="dt">VectorE</span> <span class="ot">-&gt;</span> <span class="dt">FunExpr</span></a>
+<a class="sourceLine" id="cb19-2" data-line-number="2">square v <span class="fu">=</span> dotProd v v</a></code></pre></div>
+<p>Pretty straightforward. So with this out of the way we can now define the function for calculating the kinetic energy of a particle, again this is almost the same as just writing down the mathmatical formula with the added benefit of types.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="ot">kineticEnergy ::</span> <span class="dt">Particle</span> <span class="ot">-&gt;</span> <span class="dt">Energy</span></a>
+<a class="sourceLine" id="cb20-2" data-line-number="2">kineticEnergy p <span class="fu">=</span> <span class="dt">Const</span> <span class="fl">0.5</span> <span class="fu">*</span> m <span class="fu">*</span> v2</a>
+<a class="sourceLine" id="cb20-3" data-line-number="3">  <span class="kw">where</span></a>
+<a class="sourceLine" id="cb20-4" data-line-number="4">    m  <span class="fu">=</span> mass p</a>
+<a class="sourceLine" id="cb20-5" data-line-number="5">    v  <span class="fu">=</span> velocity p</a>
+<a class="sourceLine" id="cb20-6" data-line-number="6">    v2 <span class="fu">=</span> square v</a></code></pre></div>
+<h2 id="potential-energy">Potential energy</h2>
+<p>In classical mechanics potential energy is defined as the energy possed by a particle because of its position relative to other particles, its electrical charge and other factors. This means that to actually calculate the potential energy of a particle we’d have to take into account all other particles that populate the system no matter how far apart they are.</p>
+<h2 id="potential-energy-near-earth">Potential energy near Earth</h2>
+<p>Thankfully if we’re close to the Earths gravitational field it’s ok to simplify this problem and only take into account the Earths gravitational pull since all other factors are negliable in comparison.</p>
+<p>The potential energy for particles affected by gravity is defined with mathmatical notation as:</p>
+<span class="math display">\[\begin{equation}
+    E_p = m \cdot g \cdot h
+\end{equation}\]</span>
+<p>where <span class="math inline">\(m\)</span> is the mass of the particle, <span class="math inline">\(h\)</span> its height, and <span class="math inline">\(g\)</span> is the acceleration due to gravity (9.82 <span class="math inline">\(m/s^2\)</span>).</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="ot">potentialEnergy ::</span> <span class="dt">Particle</span> <span class="ot">-&gt;</span> <span class="dt">Energy</span></a>
+<a class="sourceLine" id="cb21-2" data-line-number="2">potentialEnergy p <span class="fu">=</span> m <span class="fu">*</span> g <span class="fu">*</span> h</a>
+<a class="sourceLine" id="cb21-3" data-line-number="3">  <span class="kw">where</span></a>
+<a class="sourceLine" id="cb21-4" data-line-number="4">    m          <span class="fu">=</span> mass p</a>
+<a class="sourceLine" id="cb21-5" data-line-number="5">    g          <span class="fu">=</span> <span class="dt">Const</span> <span class="fl">9.82</span></a>
+<a class="sourceLine" id="cb21-6" data-line-number="6">    (<span class="dt">V3</span> _ _ h) <span class="fu">=</span> pos p</a></code></pre></div>
+<h2 id="work">Work</h2>
+<p>If a constant force <span class="math inline">\(\vec{F}\)</span> is applied to a particle that moves from position <span class="math inline">\(\vec{r_1}\)</span> to <span class="math inline">\(\vec{r_2}\)</span> then the <em>work</em> done by the force is defined as the dot product of the force and the vector of displacement. In mathmatical notation this is written as</p>
+<span class="math display">\[\begin{equation}
+  W = \vec{F} \cdot \Delta \vec{r}
+\end{equation}\]</span>
+<p>where <span class="math inline">\(\Delta \vec{r} = \vec{r_2} - \vec{r_1}\)</span>.</p>
+<p>The work-energy theorem states that for a particle of constant mass <em>m</em>, the total work <em>W</em> done on the particle as it moves from position <span class="math inline">\(r_1\)</span> to <span class="math inline">\(r_2\)</span> is equal to the change in kinetic energy <span class="math inline">\(E_k\)</span> of the particle:</p>
+<span class="math display">\[\begin{equation}
+  W = \Delta E_K = E_{k,2} - E_{k,1} = \frac{1}{2} m (\vec{v_2}^2 - \vec{v_1}^2)
+\end{equation}\]</span>
+<p>Let’s codify this theorem:</p>
+<p>PS: This used to work just fine, but it no longer does since the switch to FunExpr. Problem probably lies somewhere in SyntaxTree</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="ot">prop_WorkEnergyTheorem ::</span> <span class="dt">Mass</span> <span class="ot">-&gt;</span> <span class="dt">VectorE</span> <span class="ot">-&gt;</span> <span class="dt">VectorE</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> <span class="dt">Bool</span></a>
+<a class="sourceLine" id="cb22-2" data-line-number="2">prop_WorkEnergyTheorem m v1 v2 <span class="fu">=</span> prettyEqual deltaEnergy (kineticEnergy displacedParticle)</a>
+<a class="sourceLine" id="cb22-3" data-line-number="3">  <span class="kw">where</span></a>
+<a class="sourceLine" id="cb22-4" data-line-number="4">    particle1 <span class="fu">=</span> <span class="dt">P</span> v1 m <span class="co">-- | Two particles with the same mass</span></a>
+<a class="sourceLine" id="cb22-5" data-line-number="5">    particle2 <span class="fu">=</span> <span class="dt">P</span> v2 m <span class="co">-- | But different position vector</span></a>
+<a class="sourceLine" id="cb22-6" data-line-number="6">    <span class="co">-- |          E_k,2                     - E_k,1</span></a>
+<a class="sourceLine" id="cb22-7" data-line-number="7">    deltaEnergy <span class="fu">=</span> kineticEnergy particle2 <span class="fu">-</span> kineticEnergy particle1</a>
+<a class="sourceLine" id="cb22-8" data-line-number="8">    displacedParticle <span class="fu">=</span> <span class="dt">P</span> (v2 <span class="fu">-</span> v1) m</a></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="co">-- Test values</span></a>
+<a class="sourceLine" id="cb23-2" data-line-number="2">v1 <span class="fu">=</span> <span class="dt">V3</span> (<span class="dv">3</span> <span class="fu">:*</span> <span class="dt">Id</span>) (<span class="dv">2</span> <span class="fu">:*</span> <span class="dt">Id</span>) (<span class="dv">1</span> <span class="fu">:*</span> <span class="dt">Id</span>)</a>
+<a class="sourceLine" id="cb23-3" data-line-number="3">v2 <span class="fu">=</span> <span class="dt">V3</span> <span class="dv">0</span> <span class="dv">0</span> (<span class="dv">5</span> <span class="fu">:*</span> <span class="dt">Id</span>)</a>
+<a class="sourceLine" id="cb23-4" data-line-number="4">v3 <span class="fu">=</span> <span class="dt">V3</span> <span class="dv">0</span> (<span class="dv">3</span> <span class="fu">:*</span> <span class="dt">Id</span>) <span class="dv">0</span><span class="ot"> ::</span> <span class="dt">VectorE</span></a>
+<a class="sourceLine" id="cb23-5" data-line-number="5">v4 <span class="fu">=</span> <span class="dt">V3</span> <span class="dv">2</span> <span class="dv">2</span> <span class="dv">2</span><span class="ot"> ::</span> <span class="dt">VectorE</span></a>
+<a class="sourceLine" id="cb23-6" data-line-number="6">m  <span class="fu">=</span> <span class="dv">5</span></a>
+<a class="sourceLine" id="cb23-7" data-line-number="7">p1 <span class="fu">=</span> <span class="dt">P</span> v1 m</a>
+<a class="sourceLine" id="cb23-8" data-line-number="8">p2 <span class="fu">=</span> <span class="dt">P</span> v2 m</a>
+<a class="sourceLine" id="cb23-9" data-line-number="9">dE <span class="fu">=</span> kineticEnergy p2 <span class="fu">-</span> kineticEnergy p1</a>
+<a class="sourceLine" id="cb23-10" data-line-number="10">p3 <span class="fu">=</span> <span class="dt">P</span> (v2 <span class="fu">-</span> v1) m</a></code></pre></div>
+<h2 id="law-of-universal-gravitation">Law of universal gravitation</h2>
+<p>Newton’s law of universal gravitation states that a particle attracts every other particle in the universe with a force that is directly proportional to the product of their masses, and is inversely proportional to the square of the distance between their centers.</p>
+<p>This means that every particle with mass attracts every other particle with mass by a force pointing along the line intersecting both points.</p>
+<p>There is an equation for calculating the magnitude of this force which states with math what we stated in words above:</p>
+<span class="math display">\[\begin{equation}
+  F = G \frac{m_1 m_2}{r^2}
+\end{equation}\]</span>
+<p>Where <em>F</em> is the maginitude of the force, <em>m1</em> and <em>m2</em> are the masses of the objects interacting, <em>r</em> is the distance between the centers of the masses and <em>G</em> is the gravitational constant.</p>
+<p>The gravitational constant has been finely approximated through experiments and we can state it in our code like this:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw">type</span> <span class="dt">Constant</span> <span class="fu">=</span> <span class="dt">FunExpr</span></a>
+<a class="sourceLine" id="cb24-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb24-3" data-line-number="3"><span class="ot">gravConst ::</span> <span class="dt">Constant</span></a>
+<a class="sourceLine" id="cb24-4" data-line-number="4">gravConst <span class="fu">=</span> <span class="fl">6.674</span> <span class="fu">*</span> (<span class="dv">10</span> <span class="fu">**</span> (<span class="fu">-</span><span class="dv">11</span>))</a></code></pre></div>
+<p>Now we can codify the law of universal gravitation using our definition of particles.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="ot">lawOfUniversalGravitation ::</span> <span class="dt">Particle</span> <span class="ot">-&gt;</span> <span class="dt">Particle</span> <span class="ot">-&gt;</span> <span class="dt">FunExpr</span></a>
+<a class="sourceLine" id="cb25-2" data-line-number="2">lawOfUniversalGravitation p1 p2 <span class="fu">=</span> gravConst <span class="fu">*</span> ((m_1 <span class="fu">*</span> m_2) <span class="fu">/</span> r2)</a>
+<a class="sourceLine" id="cb25-3" data-line-number="3">  <span class="kw">where</span></a>
+<a class="sourceLine" id="cb25-4" data-line-number="4">    m_1 <span class="fu">=</span> mass p1</a>
+<a class="sourceLine" id="cb25-5" data-line-number="5">    m_2 <span class="fu">=</span> mass p2</a>
+<a class="sourceLine" id="cb25-6" data-line-number="6">    r2 <span class="fu">=</span> square <span class="fu">$</span> pos p2 <span class="fu">-</span> pos p1</a></code></pre></div>
+<p>If a particles position is defined as a vector representing its displacement from some origin O, then its heigh should be x. Or maybe it should be the magnitude of the vector, if the gravitational force originates from O. Hmmm</p>
+<p>This seems weird since I don’t know what the frame of reference is…</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="ot">potentialEnergy ::</span> <span class="dt">Particle</span> <span class="ot">-&gt;</span> <span class="dt">Energy</span></a>
+<a class="sourceLine" id="cb26-2" data-line-number="2">potentialEnergy p <span class="fu">=</span> undefined</a>
+<a class="sourceLine" id="cb26-3" data-line-number="3">  <span class="kw">where</span></a>
+<a class="sourceLine" id="cb26-4" data-line-number="4">    m          <span class="fu">=</span> mass p</a>
+<a class="sourceLine" id="cb26-5" data-line-number="5">    (<span class="dt">V3</span> x _ _) <span class="fu">=</span> pos p</a></code></pre></div>
+
+    </main>
+
+    <footer>
+      <nav>
+	<span>[src: <a href="https://github.com/DSLsofMath/BScProj2018/blob/master/Physics/src/NewtonianMechanics/SingleParticle.lhs">NewtonianMechanics/SingleParticle.lhs</a>]</span>
+        <span>Previous: <a href="../Calculus/Visualization%2C%20Verification%2C%20and%20Application.html">Visualization, Verification, and Application</a></span>
+        <a href="../index.html">Table of contents</a>
+        <span>Next: <a href="../index.html">Table of contents</a></span>
+      </nav>
+      © Kandidatboisen (2018), GPL
+    </footer>
+  </body>
+</html>

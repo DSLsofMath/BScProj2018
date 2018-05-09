@@ -21,7 +21,8 @@
     </header>
 
     <main>
-      <h1 id="so-whats-a-dsl">So what’s a DSL?</h1>
+      <div class="sourceCode" id="cb1"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">module</span> <span class="dt">Introduction.WhatIsADsl</span> <span class="kw">where</span></a></code></pre></div>
+<h1 id="so-whats-a-dsl">So what’s a DSL?</h1>
 <p>In general, a domain specific language is simply a computer language for a specific domain. It’s NOT a synonym for <a href="http://www.catb.org/jargon/html/online-preface.html">jargon</a>! DSLs can be specialized for markup, like <a href="https://en.wikipedia.org/wiki/HTML"><em>HTML</em></a>; for modelling, like <a href="https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form"><em>EBNF</em></a>; for shell scripting, like <a href="https://en.wikipedia.org/wiki/Bash_%28Unix_shell%29"><em>Bash</em></a>; and more.</p>
 <p>The languages we will construct will mostly concern modelling of physics and mathematics. We will create data structures in Haskell to represent the same physics calculations that we write on paper, in such a way that we can write functions to, for example, analyze the expressions for validity.</p>
 <p>Look, we’ll demonstrate. Let’s say we want to model a language that is a subset to the common algebra we’re all familiar with. Our language will consist expressions of a single variable and addition. For example, the following three expressions are all valid in such a language:</p>
@@ -29,20 +30,20 @@
 <p><span class="math display">\[x\]</span></p>
 <p><span class="math display">\[(x + x) + (x + x)\]</span></p>
 <p>When implementing a DSL, we typically start with modelling the syntax. Let’s first declare a data type for the language</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">data</span> <span class="dt">Expr</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">data</span> <span class="dt">Expr</span></a></code></pre></div>
 <p>Then we interpret the textual description of the language. “Our language will consist of expressions of a single variable and addition”. Ok, so an expression can be one of two things then: a single variable</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1">  <span class="fu">=</span> <span class="dt">X</span></a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" data-line-number="1">  <span class="fu">=</span> <span class="dt">X</span></a></code></pre></div>
 <p>or two expressions added together.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" data-line-number="1">  <span class="fu">|</span> <span class="dt">Add</span> <span class="dt">Expr</span> <span class="dt">Expr</span></a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb4-1" data-line-number="1">  <span class="fu">|</span> <span class="dt">Add</span> <span class="dt">Expr</span> <span class="dt">Expr</span></a></code></pre></div>
 <p>And that’s it, kind of! However, a DSL without any associated functions for validation, symbolic manipulation, evaluation, or somesuch, is really no DSL at all! We must DO something with it, or there is no point!</p>
 <p>One thing we can do with expressions such as these, is compare whether two of them are equal. Even without using any numbers, we can test this by simply counting the <span class="math inline">\(x\)</span>s! If both expressions contain the same number of <span class="math inline">\(x\)</span>s, they will be equal!</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="ot">eq ::</span> <span class="dt">Expr</span> <span class="ot">-&gt;</span> <span class="dt">Expr</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">eq e1 e2 <span class="fu">=</span> count e1 <span class="fu">==</span> count e2</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">  <span class="kw">where</span> count <span class="dt">X</span>           <span class="fu">=</span> <span class="dv">1</span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">        count (<span class="dt">Add</span> e1 e2) <span class="fu">=</span> count e1 <span class="fu">+</span> count e2</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="ot">eq ::</span> <span class="dt">Expr</span> <span class="ot">-&gt;</span> <span class="dt">Expr</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">eq e1 e2 <span class="fu">=</span> count e1 <span class="fu">==</span> count e2</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">  <span class="kw">where</span> count <span class="dt">X</span>           <span class="fu">=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">        count (<span class="dt">Add</span> e1 e2) <span class="fu">=</span> count e1 <span class="fu">+</span> count e2</a></code></pre></div>
 <p>We can now test whether our expressions are equal.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb5-1" data-line-number="1">ghci<span class="fu">&gt;</span> eq (<span class="dt">Add</span> (<span class="dt">Add</span> <span class="dt">X</span> <span class="dt">X</span>) <span class="dt">X</span>) (<span class="dt">Add</span> <span class="dt">X</span> (<span class="dt">Add</span> <span class="dt">X</span> <span class="dt">X</span>))</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="dt">True</span></a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb6-1" data-line-number="1">ghci<span class="fu">&gt;</span> eq (<span class="dt">Add</span> (<span class="dt">Add</span> <span class="dt">X</span> <span class="dt">X</span>) <span class="dt">X</span>) (<span class="dt">Add</span> <span class="dt">X</span> (<span class="dt">Add</span> <span class="dt">X</span> <span class="dt">X</span>))</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="dt">True</span></a></code></pre></div>
 <p>And NOW that’s it (if we want to stop here)! This is a completely valid (but boring) DSL. We’ve modelled the syntax, and added a function that operates symbolically on our language. This is a very small and simple DSL, and you’ve likely done something similar before without even realizing you were constructing a DSL. It can really be that simple</p>
 <p>In other DSLs we may also look at evaluation and the semantics of a language, i.e. what is the actual type of the result when we <em>evaluate</em> or “compute” our expressions.</p>
 <p>Throughout this book we’ll construct and use DSLs in many different ways. Different parts of the physics we look at will require different DSL treatments, basically. There is no <em>one</em> model to use for all DSLs.</p>

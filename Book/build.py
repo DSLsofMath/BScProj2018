@@ -125,16 +125,6 @@ sources = [
         "Physics/src/Dimensions/Quantity/Test.lhs"),
         ("Usage", "Physics/src/Dimensions/Usage.lhs"),
     ]),
-    ("Vectors", [
-        ("Vector", "Physics/src/Vector/Vector.lhs")
-    ]),
-    ("Calculus", [
-        ("Introduction", "Physics/src/Calculus/Intro.lhs"),
-        ("Function expressions", "Physics/src/Calculus/FunExpr.lhs"),
-        ("Differential calculus", "Physics/src/Calculus/DifferentialCalc.lhs"),
-        ("Integral calculus", "Physics/src/Calculus/IntegralCalc.lhs"),
-        ("Visualization, Verification, and Application", "Physics/src/Calculus/VisVerApp.lhs"),
-    ]),
     ("Newtonian Mechanics", [
         ("Single particle mechanics", "Physics/src/NewtonianMechanics/SingleParticle.lhs")
     ])

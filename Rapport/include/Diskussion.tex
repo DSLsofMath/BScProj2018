@@ -40,7 +40,7 @@ dessa tre brister i utvärderingen är alla slutsatser dragna med utvärderingen
 som stöd ytterst osäkra.
 
 Det går även att kritisera hur urvalet av områden gick till under projektet.
-Dels kan det ha lett till att inga domänspecifika språk för fysik 
+Dels kan det ha lett till att endast några få domänspecifika språk för fysik 
 implementerades, se diskussionen i avsnitt~\ref{sec:fpf}. Dels skedde urvalet ur
 implementatörens perspektiv (det vill säga, vårt) och inte ur användarens
 perspektiv (studenten som ska nyttja läromaterialet). Med det menar vi att
@@ -92,13 +92,13 @@ fler fysikaliska problem utöver gungbräda och krafter på lådor. Vi tror att 
 tre grundläggande områdena som är färdiga räcker. Förutom fler tillämpningar kan
 man utveckla mer fördjupande områden, till exempel bevisföring, något som
 nämndes i avsnitt~\ref{sec:res_laromaterial} att det påbörjats. Det är dock värt
-att nämna att vi är mycket nöjda med det material som vi har producerat, våra
-kapitel är väl avgränsade och är utformade och implementerade på det sätt som vi
-tycker att de bör implementeras. 
+att nämna att vi är mycket nöjda med det material som vi har producerat. Våra
+kapitel är väl avgränsade, utformade och implementerade på det sätt som vi
+tycker att de bör ha implementerats. 
 
 En annan del av målet var att läromaterialet skulle vara lättillgängligt genom
 sitt språkbruk, publicering på en hemsida och fri tillgång till källkoden.
-Vi kan genast konstatera att de senare två har genomförts. Vi passar även på att
+Vi kan konstatera att de senare två har genomförts. Vi passar även på att
 säga att vi tycker att en lättanvänd hemsida är trevligare att använda än
 PDF-filer eftersom de inte har sidbrytningar, fixa sidmarginaler med mera. Detta
 är visserligen små detaljer, men tillsammans påverkar de upplevelsen i stort. Vi
@@ -165,12 +165,12 @@ av fysik.
 
 Vi hävdar alltså att fokuset lagts på mer än bara fysik av två skäl: att fysik är tillämpad matematik och att det är viktigt att förklara de Haskell-koncept som används. Men måste
 det vara så? Det kan mycket väl vara så att detta fokusskifte har skett på grund
-av hur vi valde att genomföra projektet. I ett tidigt skede valde vi söka efter
+av hur vi valde att genomföra projektet. I ett tidigt skede valde vi att söka efter
 områden som vi ansåg vara fristående och väl avgränsade, se avsnitt~\ref{sec:valet},
 och implementera dessa var för sig. Utan tvekan har detta sätt att påbörja
 projektet påverkat allting som kom därefter. Om vi istället hade utvecklat
 läromaterialet som en kombination av olika områden från början hade det kanske
-inte varit lika främmande att även baka in problemlösning i detta och på så sätt
+inte varit lika främmande att även baka in problemlösning i läromaterialet och på så sätt
 fått mer fysik-orienterade domänspecifika språk.
 
 Även tidigare än så går det att vara kritisk till projektets utformning. Varför
@@ -179,7 +179,7 @@ Haskells typer och fokus på mönstermatchning gör det idealt för implementeri
 av domänspecifika språk.  Men betyder det att det är idealt för implementering
 av fysik? Kanske ett objektorienterat språk som Java hade passat bättre. Att
 använda ett språk som inte har en lika stark koppling till ren matematik som
-Haskell hade kanske lett till att det stora fokuset inte låg på matematiken
+Haskell hade kanske lett till att fokuset inte legat på matematiken
 bakom fysiken, utan istället på fysiken framför matematiken.
 
 \subsection{Vilka områden passar domänspecifika språk?}\label{sec:lampligt}
@@ -193,7 +193,7 @@ förvånande eftersom båda områdena är varsin egen gren inom matematiken
 och lämpar sig därmed väl för implementering i Haskell som är ett språk med nära
 anknytning till matematik. En annan sak som dessa väl lämpade områden hade
 gemensamt var en tydlig syntax och en fix struktur som bestod av ``data och
-operationer''. Tabell~\ref{tab:data_och_ops} visar några exempel på områden med
+operationer'' (data i bemärkelsen som ett matematiskt objekt för ett område). Tabell~\ref{tab:data_och_ops} visar några exempel på områden med
 sina data och operationer.
 
 \captionsetup[figure]{name=Tabell}
@@ -245,7 +245,7 @@ motsvarande implementation i Haskell. Denna strukturella likhet gör
 modellerandet och manipulerandet av data enkel att genomföra rent tekniskt. Men
 den innebär också en pedagogisk vinst. Genom att ha strukturerat upp fysik
 tydligt i Haskell blir det förhoppningsvis enklare för läsaren att förstå hur
-datan hänger ihop rent fysikaliskt. Och även hur relationerna mellan olika
+datan (de matematiska strukturerna) hänger ihop rent fysikaliskt. Och även hur relationerna mellan olika
 datatyper och funktioner som dyker upp i läromaterialet direkt kan översättas
 till motsvarande relationer inom fysik.
 
@@ -273,7 +273,7 @@ lämpat för ett domänspecifika språk?
 
 När man skapar ett domänspecifikt språk till ett område gör man det genom att
 identifiera syntaxen som används, datan som modelleras,
-vilka operationer som görs på denna data och vad det finns för lagar och samband
+vilka operationer som används på denna data och vad det finns för lagar och samband
 som gäller för dessa. Detta sätt att arbeta fungerar bra för områden som är
 generella och som går att modellera på ett sätt som tillåter vidareutveckling, såsom
 vektorer i flera dimensioner eller vektorer vars komponenter kan vara av vilken
@@ -296,7 +296,7 @@ Samband och ekvationer av detta slag kan visserligen modelleras som ett domänsp
 språk, men vi menar att nyttan inte blir stor med det eftersom allt vi då gör är
 att skriva de formler som redan finns att tillgå i diverse kursböcker i fysik
 utan att tillföra någon ny kunskap och utan att modellera dem på ett generellt
-eller unikt sätt. Det man då kan göra är att programmera en ekvationslösare. Men
+eller unikt sätt. Det man då kan göra är att programmera en ekvationslösare men
 den hade varit både mekanisk och komplex. Den skulle alltså skilja sig
 drastiskt från hur man löser problem för hand och skulle vara svår att förstå.
 Alldeles för mycket fokus skulle hamna på algoritmer istället för fysik. Vi
@@ -363,7 +363,7 @@ Det som talar emot
 domänspecifika språk när det kommer till fysik är den stora del av problemlösning
 som ingår i fysik. Det har att göra med deras olika natur. Domänspecifika språk
 har en entydig och fyrkantig struktur medan problemlösning handlar om
-kreativitet och nytänkande. Eftersom en stor del i fysik är just problemlösning
+kreativitet och nytänkande för att bygga upp modeller. Eftersom en stor del i fysik är just problemlösning
 kan denna del inte fångas upp med domänspecifika språk. Det skulle till och med
 kunna vara en nackdel att kombinera domänspecifika språk och fysik om det leder
 till att man tänker alltför fyrkantigt kring fysik. Vi anser dock att
@@ -430,7 +430,7 @@ domänspecifika språk utan att göra fysikaliska domänspecifika språk. Det ka
 saker som ett språk för ett lutande plans komponenter, ett språk för vilka krafter som verkar på fysikaliska kroppar i mekanikproblem eller till och med ett språk för något så abstrakt som
 fysikalisk problemlösning i allmänhet. Vi vet inte hur ett domänspecifikt språk
 av detta slag kan se ut, vilket är anledningen till att vi gick den andra vägen,
-som vi diskuterade i avsnitt~\ref{sec:fpf}. Att ger mer fysik-orienterade
+som vi diskuterade i avsnitt~\ref{sec:fpf}. Att göra fler fysik-orienterade
 domänspecifika språk hade därför varit en möjlig vidareutveckling.
 
 En annan möjlig vidareutveckling är att göra en rigorös studie kring de
@@ -452,8 +452,8 @@ finns det aspekter inom den klassiska mekaniken som fattas.
 Slutligen finns det en mycket intressant vidareutveckling som inte alls har
 behandlats i detta projekt, nämligen att använda matematiska och fysikaliska domänspecifika språk som
 ett syntaktiskt lager mellan användare och en underliggande komplex kodbas. I
-många fall kan dessa kodbaser vara implementerade på ointuitivt sätt och utan
-någon typsäkerhet. I dessa fall kan det vara mycket användbart med ett
+många fall kan dessa kodbaser vara implementerade på sätt som inte förefaller vara intuitivt, och saknar
+typsäkerhet. I dessa fall kan det vara användbart med ett
 domänspecifikt språk med hög typsäkerhet som tvingar användaren att
 endast skriva korrekta uttryck och som döljer den bakomliggande komplexiteten. Tänk till exempel på kod i Matlab. Där är det lätt hänt att missa någon detalj i sin implementation så att beräkningarna blir fel utan att Matlab klagar. Uttrycket är korrekt men semantiken är fel. Med ett syntaktiskt lager som kräver att de fysikaliska dimensionerna stämmer överens hade vissa misstag kunnat upptäckas vid kompilering istället för att kanske inte upptäckas alls. Denna idé framfördes till oss av Jeff Chen\footnote{Jeffs sida på Chalmers:
 \url{http://www.cse.chalmers.se/\~yutingc/}.}

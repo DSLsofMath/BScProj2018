@@ -4,8 +4,21 @@
 \thispagestyle{plain}			% Supress header
 \section*{Abstract}
 
+This report describes the development of the learning material \textit{Learn You a Physics for Great Good!} The project was a bachelor thesis project at the department of Computer Science and Engineering at Chalmers University of Technology. The goal of the project is to create a text-based learning material which presents physics with the help of the programming concept \textit{domain specific languages}, where the domain specific languages are implemented in the programming language Haskell. Furthermore, the pedagogical use of a learning material of this kind, and how well physics and domain specific languages can be combined shall be discussed.
+
+The background of the project is the (for Computer Science and Engineering students at Chalmers) mandatory physics course \textit{Fysik för ingenjörer} which has had less-than-good exam statistics for several years. We believe one factor for why Computer Science and Engineering students get bad results in this course is that they find physics irrelevant in relation to the rest of their education. We think this problem can be solved with a learning material bridging physics and programming, highlighting both the relevancy of physics and invoking an interest for it. An increased interest will hopefully also lead to better results in the course.
+
+The resulting learning material includes five chapters dealing with physical dimensions, calculus, vectors, particle mechanics and applications of them. Each chapter consists of Haskell-code combined with a descripte text. Some chapters constructs domain specific languages from the ground up while some applies previous domain specific languages on physical problems. The learning material was published on a website\footnote{\url{https://dslsofmath.github.io/BScProj2018/}} and its source code is freely available\footnote{\url{https://github.com/DSLsofMath/BScProj2018}}.
+
+The report also describes the meetings and discussions conducted with non-project members. Their purpose have been to improve the learning material and to perform an informal evaluation of the completed learning material.
+
+The conclusions are that domain specific languages can have a pedagogical usefulness in physics education. The rigorous nature of Haskell and domain specific languages makes the process of physical problem solving rigorous as well. We believe this way of thinking can further the teaching if it's used in traditional physics education.
+
+
+
+
 % max 150 ord typ
-\begin{binge}
+
 
 %https://www.sfu.ca/~jcnesbit/HowToWriteAbstract.htm
 % Punktlista på vad som ska vara med:
@@ -17,20 +30,20 @@
 
 
 
-% Building blocks:    
+% Building blocks:
 %   En mening om varje kapitel:
-    Introduction (sv introduktion): Describes the starting point, goals and restrictions.
-    Theory (sv. teori): Describes concepts of DSL, functional programming and learning models aimed for the learning material.
-    Method (sv. genomförande): Describes the construction of the material, publishing, the procedure of testing with a testgroup and comments from keyfigures from the ordinary education.
-    Results (sv. resultat): Describes the resulting material, the feedback from the testgroup and the comments from a physic teacher.
-    Discussion (sv. diskussion): Reviews the methodology and the results. Also mentions possible further extensions and ethical dimensions of the material.
-    Conclusions (sv. slutsatser): A final summary connecting the initial goals, with the methodology, and the result.
+%    Introduction (sv introduktion): Describes the starting point, goals and restrictions.
+%    Theory (sv. teori): Describes concepts of DSL, functional programming and learning models aimed for the learning material.
+%    Method (sv. genomförande): Describes the construction of the material, publishing, the procedure of testing with a testgroup and comments from keyfigures from the ordinary education.
+%    Results (sv. resultat): Describes the resulting material, the feedback from the testgroup and the comments from a physic teacher.
+%    Discussion (sv. diskussion): Reviews the methodology and the results. Also mentions possible further extensions and ethical dimensions of the material.
+%    Conclusions (sv. slutsatser): A final summary connecting the initial goals, with the methodology, and the result.
 
 
 % KEYWORDS (MAXIMUM 10 WORDS)
 \vfill
-Keywords: Läromaterial, fysik, haskell, funktionell programmering.
-\end{binge}
+Keywords: Domain Specific Languages, Classical Mehanics, Physics Education, Learning Material, Functional Programming, Haskell
+
 % Learning material, physics, haskell, functional programming.
 
 \newpage				% Create empty back of side

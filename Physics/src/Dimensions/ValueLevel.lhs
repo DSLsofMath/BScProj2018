@@ -15,7 +15,7 @@ Value-level dimensions
 >     , luminosity
 >     , one
 >     ) where
-> 
+>
 > import Prelude hiding (length, div)
 
 From the introduction, two things became apparanent:
@@ -34,7 +34,7 @@ A dimension can be seen as a product of the base dimensions, with an individual 
 >                Integer -- Temperature
 >                Integer -- Substance
 >                Integer -- Luminosity
->            deriving (Eq)
+>   deriving (Eq)
 
 Each field denotes the exponent for the corresponding base dimension. If the exponent is `0`, the base dimension is not part of the dimension. Some examples should clarify.
 

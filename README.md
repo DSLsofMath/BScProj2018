@@ -16,34 +16,3 @@ Medlemmar: Oskar, Erik, ~~Daniel~~, Björn, Johan
 * 24/5 (10:35) : Muntliga slutredovisning och opposition & Avtal om publicering, lämnas in i samband med presentationen
 * 25/5 : Egen utvärdering på blankett till handledaren.
 * 1/6 : Deadline inlämning av slutrapport, elektronisk form, med införande av opponenternas kommentarer.
-
-
-## Kvar på rapporten
-
-Börja gärna innan. Men på torsdagen den 19 försöker vi göra klart dem.
-
-Gör en överstrykning på saker när de är klara.
-
-- Annat
-    - Titel och framsidebild
-    - **O** Formalia
-    - **J** Sammandrag
-    - **E** Översätt sammandrag till abstract
-    - **B** Att böra på slutsatser
-    - Slutsatser
-- Introduktion
-- Teori
-- Metod
-- Resultat
-- Diskussion
-
-
-
-
-
-
-
-
-
-
-

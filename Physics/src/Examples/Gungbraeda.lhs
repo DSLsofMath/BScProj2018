@@ -1,6 +1,6 @@
 > module Examples.Gungbraeda where
 
-Uppgift 3, tenta 2017-01-13
+Exam excercise 3, 2017-01-13
 
 > import Dimensions.TypeLevel
 > import Dimensions.Quantity
@@ -15,15 +15,15 @@ Uppgift 3, tenta 2017-01-13
 
 ![Gungbraede](Gungbraede.png){.float-img-left}
 
+Direct implication:
 
-Direkt implikation:
+$$ f(x) = \frac{a}{b}$$
 
 > balk_left_L = (balk_L /# two) +# d
 > balk_right_L = balk_L -# balk_left_L
 
-Vi vill räkna ut vridmomenten?
-
-Eller snarare ställa upp ekv:
+We want to be able to represenet the angular momentums.
+Here are some propositions.
 
 > m1_vrid = m1 *# balk_left_L 
 
@@ -45,7 +45,7 @@ m1_vrid + balk_L_vrid - balk_H_vrid  = m2_vrid
 
 > x = (m1_vrid +# balk_L_vrid -# balk_H_vrid) /# m2
 
-säkerhetskoll:
+Security check:
 
 > m2_vrid = m2 *# x
 

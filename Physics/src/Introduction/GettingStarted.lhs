@@ -1,6 +1,4 @@
-
-
-
+> module Introduction.GettingStarted where
 
 What you need to dive in
 ======================================================================

@@ -1,0 +1,12 @@
+
+- Utskrivna per kapitel
+- Live-kodning på skärm eller projektor
+    - Erik har skärm att ta med
+    - Projektor eller skärm kanske redan finns
+- Säga vad målsättningen med projektet var
+    - Dålig tentastatistik för Fysik för ingenjörer
+    - Göra något datastudenter kanske tycker är intressant
+    - Presentera fysik med hjälp av domänspecifika språk och funktionell programmering. Visar paralleller mellan Haskell och fysik.
+- Enkla exempel
+    - Syntaxträd som skrivs ut snyggt
+    - Dimensioner: hunden som hoppar på en vagn

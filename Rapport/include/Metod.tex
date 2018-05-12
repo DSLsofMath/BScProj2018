@@ -28,9 +28,7 @@ Läromaterialet består av 5 kapitel som vardera behandlar separata
 områden. Skapandet av varje kapitel skedde därför till största delen fristående
 från andra kapitel. Konstruktionen av kapitlena bestod i sin tur av tre faser,
 som såg likadana ut för alla kapitel. Dessa faser var sökande efter område,
-implementation av domänspecifika språk för området samt skrivande av lärotext.
-
-Denna skapandeprocess kan delas upp i en graf med två axlar: en utefter kapitel
+implementation av domänspecifika språk för området samt skrivande av lärotext. Denna skapandeprocess kan delas upp i en graf med två axlar: en utefter kapitel
 och en utefter fas. Det här illustreras i figur~\ref{fig:oversiktA}. Figuren
 visar att varje kombination av kapitel och fas är en del i projektet som
 arbetades med.
@@ -158,7 +156,7 @@ blev exempelproblem och partikelmekanik. Här följer en kortfattad motivering a
 
 \textit{Exempelproblem} för att visa hur ett par typuppgifter i klassisk mekanik kan modelleras i något av läromaterialets domänspecifika språk. Närmare bestämt tillämpas de domänspecifika språken på \textit{krafter på lådor} och \textit{gungbräda}.
 
-\textit{Partikelmekanik} för att visa hur de grundläggande områdena kan kombineras till ett domänspecifikt språk som är mer fysik-orienterat än de tre grundläggande. Dessutom är partikelmekanik fundamental i klassisk mekanik.
+\textit{Partikelmekanik} för att visa hur de grundläggande områdena kan kombineras till ett domänspecifikt språk som är mer fysikorienterat än de tre grundläggande. Dessutom är partikelmekanik fundamental i klassisk mekanik.
 
 \subsection{Implementation av domänspecifika språk för områdena}
 
@@ -177,8 +175,7 @@ inom gruppen och med handledaren. Det viktigaste var att de skulle vara
 lättförståeliga. Den programtekniskt elegantaste implementationen användes därför
 inte alltid, utan den längre versionen föredrogs för att göra
 läromaterialet så lättläst som möjligt. Dock avstods det inte från användning av
-mer avancerade funktioner i Haskell när de var motiverade av materialet som
-beskrevs, men då alltid med en uttömmande förklaring av hur det fungerade och
+mer avancerade funktioner i Haskell när materialet motiverade dem, men då alltid med en uttömmande förklaring av hur det fungerade och
 utan krav på tidigare kunskap hos läsaren.
 
 Efter att ett domänspecifikt språk implementerats skrevs tester till det. Det
@@ -351,7 +348,7 @@ I samband med att ett område implementerades skrevs också den tillhörande
 lärotexten. Till en början skrevs lärotext som fokuserade på att förklara
 programkoden. Detta var ett naturligt val eftersom det var viktigt att
 programkoden gick att förstå innan kopplingar till matematik och fysik kunde
-förklaras. Det var nämligen lärotext av det slaget som skrevs senare.
+förklaras. Det var lärotext av det slaget som skrevs senare.
 Avslutningsvis skrevs en inledning och avslutning till kapitlet.
 
 Generellt under skrivningen togs det hänsyn till en specifik underaspekt i ARCS-modellen, nämligen \textit{humor}. Språket i lärotexten har varit lättsamt, vardagligt och talspråkligt för att hålla kvar uppmärksamheten hos läsaren. Det har även ritats roliga bilder för att ge ytterligare humoristiska drag.
@@ -364,10 +361,8 @@ lättförståeligt var det också viktigt att presentera materialet i den ordnin
 som en mänsklig läsare, och inte datorn, tyckte var enklast. Avsnitt \ref{sec:lhs} beskriver hur litterat programmering fungerar i allmänhet och ger
 en bra bild hur det såg ut även i detta projekt.
 
-Under skrivandet av lärotexten lades övningar till. Oftast
-skapades övningar genom att befintlig lärotext modifierades till att istället
-för att bara förklara allt, då och då uppmana läsaren att göra nästa steg i
-implementationen själv. Nästa steg behölls alltid för att fungera som facit. När
+Under skrivandet av lärotexten lades övningar till. Det vanligaste sättet övningar skapades på vara genom att modifiera befintlig lärotext. Istället för att bara förklara allting, så uppmanar den läsaren då och då att göra nästa steg i
+implementationen själv. När
 ett kapitel var avslutat lades dessutom extra övningar till i slutet. Dessa
 övningar var ofta vidareutvecklingsmöjligheter av det domänspecifika språk som
 fanns.
@@ -403,7 +398,7 @@ till  att implementera och lösa mer komplexa problem.
 \section{Skapande av och publicering på hemsidan}
 
 Läromaterialet kompilerades med hjälp av ett skript och
-publicerades på en internethemsida. Bygg-skriptet anropar
+publicerades på en internethemsida. Skriptet anropar
 Pandoc för att konvertera från källkod i Literate
 Haskell-format till HTML, redo att visas på en hemsida. Pandoc
 paketerar även med \textit{MathJax} som använder JavaScript för att

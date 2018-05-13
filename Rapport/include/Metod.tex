@@ -82,18 +82,19 @@ var viktig för att kunna implementera de domänspecifika språken på bästa s�
 \subsubsection*{Kontakt med fysikläraren}
 \label{sec:kontakt_faldt}
 
-Fäldt tillfrågades om vilka områden han i allmänhet anser studenter har
+Fäldt tillfrågades om vilka områden han i allmänhet anser at studenter har
 svårt för. Detta för att i enlighet med projektets mål börja med de, för
 studenterna, problematiska områdena. Enligt Fäldt är ett allmänt problem att
 egna mentala modeller för problem är felaktiga eftersom studenter ofta tar
 genvägar som inte bygger på saker de är säkra stämmer. En annan erfarenhet
-från honom är att så länge den första raden i en uppgiftslösning är rätt, är
-resten också rätt. Med andra ord, har studenten väl identifierat vilken typ av
+är att så länge den första raden i en uppgiftslösning är rätt, så brukar
+resten också vara rätt. Med andra ord, har studenten väl identifierat vilken typ av
 problem det rör sig om brukar det inte vara några svårigheter att lösa
 uppgiften.
 
 Med hjälp av insikterna från Fäldt drogs två slutsatser. Den första slutsatsen
-var att matematisk analys var ett område värt att behandla i detalj. Den andra var att genom att ge struktur till olika typer av problem kan det
+var att matematisk analys var ett område värt att behandla i detalj. Den andra
+var att genom att ge struktur till olika typer av problem kan det
 förhoppningsvis underlätta för studenter att lära sig identifiera vilken
 typ av uppgift de handskas med.
 
@@ -140,7 +141,7 @@ beräkningar.
 \textit{Matematisk analys} eftersom alla koncept inom klassisk mekanik är
 relaterade genom matematisk analys. Mer specifikt används
 differenser\footnote{Till exempel används $\Delta(x)$ för att beskriva
-förflyttning i $x$-led} för att beskriva medelrörelse, och infinitesimaler
+förflyttning i $x$-led.} för att beskriva medelrörelse, och infinitesimaler
 för att beskriva momentanrörelser. Vidare var matematisk analys just det
 område som Fäldt pekade ut som speciellt viktigt och något som studenter har
 svårt för.
@@ -175,8 +176,9 @@ inom gruppen och med handledaren. Det viktigaste var att de skulle vara
 lättförståeliga. Den programtekniskt elegantaste implementationen användes därför
 inte alltid, utan den längre versionen föredrogs för att göra
 läromaterialet så lättläst som möjligt. Dock avstods det inte från användning av
-mer avancerade funktioner i Haskell när materialet motiverade dem, men då alltid med en uttömmande förklaring av hur det fungerade och
-utan krav på tidigare kunskap hos läsaren.
+mer avancerade funktioner i Haskell när materialet motiverade dem, men då alltid
+med en uttömmande förklaring om hur det fungerade och utan krav på tidigare
+kunskap hos läsaren.
 
 Efter att ett domänspecifikt språk implementerats skrevs tester till det. Det
 som var intressant att testa var olika lagar som skulle gälla, och  eftersom de
@@ -315,10 +317,11 @@ på internet~\cite{LYAP}.
 
 Implementationen av komposita områden var en vidareutveckling på de redan
 implementerade grundläggande områdena. Detta utfördes genom att kombinera
-element från två eller fler områden för att på så sätt tillsammans skapa ett nytt område. Denna kombination växte fram organiskt genom att studera de
-områden som skulle implementeras och se vilka av de grundläggande områdena som
-låg till grund för det. Efter en sådan studie växte den faktiska implementationen fram
-genom experimentering och diskussion inom gruppen.
+element från två eller fler områden för att på så sätt tillsammans skapa ett
+nytt område. Denna kombination växte fram organiskt genom att studera de områden
+som skulle implementeras och se vilka av de grundläggande områdena som
+låg till grund för det. Efter en sådan genomgång växte den faktiska
+implementationen fram genom experimentering och diskussion inom gruppen.
 
 Ett exempel på ett komposit område är implementationen av partikelmekanik
 där de grundläggande områdena vektorer och matematisk analys
@@ -348,10 +351,13 @@ I samband med att ett område implementerades skrevs också den tillhörande
 lärotexten. Till en början skrevs lärotext som fokuserade på att förklara
 programkoden. Detta var ett naturligt val eftersom det var viktigt att
 programkoden gick att förstå innan kopplingar till matematik och fysik kunde
-förklaras. Det var lärotext av det slaget som skrevs senare.
-Avslutningsvis skrevs en inledning och avslutning till kapitlet.
+förklaras, lärotext av det slaget skrevs nämligen senare. Avslutningsvis skrevs
+en inledning och avslutning till kapitlet.
 
-Generellt under skrivningen togs det hänsyn till en specifik underaspekt i ARCS-modellen, nämligen \textit{humor}. Språket i lärotexten har varit lättsamt, vardagligt och talspråkligt för att hålla kvar uppmärksamheten hos läsaren. Det har även ritats roliga bilder för att ge ytterligare humoristiska drag.
+Generellt under skrivningen togs det hänsyn till en specifik underaspekt i
+ARCS-modellen, nämligen \textit{humor}. Språket i lärotexten har varit lättsamt,
+vardagligt och talspråkligt för att hålla kvar uppmärksamheten hos läsaren. Det
+har även ritats roliga bilder för att ge ytterligare humoristiska drag.
 
 Lärotexten och programkoden skrevs sammanvävt i samma fil, i Literate
 Haskell. Litterat programmering passade bra ihop med
@@ -392,13 +398,13 @@ Haskell-kod med hjälp av de grundläggande områdena. Beskrivning av relationen
 
 Implementationen kan kompileras och testas och ska då visa på att
 implementationerna av de grundläggande områdena är både rigorösa och korrekta.
-Dessutom visar det att det går att använda det material som presenteras tidigare
-till  att implementera och lösa mer komplexa problem.
+Det visar dessutom att det går att använda materialet som presenteras tidigare
+till att implementera och lösa mer komplexa problem.
 
 \section{Skapande av och publicering på hemsidan}
 
 Läromaterialet kompilerades med hjälp av ett skript och
-publicerades på en internethemsida. Skriptet anropar
+publicerades på en hemsida. Skriptet anropar
 Pandoc för att konvertera från källkod i Literate
 Haskell-format till HTML, redo att visas på en hemsida. Pandoc
 paketerar även med \textit{MathJax} som använder JavaScript för att
@@ -406,7 +412,7 @@ rendera matematiska formler i LaTeX-format på fint och läsbart
 vis. Utan stöd för JavaScript skrivs matematik ut som omodifierad
 LaTeX-kod, vilket är mer svårläst, men fortfarande tolkningsbart. Det
 skrevs även CSS-kod för att modifiera utseendet av
-hemsidan så att den skulle bli prydligare och mer lättläst.
+hemsidan för att den skulle bli prydligare och mer lättläst.
 
 Varje källfil betraktades som ett kapitel och publicerades som en
 separat undersida. Med hjälp av ett index beskrivet i skriptet
@@ -439,13 +445,13 @@ hemsidan.
 För att utvärdera läromaterialet gjordes en kort och informell utvärdering med
 en testgrupp. Testgruppen bestod av tre andra studenter på Chalmers som gick
 tredje året på Datateknik och Informationsteknik. De hade alla läst Fysik för
-ingenjörer eller motsvarande sedan innan och de hade också läst en kurs i Haskell.
+ingenjörer eller motsvarande tidigare och även läst en kurs i Haskell.
 Däremot hade de inte läst DSLsofMath eller motsvarande. Domänspecifika språk var
 med andra ord nytt för dem.
 
-Utvärderingen gjordes genom att visa dem läromaterialet och ge det en kort
-presentation och bakgrund. Sedan fick de på egen hand läsa det. Deras spontana
-reaktioner och svar på frågor noterades.
+Utvärderingen gjordes genom att visa dem läromaterialet med en kort
+presentation och bakgrund. Sedan fick de på egen hand läsa materialet och deras 
+spontana reaktioner och svar på frågor noterades.
 
 \section{Möten med fysikläraren}
 
@@ -453,6 +459,7 @@ För att få återkoppling på läromaterialet hölls två möten med Åke Fäld
 tidigt i projektet, 2018-03-02, och ett andra relativt sent, 2018-04-11.
 Under mötena presenterades läromaterialet i sig och tanken med det, nämligen att
 presentera fysik ur ett annat perspektiv, ett
-programmeringsperspektiv. Det diskuterades också svåra områden i Fysik för
-ingenjörer (se avsnitt \ref{sec:kontakt_faldt}), vad läromaterialet skulle kunna bidra med för kunskaper till
-studenter samt dess eventuella roll i relation till fysikkursen.
+programmeringsperspektiv. Diskussionen kretsade sen kring svåra områden i Fysik för
+ingenjörer (se avsnitt \ref{sec:kontakt_faldt}), vad läromaterialet skulle kunna
+bidra med för kunskaper till studenter samt dess eventuella roll i relation till
+fysikkursen.

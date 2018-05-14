@@ -13,7 +13,7 @@ Exam excercise 3, 2017-01-13
 > balk_L = 5.0 # length
 > two = 2.0 # one
 
-![Gungbraede](Gungbraede.png){.float-img-left}
+![Teeter](teeter.png){.float-img-left}
 
 Direct implication:
 

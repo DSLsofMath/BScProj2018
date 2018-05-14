@@ -1,4 +1,4 @@
-> module Examples.Gungbraeda where
+> module Examples.Teeter where
 
 Exam excercise 3, 2017-01-13
 

@@ -68,8 +68,17 @@ Läromaterial. LYAP. DSL. Haskell.
 
 ### Varför (Bakgrund) - *Mer*
 
-Tentastatistik. DSL.
+* DSLsofMath: En kurs given av Patrik Jansson som vi alla tagit vars syfte är att angripa de matematiska
+domänerna från ett funktionellt programmeringsperspektiv. Att betrakta syntax
+och typer och organisera dem i domänspecifika språk.
 
+* Vi vill göra samma sak fast för ett annat domän. Hur väljer vi ett bra domän? Titta på tentastats!
+TSS är sämst men där finns det redan ett BS projekt. Fysik är också dåligt!
+
+* Tentastatistik: Dåliga stats, **VISA BILD/GRAF/TABELL**. Vad beror det på?
+**LISTA MED SAKER SOM DET KAN BERO PÅ**, en av dem är någonting som vi kanske kan lösa mha DSL!
+
+* Vi vill altså utveckla DSL för att få bukt med tentastatsen!
 
 ### Förklara alla viktiga koncept (Teori)
 

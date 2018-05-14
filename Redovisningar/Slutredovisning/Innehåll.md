@@ -68,13 +68,43 @@ Läromaterial. LYAP. DSL. Haskell.
 
 ### Varför (Bakgrund) - *Mer*
 
-Tentastatistik. DSL.
+* DSLsofMath: En kurs given av Patrik Jansson som vi alla tagit vars syfte är att angripa de matematiska
+domänerna från ett funktionellt programmeringsperspektiv. Att betrakta syntax
+och typer och organisera dem i domänspecifika språk.
 
+* Vi vill göra samma sak fast för ett annat domän. Hur väljer vi ett bra domän? Titta på tentastats!
+TSS är sämst men där finns det redan ett BS projekt. Fysik är också dåligt!
+
+* Tentastatistik: Dåliga stats, **VISA BILD/GRAF/TABELL**. Vad beror det på?
+**LISTA MED SAKER SOM DET KAN BERO PÅ**, en av dem är någonting som vi kanske kan lösa mha DSL!
+
+* Vi vill altså utveckla DSL för att få bukt med tentastatsen!
 
 ### Förklara alla viktiga koncept (Teori)
 
 Superkort om Haskell. DSL. LHS
 
+* Haskell: Ett funktionellt programmeringsspråk.
+
+* DSL: Vad är ett domänspecifikt språk? 
+  - SQL och LATEX är domänspecifika språk.
+  - De har specifika domäner, databaser/textformatering
+  - Dom är båda väldigt bra på att hantera just det domänet
+  - Båda är turingkompletta men du skulle inte vilja skriva en kompilator i dem
+  - Du kan hantera båda domänen i Java men i slutändan skulle du bara implementera
+    språken igen.
+  - Ett DSL är ett språk som hanterar *ett* specifikt domän väldigt väl. Den abstraherar
+  bort komplexitet och ger dig ett interface som är lätt att använda och vars syntaxt är
+  specifikt modellerad för just det domänet. 
+
+* LHS: 
+  - **BILD PÅ KOD MED KOMMENTARER** **BILD PÅ KOD I LHS MED KOMMENTARERNA SOM TEXT**
+  - Lyfter fram dokumentationen som en lika viktig del i programmet som själva koden.
+  - Passar bra för denna typ av lärotext där syftet är att förklara fysik mha kod. 
+
+* Syntaxträd???
+
+* Lärandeteorier???
 
 ### Genomförande
 

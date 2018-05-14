@@ -10,7 +10,7 @@ litterat programmering samt lärandeteorier.
 Ett domänspecifikt språk är ett språk som är avgränsat till en specifik domän.
 Nyckelorden är språk, specifik och domän. En domän är ett område, till exempel
 textformatering eller matlagning. Specifikt syftar det på att det är \textit{just
-detta} område man lägger fokus på. Med språk menas ett sätt att uttrycka
+detta} område fokus läggs på. Med språk menas ett sätt att uttrycka
 saker inom domänen. Svenska och Java är två exempel på språk.
 
 Domänspecifika språk är vanligt förekommande i programmeringssammanhang. HTML är
@@ -22,7 +22,7 @@ att hantera en databas men inte för att skapa ett spel.
 Domänspecifika språk används inte bara i programmering utan förekommer även i
 andra mer vardagliga sammanhang. Inom domänen matlagning är steka, grilla och
 fritera användbara ord. Likaså inom domänen ridning är grimma, box och galopp
-användbara ord. Befinner man sig inom domänen vet man vad som menas med grimma
+användbara ord. Befinner användaren sig inom domänen vet den vad som menas med grimma
 och det är ett kort och väldefinierat sätt att uttrycka sig. Men detta språk (här
 i form av ord och begrepp) blir svårtolkat utanför domänen. Ett recept kan inte
 förklaras i termer av grimmor, boxar och galopper.
@@ -45,7 +45,7 @@ eller bäddas in i ett redan existerande språk. De domänspecifika språk som
 utvecklats inom detta projekt är inbäddade i programmeringsspråket
 \textit{Haskell}. Haskell är ett lämpligt val eftersom det är enkelt att skapa
 datatyper som bygger upp det domänspecifika språket. Att Haskell är ett
-högnivåspråk är också en fördel då man slipper programmeringstekniska detaljer,
+högnivåspråk är också en fördel då programmeraren slipper programmeringstekniska detaljer,
 till exempel minneshantering, och istället kan fokusera på programmets innehåll
 och betydelse. Slutligen gör dess mönstermatchning att de datatyper som utgör
 det domänspecifika språket enkelt kan brytas isär och manipuleras.
@@ -55,8 +55,8 @@ För vidare läsning om domänspecifika språk rekommenderas \textit{DSL for the
 \section{Syntax, syntaxträd och semantik}\label{sec:syntax}
 
 I samband med domänspecifika språk dyker begreppen \textit{syntax} och
-\textit{semantik} upp. Syntax är reglerna för hur man sammanslår
-enheter, som ord, i språket till komplexa strukturer, som meningar och
+\textit{semantik} upp. Syntax är reglerna för hur enheter sammanslås
+, som ord, i språket till komplexa strukturer, som meningar och
 satser. Semantik är betydelsen av sådana komplexa strukturer i ett språk.
 Inom aritmetik\footnote{Aritmetik är
   den gren inom matematiken som behandlar räkning av tal.} är tal och
@@ -85,11 +85,10 @@ data Expr = Expr :+: Expr
 
 Typen innehåller \textit{datakonstruktorer} för att representera
 \textit{löv} (ändpunkter) och \textit{förgreningar}. I detta exempel är
-\texttt{:+:} och \texttt{:*:} förgreningar. Med hjälp av dem kan man uttrycka
-summan respektive produkten av två andra uttryck. Löven representeras av
-\texttt{Const}. Det är en konstant som man ej kan bygga vidare på.
+\texttt{:+:} och \texttt{:*:} förgreningar. Med hjälp av dem kan summan respektive produkten av två andra uttryck uttryckas. Löven representeras av
+\texttt{Const}. Det är en konstant som ej kan byggas vidare på.
 
-Med datakonstruktorerna kan man konstruera uttryck representerade av syntaxträd. Ett exempeluttryck
+Med datakonstruktorerna kan uttryck representerade av syntaxträd konstrueras. Ett exempeluttryck
 från den tidigare datatypen visas i figur~\ref{fig:syntax_exempel_varde}, som visar hur det aritmetiska uttrycket $7 * (3
 + 10)$ modelleras. Konstruktorn \texttt{:*:} får som sina två argument uttrycken
 \texttt{Const 7} och \texttt{Const 3 :+: Const 10}. Det är alltså en produkt av
@@ -135,7 +134,7 @@ därför ett fall för \texttt{:+:}, ett för \texttt{:*:} och ett för
 \texttt{Const}.
 
 Den andra saken att notera i figuren är hur ett fall
-beräknas. Hur beräkningen ska se ut får man genom att ta hänsyn till
+beräknas. Hur beräkningen ska se ut fås genom att ta hänsyn till
 semantiken hos det syntaktiska uttrycket. \texttt{e1 :+: e2} är syntax för
 addition av de två uttrycken \texttt{e1} och \texttt{e2}. Därför blir
 semantiken, värdet, av \texttt{e1 :+: e2} lika med värdet hos \texttt{e1} och
@@ -143,15 +142,15 @@ semantiken, värdet, av \texttt{e1 :+: e2} lika med värdet hos \texttt{e1} och
 de två resterande fallen ska se ut.
 
 Den tredje saken värd att poängtera är beräkningsfunktionens
-typsignatur, \texttt{Expr -> Double}. Den gör nämligen att man kan tolka
-\texttt{evaluate}, och beräkningsfunktioner i allmänhet, som en översättning
+typsignatur, \texttt{Expr -> Double}. Den gör nämligen att
+\texttt{evaluate}, och beräkningsfunktioner i allmänhet, kan tolkas som en översättning
 från syntax (här \texttt{Expr}) till semantik (här \texttt{Double}).
 
 \section{Litterat programmering och Literate Haskell}\label{sec:lhs}
 
 \textit{Litterat programmering} (engelska \textit{literate programming}) är ett
 alternativt sätt att programmera som introducerades av Donald Knuth~\cite{knuth}.
-Istället för att skriva ett program främst för datorer att exekvera, så skriver man
+Istället för att skriva ett program främst för datorer att exekvera, så skrivs
 programmet främst för människor att läsa.
 
 Jämfört med traditionella program får dokumentationen en
@@ -208,7 +207,7 @@ att exportera till bland annat HTML (som i läromaterialet) och PDF (som i den h
 \section{Lärandeteorier}\label{sec:arcs}
 
 Motivation är en persons vilja att göra något och i undervisningssammanhang vill
-man att studenten ska lära sig materialet, studenten behöver alltså bli
+läraren eller författaren att studenten ska lära sig materialet, studenten behöver alltså bli
 motiverad till att lära sig. Motivation kan ha flera källor, till exempel
 att studenten tycker materialet är intressant eller att det finns belöningar i
 form av tillfredsställelsen från ett högt betyg.
@@ -234,14 +233,14 @@ som vardera behandlar en aspekt av motivation.
     tillfredsställelse efter att ha lärt sig något så att hen vill fortsätta
     lära sig.
 \end{itemize}
-Det finns olika strategier för hur man genomför de olika delarna i praktiken,
+Det finns olika strategier för hur de olika delarna genomförs i praktiken,
 här följer en översikt för \textit{Attention}\footnote{Eftersom projektet har
 ett begränsat fokus på de pedagogiska aspekterna, se
 avsnitt~\ref{sec:avgransningar}, har enbart \textit{Attention} tagits hänsyn
 till. Av detta skäl är det enbart denna del beskriven här.}.
 
 För att fånga studentens uppmärksamhet och intresse finns tre allmänna
-strategier. Den första är varseblivning, att något plötsligt händer som man
+strategier. Den första är varseblivning, att något plötsligt händer som studenten
 blir medveten om. Det kan till exempel åstadkommas genom överraskande
 information, en förändring i ljuset i en föreläsning eller att humor vävs in.
 Den andra är att väcka nyfikenhet. Ett par sätt för det är att involvera mystik

@@ -84,6 +84,27 @@ TSS är sämst men där finns det redan ett BS projekt. Fysik är också dåligt
 
 Superkort om Haskell. DSL. LHS
 
+* Haskell: Ett funktionellt programmeringsspråk.
+
+* DSL: Vad är ett domänspecifikt språk? 
+  - SQL och LATEX är domänspecifika språk.
+  - De har specifika domäner, databaser/textformatering
+  - Dom är båda väldigt bra på att hantera just det domänet
+  - Båda är turingkompletta men du skulle inte vilja skriva en kompilator i dem
+  - Du kan hantera båda domänen i Java men i slutändan skulle du bara implementera
+    språken igen.
+  - Ett DSL är ett språk som hanterar *ett* specifikt domän väldigt väl. Den abstraherar
+  bort komplexitet och ger dig ett interface som är lätt att använda och vars syntaxt är
+  specifikt modellerad för just det domänet. 
+
+* LHS: 
+  - **BILD PÅ KOD MED KOMMENTARER** **BILD PÅ KOD I LHS MED KOMMENTARERNA SOM TEXT**
+  - Lyfter fram dokumentationen som en lika viktig del i programmet som själva koden.
+  - Passar bra för denna typ av lärotext där syftet är att förklara fysik mha kod. 
+
+* Syntaxträd???
+
+* Lärandeteorier???
 
 ### Genomförande
 

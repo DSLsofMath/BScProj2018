@@ -50,7 +50,7 @@ till exempel minneshantering, och istället kan fokusera på programmets innehå
 och betydelse. Slutligen gör dess mönstermatchning att de datatyper som utgör
 det domänspecifika språket enkelt kan brytas isär och manipuleras.
 
-För vidare läsning om domänspecifika språk rekommenderas \textit{DSL for the Uninitiated} \cite{DSLU}. 
+För vidare läsning om domänspecifika språk rekommenderas \textit{DSL for the Uninitiated} \cite{DSLU}.
 
 \section{Syntax, syntaxträd och semantik}\label{sec:syntax}
 
@@ -80,7 +80,7 @@ data Expr = Expr :+: Expr
           | Const Double
   \end{lstlisting}
   \caption{En datatyp för aritmetiska uttryck i Haskell. Detta är ett exempel på
-           ett litet domänspecifikt språk.}\label{fig:syntax_exempel} 
+           ett litet domänspecifikt språk.}\label{fig:syntax_exempel}
 \end{figure}
 
 Typen innehåller \textit{datakonstruktorer} för att representera
@@ -108,7 +108,7 @@ expr = Const 7 :*: (Const 3 :+: Const 10)
   \centering
   \includegraphics[width=0.4\linewidth]{figure/syntax_exempel_bild.png}
   \caption{Ett exempeluttryck från syntaxträdet illustrerat i ett
-           träddiagram.}\label{fig:syntax_exempel_bild} 
+           träddiagram.}\label{fig:syntax_exempel_bild}
 \end{figure}
 
 Precis som semantik har en roll i samband med syntax, har semantik även en roll
@@ -132,7 +132,7 @@ figur~\ref{fig:eval_tree}. Den första är att eftersom syntaxen innehåller tre
 slag av element, här motsvarat av de tre datakonstruktorerna, krävs tre fall i
 beräkningsfunktionen som beräknar vardera av dem. \texttt{evaluate} har
 därför ett fall för \texttt{:+:}, ett för \texttt{:*:} och ett för
-\texttt{Const}. 
+\texttt{Const}.
 
 Den andra saken att notera i figuren är hur ett fall
 beräknas. Hur beräkningen ska se ut får man genom att ta hänsyn till
@@ -180,7 +180,7 @@ Note that the Quantity data type has both value-level and type-level dimensions.
   \caption{Ett exempel på hur en källfil till litterat programmering kan se ut, tagen direkt från källkoden till läromaterialet.
            I exemplet är koden skriven i Literate Haskell. Rader som börjar med \texttt{>}
            markerar att det är programkod, medan rader utan markerar att det är
-           dokumentation.}\label{fig:litterate_haskell_exempel} 
+           dokumentation.}\label{fig:litterate_haskell_exempel}
 \end{figure}
 % OBS! Raden med "note that the quantity..." måste vara en lång rad. Annars blir det fel i PDF:en
 
@@ -208,10 +208,10 @@ att exportera till bland annat HTML (som i läromaterialet) och PDF (som i den h
 \section{Lärandeteorier}\label{sec:arcs}
 
 Motivation är en persons vilja att göra något och i undervisningssammanhang vill
-man att studenten ska lära sig materialet. Studenten behöver alltså vara
-ha motivationen till att lära sig. Motivation kan ha flera källor, till exempel
+man att studenten ska lära sig materialet, studenten behöver alltså bli
+motiverad till att lära sig. Motivation kan ha flera källor, till exempel
 att studenten tycker materialet är intressant eller att det finns belöningar i
-form av tillfredsställelsen från ett högt betyg. 
+form av tillfredsställelsen från ett högt betyg.
 
 \textit{Motiverande design} innebär att systematiskt utforma undervisningen på
 ett sådant sätt att studenten blir motiverad till att lära sig. Det handlar om
@@ -222,19 +222,19 @@ kallade \textit{ARCS-modellen}~\cite{arcs_book}.
 \textit{ARCS} är en förkortning av ``Attention, Relevance, Confidence and
 Satisfaction'', på svenska ``uppmärksamhet, relevans, självförtroende och
 tillfredsställelse''. Precis som namnet antyder innehåller modellen fyra delar
-som vardera behandlar en aspekt av motivation. 
+som vardera behandlar en aspekt av motivation.
 \begin{itemize}
   \item \textit{Attention} handlar om att fånga uppmärksamhet och väcka
-    nyfikenhet. 
+    nyfikenhet.
   \item \textit{Relevance} handlar om att tillgodose studentens behov så
-    att materialet upplevs som relevant.  
+    att materialet upplevs som relevant.
   \item \textit{Confidence} handlar om att övertyga studenten att hen kan lyckas
-    lära sig materialet. 
+    lära sig materialet.
   \item \textit{Satisfaction} handlar om att ge studenten
     tillfredsställelse efter att ha lärt sig något så att hen vill fortsätta
-    lära sig. 
+    lära sig.
 \end{itemize}
-Det finns olika strategier för hur man genomför de olika delarna i praktiken, 
+Det finns olika strategier för hur man genomför de olika delarna i praktiken,
 här följer en översikt för \textit{Attention}\footnote{Eftersom projektet har
 ett begränsat fokus på de pedagogiska aspekterna, se
 avsnitt~\ref{sec:avgransningar}, har enbart \textit{Attention} tagits hänsyn
@@ -251,8 +251,10 @@ utforma en lektion som föreläsning, demonstration och sedan övning, utan vari
 det med andra inslag, exempelvis ett filmklipp.
 
 Enligt det sociokulturella perspektivet som Vygotskij utvecklade~\cite{LSB_und}
-lär sig elever av varandra. Eleverna befinner sig vid sin närmsta 
-utvecklingszon, där eleverna kan hjälpa varandra att förstå innebörden av
+lär sig elever av varandra. Eleverna befinner sig vid sin närmsta
+utvecklingszon~\footnote{Den zon där målet för lärandet ligger på en nivå som är
+för hög för en elev att klara på egen hand, men som eleven klarar om den får
+vägledning och stöd.}, där eleverna kan hjälpa varandra att förstå innebörden av
 definitioner och uttryck genom att sätta ord på det de vill kommunicera. Denna
 typ av kommunikation kan hjälpa elever sätta fingret på vad de
 inte förstår. Med denna bakgrund kan parprogrammering vara

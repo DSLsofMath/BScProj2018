@@ -25,9 +25,10 @@ Quantities
 >     , sinq, cosq, asinq, acosq, atanq, expq, logq
 >     ) where
 
+
 > import qualified Dimensions.ValueLevel as V
 > import           Dimensions.TypeLevel  as T
-> import           Prelude               as P hiding (length, div)
+> import           Prelude               as P hiding (length)
 
 We'll now create a data type for quantities and combine dimensions on value-level and type-level. Just as before, a bunch of GHC-extensions are necessary.
 
@@ -214,20 +215,10 @@ The following example shows that during a multiplication, the types will change,
 < width :: Quantity Length Double
 < ghci> area
 < 0.15 m^2
-< ghci> :t area
-< area
-<  :: Quantity
-<       ('Dim
-<          'Numeric.NumType.DK.Integers.Pos2 -- The interesting line
-<          'Numeric.NumType.DK.Integers.Zero
-<          'Numeric.NumType.DK.Integers.Zero
-<          'Numeric.NumType.DK.Integers.Zero
-<          'Numeric.NumType.DK.Integers.Zero
-<          'Numeric.NumType.DK.Integers.Zero
-<          'Numeric.NumType.DK.Integers.Zero)
-<       Double
+< ghci> :i area
+< area :: Quantity Area Double
 
-Which is the same as `Area`.
+(Try out `:t` instead of `:i` on the last one and see what happens!)
 
 The type-level dimensions are used below to enforce, at compile-time, that only allowed operations are attempted.
 
@@ -297,7 +288,7 @@ We often use `Double` as the value holding type. Doing exact comparsions isn't a
 Testing if a quantity is zero is something which might be a common operation. So we define it here.
 
 > isZero :: (Fractional v, Ord v) => Quantity d v -> Bool
-> isZero (ValQuantity _ v) = (abs v) < 0.001
+> isZero (ValQuantity _ v) = abs v < 0.001
 
 
 Arithmetic on quantities
@@ -351,6 +342,12 @@ We quickly realize a pattern, so let's generalize a bit.
 
 > qmap :: (a -> b) -> Quantity One a -> Quantity One b
 > qmap f (ValQuantity d1 v) = ValQuantity d1 (f v)
+
+> qmap' :: (a -> b) -> Quantity dim a -> Quantity dim b
+> qmap' f (ValQuantity d v) = ValQuantity d (f v)
+
+> qfold :: (a -> a -> b) -> Quantity dim a -> Quantity dim a -> Quantity dim b
+> qfold f (ValQuantity d v1) (ValQuantity _ v2) = ValQuantity d (f v1 v2)
 
 > sinq, cosq, asinq, acosq, atanq, expq, logq :: (Floating v) =>
 >   Quantity One v -> Quantity One v

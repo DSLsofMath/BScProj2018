@@ -50,7 +50,7 @@ arbetades med.
     \end{subfigure}
     \caption{Översikt över hur skapandeprocessen för läromaterialet såg ut.
   Processen delas upp utefter två axlar: kapitel och fas. Varje kombination
-  är en del som arbetats med och är gråmarkerad.} 
+  är en del som arbetats med och är gråmarkerad.}
 \end{figure}
 
 Även om detta sätt att dela upp processen är översiktligt är det inte helt
@@ -161,7 +161,7 @@ blev exempelproblem och partikelmekanik. Här följer en kortfattad motivering a
 
 \subsection{Implementation av domänspecifika språk för områdena}
 
-Implementationen av domänspecifika språk var en iterativ process. 
+Implementationen av domänspecifika språk var en iterativ process.
 Den inleddes med att
 bygga vidare på den experimentering som gjorts under urvalsfasen. Det finns inte bara
 ett rätt sätt att skriva ett domänspecifikt språk på, därav gjordes försök med
@@ -172,9 +172,9 @@ språk, fysik och Haskell för att kunna implementera de domänspecifika språke
 
 Vad som ansågs vara en bra, eller åtminstone tillräckligt bra implementation
 var i huvudsak baserat på gruppmedlemmarnas erfarenhet av Haskell och diskussion
-inom gruppen och med handledaren. Det viktigaste var att de skulle vara
-lättförståeliga. Den programtekniskt elegantaste implementationen användes därför
-inte alltid, utan den längre versionen föredrogs för att göra
+inom gruppen och med handledaren, det viktigaste var att de var
+lättförståeliga. Därför användes inte alltid den programtekniskt elegantaste
+implementationen utan den längre versionen föredrogs för att göra
 läromaterialet så lättläst som möjligt. Dock avstods det inte från användning av
 mer avancerade funktioner i Haskell när materialet motiverade dem, men då alltid
 med en uttömmande förklaring om hur det fungerade och utan krav på tidigare
@@ -198,7 +198,7 @@ läromaterialet och implementerar fysikaliska dimensioner i Haskell.
 
 I fysiken finns det dimensioner \cite{dimensioner_ne}. Några exempel är \textit{längd},
 \textit{massa} och \textit{hastighet}. Dimensionerna kan läggas i en av två
-kategorier: basdimensioner eller sammansatta dimensioner. Det finns enbart sju 
+kategorier: basdimensioner eller sammansatta dimensioner. Det finns enbart sju
 basdimensioner (längd, massa, tid, elektrisk ström, temperatur, substansmängd och
 ljusstyrka) medan det finns oändligt många sammansatta. Sammansatta
 dimensioner fås genom att multiplicera eller dividera två andra dimensioner. Av längd, massa och hastighet är längd och massa basdimensioner medan hastighet är sammansatt.
@@ -300,9 +300,9 @@ motsvarande sätt
 
 \begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
 mulDim :: Dim -> Dim -> Dim
-mulDim (Dim le1 ma1 ti1 cu1 te1 su1 lu1) 
+mulDim (Dim le1 ma1 ti1 cu1 te1 su1 lu1)
        (Dim le2 ma2 ti2 cu2 te2 su2 lu2) =
-        Dim (le1+le2) (ma1+ma2) (ti1+ti2) (cu1+cu2) 
+        Dim (le1+le2) (ma1+ma2) (ti1+ti2) (cu1+cu2)
             (te1+te2) (su1+su2) (lu1+lu2)
 \end{lstlisting}
 
@@ -335,10 +335,10 @@ implementerades av matematisk analys.
 Exempel från läromaterialet:
 \begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
 type Mass    = FunExpr
-type VectorE = Vector3 FunExpr -- Vector of functional 
+type VectorE = Vector3 FunExpr -- Vector of functional
                                -- expressions
 
-data Particle  = P { pos  :: VectorE -- Position as a 
+data Particle  = P { pos  :: VectorE -- Position as a
                                      -- function of time
                                      -- , unit m
                    , mass :: Mass    -- Mass, unit kg
@@ -367,11 +367,11 @@ lättförståeligt var det också viktigt att presentera materialet i den ordnin
 som en mänsklig läsare, och inte datorn, tyckte var enklast. Avsnitt \ref{sec:lhs} beskriver hur litterat programmering fungerar i allmänhet och ger
 en bra bild hur det såg ut även i detta projekt.
 
-Under skrivandet av lärotexten lades övningar till. Det vanligaste sättet övningar skapades på vara genom att modifiera befintlig lärotext. Istället för att bara förklara allting, så uppmanar den läsaren då och då att göra nästa steg i
-implementationen själv. När
-ett kapitel var avslutat lades dessutom extra övningar till i slutet. Dessa
-övningar var ofta vidareutvecklingsmöjligheter av det domänspecifika språk som
-fanns.
+Under skrivandet av lärotexten lades övningar till. Dessa skapades genom att
+modifiera befintlig lärotext, istället för att förklara allting uppmanar den
+läsaren då och då att göra nästa steg i implementationen själv. När ett kapitel
+var avslutat lades dessutom extra övningar till i slutet, dessa övningar var
+ofta vidareutvecklingar av det domänspecifika språk som redan implementerats.
 
 Skrivandet av lärotexten till de grundläggande och komposita områden var
 övergripande likadana. Skillnaden låg i balansen mellan Haskell och fysik. För
@@ -450,7 +450,7 @@ Däremot hade de inte läst DSLsofMath eller motsvarande. Domänspecifika språk
 med andra ord nytt för dem.
 
 Utvärderingen gjordes genom att visa dem läromaterialet med en kort
-presentation och bakgrund. Sedan fick de på egen hand läsa materialet och deras 
+presentation och bakgrund. Sedan fick de på egen hand läsa materialet och deras
 spontana reaktioner och svar på frågor noterades.
 
 \section{Möten med fysikläraren}

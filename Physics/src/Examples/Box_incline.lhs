@@ -13,19 +13,19 @@ All vectors are in newton.
 > m = 2
 > alpha = 30
 > 
-> unit_normal :: Double -> Vector2
+> unit_normal :: Double -> Vector2 Double
 > unit_normal a = V2 (cos a) (sin a)
 > 
-> f_l_ :: Vector2 -> Angle -> Vector2
+> f_l_ :: Vector2 Double -> Angle -> Vector2 Double
 > f_l_ fa a = scale ((magnitude fa) * (cos a)) (unit_normal (a-(pi/2)))
 > 
-> fn :: Vector2 -> Angle -> Vector2
+> fn :: Vector2 Double -> Angle -> Vector2 Double
 > fn fa a = negate (f_l_ fa a)
 
 Frictionfree incline:
 
 
-> fr :: Vector2 -> Angle -> Vector2
+> fr :: Vector2 Double -> Angle -> Vector2 Double
 > fr fa a = (fn fa a) + fa
 
 
@@ -99,29 +99,29 @@ We have the normal force and only needs the constants.
 
 The current speed does not affect the friction. However F*M = Nm = work = J -> racer cars burn tires.
 
-> motscalar :: FricConst -> Vector2 -> Scalar
+> motscalar :: FricConst -> Vector2 Double -> Scalar
 > motscalar u f = u * (magnitude f)
 
 Från en rörelse eller vekt, fixa komplementet
 
 
-> enh_vekt :: Vector2 -> Vector2
+> enh_vekt :: Vector2 Double -> Vector2 Double
 > enh_vekt v  | magnitude v == 0 = (V2 0 0)
 >             | otherwise = scale (1 / (magnitude v)) v
 > 
 > 
-> motkrafts :: FricConst -> Scalar -> Vector2 -> Vector2
+> motkrafts :: FricConst -> Scalar -> Vector2 Double -> Vector2 Double
 > motkrafts u s v = scale (u * s) (negate (enh_vekt v))
 > 
-> motkraftv :: FricConst -> Vector2 -> Vector2 -> Vector2
+> motkraftv :: FricConst -> Vector2 Double -> Vector2 Double -> Vector2 Double
 > motkraftv u n v = scale (u * (magnitude n)) (negate (enh_vekt v))
 
 Now we just need to sum the force vectors:
 
-> fru :: Vector2 -> Angle -> FricConst -> Vector2
+> fru :: Vector2 Double -> Angle -> FricConst -> Vector2 Double
 > fru fa a u = (fr fa a) + (motkraftv u (fn fa a) (fr fa a))
 > 
-> fru' :: Vector2 -> Angle -> FricConst -> Vector2
+> fru' :: Vector2 Double -> Angle -> FricConst -> Vector2 Double
 > fru' fa a u = (motkraftv u (fn fa a) (fr fa a))
 
 

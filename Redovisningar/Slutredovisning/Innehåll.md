@@ -113,13 +113,44 @@ valdes kan va najs, och varför de valdes. Nåt om implementation? Hur hemsidan 
 
 Diskutera om metoden var bra. Varför vi gjorde som vi gjorde.
 
+* Fysik är ett enormt domän & kort projekt -> gör ett urval (Mekanik)
+* Möte med Åke Fäldt, drog två slutsatser
+  - Egna modeller är felaktiga -> Gör det rigoröst
+  - Dåliga på matematisk analys -> Ett helt kapitel om analys
+* Ögnade igenom kursboken 
+* Experimentering med att implementera DSL
+* Identifierade grundläggande och komposita områden
+  - ...
+* Implementerade väl avgränsade områden separat
+  - ...
+* Publicerade på hemsida
+
 
 ### Resultat
 
-Visa bilder. Kanske demonstrera sidan live? Köra kodexempel?
-Vad vi fick för kommentarer.
+* Kapitel 
+  - Matematisk analys
+  - Vektorer
+  - Dimensioner
+  - Partikelmekanik
+* Demonstrera sidan live!
+* Kodexempel!
+  - Komplicerat matematisk uttryck
+  - Visa som syntaxträd?
+  - Kanonifiera?
+  - Visa små syntaktiska "bevis"?
+* Kommentarer
+  - Åke Fäldt: 
+    - Jättebra sätt att strukturera upp dom matematiska modellerna
+    - Villig att peka på det i fyskkursen som någonting att titta på
+    - ...
+  - Roger:
+    - ...
+  - DNS?
+  - Testgruppen?
 
-Diskutera ur pedagogisk synpunkt.
+ * Diskutera ur pedagogisk synpunkt.
+  - ...
 
 
 ### Slutsatser

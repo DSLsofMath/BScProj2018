@@ -12,7 +12,7 @@ innan vi hittade ett sätt att skapa domänspecifika språk till fysik som var a
 triviala implementationer av formler, till exempel att formlen för
 rörelseenergi, $E_k = \frac{mv^2}{2}$, kan skrivas som \texttt{ek m v = m * v *
 v / 2} i Haskell. Detta experimenterande ledde till att
-vi kunde se en slags strategi för hur de kan kombineras, vilket blev den
+vi såg en slags strategi för hur de kan kombineras, vilket blev den
 metodik som beskrivs i avsnitt~\ref{sec:konstruktion}. Det vi vill poängtera är
 med andra ord att det har varit svårt och oklart hur projektet skulle föras
 framåt eftersom det inte funnits någon tydlig väg att följa.
@@ -56,11 +56,11 @@ språk på det sättet (se avsnitt~\ref{sec:lampligt}). Vi hade dock kunnat utfo
 detta tankesätt grundligare än vad vi gjort, istället för att avfärda det som
 ett svårare sätt att gå till väga.
 
-Till sist kan går det att kritisera den allmänna metoden som valdes för utformningen av
+Till sist kan vi kritisera den allmänna metoden som valdes för utformningen av
 läromaterialet, nämligen att skriva varje kapitel som en lång, sammanhängande,
 löpande text. Lärotexten har skrivits som en berättelse om hur ett
 domänspecifikt språk kan implementeras eller tillämpas för olika fysikaliska
-områden. Nackdelen är att det blir en passiv inlärning. Läsaren visas hur det kan göras utan att försöka så mycket själv. Visserligen har övningar inkluderats
+områden. Nackdelen är att det blir en passiv inlärning, läsaren visas hur det kan göras utan att försöka så mycket själv. Visserligen har övningar inkluderats
 i läromaterialet, och läsaren uppmuntras till att implementera koden parallellt, men det
 riskerar ändå att bli en passiv inlärning. Valet att använda Literete
 Haskell har definitivt bidragit till dessa passiva tendenser. Literate Haskell är
@@ -70,9 +70,7 @@ enklare att ändra och experimentera med en programfil utan dokumentation som ä
 projektets genomförande hade det därför varit av intresse att undersöka
 alternativa sätt att utforma lärotexten som uppmuntrat ett mer aktivt lärande.
 Det hade till exempel kunnat vara att presentera idén bakom fysikaliska
-dimensioner, och sedan låta studenten själv skapa implementationen. Något enkelt
-exempel hade kunnat visats först för att ge någon slags fingervisning om hur det
-kan göras.
+dimensioner, och sedan låta studenten själv skapa implementationen. En fingervisning i form av ett enkelt exempel på en möjlig lösning kan vara ett sätt att göra detta.
 
 \section{Resultatdiskussion}\label{sec:res_disk}
 
@@ -87,8 +85,7 @@ komposita områdena partikelmekanik, gungbräda och krafter på lådor. Med andr
 ord har mekanik påbörjats, men inte termodynamik eller vågrörelselära. Det som återstår enligt oss när det kommer till mekanik är att tillämpa de grundläggande områdena på
 fler fysikaliska problem utöver gungbräda och krafter på lådor. Vi tror att de
 tre grundläggande områdena som är färdiga räcker. Förutom fler tillämpningar kan
-mer fördjupande områden utvecklas, till exempel bevisföring, något som
-nämndes i avsnitt~\ref{sec:res_laromaterial} att det påbörjats. Det är dock värt
+mer fördjupande områden implementeras, till exempel bevisföring, något som redan påbörjats, se avsnitt~\ref{sec:res_laromaterial} att det påbörjats. Det är dock värt
 att nämna att vi är mycket nöjda med det material som vi har producerat. Våra
 kapitel är väl avgränsade, utformade och implementerade på det sätt som vi
 anser att de bör.
@@ -105,7 +102,7 @@ talspråkligt och vardagligt, och förklarar svårigheterna grundligt. Språket 
 dock kunnat vara vänligare. Till exempel beskriver vi olika koncept som
 ``väldigt enkla'' fastän läsaren kanske inte alls tycker det.
 
-Vi knyter här även an till lärandeteorierna i avsnitt \ref{sec:arcs}, som nämnde interaktion och snabba belöningar. Vårt läromaterial har visserligen ingen interaktiv sida, men typsystemet i Haskell skulle ändå tänkas kunna fungera som en fingervisare när programmeraren gör rätt eller fel. Det går exempelvis inte att räkna med dimensioner på ett felaktigt sätt, och funktionskomposition fungerar endast om båda funktionernas typdefinitioner (typer på argument och returvärde) stämmer överens. När det kommer till snabba belöningar kan den glädje programmeraren ser när koden kompilerar ses som en sådan. Läromaterialet innefattar även strategiskt placerade roliga bilder, för att ge impulsiva glädjereaktioner.
+Vi knyter här även an till lärandeteorierna i avsnitt \ref{sec:arcs}, som nämnde interaktion och snabba belöningar. Vårt läromaterial har visserligen ingen interaktiv sida, men typsystemet i Haskell kan ändå fungera som en fingervisare när programmeraren gör rätt eller fel. Det går exempelvis inte att räkna med dimensioner på ett felaktigt sätt, och funktionskomposition fungerar endast om båda funktionernas typdefinitioner (typer på argument och returvärde) stämmer överens. När det kommer till snabba belöningar kan den glädje programmeraren ser när koden kompilerar ses som en sådan. Läromaterialet innefattar även strategiskt placerade roliga bilder för att ge impulsiva glädjereaktioner.
 
 Läromaterialet kan vara relevanta för flera grupper. Visserligen är målgruppen datastudenter, och vi har personligen dragit nytta av det,
 men vi tror att det kan vara relevant för fler än så, till exempel kan läromaterialet även vara intressant för fysiklärare. Fäldt nämnde att han
@@ -291,16 +288,16 @@ olika egenskaper i systemet till varandra. Ett sådant samband är till exempel 
 Samband och ekvationer av detta slag kan visserligen modelleras som ett domänspecifikt
 språk, men vi menar att nyttan inte blir stor med det eftersom allt vi då gör är
 att skriva de formler som redan finns att tillgå i diverse kursböcker i fysik
-utan att tillföra någon ny kunskap och utan att modellera dem på ett generellt
-eller unikt sätt. Det som då kan göra är att programmera en ekvationslösare men
+utan att tillföra någon ny kunskap och utan att modellera dem på ett generellts
+eller unikt sätt. Det som då kan göras är att programmera en ekvationslösare men
 den hade varit både mekanisk och komplex. Den skulle alltså skilja sig
-drastiskt från hur människor löser problem för hand och skulle vara svår att förstå.
+drastiskt från hur studenter löser problem för hand och skulle vara svår att förstå.
 Alldeles för mycket fokus skulle hamna på algoritmer istället för fysik. Vi
 anser även att en ekvationslösare inte hjälper till att lära ut fysik, tvärtom
 döljer den matematiken som ligger bakom svaret.
 
 När det kommer till lutande plan och liknande områden är nyckeln att visserligen
-känna till vilka samband som gäller, men det är framförallt att veta när de ska
+känna till vilka samband som gäller, men det är framförallt viktigt att veta när de ska
 användas och hur de ska tillämpas på olika typer av uppgifter. Vi behandlar
 därför områden som lutande plan genom att lösa exempeluppgifter modellerade i de
 tidigare domänspecifika språk. De tidigare språken tillhandahåller de matematiska
@@ -326,7 +323,7 @@ förstå det. Dimensioner i läromaterialet är ett bra exempel på
 detta, se även avsnitt~\ref{sec:grund_impl}. Där konstateras att en godtycklig
 dimension kan skrivas som de sju grunddimensionerna med tillhörande exponenter.
 Eftersom dimensionerna måste definieras så tydligt att det går att göra ett
-program av det tvingas struktur att ges till dem. Det ger ett nytt,
+program av det tvingas struktur att ges till dem, vilket ger ett nytt,
 välstrukturerat och förhoppningsvis enklare sätt att se på dem, vilket vi själva
 tycker är meningsfullt.
 
@@ -338,7 +335,7 @@ ge struktur till ett annat område.  Detta tycker vi visar på att det finns ett
 akademiskt intresse för att använda domänspecifika språk i syfte att lära ut,
 och att det inte bara är fysik och matematik som är lämpliga områden utan att
 den generella idén som vi presenterar i denna rapport även går att applicera på
-andra områden. Nyttan med att strukturera upp områden i väl avgränsade och
+andra områden. Nyttan att strukturera upp områden i väl avgränsade och
 tydligt definierade delar kanske anses som uppenbar, men frågan om med vilket
 verktyg som ska utföra detta är inte lika uppenbar. Vi hävdar att domänspecifika
 språk är ett sådant verktyg och att det även är ett mycket bra verktyg att
@@ -382,12 +379,12 @@ nogrann genomgång av koncepten. Genom att enbart ha fokus på fysik är det mö
 läromaterial om renodlad fysik med ett lättsamt språk och nogrann förklaring av
 koncepten hade säkert varit uppskattat. Khan Academy är ett sådant
 exempel~\cite{khan} och som är mycket uppskattat. En annan fördel hade varit att en större målgrupp kan nås.
-Men då missas de saker domänspecifika språk bidrar med, nämligen det som
-diskuterats ovan: att ge struktur och att lära ut ett rigoröst tankesätt. Även den \textit{intresseväckande} potentialen missas.
+Men då förlorar vi de saker domänspecifika språk bidrar med, nämligen det som
+diskuterats ovan: att ge struktur och att lära ut ett rigoröst tankesätt. Även den \textit{intresseväckande} potentialen försvinner.
 
 Domänspecifika språk kan ses som ett sätt göra fysik intressantare. Tycker en student
 att domänspecifika språk är roligt men inte fysik skulle en överbryggning av dem
-kunna leda till att studenten tycker fysik blir roligare. Detta genom att hen ser
+kunna leda till att studenten tycker att fysik blir roligare. Detta genom att hen ser
 parallellerna mellan domänspecifika språk och fysik. Ett exempel är typsystemet i
 Haskell och dimensioner i fysik. I bägge världarna får inte olika typer
 respektive dimensioner adderas, och vid operationer behandlas de på liknande

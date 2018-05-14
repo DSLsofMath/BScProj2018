@@ -60,10 +60,11 @@ Förmedla ett budskap;
 
 sammanfattning?
 
-
-### Vad projektet är (Syfte)
-
-Läromaterial. LYAP. DSL. Haskell.
+* Ett projekt som vi valt att kalla "LYAP" och som utfördes av [NAMN]
+* Projektbeskrivning: [...] Ta fram DSLsofMath-inspirerat kompletterande material för andra närliggande kurser [...]
+* Att lära ut fysik mha DSL
+* Ett läromaterial anpassat till datastudenter
+* Resultatet blev en hemsida/bok i stil med LYAH
 
 
 ### Varför (Bakgrund) - *Mer*
@@ -78,7 +79,13 @@ TSS är sämst men där finns det redan ett BS projekt. Fysik är också dåligt
 * Tentastatistik: Dåliga stats, **VISA BILD/GRAF/TABELL**. Vad beror det på?
 **LISTA MED SAKER SOM DET KAN BERO PÅ**, en av dem är någonting som vi kanske kan lösa mha DSL!
 
-* Vi vill altså utveckla DSL för att få bukt med tentastatsen!
+### Vad projektet är (Syfte)
+
+* Vi vill utveckla DSL för att få bukt med tentastatsen!
+* Vi valde Haskell för att det är kul + teoretiska skäl
+* Det skall vara pedagogiskt -> LYAP
+
+Läromaterial. LYAP. DSL. Haskell.
 
 ### Förklara alla viktiga koncept (Teori)
 

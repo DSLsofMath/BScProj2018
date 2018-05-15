@@ -153,19 +153,9 @@
 <a class="sourceLine" id="cb25-4" data-line-number="4"><span class="ot">width ::</span> <span class="dt">Quantity</span> <span class="dt">Length</span> <span class="dt">Double</span></a>
 <a class="sourceLine" id="cb25-5" data-line-number="5">ghci<span class="fu">&gt;</span> area</a>
 <a class="sourceLine" id="cb25-6" data-line-number="6"><span class="fl">0.15</span> m<span class="fu">^</span><span class="dv">2</span></a>
-<a class="sourceLine" id="cb25-7" data-line-number="7">ghci<span class="fu">&gt;</span> <span class="fu">:</span>t area</a>
-<a class="sourceLine" id="cb25-8" data-line-number="8">area</a>
-<a class="sourceLine" id="cb25-9" data-line-number="9"><span class="ot"> ::</span> <span class="dt">Quantity</span></a>
-<a class="sourceLine" id="cb25-10" data-line-number="10">      (<span class="ch">&#39;Dim</span></a>
-<a class="sourceLine" id="cb25-11" data-line-number="11">         <span class="ch">&#39;Numeric.NumType.DK.Integers.Pos2 -- The interesting line</span></a>
-<a class="sourceLine" id="cb25-12" data-line-number="12">         <span class="ch">&#39;Numeric.NumType.DK.Integers.Zero</span></a>
-<a class="sourceLine" id="cb25-13" data-line-number="13">         <span class="ch">&#39;Numeric.NumType.DK.Integers.Zero</span></a>
-<a class="sourceLine" id="cb25-14" data-line-number="14">         <span class="ch">&#39;Numeric.NumType.DK.Integers.Zero</span></a>
-<a class="sourceLine" id="cb25-15" data-line-number="15">         <span class="ch">&#39;Numeric.NumType.DK.Integers.Zero</span></a>
-<a class="sourceLine" id="cb25-16" data-line-number="16">         <span class="ch">&#39;Numeric.NumType.DK.Integers.Zero</span></a>
-<a class="sourceLine" id="cb25-17" data-line-number="17">         <span class="ch">&#39;Numeric.NumType.DK.Integers.Zero)</span></a>
-<a class="sourceLine" id="cb25-18" data-line-number="18">      <span class="dt">Double</span></a></code></pre></div>
-<p>Which is the same as <code>Area</code>.</p>
+<a class="sourceLine" id="cb25-7" data-line-number="7">ghci<span class="fu">&gt;</span> <span class="fu">:</span>i area</a>
+<a class="sourceLine" id="cb25-8" data-line-number="8"><span class="ot">area ::</span> <span class="dt">Quantity</span> <span class="dt">Area</span> <span class="dt">Double</span></a></code></pre></div>
+<p>(Try out <code>:t</code> instead of <code>:i</code> on the last one and see what happens!)</p>
 <p>The type-level dimensions are used below to enforce, at compile-time, that only allowed operations are attempted.</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="co">-- Doesn&#39;t even compile</span></a>
 <a class="sourceLine" id="cb26-2" data-line-number="2">weird <span class="fu">=</span> quantityAdd width area</a></code></pre></div>

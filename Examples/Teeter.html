@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Learn You a Physics for Great Good!</title>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  </head>
+
+  <body>
+    <header>
+      <a href="../index.html"><h1>Learn You a <span class="physics">Physics</span> for Great Good!</h1></a>
+      <h1>&gt;&gt;&gt; WORK IN PROGRESS &lt;&lt;&lt;</h1>
+      <h2>Examples / Teeter</h2>
+      <nav>
+	<span>[src: <a href="https://github.com/DSLsofMath/BScProj2018/blob/master/Physics/src/Examples/Teeter.lhs">Examples/Teeter.lhs</a>]</span>
+        <span>Previous: <a href="../Newtonian%20Mechanics/Single%20particle%20mechanics.html">Single particle mechanics</a></span>
+        <a href="../index.html">Table of contents</a>
+        <span>Next: <a href="../Examples/Box%20on%20an%20incline.html">Box on an incline</a></span>
+      </nav>
+    </header>
+
+    <main>
+      <div class="sourceCode" id="cb1"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">module</span> <span class="dt">Examples.Teeter</span> <span class="kw">where</span></a></code></pre></div>
+<p>Exam excercise 3, 2017-01-13</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">import</span> <span class="dt">Dimensions.TypeLevel</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">import</span> <span class="dt">Dimensions.Quantity</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">import</span> <span class="dt">Prelude</span> <span class="kw">hiding</span> (length)</a></code></pre></div>
+<p>Two boxes, m1 and m2, rests on a beam in balance.</p>
+<p>Known values:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" data-line-number="1">beam_M <span class="fu">=</span> <span class="fl">1.0</span> <span class="fu">#</span> mass</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">m1 <span class="fu">=</span> <span class="fl">2.0</span> <span class="fu">#</span> mass</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">m2 <span class="fu">=</span> <span class="fl">5.0</span> <span class="fu">#</span> mass</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">d <span class="fu">=</span> <span class="fl">0.75</span> <span class="fu">#</span> length</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">beam_L <span class="fu">=</span> <span class="fl">5.0</span> <span class="fu">#</span> length</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">two <span class="fu">=</span> <span class="fl">2.0</span> <span class="fu">#</span> one</a></code></pre></div>
+<figure>
+<img src="teeter.png" alt="Teeter" class="float-img-left" /><figcaption>Teeter</figcaption>
+</figure>
+<p>Direct implication:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb4-1" data-line-number="1">beam_left_L <span class="fu">=</span> (beam_L <span class="fu">/#</span> two) <span class="fu">+#</span> d</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">beam_right_L <span class="fu">=</span> beam_L <span class="fu">-#</span> beam_left_L</a></code></pre></div>
+<p>We want to be able to represenet the torques.</p>
+<p>A torque (sv. vridmoment) is defined as:</p>
+<p><span class="math display">\[ \tau = distance\ from\ turning\ point \cdot force \]</span></p>
+<p>Since all force values will be composited of a mass and the gravitation, we can ignore the gravitation.</p>
+<p><span class="math display">\[ \tau = distance\ from\ turning\ point \cdot mass \]</span></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb5-1" data-line-number="1">m1_torq <span class="fu">=</span> m1 <span class="fu">*#</span> beam_left_L </a></code></pre></div>
+<p>To get the beams torque on one side, we need to divide by 2 because the beam’s torque is spread out linearly (the density of the beam is equal everywhere), which means the left parts mass centrum is  of the left parts total length.</p>
+<p><span class="math display">\[ beamL_{\tau} = beamL_{M} \cdot \frac{distance}{2} \]</span></p>
+<p><span class="math display">\[ beamL_{\tau} = \frac{beam\ left\ length}{beam\ length} \cdot beam_M \cdot \frac{beam\ left\ length}{2} \]</span></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb6-1" data-line-number="1">beamL_torq <span class="fu">=</span> ((beam_left_L <span class="fu">/#</span> beam_L) <span class="fu">*#</span> beam_M) <span class="fu">*#</span> (beam_left_L <span class="fu">/#</span> two)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb7-1" data-line-number="1">beamR_torq <span class="fu">=</span> ((beam_right_L <span class="fu">/#</span> beam_L) <span class="fu">*#</span> beam_M) <span class="fu">*#</span> (beam_right_L <span class="fu">/#</span> two)</a></code></pre></div>
+<p>We make an expression for <span class="math inline">\(m2_{\tau}\)</span>, which involves our unknown distance x.</p>
+<p><span class="math display">\[ m2_{\tau} = m2 \cdot x \]</span></p>
+<p>For the teeter to be in balance, both sides torques should be equal.</p>
+<p><span class="math display">\[ Left\ side\ torque = Right\ side\ angular\ torque \]</span></p>
+<p>We try to break out <span class="math inline">\(m2_{\tau}\)</span> and then x.</p>
+<p><span class="math display">\[ m1_{\tau} + beamL_{\tau} = m2_{\tau} + beamR_{\tau} \]</span></p>
+<p><span class="math display">\[ m1_{\tau} + beamL_{\tau} - beamR_{\tau} = m2_{\tau} \]</span></p>
+<p><span class="math display">\[ \frac{m1_{\tau} + beamL_{\tau} - beamR_{\tau}}{m2}  = x \]</span></p>
+<p>Our solution:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb8-1" data-line-number="1">x <span class="fu">=</span> (m1_torq <span class="fu">+#</span> beamL_torq <span class="fu">-#</span> beamR_torq) <span class="fu">/#</span> m2</a></code></pre></div>
+<p>Security check:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb9-1" data-line-number="1">m2_torq <span class="fu">=</span> m2 <span class="fu">*#</span> x</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb10-1" data-line-number="1">left_side_torque <span class="fu">=</span> m1_torq <span class="fu">+#</span> beamL_torq</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">right_side_torque <span class="fu">=</span> m2_torq <span class="fu">+#</span> beamR_torq</a></code></pre></div>
+
+    </main>
+
+    <footer>
+      <nav>
+	<span>[src: <a href="https://github.com/DSLsofMath/BScProj2018/blob/master/Physics/src/Examples/Teeter.lhs">Examples/Teeter.lhs</a>]</span>
+        <span>Previous: <a href="../Newtonian%20Mechanics/Single%20particle%20mechanics.html">Single particle mechanics</a></span>
+        <a href="../index.html">Table of contents</a>
+        <span>Next: <a href="../Examples/Box%20on%20an%20incline.html">Box on an incline</a></span>
+      </nav>
+      © Björn Werner, Erik Sjöström, Johan Johansson, Oskar Lundström (2018), GPL
+    </footer>
+  </body>
+</html>

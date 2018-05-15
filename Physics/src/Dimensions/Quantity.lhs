@@ -215,20 +215,10 @@ The following example shows that during a multiplication, the types will change,
 < width :: Quantity Length Double
 < ghci> area
 < 0.15 m^2
-< ghci> :t area
-< area
-<  :: Quantity
-<       ('Dim
-<          'Numeric.NumType.DK.Integers.Pos2 -- The interesting line
-<          'Numeric.NumType.DK.Integers.Zero
-<          'Numeric.NumType.DK.Integers.Zero
-<          'Numeric.NumType.DK.Integers.Zero
-<          'Numeric.NumType.DK.Integers.Zero
-<          'Numeric.NumType.DK.Integers.Zero
-<          'Numeric.NumType.DK.Integers.Zero)
-<       Double
+< ghci> :i area
+< area :: Quantity Area Double
 
-Which is the same as `Area`.
+(Try out `:t` instead of `:i` on the last one and see what happens!)
 
 The type-level dimensions are used below to enforce, at compile-time, that only allowed operations are attempted.
 

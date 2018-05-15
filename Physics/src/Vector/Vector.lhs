@@ -38,7 +38,7 @@ type VectorTwo = Vector2 Scalar
 The magnitude of the vector is it's length. We can calculate this using
 Pythagorean theorem:
 \begin{equation}
-  x^2 + y^2 = mag^2
+  x^2 + y^2 = magnitude^2
 \end{equation}
 
 In haskell this would be:
@@ -74,11 +74,15 @@ hundreds of vectors so it would be useful to add, for instance a list of
 vectors together and get one final vector as a result. We can use *foldr*
 using the zero vector as a starting value.
 to acomplish this.
+
+\begin{spec}
+zeroVector :: VectorTwo
+zeroVector = V2 0 0
+\end{spec}
+
 \begin{code}
 addListOfVectors :: [VectorTwo] -> VectorTwo
 addListOfVectors = foldr add zeroVector
-  where
-    zeroVector = V2 0 0
 \end{code}
 
 Let's try it out!
@@ -100,15 +104,15 @@ coordinates let's make our own instance for Show.
 
 \begin{code}
 instance Show num => Show (Vector2 num) where
-  show (V2 x y) = "(" ++ show x ++ " x, " ++ show y ++ " y)"
+  show (V2 x y) = "(" ++ show x ++ ", " ++ show y ++ ")"
 \end{code}
 
 And let's try our example again:
 ```
   *Vector> let vec1 = V2 5 3
   *Vector> let vec2 = V2 6 5
-  *Vector> sub2 vec1 vec2
-  (-1.0 x, -1.0 y)
+  *Vector> sub vec1 vec2
+  (-1 x, -2 y)
 ```
 
 And let's also try adding a list of vectors using our new function:
@@ -117,7 +121,7 @@ And let's also try adding a list of vectors using our new function:
   *Vector> let vec3 = V2 8 9
   *Vector> let vectors = [vec1, vec2, vec3]
   *Vector> addListOfVectors vectors
-  (19.0 x, 18.0 y)
+  (19.0 x, 17.0 y)
 ```
 
 It works!
@@ -208,7 +212,7 @@ direction of $y$ will be boosted. But there are worse ways to hit the dash
 panel. We could for instance create a new velocity vector with the exact same
 magnitude of speed but which would recieve a worse boost.
 
-% TODO: Picture of mario kart / dash panel
+![](boost.png "A mysterious man in a rad hat on a boost pad"){.float-img-right}
 
 \begin{code}
 worseCart :: VectorTwo
@@ -229,9 +233,7 @@ We talked a lot about angles between vectors but we havn't used it in our code,
 so lets make a function which calculates the angle of a vector. The formula is
 as follows:
 
-> --TODO
-
-**Insert picture of angle of triangle here**
+![](atan.png "Beautiful vector calculus"){.float-img-center} 
 
 We'll use Doubles to represent the angle.
 \begin{code}
@@ -241,7 +243,7 @@ angle :: VectorTwo -> Scalar
 angle (V2 x y) = atan y/x
 \end{code}
 
-Using angles and magnitudes we can even make a new function for making vectors:
+Using angles and magnitudes we can even write a new function for making vectors:
 
 \begin{code}
 mkVector :: Scalar -> Angle -> VectorTwo
@@ -342,10 +344,10 @@ between vectors.
 \begin{code}
 add :: (Num num, Vector vec) => vec num -> vec num -> vec num
 add = vzipWith (+)
-\end{code}
 
 sub :: (Num num, Vector vec) => vec num -> vec num -> vec num
 sub = vzipWith (-)
+\end{code}
 
 For multiplying with a scalar:
 

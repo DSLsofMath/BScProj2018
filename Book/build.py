@@ -127,11 +127,11 @@ sources = [
     ]),
     ("Newtonian Mechanics", [
         ("Single particle mechanics", "Physics/src/NewtonianMechanics/SingleParticle.lhs")
+    ]),
+    ("Examples", [
+        ("Teeter", "Physics/src/Examples/Teeter.lhs"),
+        ("Box on an incline", "Physics/src/Examples/Box_incline.lhs"),
     ])
-    # ("Examples", [
-    #     ("Gungbräda", "Physics/src/Examples/Gungbraeda.lhs"),
-    #     ("krafter på lådor", "Physics/src/Examples/krafter_pa_lador.lhs"),
-    # ])
 ]
 
 if not os.path.exists("build"):

@@ -4,41 +4,39 @@ Box on an incline
 
 > import Vector.Vector
 
-Alla vektorer är i Newton
+All vectors are in newton.
 
 
-
-![Lutande plan](lutande_plan.png){.float-img-left}
+![Incline](incline.png){.float-img-left}
 
 > fg = V2 0 (-10)
 > m = 2
 > alpha = 30
 > 
-> enh_normal :: Double -> Vector2
-> enh_normal a = V2 (cos a) (sin a)
+> unit_normal :: Double -> Vector2 Double
+> unit_normal a = V2 (cos a) (sin a)
 > 
-> f_l_ :: Vector2 -> Angle -> Vector2
-> f_l_ fa a = scale ((magnitude fa) * (cos a)) (enh_normal (a-(pi/2)))
+> f_l_ :: Vector2 Double -> Angle -> Vector2 Double
+> f_l_ fa a = scale ((magnitude fa) * (cos a)) (unit_normal (a-(pi/2)))
 > 
-> fn :: Vector2 -> Angle -> Vector2
+> fn :: Vector2 Double -> Angle -> Vector2 Double
 > fn fa a = negate (f_l_ fa a)
 
-Friktionsfritt plan:
+Frictionfree incline:
 
 
-
-> fr :: Vector2 -> Angle -> Vector2
+> fr :: Vector2 Double -> Angle -> Vector2 Double
 > fr fa a = (fn fa a) + fa
 
 
-** Tester:**
+** Tests:**
 ------------
 
 *Main> fr (V2 0 10) 0
 
 (0.0 x, 0.0 y)                                  
 
-Good:   Inge lutning - står still.
+Good:  No inclination - stands still.
 
 
 *Main> fr (V2 0 (-10)) 0
@@ -77,7 +75,7 @@ Good:   45* lutning - 5N både i x och y led. Pyth: 5^2 + 5^2 =/= 10^2
 (-4.330127018922193 x, 2.499999999999999 y)
 
 
-**Friktionskonstant - i rörelse:**
+**Frictionconstant - in motion:**
 
 \begin{align}
   F_{friction} = \mu * F_{normal} \iff \mu = \frac{F_{friction}}{F_{normal}}
@@ -86,41 +84,44 @@ Good:   45* lutning - 5N både i x och y led. Pyth: 5^2 + 5^2 =/= 10^2
 > us = 0.5
 > uk = 0.4
 
+Add image how friction depends if there is movement.
+
 > type FricConst = Double
 
-friktionen 
+Friction: 
 
- friks = Fn * us,    us = friktion statisk
+ friks = Fn * us,    us = friction static
 
- frikk = Fn * uk,    uk = friktion kinetisk
+ frikk = Fn * uk,    uk = friction kinetic
 
 
-Vi har normalkraften, o beh bara konstanterna.
+We have the normal force and only needs the constants.
 
- Speed har inget att göra med N för friktion? Dock gäller F*m = Nm = work = J = bugatti bränner däck.
+The current speed does not affect the friction. However F*M = Nm = work = J -> racer cars burn tires.
 
-> motscalar :: FricConst -> Vector2 -> Scalar
+> motscalar :: FricConst -> Vector2 Double -> Scalar
 > motscalar u f = u * (magnitude f)
 
 Från en rörelse eller vekt, fixa komplementet
 
-> enh_vekt :: Vector2 -> Vector2
+
+> enh_vekt :: Vector2 Double -> Vector2 Double
 > enh_vekt v  | magnitude v == 0 = (V2 0 0)
 >             | otherwise = scale (1 / (magnitude v)) v
 > 
 > 
-> motkrafts :: FricConst -> Scalar -> Vector2 -> Vector2
+> motkrafts :: FricConst -> Scalar -> Vector2 Double -> Vector2 Double
 > motkrafts u s v = scale (u * s) (negate (enh_vekt v))
 > 
-> motkraftv :: FricConst -> Vector2 -> Vector2 -> Vector2
+> motkraftv :: FricConst -> Vector2 Double -> Vector2 Double -> Vector2 Double
 > motkraftv u n v = scale (u * (magnitude n)) (negate (enh_vekt v))
 
-Nu ska vi bara summera
+Now we just need to sum the force vectors:
 
-> fru :: Vector2 -> Angle -> FricConst -> Vector2
+> fru :: Vector2 Double -> Angle -> FricConst -> Vector2 Double
 > fru fa a u = (fr fa a) + (motkraftv u (fn fa a) (fr fa a))
 > 
-> fru' :: Vector2 -> Angle -> FricConst -> Vector2
+> fru' :: Vector2 Double -> Angle -> FricConst -> Vector2 Double
 > fru' fa a u = (motkraftv u (fn fa a) (fr fa a))
 
 
@@ -167,9 +168,7 @@ Den statiska friktionen är konstig. Den borde stå still vid låg vinkel o hög
 
 Jag summerar ju visserligen krafterna, så det är nog något lurt med friktionshanteringen.
 
-
-
-Tester:
+Tests:
 
 fr
 *Main> fr fg (pi/3)

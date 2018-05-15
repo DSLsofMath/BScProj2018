@@ -1,3 +1,5 @@
+[Länk till Drive-presentation](https://docs.google.com/presentation/d/1GKvIVS8E4a8Xm1CrACb8xWJitlgOIeo9winxd3gK4d4/edit#slide=id.p)
+
 ## Krav
 
 15-20 min presentation.

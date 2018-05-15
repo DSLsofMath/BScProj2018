@@ -129,8 +129,8 @@ sources = [
         ("Single particle mechanics", "Physics/src/NewtonianMechanics/SingleParticle.lhs")
     ]),
     ("Examples", [
-        ("Box on an incline", "Physics/src/Examples/Box_incline.lhs"),
         ("Teeter", "Physics/src/Examples/Teeter.lhs"),
+        ("Box on an incline", "Physics/src/Examples/Box_incline.lhs"),
     ])
 ]
 

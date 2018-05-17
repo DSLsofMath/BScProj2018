@@ -3,7 +3,7 @@
 
 ## Inledning
 
-## Huvuddel
+## Huvuddel (fem cykler)
 
 - "Other modelling teqnieues
   - Vad finns det för andra, och hur funkar dom?
@@ -19,8 +19,10 @@
 - "Drunkards walk"
   - Vi tyckte det var intressant att inte 0. Varför inte tror ni?
   - Återigen, vad tycker ni om att matematiskt visa egenskapen istället?
+- "Trädet"...
+  - Mer ska komma här
 
-## Avslutning
+## Avslutning (av skriftlig karaktär, stavfel, dålig struktur...)
 
 - Vi tycker att rapporten var välskriven även om den var för informell.
 - Vi tycker att delar av metoden kunde vara i teorin och att det även fattades hur ni rent praktiskt genomförde skapandet av modellerna.

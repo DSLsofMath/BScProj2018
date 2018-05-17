@@ -6,24 +6,31 @@ Box on an incline
 
 All vectors are in newton.
 
-
 ![Incline](incline.png){.float-img-left}
+
+Notation:
+fg = gravitational accelleration
+m = mass of box
 
 > fg = V2 0 (-10)
 > m = 2
-> alpha = 30
-> 
+
 > unit_normal :: Double -> Vector2 Double
 > unit_normal a = V2 (cos a) (sin a)
-> 
+
+Force against the incline from the box:
+
 > f_l_ :: Vector2 Double -> Angle -> Vector2 Double
 > f_l_ fa a = scale ((magnitude fa) * (cos a)) (unit_normal (a-(pi/2)))
-> 
+
+The normal against the incline:
+
 > fn :: Vector2 Double -> Angle -> Vector2 Double
 > fn fa a = negate (f_l_ fa a)
 
 Frictionfree incline:
 
+Force resultant:
 
 > fr :: Vector2 Double -> Angle -> Vector2 Double
 > fr fa a = (fn fa a) + fa
@@ -52,23 +59,13 @@ Odd:    Motsatt gravitation ger något underligt? Vi säger fortfarande att norm
 
 Good:   90* lutning - faller med G.
 
-
 *Main> fr (V2 0 10) (pi/3)
 
 (-4.330127018922194 x, 7.499999999999999 y)     
 
-
 *Main> fr (V2 0 10) (pi/4)
 
 (-5.0 x, 4.999999999999999 y)                   
-
-Good:   45* lutning - 5N både i x och y led. Pyth: 5^2 + 5^2 =/= 10^2
-
-                                                        det borde bli:  100 = a^2 + a^2
-                                                                        50 = a^2
-                                                                        5*sqrt(2) = a
-
-                                                        och det är det ju. xD
 
 *Main> fr (V2 0 10) (pi/6)
 

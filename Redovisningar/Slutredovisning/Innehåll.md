@@ -62,8 +62,8 @@ Förmedla ett budskap;
 
 sammanfattning?
 
-* Ett projekt som vi valt att kalla "LYAP" och som utfördes av [NAMN]
 * Projektbeskrivning: [...] Ta fram DSLsofMath-inspirerat kompletterande material för andra närliggande kurser [...]
+* Ett projekt som vi valt att kalla "LYAP" och som utfördes av [NAMN]
 * Att lära ut fysik mha DSL
 * Ett läromaterial anpassat till datastudenter
 * Resultatet blev en hemsida/bok i stil med LYAH

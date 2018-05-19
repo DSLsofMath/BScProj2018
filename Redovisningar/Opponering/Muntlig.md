@@ -5,13 +5,16 @@
 
 ## Huvuddel (fem cykler)
 
-- "Other modelling teqnieues
-  - Vad finns det för andra, och hur funkar dom?
+- "Other modelling teqniques"
+  - What others are there?
+  - How do they work?
+  - Advantages and disadvanatges compared to multi-agent?
 - "Limitations of emergence"
-  - Be dem förklara mer om detta
-- quantity over quality
-  - Myrorna: hade kunnat gå vidare längre
-  - Var det verkligen bra?
+  - In your report you mention...
+  - Could you elaborate on the limitations of emergence?
+- "quantity over quality" (Hoppas inte dom säger något om denna...)
+  - Could you elaborate why you did this choice? (Vet redan svaret, men vi är listiga och låter publiken få veta)
+  - When you found a very interesting model, s.a. tree growth, why not develop it further?
 - "Airplane boarding"
   - Om de inte gjort det, så får vi presentera den
   - Är 500 rader. Risk för fel? Hur märker man det? Hur kan resultaten påveras?

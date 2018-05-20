@@ -1,4 +1,6 @@
 
+# Om ni, grupp 21, skulle se detta, lämna vissa av våra frågor obesvarade i presentationen! (Om ni inte tänkt besvara dem innan ni såg detta vill säga). Då går det nog bäst för både oss och er!
+
 # Opponering
 
 ## Inledning

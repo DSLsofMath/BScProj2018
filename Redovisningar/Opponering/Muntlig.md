@@ -56,5 +56,5 @@ Helst ska frågorna vi ställer visa att vi läst rapporten grundligt. Men här 
 - Vi tycker att rapporten var välskriven även om den var för informell.
 - Vi tycker att delar av metoden kunde vara i teorin 
 - Och att det även fattades hur ni rent praktiskt genomförde skapandet av modellerna. Kunde ha kort exempel. Så att målgruppen ska kunna återskapa
-- Resultatkapitlet svårt att förstå ibland, för för kortfattat
+- Resultatkapitlet svårt att förstå ibland, för kortfattat
 - Intresseväckande inledning!

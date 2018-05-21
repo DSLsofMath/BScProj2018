@@ -5,6 +5,8 @@
 
 Tips till oss: prata långsamt så att det är tydligt...
 
+Oskar göra första halvan och Björn andra halvan.
+
 ## Inledning
 
 - Thank you for your presentation
@@ -23,6 +25,15 @@ Tips till oss: prata långsamt så att det är tydligt...
 - **quantity over quality**
   - Could you elaborate why you did this choice? (Vet redan svaret, men vi är listiga och låter publiken få veta)
   - When you found a very interesting model, s.a. tree growth, why not develop it further?
+
+**Preliminär gräns, tidigaste**
+  
+- **Drunkards walk**
+  - We found it interssting that not 0 avergae. Why do you think that's the case?
+  - Once again, what do you think about proving the property mathematically?
+
+**Preliminär gräns, senaste**
+
 - **Airplane boarding**
   - If they haven't presented it, we have to do it
   - 500 lines o' code. Risk for making an error?
@@ -30,9 +41,6 @@ Tips till oss: prata långsamt så att det är tydligt...
     - How are the results affected?
   - Is it possible to mathematically find the best strategy? Pros and cons compared to what you did?
   - Is any strategy used in reality? Why, why not?
-- **Drunkards walk**
-  - We found it interssting that not 0 avergae. Why do you think that's the case?
-  - Once again, what do you think about proving the property mathematically?
 - **Tree growth**
   - Introduce it
     - if not done in pres, short recap

@@ -20,7 +20,7 @@ Quantities
 >     , meter, kilogram, second, ampere, kelvin, mole, candela, unitless
 >     , (~=)
 >     , isZero
->     , (#)
+>     , (#), wrap, unwrap
 >     , (+#), (-#), (*#), (/#)
 >     , sinq, cosq, asinq, acosq, atanq, expq, logq
 >     , qfold
@@ -464,6 +464,16 @@ And now the sugar.
 > infixl 3 #
 > (#) :: (Num v) => v -> Quantity d v -> Quantity d v
 > v # (ValQuantity d bv) = ValQuantity d (v*bv)
+
+\ignore{
+
+> wrap :: v -> Quantity d v -> Quantity d v
+> wrap v (ValQuantity d _) = ValQuantity d v
+
+> unwrap :: Quantity d v -> v
+> unwrap (ValQuantity _ v) = v
+
+}
 
 The intended usage of the function is the following
 

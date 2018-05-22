@@ -8,7 +8,7 @@ Till att börja med vill vi säga att hur domänspecifika språk kan kombineras 
 fysik inte var något vi visste när projektet startade. En stor del av arbetet i
 början av projektet ägnades därför åt att försöka komma på olika sätt att
 använda dem ihop med olika fysikaliska områden. Det gjordes många experiment
-innan vi hittade ett sätt att skapa domänspecifika språk till fysik som var annat än
+innan vi hittade ett sätt att skapa domänspecifika språk för fysik som var annat än
 triviala implementationer av formler, till exempel att formlen för
 rörelseenergi, $E_k = \frac{mv^2}{2}$, kan skrivas som \texttt{ek m v = m * v *
 v / 2} i Haskell. Detta experimenterande ledde till att
@@ -85,10 +85,9 @@ komposita områdena partikelmekanik, gungbräda och krafter på lådor. Med andr
 ord har mekanik påbörjats, men inte termodynamik eller vågrörelselära. Det som återstår enligt oss när det kommer till mekanik är att tillämpa de grundläggande områdena på
 fler fysikaliska problem utöver gungbräda och krafter på lådor. Vi tror att de
 tre grundläggande områdena som är färdiga räcker. Förutom fler tillämpningar kan
-mer fördjupande områden implementeras, till exempel bevisföring, något som redan påbörjats, se avsnitt~\ref{sec:res_laromaterial} att det påbörjats. Det är dock värt
-att nämna att vi är mycket nöjda med det material som vi har producerat. Våra
-kapitel är väl avgränsade, utformade och implementerade på det sätt som vi
-anser att de bör.
+mer fördjupande områden implementeras, till exempel bevisföring, något som redan
+påbörjats, se avsnitt~\ref{sec:res_laromaterial}.
+%Det är dock värt att nämna att vi är mycket nöjda med det material som vi har producerat. Våra kapitel är väl avgränsade, utformade och implementerade på det sätt som vi anser att de bör.
 
 En annan del av målet var att läromaterialet skulle vara lättillgängligt genom
 sitt språkbruk, publicering på en hemsida och fri tillgång till källkoden.
@@ -187,7 +186,7 @@ förvånande eftersom båda områdena är varsin egen gren inom matematiken
 och lämpar sig därmed väl för implementering i Haskell som är ett språk med nära
 anknytning till matematik. En annan sak som dessa områden hade
 gemensamt var en tydlig syntax och en fix struktur som bestod av ``data och
-operationer'' (data i bemärkelsen som ett matematiskt objekt för ett område). Tabell~\ref{tab:data_och_ops} visar några exempel på områden med
+operationer''. Tabell~\ref{tab:data_och_ops} visar några exempel på områden med
 sina data och operationer.
 
 \captionsetup[figure]{name=Tabell}
@@ -230,7 +229,7 @@ data av slaget funktioner, medan $D$ är operationen derivering. Som synes har
 denna operation samma slags data både in och ut.}\label{fig:analys_op_exempel}
 \end{figure}
 
-Den fixa strukturen kombinerat med data och operationer gör det enkelt att
+Den fixa strukturen kombinerat med data och operationer\todo{?} gör det enkelt att
 modellera dessa områden med datatyper i Haskell. Datatyper har nämligen också en
 fix form. Dessutom blir relationen mellan data och operationer i fysik och
 datatyper och funktioner i Haskell tydligare, vilket illustreras i
@@ -250,7 +249,7 @@ till motsvarande relationer inom fysik.
   motsvarande implementation i Haskell (undre raden). Implementationen kommer
 från det resulterande läromaterialet. Mer om implementationen finns att läsa i
 avsnitt~\ref{sec:grund_impl}}\label{fig:haskell_fysik_likhet}
-\end{figure}
+\end{figure}\todo{Figur ligger fel enligt Exam}
 
 Anledningen till att vi tycker att dessa drag gör ett område mer eller
 mindre lämpat för ett domänspecifikt språk kommer från det val vi gjorde tidigt
@@ -300,7 +299,7 @@ När det kommer till lutande plan och liknande områden är nyckeln att visserli
 känna till vilka samband som gäller, men det är framförallt viktigt att veta när de ska
 användas och hur de ska tillämpas på olika typer av uppgifter. Vi behandlar
 därför områden som lutande plan genom att lösa exempeluppgifter modellerade i de
-tidigare domänspecifika språk. De tidigare språken tillhandahåller de matematiska
+tidigare domänspecifika språken. De tidigare språken tillhandahåller de matematiska
 verktyg som behövs för att koda upp lösningar av problem. Därav innehåller det
 resulterande läromaterialet, som beskrivs i avsnitt~\ref{sec:res_laromaterial},
 inga domänspecifika språk för fysikaliska problem.
@@ -309,9 +308,9 @@ Att vissa områden var mindre lämpliga var ett oväntat resultat i projektets
 genomförande. Vid start trodde vi att det skulle gå att göra domänspecifika
 språk för alla områden, såväl matematiska som fysikaliska, men som vi
 diskuterat här gick inte det. Istället gjordes uppdelningen mellan grundläggande och
-komposita områden, som beskrevs i avsnitt~\ref{sec:valet}, så att de fysikaliska
-områden (som blev komposita) kunde behandlas som tillämpningar av de
-grundläggande områdena.
+komposita områden, som beskrevs i avsnitt~\ref{sec:valet}, så att fysikaliska
+områden (som blev komposita) kunde behandlas som tillämpningar av
+grundläggande områden.
 
 \subsection{Domänspecifika språk, fysik och pedagogiska aspekter}\label{sec:bara_fysik}
 
@@ -323,7 +322,7 @@ förstå det. Dimensioner i läromaterialet är ett bra exempel på
 detta, se även avsnitt~\ref{sec:grund_impl}. Där konstateras att en godtycklig
 dimension kan skrivas som de sju grunddimensionerna med tillhörande exponenter.
 Eftersom dimensionerna måste definieras så tydligt att det går att göra ett
-program av det tvingas struktur att ges till dem, vilket ger ett nytt,
+program av det tvingas struktur att ges till dem\todo{Formulera om}, vilket ger ett nytt,
 välstrukturerat och förhoppningsvis enklare sätt att se på dem, vilket vi själva
 tycker är meningsfullt.
 
@@ -336,10 +335,10 @@ akademiskt intresse för att använda domänspecifika språk i syfte att lära u
 och att det inte bara är fysik och matematik som är lämpliga områden utan att
 den generella idén som vi presenterar i denna rapport även går att applicera på
 andra områden. Nyttan att strukturera upp områden i väl avgränsade och
-tydligt definierade delar kanske anses som uppenbar, men frågan om med vilket
-verktyg som ska utföra detta är inte lika uppenbar. Vi hävdar att domänspecifika
+tydligt definierade delar kanske anses som uppenbar, men frågan om vilket
+verktyg som ska användas för detta är inte lika uppenbar. Vi hävdar att domänspecifika
 språk är ett sådant verktyg och att det även är ett mycket bra verktyg att
-använda sig av.
+använda sig av. \todo{Hur gick det för den andra gruppen?}
 
 En annan aspekt är att när de domänspecifika språken används till fysikalisk
 problemlösning måste det ske enligt de regler som ställdes upp när de
@@ -352,7 +351,7 @@ kompletta banor.
 Det som talar emot
 domänspecifika språk när det kommer till fysik är den stora del av problemlösning
 som ingår i fysik. Det har att göra med deras olika natur. Domänspecifika språk
-har en entydig och fyrkantig struktur medan problemlösning handlar om
+har en entydig och fyrkantig struktur\todo{?} medan problemlösning handlar om
 kreativitet och nytänkande för att bygga upp modeller. Eftersom en stor del i fysik är just problemlösning
 kan denna del inte fångas upp med domänspecifika språk. Det skulle till och med
 kunna vara en nackdel att kombinera domänspecifika språk och fysik om det leder
@@ -361,7 +360,7 @@ domänspecifika språk har ett värde ihop med fysik just för dessa strukturgiv
 möjligheter, även om inte alla aspekter av fysik kan täckas.
 
 Det går också att
-tänka sig att det finns ett värde i omsluta den kreativa problemlösningen
+tänka sig att det finns ett värde i att omsluta den kreativa problemlösningen
 med ett fyrkantigt system och på så sätt stoppa problemlösaren från att göra
 misstag. På ett förenklat sätt går det att säga att så länge typsystemet inte klagar
 betyder det att problemlösaren löser problemet på ett korrekt sätt. Igen handlar det om att se
@@ -375,12 +374,12 @@ Hittills har domänspecifika språk framförts som ett sätt att strukturera fys
 Projektets läromaterial är ett exempel på ett sådant försök. Men läromaterialet
 har även haft två andra drag förutom domänspecifika språk, som skiljer sig från
 traditionell fysikundervisning, nämligen ett lättillgängligt språk och en
-nogrann genomgång av koncepten. Genom att enbart ha fokus på fysik är det möjligt att fysiken i sig förklarats bättre än vad den gör nu. Ett
-läromaterial om renodlad fysik med ett lättsamt språk och nogrann förklaring av
-koncepten hade säkert varit uppskattat. Khan Academy är ett sådant
-exempel~\cite{khan} och som är mycket uppskattat. En annan fördel hade varit att en större målgrupp kan nås.
+noggrann genomgång av koncepten. Genom att enbart ha fokus på fysik är det möjligt att fysiken i sig förklarats bättre än vad den gör nu. Ett
+läromaterial om renodlad fysik med ett lättsamt språk och noggrann förklaring av
+koncepten hade säkert varit uppskattat. Khan Academy\todo{Är det renodlad fysik?} är ett sådant
+exempel~\cite{khan} som är mycket uppskattat. En annan fördel hade varit att en större målgrupp kan nås.
 Men då förlorar vi de saker domänspecifika språk bidrar med, nämligen det som
-diskuterats ovan: att ge struktur och att lära ut ett rigoröst tankesätt. Även den \textit{intresseväckande} potentialen försvinner.
+diskuterats ovan: att ge struktur och att lära ut ett rigoröst tankesätt. Även den \textit{intresseväckande} potentialen försvinner.\todo{Varför?}
 
 Domänspecifika språk kan ses som ett sätt göra fysik intressantare. Tycker en student
 att domänspecifika språk är roligt men inte fysik skulle en överbryggning av dem

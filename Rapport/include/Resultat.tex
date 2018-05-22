@@ -5,7 +5,7 @@ resultaten från utvärderingen med testgruppen och mötena med Åke Fäldt redo
 
 \section{Läromaterialet}\label{sec:res_laromaterial}
 
-Detta avsnitt innehåller en översikt av läromaterialet samt ett utdrag av vardera kapitel. Utdragen exemplifier delar av läromaterialet och implementationerna av domänspecifika språk. De fullständiga implementationerna är inte inkluderade (och förklarade) eftersom det är precis det läromaterialet innehåller. Rapporten skulle då bli en kopia av läromaterialet. Istället hänvisas till ett längre utdrag i bilaga~\ref{cha:utdrag} samt hemsidan där läromaterialet~\cite{LYAP} finns tillgängligt.
+Detta avsnitt innehåller en översikt av läromaterialet samt ett utdrag av vardera kapitel. Utdragen exemplifier delar av läromaterialet och implementationerna av domänspecifika språk. De fullständiga implementationerna är inte inkluderade (och förklarade) eftersom det är precis det läromaterialet innehåller. Rapporten skulle då bli en kopia av läromaterialet. Istället hänvisas till ett längre utdrag i bilaga~\ref{cha:utdrag} samt hemsidan där läromaterialet~\cite{LYAP} finns tillgängligt. De utdrag som finns är inga exakta kopior ord-för-ord av läromaterialet utan de har anpassats till rapporten.
 
 \subsection{Översikt}
 
@@ -19,7 +19,7 @@ Läromaterialet är en löpande text där Haskell-kod och lärotext sammanvävts
 
 \begin{figure}[tph]
     \centering
-    \includegraphics[width=\linewidth]{figure/smakprov_ovning.png}
+    \includegraphics[width=0.4\linewidth]{figure/smakprov_ovning.png}
     \caption{Exempel på en övning. Övningen ligger som en del av den löpande texten.}
     \label{fig:smakprov_ovning}
 \end{figure}
@@ -29,7 +29,7 @@ läromaterialet. Notera speciellt den medvetet oseriösa ritningstekniken som ä
 
 \begin{figure}[tph]
         \centering
-        \includegraphics[width=\linewidth]{figure/smakprov_bild_laromaterial.png}
+        \includegraphics[width=0.4\linewidth]{figure/smakprov_bild_laromaterial.png}
         \caption{Exempel på en bild. Bilden visar hur en hund springer och hoppar upp på en stillastående vagn.}
         \label{fig:smakprov_bild_laromaterial}
 \end{figure}
@@ -85,7 +85,7 @@ tillgänglig på projektets GitHub~\cite{LYAP_repo}. På GitHub finns även ett
 antal delvis färdigställda områden, till exempel bevisföring. Texten i
 läromaterialet är skriven på engelska.
 
-\subsection{Implementation av dimensioner}
+\subsection{Dimensioner}
 \label{sec:grund_impl}
 
 I detta avsnitt visas delar av hur implementationen av dimensioner ser ut i läromaterialet. Den fullständiga implementationen innehåller tre delar:
@@ -98,11 +98,7 @@ I detta avsnitt visas delar av hur implementationen av dimensioner ser ut i lär
 
 Dimensioner på värdenivå används för att enkelt kunna skriva ut dimensioner i GHCi. Dimensioner på typnivå används för att ge typsäkerhet till dimensioner, så att till exempel en längd och en massa inte kan adderas, likt att ett värde av typ \texttt{Double} och \texttt{Integer} inte kan adderas i Haskell. Till sist kombineras de två varianterna av dimensioner till en datatyp för storheter som aritmetiska operationer kan utföras på.
 
-Den del som visas här är början av implementationen av dimensioner på värdenivå. Texten är på engelska eftersom läromaterialet är på engelska. Förutom formateringen är det precis som nedanstående som läromaterialet ser ut.
-
-\begin{displayquote}
-
-A dimension can be seen as a product of the base dimensions, with an individual exponent on each base dimension. Because the 7 base dimensions are known in advance, we can design our data type using  this fact.
+Dimensioner kan ses som en produkt av de 7 basdimensionerna\footnote{Längd, massa, tid, elektrisk ström, temperatur, substansmängd och ljusstyrka.}, med en indiviudell exponent till varje basdimension. Datatypen, på värdenivå, som används ser därför ut som följande
 
 \begin{lstlisting}[frame=none,belowskip=-0.5\baselineskip]
 data Dim = Dim Integer -- Length
@@ -115,38 +111,29 @@ data Dim = Dim Integer -- Length
     deriving (Eq)
 \end{lstlisting}
 
-Each field denotes the exponent for the corresponding base dimension. If the exponent is 0, the base dimension is not part of the dimension. Some examples should clarify.
+Varje fält i datatypen representerar exponenten för motsvarande basdimension. Om exponenten är $0$ betyder det att den basdimension inte är inkluderad i dimensionen. Några exempel ges för att förtydliga.
 
 \begin{lstlisting}[frame=none,belowskip=-0.5\baselineskip]
 length      = Dim 1 0 0 0 0 0 0
 mass        = Dim 0 1 0 0 0 0 0
 time        = Dim 0 0 1 0 0 0 0
-current     = Dim 0 0 0 1 0 0 0
-temperature = Dim 0 0 0 0 1 0 0
-substance   = Dim 0 0 0 0 0 1 0
-luminosity  = Dim 0 0 0 0 0 0 1
 
 velocity     = Dim 1 0 (-1) 0 0 0 0
+acceleration = Dim 1 0 (-1) 0 0 0 0
+area         = Dim 2 0   0  0 0 0 0
 \end{lstlisting}
 
-Velocity is $m/s$ or equivalently $m^1*s^{-1}$. This explains why the exponents are as above.
+Hastighet skrivs vanligtvis som $\frac{m}{s}$ men ekvivalent är att skriva $m^1*s^{-1}$ vilket förklarar varför värdena ovan ser ut som de gör.
 
-Noticed how we used ``m'' (for metre) for implicitly refering to the dimension ``length''? It’s quite natural to work this way.
+I resterande del av detta kapitel i läromaterialet visas hur multiplikation och division samt hur en \textit{utskriftsfunktion}, som skriver ut ett värde snyggt, kan implementeras. Därefter följer ett antal delkapitel som innehåller testning, typnivådimensioner och storheter. Som tidigare nämnt inkluderas de inte här eftersom då skulle rapporten och läromaterialet bli precis samma text.
 
-\textbf{Exercise} Create values for acceleration, area and charge.
+\subsection{Matematisk analys}
 
-\textbf{Solution}
-\begin{lstlisting}[frame=none,belowskip=-0.5\baselineskip]
-acceleration = Dim 1 0 (-2) 0 0 0 0
-area         = Dim 2 0 0    0 0 0 0
-charge       = Dim 0 0 1    1 0 0 0
-\end{lstlisting}
+\subsection{Vektorer}
 
-\end{displayquote}
+\subsection{Exempelproblem}
 
-Det skapas med andra ord en datatyp för dimensioner som använder sig av en exponent för varje basdimension. I resterande del av detta delkapitel visas hur multiplikation och division samt hur en \textit{utskriftsfunktion}, som skriver ut ett värde snyggt, kan implementeras. Därefter följer ett antal delkapitel som innehåller testning, typnivådimensioner och storheter. Som tidigare nämnt inkluderas de inte här eftersom då skulle rapporten och läromaterialet bli precis samma text.
-
-\subsection{Implementation av partikelmekanik}
+\subsection{Partikelmekanik}
 
 Implementationen av komposita områden var en vidareutveckling av de redan
 implementerade grundläggande områdena. Detta utfördes genom att kombinera

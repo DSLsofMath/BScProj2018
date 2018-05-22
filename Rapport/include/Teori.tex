@@ -14,7 +14,7 @@ detta} område som fokus läggs på. Med språk menas ett sätt att uttrycka
 saker inom domänen. Svenska och Java är två exempel på språk.
 Domänspecifika språk är vanligt förekommande i programmeringssammanhang, HTML är
 ett domänspecifikt språk för textformatering, SQL för databashantering och
-CSV för tabeller. 
+CSV för tabeller.
 
 Domänspecifika språk används inte bara i programmering utan förekommer även i
 andra mer vardagliga sammanhang. Inom domänen matlagning är steka, grilla och
@@ -34,7 +34,7 @@ det i datavärlden generella programmeringsspråk, till exempel C++ och
 Java. Dessa är turingkompletta, vilket betyder att det går att
 uttrycka alla beräkningsbara problem i dem och även lösa dem givet
 tillräckligt med tid och
-minnestillgång~\cite{turing_ne}~\cite{turing_book}. Nackdelen med
+minnestillgång~\cite{turing_book}\todo{Turing implicerar ej generell, skriv om}. Nackdelen med
 dessa generella språk är just att de är så generella. Eftersom
 domänspecifika språk inte behöver vara användbara utanför den
 specifika domänen kan de inkludera specifik syntax och ha en inbyggd
@@ -47,15 +47,15 @@ utvecklats inom detta projekt är inbäddade i programmeringsspråket
 datatyper som bygger upp det domänspecifika språket. Att Haskell är ett
 högnivåspråk är också en fördel då programmeraren slipper programmeringstekniska detaljer som
 minneshantering och kan istället fokusera på programmets innehåll
-och betydelse. Slutligen möjliggör mönstermatchning att de datatyper som utgör
-det domänspecifika språket enkelt kan brytas isär och manipuleras.
+och betydelse. Slutligen möjliggör mönstermatchning att de konstruktorer som bygger
+upp datatyperna i det domänspecifika språket enkelt kan brytas isär och manipuleras.
 
 För vidare läsning om domänspecifika språk rekommenderas \textit{DSL for the Uninitiated}~\cite{DSLU}.
 
 \section{Syntax, syntaxträd och semantik}\label{sec:syntax}
 
 I samband med domänspecifika språk dyker begreppen \textit{syntax} och
-\textit{semantik} upp. Syntax är reglerna för hur enheter i språket, till exempel ord och skiljetecken, sammamslås till komplexa strukturer som meningar och
+\textit{semantik} upp. Syntax är reglerna för hur enheter i språket, till exempel ord och skiljetecken, sammanslås till komplexa strukturer som meningar och
 satser. Semantiken är betydelsen av sådana komplexa strukturer i ett språk.
 Inom aritmetik\footnote{Aritmetik är
   den gren inom matematiken som behandlar räkning av tal.} är tal och
@@ -68,9 +68,10 @@ domänspecifika språk används för att modellera just syntax.
 I domänspecifika språk som modellerar syntax, så kallade \textit{deep
 embeddings}, kan syntaxen representeras av trädstrukturer. Dessa
 strukturer kallas \textit{syntaxträd}, och har haft stor betydelse i detta projekt.
-För att illustrera begreppet visas här ett domänspecifikt språk som består av ett
+För att illustrera begreppet visas här ett domänspecifikt språk som består av en
+datatyp vars element är
 syntaxträd som modellerar aritmetiska uttryck, implementerat i Haskell.
-Datatypen för syntaxträdet visas i figur~\ref{fig:syntax_exempel}.
+Datatypen för syntaxträden visas i figur~\ref{fig:syntax_exempel}.
 
 \begin{figure}[tph]
   \begin{lstlisting}
@@ -87,10 +88,10 @@ Typen innehåller \textit{datakonstruktorer} för att representera
 \texttt{:+:} och \texttt{:*:} förgreningar. Med hjälp av dem kan summan respektive produkten av två andra uttryck uttryckas. Löven
 % Löfven
 representeras av
-\texttt{Const}, vilket är en konstant som ej kan byggas vidare på.
+\texttt{Const}, vilket är en konstant som ej kan byggas vidare på\todo{Const 10 :*: Const 2??}.
 
 Med datakonstruktorerna kan uttryck representerade av syntaxträd konstrueras. Ett exempeluttryck
-från den tidigare datatypen visas i figur~\ref{fig:syntax_exempel_varde}, som visar hur det aritmetiska uttrycket $7 * (3
+från den tidigare datatypen visas i figur~\ref{fig:syntax_exempel_varde}, där det aritmetiska uttrycket $7 * (3
 + 10)$ modelleras. Konstruktorn \texttt{:*:} får som sina två argument uttrycken
 \texttt{Const 7} och \texttt{Const 3 :+: Const 10}. Det är alltså en produkt av
 två deluttryck. Syntaxträd brukar illusteras med träddiagram. Detta
@@ -100,22 +101,22 @@ exempeluttryck illustreras i figur \ref{fig:syntax_exempel_bild}.
   \begin{lstlisting}
 expr = Const 7 :*: (Const 3 :+: Const 10)
   \end{lstlisting}
-  \caption{Ett exempeluttryck ur det tidigare syntaxträdet. Detta modellerar det
+  \caption{Ett exempeluttryck ur det tidigare syntaxträdet\todo{Vilket syntaxträd?}. Detta modellerar det
            matematiska uttrycket $7 * (3 + 10)$}\label{fig:syntax_exempel_varde}
 \end{figure}
 
 \begin{figure}[tph]
   \centering
   \includegraphics[width=0.4\linewidth]{figure/syntax_exempel_bild.png}
-  \caption{Ett exempeluttryck från syntaxträdet illustrerat i ett
+  \caption{Ett exempeluttryck från syntaxträdet\todo{Vilket syntaxträd?} illustrerat i ett
            träddiagram.}\label{fig:syntax_exempel_bild}
 \end{figure}
 
 Precis som semantik har en roll i samband med syntax, har semantik även en roll
 i samband med syntaxträd. I detta exempel är semantiken det värde som
 syntaxträdet har. Detta värde kan beräknas utifrån syntaxträdet genom
-en \textit{evaluator}, också kallad \textit{beräkningsfunktion}. För exemplets
-syntaxträd kan beräkningsfunktionen se ut som i figur \ref{fig:eval_tree}
+en \textit{evaluator}, också kallad \textit{beräkningsfunktion}. För \texttt{Expr}
+kan beräkningsfunktionen se ut som i figur \ref{fig:eval_tree}
 
 \begin{figure}[tph]
   \begin{lstlisting}
@@ -130,13 +131,13 @@ evaluate (Const v)   = v
 Det finns tre speciella saker att observera i
 figur~\ref{fig:eval_tree}. Den första är att eftersom syntaxen innehåller tre olika
 slag av element, här motsvarat av de tre datakonstruktorerna, krävs tre fall i
-beräkningsfunktionen som beräknar vardera av dem. \texttt{evaluate} har
+funktionen \texttt{evaluate} som beräknar vardera av dem. Den har
 därför ett fall för \texttt{:+:}, ett för \texttt{:*:} och ett för
 \texttt{Const}.
 
 Den andra saken att notera i figuren är hur ett fall
 beräknas. Hur beräkningen ska se ut fås genom att ta hänsyn till
-semantiken hos det syntaktiska uttrycket. \texttt{e1 :+: e2} är syntax för
+semantiken hos det syntaktiska uttrycket. Här är \texttt{e1 :+: e2} syntax för
 addition av de två uttrycken \texttt{e1} och \texttt{e2}. Därför blir
 semantiken, värdet, av \texttt{e1 :+: e2} lika med värdet hos \texttt{e1} och
 \texttt{e2} adderade. Ett liknande resonemang ger svaret på hur beräkningen av
@@ -157,7 +158,7 @@ programmet främst för människor att läsa.
 Jämfört med traditionella program får dokumentationen en
 ökad betydelse. I traditionella program är programkoden den viktiga delen. I
 litterata program är däremot dokumentationen minst lika viktig. Den används för
-att förklara koden, sätta den i relationen till andra delar, med mera.
+att förklara koden, sätta den i relation till andra delar, med mera.
 Detta jämnbördiga förhållande syns konkret genom att titta på hur källkoden är
 skriven i ett litterat program. Det kan till exempel se ut som i
 figur~\ref{fig:litterate_haskell_exempel} där källkoden och
@@ -238,7 +239,7 @@ Det finns olika strategier för hur de olika delarna genomförs i praktiken,
 här följer en översikt för \textit{Attention}\footnote{Eftersom projektet har
 ett begränsat fokus på de pedagogiska aspekterna, se
 avsnitt~\ref{sec:avgransningar}, har enbart \textit{Attention} tagits hänsyn
-till. Av detta skäl är det enbart denna del beskriven här.}.
+till. Av detta skäl är enbart denna del beskriven här.}.
 
 För att fånga studentens uppmärksamhet och intresse finns tre allmänna
 strategier. Den första är varseblivning, att något plötsligt händer som studenten
@@ -249,17 +250,19 @@ i miljön och att ställa frågor. Det tredje sättet är variation. Då handlar
 om olika struktur och ordning på undervisningen, till exempel att inte alltid
 utforma en lektion som föreläsning, demonstration och sedan övning, utan variera
 det med andra inslag, exempelvis ett filmklipp.
-
+\todo{Röd tråd}
 Enligt det sociokulturella perspektivet som Vygotskij utvecklade~\cite{LSB_und}
 lär sig elever av varandra. Eleverna befinner sig vid sin närmsta
-utvecklingszon~\footnote{Den zon där målet för lärandet ligger på en nivå som är
+utvecklingszon\footnote{Den zon där målet för lärandet ligger på en nivå som är
 för hög för en elev att klara på egen hand, men som eleven klarar om den får
 vägledning och stöd.}, där eleverna kan hjälpa varandra att förstå innebörden av
 definitioner och uttryck genom att sätta ord på det de vill kommunicera. Denna
 typ av kommunikation kan hjälpa elever sätta fingret på vad de
 inte förstår. Med denna bakgrund kan parprogrammering vara
-fördelaktigt. Dels för att eleverna kan lära sig av varandra, att de genom att
-kommunicera sin förståelse internaliserar ämnet och bygger en djupare
+fördelaktigt. Dels för att eleverna kan lära sig av varandra, dels för att de genom att
+kommunicera
+%sin förståelse
+internaliserar ämnet och bygger en djupare
 förståelse. Parprogrammering kan även lämpa sig för att begränsa
 flyktförsök, där elever medvetet eller mindre medvetet börjar ägna sig åt något annat.
 
@@ -273,4 +276,4 @@ behavioristiska element (former av respons) i form av rätt eller fel
 svar~\cite{LSB_und}. Evolutionärt sett har snabba belöningar varit
 fördelaktigt framför långsiktiga som kräver långsiktigt engagemang
 (exempelvis öva inför en tenta) vilket beskrivs i boken \textit{Dansa
-på deadline: Uppskjutandets psykologi}~\cite{DPD}.
+på deadline: Uppskjutandets psykologi}~\cite{DPD}.\todo{Oavslutat stycke}

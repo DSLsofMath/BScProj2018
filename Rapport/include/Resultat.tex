@@ -50,7 +50,7 @@ Haskells typsystem och hur dimensioner hanteras inom fysiken.
 Typnivåprogrammering\footnote{Vanligtvis manipuleras \textit{värden} när
 programmerering sker i Haskell och andra språk. Typnivåprogrammering är precis som
 vanlig programmering med skillnaden att den sker på typnivån, det vill säga, att
-typer modifieras. Läromaterialet~\cite{LYAP} hänvisas till för en utförligare
+typer modifieras. Läsaren hänvisas till läromaterialet~\cite{LYAP} för en utförligare
 förklaring.} används för att göra likheterna så tydliga som möjligt.
 
 I \textit{matematisk analys} behandlas differentialkalkyl och
@@ -71,7 +71,12 @@ vilket skapade ett mycket generellt och lättanvänt gränssnitt. QuickCheck
 användes för att verifiera lagarna som gäller för olika vektoroperationer,
 vilket gav en generell säkerhet kring att implementationerna var korrekta.
 
-I \textit{exempelproblem} tillämpas de tre tidigare kapitlen på två vanliga mekanikproblem, nämligen \textit{krafter på lådor} och \textit{gungbräda}. I krafter på lådor används det domänspecifika språket för vektorer till att beräkna de krafter som verkar på en låda som glider ner för ett plan. I gungbräda visas hur momentjämviktsberäkningar kan göras med det domänspecifika språket för dimensioner.
+I \textit{exempelproblem} tillämpas de tre tidigare kapitlen på två vanliga
+mekanikproblem, nämligen \textit{krafter på lådor} och \textit{gungbräda}. I
+krafter på lådor används det domänspecifika språket för vektorer till att
+beräkna de krafter som verkar på en låda som glider ner för ett plan. I
+gungbräda visas hur momentjämviktsberäkningar kan göras med det domänspecifika
+språket för dimensioner. \todo{Stämmer inte längre, kan Björn uppdatera?}
 
 \textit{Partikelmekanik}. En repetition av gymnasieskolans fysik.
 Lägesenergi, rörelseenergi, gravitation och så vidare. Den modelleras med vektorer vars
@@ -170,7 +175,7 @@ data Particle  = P { pos  :: VectorE -- Position as a
 Utfallet från utvärderingen med testgruppen var till övervägande del positivt.
 Testgruppen tyckte läromaterialet var ett intressant och roligt sätt att
 presentera fysik på. De tyckte att bilderna tjänade sitt syfte i att muntra upp
-läsaren.
+läsaren. \todo{Hade de klarat kursen?}
 
 En poäng som framfördes var att inte börja kapitlen för komplicerat. Istället
 tyckte de att det skulle vara bra att börja enkelt, för att kunna hänga med i
@@ -193,15 +198,15 @@ perspektiv på fysiken, ett annat sätt att förklara den med
 hjälp av domänspecifika språk. En annan sak var den rigorösitet som
 domänspecifika språk leder till, eftersom de domänspecifika språken måste vara
 väldefinierade betyder det att alla fysikaliska koncept måste göras entydiga så
-att även de blir väldefinierade och följden blir att operationerna på dem kan
-enbart göras på det definierade sättet. Inget fusk kan göras i
+att även de blir väldefinierade och följden blir att operationerna på dem
+enbart kan göras på det definierade sättet. Inget fusk\todo{Utveckla om fusk} kan göras i
 beräkningarna - alla steg måste vara fullständiga och följa de regler som finns.
 Fäldt menade att det var en bra egenskap hos läromaterialet, att detta rigorösa
 tankesätt och metodik som förmedlas hade varit till nytta för problemlösning i
 fysikkursen.
 
 Förutom ovanstående framgick även vilka områden i Fysik för ingenjörer som var
-svåra för studenter. Detta finns redovisat i avsnitt~\ref{sec:kontakt_faldt}
+svåra för studenter. Detta finns redovisat i avsnitt~\ref{sec:kontakt_faldt}.
 
 \section{Möte med programansvarig och datas nämnd för studier}
 

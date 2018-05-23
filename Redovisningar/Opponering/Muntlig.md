@@ -48,7 +48,7 @@ opposed to other modeling techniques is the fact that it shows emergent behavior
     - Both 1D and 2D
     - Result is that the root mean square for all agents is root of time.
   - *Questions*
-    - We found it interssting that not 0 after a while. Why do you think that's the case?
+    - Do you think the behaviour would be different with more step angles, like diagonally?
     - What do you think about proving the property mathematically?
       - Advantages and disadvantages compared to a simulation?
 

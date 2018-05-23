@@ -8,7 +8,8 @@ module Combination.Combination
 import Vector.Vector
 import Calculus.FunExpr
 import Calculus.DifferentialCalc
-import Dimensions.Quantity
+import Calculus.IntegralCalc
+import Dimensions.Quantity2
 import Dimensions.TypeLevel
 import Prelude hiding (length)
 
@@ -76,6 +77,68 @@ t7 = t6 /# t4
 
 differentiateWRTtime :: QC d -> QC (d `Div` Time)
 differentiateWRTtime qc = fmap simplify $ fmap derive qc /# time
+
+integrateWRTtime :: QC d -> QC (d `Mul` Time)
+integrateWRTtime qc = fmap simplify $ fmap integrate qc *# time
+
+-- Calc i Vec i Quan
+--------------------
+
+type QVC d = Quantity d (Vector2 FunExpr)
+
+anyVal :: Vector2 FunExpr
+anyVal = V2 (Const 1) (Const 1)
+
+lengthQVC      = length' anyVal
+massQVC        = mass' anyVal
+timeQVC        = time' anyVal
+temperatureQVC = temperature' anyVal
+currentQVC     = current' anyVal
+substanceQVC   = substance' anyVal
+luminosityQVC  = luminosity' anyVal
+oneQVC         = one' anyVal
+
+s1 :: QVC Length
+s1 = V2 (5 :+ Id) (2 :* Id) ## lengthQVC
+
+s2 :: QVC Time
+s2 = V2 (Id :* Id) (8) ## timeQVC
+
+-- Socker
+(###) :: (FunExpr, FunExpr) -> QVC d -> QVC d
+(x, y) ### qvc = V2 x y ## qvc
+
+s3 :: QVC Time
+s3 = (Id, Sin) ### timeQVC
+
+addQVC :: QVC d -> QVC d -> QVC d
+addQVC = quantityAdd' (vzipWith (+))
+
+simplifyQVC :: QVC d -> QVC d
+simplifyQVC = fmap (vmap simplify)
+
+scaleQVC :: Quantity d1 FunExpr -> QVC d2 -> QVC (d1 `Mul` d2)
+scaleQVC s qvc = simplifyQVC $ quantityMul' (\fe vec -> scale fe vec) s qvc
+
+divQVC :: Quantity d1 FunExpr -> QVC d2 -> QVC (d1 `Div` d2)
+divQVC s qvc = simplifyQVC $ quantityDiv' (\fe vec -> scale (1 :/ fe) vec) s qvc
+
+diffQVC :: QVC d -> QVC (d `Div` Time)
+diffQVC qvc = simplifyQVC differentiated
+  where
+    differentiated = quantityDiv' f (fmap (vmap derive) qvc) timeQVC
+    f = vzipWith (/)
+
+-- Ett flygplans position av tiden bestäms av nedan
+
+pos :: QVC Length
+pos = (Sin :+ Const 8, Id :* Const 3) ### lengthQVC
+
+-- Vad är hastigheten hos ett flygplan som flyger dubbelt så snabbt, som en funktion av tiden?
+
+velDoub :: QVC (Length `Div` Time)
+velDoub = scaleQVC (Const 2 # one) (diffQVC pos)
+
 
 
 

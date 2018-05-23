@@ -2,6 +2,8 @@
 Quantities
 ==========
 
+**Anapssat för kombination. Lärotext ej skapad än.**
+
 \ignore{
 
 > {-# LANGUAGE UndecidableInstances #-}
@@ -13,7 +15,7 @@ Quantities
 
 }
 
-> module Dimensions.Quantity
+> module Dimensions.Quantity2
 >     ( Quantity
 >     , length, mass, time, current, temperature, substance, luminosity, one
 >     , velocity, acceleration, force, momentum
@@ -24,6 +26,8 @@ Quantities
 >     , (+#), (-#), (*#), (/#)
 >     , sinq, cosq, asinq, acosq, atanq, expq, logq
 >     , qfold
+>     , quantityAdd', quantityMul', quantityDiv'
+>     , length', mass', time', current', temperature', substance', luminosity', one'
 >     ) where
 
 
@@ -164,8 +168,8 @@ A taste of typos
 We'll implement all arithmetic operations on `Quantity`, but for now, to get a taste of types, we show here addition and multiplication and some examples of values of type `Quantity`.
 
 > quantityAdd :: (Num v) => Quantity d v ->
->                           Quantity d v ->
->                           Quantity d v
+>                               Quantity d v ->
+>                               Quantity d v
 > quantityAdd (ValQuantity d v1) (ValQuantity _ v2) = ValQuantity d (v1+v2)
 
 The type is interpreted as follows: two values of type `Quantity d v` is the input, where `d` is the type-level dimension. The output is also a value of type `Quantity d v`.
@@ -653,3 +657,87 @@ Further reading
 The package [Dimensional](https://hackage.haskell.org/package/dimensional) inspired a lot of what we did here. Our `Quantity` is like a "lite" version of Dimensional, which among other things, support different units and use `Data.Proxy`.
 
 The type-level progamming in this text was done with the help of the tutorial [Basic Type Level Programming in Haskell](http://www.parsonsmatt.org/2017/04/26/basic_type_level_programming_in_haskell.html). If you want to know more about kinds and type-level programming, it's a very good starting point.
+
+On your own
+-----------
+
+If you want to do the numeric calculations yourself. These should be "protected" and not "public", like they are now. (Java analogy)
+
+> quantityAdd' :: (a -> b -> c) -> Quantity d a 
+>                               -> Quantity d b
+>                               -> Quantity d c
+> quantityAdd' f (ValQuantity d a) (ValQuantity _ b) =
+>              ValQuantity d $ f a b
+
+> quantityMul' :: (a -> b -> c) -> Quantity d1 a
+>                               -> Quantity d2 b
+>                               -> Quantity (d1 `Mul` d2) c
+> quantityMul' f (ValQuantity d1 a) (ValQuantity d2 b) =
+>              ValQuantity (d1 `V.mul` d2) $ f a b
+
+> quantityDiv' :: (a -> b -> c) -> Quantity d1 a
+>                               -> Quantity d2 b
+>                               -> Quantity (d1 `Div` d2) c
+> quantityDiv' f (ValQuantity d1 a) (ValQuantity d2 b) =
+>              ValQuantity (d1 `V.div` d2) $ f a b
+
+Send any value in whatever weird type your working on. This is a one-time operation.
+
+> length' :: v -> Quantity Length v
+> length' v = ValQuantity V.length v
+> mass' :: v -> Quantity Mass v
+> mass' v = ValQuantity V.mass v
+> time' :: v -> Quantity Time v
+> time' v = ValQuantity V.time v
+> current' :: v -> Quantity Current v
+> current' v = ValQuantity V.current v
+> temperature' :: v -> Quantity Temperature v
+> temperature' v = ValQuantity V.temperature v
+> substance' :: v -> Quantity Substance v
+> substance' v = ValQuantity V.substance v
+> luminosity' :: v -> Quantity Luminosity v
+> luminosity' v = ValQuantity V.luminosity v
+> one' :: v -> Quantity One v
+> one' v = ValQuantity V.one v
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

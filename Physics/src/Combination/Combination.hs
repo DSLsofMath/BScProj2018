@@ -39,47 +39,44 @@ t1 :: Quantity Length FunExpr
 t1 = (Const 5 :+ Const 2 :* Id) # length
 
 -- eller kortare
-type CQ d = Quantity d FunExpr
+type QC d = Quantity d FunExpr
 
-t2 :: CQ Length
+t2 :: QC Length
 t2 = t1
 
 -- Ett flygplan i turbulens
-t3 :: CQ Length
+t3 :: QC Length
 t3 = 5 + sin Id # length
 
 -- Ett flygplan som står stilla
-t4 :: CQ Length
+t4 :: QC Length
 t4 = 8 # length
 
 type Area = Length `Mul` Length
 
 -- Någon slags multiplikation
-t5 :: CQ Area
+t5 :: QC Area
 t5 = t1 *# t3
 
-t6 :: CQ Area
+t6 :: QC Area
 t6 = fmap simplify t5
 
 -- Någon slags division
-t7 :: CQ Length
+t7 :: QC Length
 t7 = t6 /# t4
 
 -- Går ej, vilket är bra
--- t8 :: CQ Area
+-- t8 :: QC Area
 -- t8 = t6 /# t4
 
--- Stöd för derivering. Hela CQ och dessa
+-- Stöd för derivering. Hela QC och dessa
 -- bör vara dola för utomstående användare.
--- Inuti är "otypat". Wrap och unwrap borde vara "protected" och inte "public", Java analogi.
 
-differentiateWRTtime :: CQ d -> CQ (d `Div` Time)
-differentiateWRTtime cq = newWithNewQuantity
-  where
-    originalWithQuantity = cq
-    newWithQuantity      = fmap derive cq
-    newWithoutQuantity   = unwrap newWithQuantity
-    newWithNewQuantity   = wrap newWithoutQuantity (originalWithQuantity /# time)
+-- fmap på Quantity, men inte QC!
+
+differentiateWRTtime :: QC d -> QC (d `Div` Time)
+differentiateWRTtime qc = fmap simplify $ fmap derive qc /# time
+
 
 
 

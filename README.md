@@ -32,7 +32,7 @@ Medlemmar: Oskar, Erik, ~~Daniel~~, Björn, Johan
 - ~Kod i figurer~
 - Kolla över användning av syntaxträd
 - Kommentarer i teorikapitel
-- Röd tråd lärandeteorier och sista stycket
+- Röd tråd lärandeteorier ~och sista stycket~
 - Framåtpekare i genomförande
 - Skapnde hemsida, kanske ta bort
 - Hade testgruppen klarat kursen?

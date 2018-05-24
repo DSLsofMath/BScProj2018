@@ -46,3 +46,4 @@ Medlemmar: Oskar, Erik, ~~Daniel~~, Björn, Johan
 - Hur vi ska korta ner genomförande
 - Hur vi ska korta ner diskussion
 - Ha kvar hemsida i metod?
+- Hela läromaterialet i bilagan?

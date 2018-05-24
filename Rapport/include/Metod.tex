@@ -201,30 +201,30 @@ implementationerna av de grundläggande områdena är både rigorösa och korrek
 Det visar dessutom att det går att använda materialet som presenteras tidigare
 till att implementera och lösa mer komplexa problem.
 
-\section{Skapande av och publicering på hemsidan}
-
-Läromaterialet kompilerades med hjälp av ett skript och
-publicerades på en hemsida. Skriptet anropar
-Pandoc för att konvertera från källkod i Literate
-Haskell-format till HTML, redo att visas på en hemsida. Pandoc
-paketerar även med \textit{MathJax} som använder JavaScript för att
-rendera matematiska formler i LaTeX-format på fint och läsbart
-vis. Utan stöd för JavaScript skrivs matematik ut som omodifierad
-LaTeX-kod, vilket är mer svårläst, men fortfarande tolkningsbart. Det
-skrevs även CSS-kod för att modifiera utseendet av
-hemsidan för att den skulle bli prydligare och mer lättläst.
-
-Varje källfil betraktades som ett kapitel och publicerades som en
-separat undersida. Med hjälp av ett index beskrivet i skriptet
-konstruerades navigationselement mellan kapitel på varje undersida
-och en innehållsförteckning.
-
-För publicering lades all data producerad av skriptet i en ny git-gren (engelska \textit{git branch}) med namnet \texttt{gh-pages}. Att alla grenar synkroniseras
-mot GitHub medför att alla filer på \texttt{gh-pages} grenen
-visas som en hemsida med hjälp av \textit{GitHub
-  Pages}. Publiceringen skedde inte kontinuerligt eller automatiskt,
-utan krävde en manuell synkronisering vid varje önskad uppdatering av
-hemsidan.
+% \section{Skapande av och publicering på hemsidan}
+%
+% Läromaterialet kompilerades med hjälp av ett skript och
+% publicerades på en hemsida. Skriptet anropar
+% Pandoc för att konvertera från källkod i Literate
+% Haskell-format till HTML, redo att visas på en hemsida. Pandoc
+% paketerar även med \textit{MathJax} som använder JavaScript för att
+% rendera matematiska formler i LaTeX-format på fint och läsbart
+% vis. Utan stöd för JavaScript skrivs matematik ut som omodifierad
+% LaTeX-kod, vilket är mer svårläst, men fortfarande tolkningsbart. Det
+% skrevs även CSS-kod för att modifiera utseendet av
+% hemsidan för att den skulle bli prydligare och mer lättläst.
+%
+% Varje källfil betraktades som ett kapitel och publicerades som en
+% separat undersida. Med hjälp av ett index beskrivet i skriptet
+% konstruerades navigationselement mellan kapitel på varje undersida
+% och en innehållsförteckning.
+%
+% För publicering lades all data producerad av skriptet i en ny git-gren (engelska \textit{git branch}) med namnet \texttt{gh-pages}. Att alla grenar synkroniseras
+% mot GitHub medför att alla filer på \texttt{gh-pages} grenen
+% visas som en hemsida med hjälp av \textit{GitHub
+%   Pages}. Publiceringen skedde inte kontinuerligt eller automatiskt,
+% utan krävde en manuell synkronisering vid varje önskad uppdatering av
+% hemsidan.
 
 \section{Utvärdering med testgrupp}
 

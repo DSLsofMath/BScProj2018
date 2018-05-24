@@ -1,15 +1,34 @@
 \chapter{Resultat}
 
-I detta kapitel redovisas det resulterande läromaterialet, vilket består av fem kapitel. Det är publicerat på en hemsida och dess källkod är fritt tillgänglig. Även
-resultaten från utvärderingen med testgruppen och mötena med Åke Fäldt redovisas.
+I detta kapitel redovisas det resulterande läromaterialet, vilket består av fem
+kapitel. Det är publicerat på en hemsida och dess källkod är fritt tillgänglig.
+Även resultaten från utvärderingen med testgruppen och mötena med Åke Fäldt
+redovisas.
 
 \section{Läromaterialet}\label{sec:res_laromaterial}
 
-Detta avsnitt innehåller en översikt av läromaterialet samt ett utdrag av vardera kapitel. Utdragen exemplifier delar av läromaterialet och implementationerna av domänspecifika språk. De fullständiga implementationerna är inte inkluderade (och förklarade) eftersom det är precis det läromaterialet innehåller. Rapporten skulle då bli en kopia av läromaterialet. Istället hänvisas till ett längre utdrag i bilaga~\ref{cha:utdrag} samt hemsidan där läromaterialet~\cite{LYAP} finns tillgängligt. De utdrag som finns är inga exakta kopior ord-för-ord av läromaterialet utan de har anpassats till rapporten.
+Detta avsnitt innehåller en översikt av läromaterialet samt ett utdrag av
+vardera kapitel. Utdragen exemplifier delar av läromaterialet och
+implementationerna av domänspecifika språk. De fullständiga implementationerna
+är inte inkluderade (och förklarade) eftersom det är precis det läromaterialet
+innehåller. Rapporten skulle då bli en kopia av läromaterialet. Istället
+hänvisas till ett längre utdrag i bilaga~\ref{cha:utdrag} samt hemsidan där
+läromaterialet~\cite{LYAP} finns tillgängligt. De utdrag som finns är inga
+exakta kopior ord-för-ord av läromaterialet utan de har anpassats till
+rapporten.
 
 \subsection{Översikt}
 
-Läromaterialet är en löpande text där Haskell-kod och lärotext sammanvävts. Det ser ut som i figur~\ref{fig:smakprov_laromaterial}. I texten följer läsaren med i implementationen av ett domänspecifikt språk och det visas hur det används. Tanken är att läsaren parallellt programmerar det som texten förklarar, för att på så sätt även få praktisk färdighet i det som presenterats. För detta syfte finns det även övningar tillagda direkt i den löpande texten, se figur~\ref{fig:smakprov_ovning}, som ofta innebär att läsaren själv ska implementera en liten del av det domänspecifika språket. Det finns också övningar i slutet av kapitlet som ofta innebär större vidareutvecklingar av de domänspecifika språken.
+Läromaterialet är en löpande text där Haskell-kod och lärotext sammanvävts. Det
+ser ut som i figur~\ref{fig:smakprov_laromaterial}. I texten följer läsaren med
+i implementationen av ett domänspecifikt språk och det visas hur det används.
+Tanken är att läsaren parallellt programmerar det som texten förklarar, för att
+på så sätt även få praktisk färdighet i det som presenterats. För detta syfte
+finns det även övningar tillagda direkt i den löpande texten, se
+figur~\ref{fig:smakprov_ovning}, som ofta innebär att läsaren själv ska
+implementera en liten del av det domänspecifika språket. Det finns också
+övningar i slutet av kapitlet som ofta innebär större vidareutvecklingar av de
+domänspecifika språken.
 
 \begin{figure}[tph]
   \centering
@@ -24,8 +43,11 @@ Läromaterialet är en löpande text där Haskell-kod och lärotext sammanvävts
     \label{fig:smakprov_ovning}
 \end{figure}
 
-Språket i lärotexten är enligt projektgruppen lättsamt\footnote{Diskuteras utförligare i avsnitt \ref{sec:res_disk}.} och i detta syfte finns det även bilder tillagda. Figur~\ref{fig:smakprov_bild_laromaterial} är ett exempel på en bild ur
-läromaterialet. Notera speciellt den medvetet oseriösa ritningstekniken som är tänkt att vara rolig och muntra upp läsaren.
+Språket i lärotexten är enligt projektgruppen lättsamt\footnote{Diskuteras
+utförligare i avsnitt \ref{sec:res_disk}.} och i detta syfte finns det även
+bilder tillagda. Figur~\ref{fig:smakprov_bild_laromaterial} är ett exempel på en
+bild ur läromaterialet. Notera speciellt den medvetet oseriösa ritningstekniken
+som är tänkt att vara rolig och muntra upp läsaren.
 
 \begin{figure}[tph]
         \centering
@@ -34,7 +56,9 @@ läromaterialet. Notera speciellt den medvetet oseriösa ritningstekniken som ä
         \label{fig:smakprov_bild_laromaterial}
 \end{figure}
 
-Läromaterialet innehåller 5 kapitel som vardera behandlar ett område inom fysik och matematik. Fokuset är på klassisk mekanik samt den matematik som tillhör området. De behandlade områdena är:
+Läromaterialet innehåller 5 kapitel som vardera behandlar ett område inom fysik
+och matematik. Fokuset är på klassisk mekanik samt den matematik som tillhör
+området. De behandlade områdena är:
 
 \begin{itemize}
   \item Dimensioner
@@ -76,7 +100,7 @@ mekanikproblem, nämligen \textit{krafter på lådor} och \textit{gungbräda}. I
 krafter på lådor används det domänspecifika språket för vektorer till att
 beräkna de krafter som verkar på en låda som glider ner för ett plan. I
 gungbräda visas hur momentjämviktsberäkningar kan göras med det domänspecifika
-språket för dimensioner. \todo{Stämmer inte längre, kan Björn uppdatera?}
+språket för dimensioner.
 
 \textit{Partikelmekanik}. En repetition av gymnasieskolans fysik.
 Lägesenergi, rörelseenergi, gravitation och så vidare. Den modelleras med vektorer vars
@@ -93,7 +117,8 @@ läromaterialet är skriven på engelska.
 \subsection{Dimensioner}
 \label{sec:grund_impl}
 
-I detta avsnitt visas delar av hur implementationen av dimensioner ser ut i läromaterialet. Den fullständiga implementationen innehåller tre delar:
+I detta avsnitt visas delar av hur implementationen av dimensioner ser ut i
+läromaterialet. Den fullständiga implementationen innehåller tre delar:
 
 \begin{enumerate}
   \item Dimensioner på värdenivå
@@ -101,9 +126,17 @@ I detta avsnitt visas delar av hur implementationen av dimensioner ser ut i lär
   \item Datatyp för storheter
 \end{enumerate}
 
-Dimensioner på värdenivå används för att enkelt kunna skriva ut dimensioner i GHCi. Dimensioner på typnivå används för att ge typsäkerhet till dimensioner, så att till exempel en längd och en massa inte kan adderas, likt att ett värde av typ \texttt{Double} och \texttt{Integer} inte kan adderas i Haskell. Till sist kombineras de två varianterna av dimensioner till en datatyp för storheter som aritmetiska operationer kan utföras på.
+Dimensioner på värdenivå används för att enkelt kunna skriva ut dimensioner i
+GHCi. Dimensioner på typnivå används för att ge typsäkerhet till dimensioner, så
+att till exempel en längd och en massa inte kan adderas, likt att ett värde av
+typ \texttt{Double} och \texttt{Integer} inte kan adderas i Haskell. Till sist
+kombineras de två varianterna av dimensioner till en datatyp för storheter som
+aritmetiska operationer kan utföras på.
 
-Dimensioner kan ses som en produkt av de 7 basdimensionerna\footnote{Längd, massa, tid, elektrisk ström, temperatur, substansmängd och ljusstyrka.}, med en indiviudell exponent till varje basdimension. Datatypen, på värdenivå, som används ser därför ut som följande
+Dimensioner kan ses som en produkt av de 7 basdimensionerna\footnote{Längd,
+massa, tid, elektrisk ström, temperatur, substansmängd och ljusstyrka.}, med en
+indiviudell exponent till varje basdimension. Datatypen, på värdenivå, som
+används ser därför ut som följande
 
 \begin{lstlisting}[frame=none,belowskip=-0.5\baselineskip]
 data Dim = Dim Integer -- Length
@@ -116,7 +149,9 @@ data Dim = Dim Integer -- Length
     deriving (Eq)
 \end{lstlisting}
 
-Varje fält i datatypen representerar exponenten för motsvarande basdimension. Om exponenten är $0$ betyder det att den basdimension inte är inkluderad i dimensionen. Några exempel ges för att förtydliga.
+Varje fält i datatypen representerar exponenten för motsvarande basdimension. Om
+exponenten är $0$ betyder det att den basdimension inte är inkluderad i
+dimensionen. Några exempel ges för att förtydliga.
 
 \begin{lstlisting}[frame=none,belowskip=-0.5\baselineskip]
 length      = Dim 1 0 0 0 0 0 0
@@ -128,13 +163,27 @@ acceleration = Dim 1 0 (-1) 0 0 0 0
 area         = Dim 2 0   0  0 0 0 0
 \end{lstlisting}
 
-Hastighet skrivs vanligtvis som $\frac{m}{s}$ men ekvivalent är att skriva $m^1*s^{-1}$ vilket förklarar varför värdena ovan ser ut som de gör.
+Hastighet skrivs vanligtvis som $\frac{m}{s}$ men ekvivalent är att skriva
+$m^1*s^{-1}$ vilket förklarar varför värdena ovan ser ut som de gör.
 
-I resterande del av detta kapitel i läromaterialet visas hur multiplikation och division samt hur en \textit{utskriftsfunktion}, som skriver ut ett värde snyggt, kan implementeras. Därefter följer ett antal delkapitel som innehåller testning, typnivådimensioner och storheter. Som tidigare nämnt inkluderas de inte här eftersom då skulle rapporten och läromaterialet bli precis samma text.
+I resterande del av detta kapitel i läromaterialet visas hur multiplikation och
+division samt hur en \textit{utskriftsfunktion}, som skriver ut ett värde
+snyggt, kan implementeras. Därefter följer ett antal delkapitel som innehåller
+testning, typnivådimensioner och storheter. Som tidigare nämnt inkluderas de
+inte här eftersom då skulle rapporten och läromaterialet bli precis samma text.
 
 \subsection{Matematisk analys}
 
 \subsection{Vektorer}
+
+Vektorer implementerades på två olika sätt. Det första följde definitionen i
+kurboken och implementerade vektorer i två dimensioner med en typ vars
+konstruktor tog två argument.
+
+\begin{inline}
+  test :: Int
+  test = 1
+\end{inline}
 
 \subsection{Exempelproblem}
 
@@ -152,9 +201,9 @@ Ett exempel på ett komposit område är implementationen av partikelmekanik
 där de grundläggande områdena vektorer och matematisk analys
 kombinerades. Anledningen till detta var att partiklars position, hastighet och
 acceleration modelleras med vektorer, dessutom är de krafter som påverkar
-partiklar även de modellerade som vektorer. Sedan används matematisk analys för att
-göra beräkningar på dem. Därför var det naturligt att modellera partikelmekanik
-med hjälp av vektorer vars komponenter var uttryck som
+partiklar även de modellerade som vektorer. Sedan används matematisk analys för
+att göra beräkningar på dem. Därför var det naturligt att modellera
+partikelmekanik med hjälp av vektorer vars komponenter var uttryck som
 implementerades av matematisk analys.
 
 Exempel från läromaterialet:

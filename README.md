@@ -26,3 +26,16 @@ Medlemmar: Oskar, Erik, ~~Daniel~~, Björn, Johan
 - Korta ner
   - Genomförande
   - Diskussion
+- Relaterade arbeten i diskussion
+- Skriva om förklaring av generellt programmeringsspråk
+- Referenssystem
+- Kod i figurer
+- Kolla över användning av syntaxträd
+- Kommentarer i teorikapitel
+- Röd tråd lärandeteorier och sista stycket
+- Framåtpekare i genomförande
+- Skapnde hemsida, kanske ta bort
+- Hade testgruppen klarat kursen?
+- Utveckla att inte kan fuska
+- Figur som hamnat fel
+- Utveckla hur gick för DSL2016

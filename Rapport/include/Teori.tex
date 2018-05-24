@@ -97,7 +97,7 @@ exempeluttryck illustreras i figur \ref{fig:syntax_exempel_bild}.
 \begin{figure}[tph]
   \centering
   \includegraphics[width=0.4\linewidth]{figure/syntax_exempel_bild.png}
-  \caption{Ett exempeluttryck från syntaxträdet\todo{Vilket syntaxträd?} illustrerat i ett
+  \caption{Ett exempeluttryck från syntaxträdet illustrerat i ett
            träddiagram.}\label{fig:syntax_exempel_bild}
 \end{figure}
 
@@ -149,7 +149,7 @@ dokumentationen är sammanvävda på ett jämnbördigt sätt, där den ena inte 
 viktigare än den andra.
 
 \begin{figure}[tph]
-  \begin{lstlisting}[language={}]
+  \begin{lstlisting}[language={}, frame=single]
 How does all this tie together? First the type is decided, for instance
 
 > type ExampleType = Quantity T.Length Double
@@ -160,6 +160,7 @@ then a value of that type is created
 > exampleValue = Quantity V.length 5.3
 
 Note that the Quantity data type has both value-level and type-level dimensions. As previosuly mentioned, value-level in order to pretty print and type-level to only permit legal operations.
+
 \end{lstlisting}
   \caption{Ett exempel på hur en källfil till litterat programmering kan se ut, tagen direkt från källkoden till läromaterialet.
            I exemplet är koden skriven i Literate Haskell. Rader som börjar med \texttt{>}

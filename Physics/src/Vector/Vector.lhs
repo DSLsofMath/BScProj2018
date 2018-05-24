@@ -275,10 +275,10 @@ hopefully understand where I'm going when reading the examples.
 Using this information we can now create a new class for vectors which
 implement this functionality:
 
-> class Vector vector where
->   vmap      :: (num -> num)         -> vector num -> vector num
->   vzipWith  :: (num -> num  -> num) -> vector num -> vector num -> vector num
->   vfold     :: (num -> num  -> num) -> vector num -> num
+> class Vector vec where
+>   vmap      :: (num -> num)         -> vec num -> vec num
+>   vzipWith  :: (num -> num  -> num) -> vec num -> vec num -> vec num
+>   vfold     :: (num -> num  -> num) -> vec num -> num
 
  Now we have a blueprint for what vector is, so let's implement it for our own
  vector datatypes.

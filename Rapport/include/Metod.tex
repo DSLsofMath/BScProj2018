@@ -75,7 +75,7 @@ behandla. Men minst lika viktiga var de inledande experiment som gjordes på
 varje område för att se huruvida det lämpade sig att göra ett domänspecifikt
 språk av och hur det skulle kunna se ut. Experimenten visade att enbart vissa
 områden, till exempel vektorer, fungerade bra att göra ett domänspecifikt språk
-av. Andra områden, till exempel lutande plan, var mindre lämpliga. Vad som skiljer dem åt är att vektorer har tydliga data och operationer (till exempel skalärprodukt) medan lutande plan har egenskaper (till exemel friktionskoefficienter och vinklar) som är relaterade till varandra med ekvationer. Det här diskuteras utförligare i avsnitt~\ref{sec:lampligt}. Det framgick också att det
+av. Andra områden, till exempel lutande plan, var mindre lämpliga. Vad som skiljer dem åt är att vektorer har tydliga data och operationer (till exempel skalärprodukt) medan lutande plan har egenskaper (till exempel friktionskoefficienter och vinklar) som är relaterade till varandra med ekvationer. Det här diskuteras utförligare i avsnitt~\ref{sec:lampligt}. Det framgick också att det
 blev ett överlapp mellan olika domänspecifika språk trots att områdena var fristående.
 Ett exempel var det domänspecifika språk för partikelmekanik som till stor del
 liknade de domänspecifika språken för matematisk analys och vektorer.
@@ -89,7 +89,7 @@ på konkreta fysikaliska problem.
 \subsubsection*{Områden som valdes ut}
 
 När kunskap inhämtats om olika områden kunde ett urval göras. De områden som
-identifierades som grundläggande och som hade en väl lämpad struktur enligt avsnittet innan valdes ut. Med detta som grund blev områdena som valdes ut fysikaliska dimensioner, matematisk analys och vektorer. Här följer en kortfattad motivering av valet av dem.
+identifierades som grundläggande och som var lämpade (enligt avsnittet innan) valdes ut. Med detta som grund blev områdena som valdes ut fysikaliska dimensioner, matematisk analys och vektorer. Här följer en kortfattad motivering av valet av dem.
 
 \textit{Dimensioner} eftersom det är viktigt för studenter att förstå
 hur dimensioner påverkas av algebraiska operationer. Det kan också vara
@@ -139,9 +139,7 @@ med en uttömmande förklaring om hur det fungerade och utan krav på tidigare
 kunskap hos läsaren.
 
 Efter att ett domänspecifikt språk implementerats skrevs tester till det. Det
-som var intressant att testa var olika lagar som skulle gälla, och  eftersom de
-domänspecifika språken i läromaterialet modellerade matematik var det matematiska lagar
-som skulle gälla. Ett exempel var att vektoraddition skulle vara kommutativ.
+som var intressant att testa var huruvida domänens lagar gällde i det domänspecifika språket som modellerade domänen. Till exempel var det för det domänspecifika språket om vektorer aktuellt att testa om vektoraddition var kommutativ, och så vidare.
 Testerna gjordes med hjälp av \textit{QuickCheck}~\cite{QC} vilket är ett
 testningsverktyg i Haskell som genererar många och slumpmässiga testfall. Att
 lagarna gällde för de domänspecifika språken verifierades med andra ord genom
@@ -187,7 +185,7 @@ språken.
 Ett exempel på ovanstående är kapitlet kring det komposita området partikelmekanik. Dess implementation var en sammanslagning av området vektorer och
 matematisk analys där fokus flyttats till att visa hur det direkt gick att översätta de
 fysikaliska formlerna som beskriver partiklars rörelse och energier till
-Haskell-kod med hjälp av de grundläggande områdena. Beskrivning av relationen arbete-energi (engelska \textit{Work-Energy theorem}) gick då till som i figur \ref{fig:komposit-ex}.
+Haskell-kod med hjälp av de grundläggande områdena. Beskrivningen av relationen arbete-energi (engelska \textit{Work-Energy theorem}) visas i figur \ref{fig:komposit-ex}.
 
 \begin{figure}[tph]
   \centering

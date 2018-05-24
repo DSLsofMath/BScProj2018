@@ -27,7 +27,7 @@ Medlemmar: Oskar, Erik, ~~Daniel~~, Björn, Johan
   - Genomförande
   - Diskussion
 - Relaterade arbeten i diskussion
-- Skriva om förklaring av generellt programmeringsspråk
+- ~Skriva om förklaring av generellt programmeringsspråk~
 - Referenssystem
 - Kod i figurer
 - Kolla över användning av syntaxträd

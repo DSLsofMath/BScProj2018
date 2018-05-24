@@ -74,8 +74,7 @@ Haskells typsystem och hur dimensioner hanteras inom fysiken.
 Typnivåprogrammering\footnote{Vanligtvis manipuleras \textit{värden} när
 programmerering sker i Haskell och andra språk. Typnivåprogrammering är precis som
 vanlig programmering med skillnaden att den sker på typnivån, det vill säga, att
-typer modifieras. Läsaren hänvisas till läromaterialet~\cite{LYAP} för en utförligare
-förklaring.} används för att göra likheterna så tydliga som möjligt.
+typer modifieras. För en utförligare förklaring av typnivåprogrammering, se läromaterialet~\cite{LYAP}.} används för att göra likheterna så tydliga som möjligt.
 
 I \textit{matematisk analys} behandlas differentialkalkyl och
 integralkalkyl för en variabel. Först bestäms den semantiska domänen
@@ -139,7 +138,7 @@ massa, tid, elektrisk ström, temperatur, substansmängd och ljusstyrka.}, med e
 indiviudell exponent till varje basdimension. Datatypen, på värdenivå, som
 används ser därför ut som följande
 
-\begin{lstlisting}[frame=none,belowskip=-0.5\baselineskip]
+\begin{lstlisting}
 data Dim = Dim Integer -- Length
                Integer -- Mass
                Integer -- Time
@@ -154,7 +153,7 @@ Varje fält i datatypen representerar exponenten för motsvarande basdimension. 
 exponenten är $0$ betyder det att den basdimension inte är inkluderad i
 dimensionen. Några exempel ges för att förtydliga.
 
-\begin{lstlisting}[frame=none,belowskip=-0.5\baselineskip]
+\begin{lstlisting}
 length      = Dim 1 0 0 0 0 0 0
 mass        = Dim 0 1 0 0 0 0 0
 time        = Dim 0 0 1 0 0 0 0

@@ -11,3 +11,18 @@ Medlemmar: Oskar, Erik, ~~Daniel~~, Björn, Johan
 * 24/5 (10:35) : Muntliga slutredovisning och opposition & Avtal om publicering, lämnas in i samband med presentationen
 * 25/5 : Egen utvärdering på blankett till handledaren.
 * 1/6 : Deadline inlämning av slutrapport, elektronisk form, med införande av opponenternas kommentarer.
+
+## Att göra på rapport
+
+- Lägg till tekniska detaljer i resultat
+  - Vektorer
+  - Analys
+  - Partikelmekanik
+  - Exempelproblem
+- Språkdetaljer
+  - Genomförande
+  - Diskussion
+  - Resultat
+- Korta ner
+  - Genomförande
+  - Diskussion

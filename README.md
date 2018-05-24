@@ -8,13 +8,34 @@ Medlemmar: Oskar, Erik, ~~Daniel~~, Björn, Johan
 
 
 ## Deadlines
-* 9/2  : Inlämning av Planeringsrapport.
-* 27/2 : Halvtidsredovisnin av projektgrupperna ( Muntlig )
-* 2/3  : Egen utvärdering på blankett till handledaren.
-* 23/3 : Rapportspråk, vi kollar 24/3 och påminner. Kompletering möjlig fram till 27/4.
-* 8/5  : Inlämning av poster för tryckning
-* 15/5 : Utställning enligt anvisningar.* 16/5 : Engelsk Titel, Gäller rapporter på Svenska, kompletering möjlig fram till 9/6, vi kollar 24/5 och påminner
-* 21/5 : Deadline inlämning av Opposition, skriftlig elektronisk
 * 24/5 (10:35) : Muntliga slutredovisning och opposition & Avtal om publicering, lämnas in i samband med presentationen
 * 25/5 : Egen utvärdering på blankett till handledaren.
 * 1/6 : Deadline inlämning av slutrapport, elektronisk form, med införande av opponenternas kommentarer.
+
+## Att göra på rapport
+
+- Lägg till tekniska detaljer i resultat
+  - Vektorer
+  - Analys
+  - Partikelmekanik
+  - Exempelproblem
+- Språkdetaljer
+  - Genomförande
+  - Diskussion
+  - Resultat
+- Korta ner
+  - Genomförande
+  - Diskussion
+- Relaterade arbeten i diskussion
+- Skriva om förklaring av generellt programmeringsspråk
+- Referenssystem
+- Kod i figurer
+- Kolla över användning av syntaxträd
+- Kommentarer i teorikapitel
+- Röd tråd lärandeteorier och sista stycket
+- Framåtpekare i genomförande
+- Skapnde hemsida, kanske ta bort
+- Hade testgruppen klarat kursen?
+- Utveckla att inte kan fuska
+- Figur som hamnat fel
+- Utveckla hur gick för DSL2016

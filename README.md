@@ -39,3 +39,10 @@ Medlemmar: Oskar, Erik, ~~Daniel~~, Björn, Johan
 - ~Utveckla att inte kan fuska~
 - Figur som hamnat fel
 - Utveckla hur gick för DSL2016
+
+## Att prata om
+
+- Utvärdering i met+res+disk (som nu), bara disk eller inte alls?
+- Hur vi ska korta ner genomförande
+- Hur vi ska korta ner diskussion
+- Ha kvar hemsida i metod?

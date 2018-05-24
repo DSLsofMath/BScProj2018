@@ -36,6 +36,6 @@ Medlemmar: Oskar, Erik, ~~Daniel~~, Björn, Johan
 - Framåtpekare i genomförande
 - Skapnde hemsida, kanske ta bort
 - Hade testgruppen klarat kursen?
-- Utveckla att inte kan fuska
+- ~Utveckla att inte kan fuska~
 - Figur som hamnat fel
 - Utveckla hur gick för DSL2016

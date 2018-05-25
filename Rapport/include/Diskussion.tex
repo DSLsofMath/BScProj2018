@@ -181,21 +181,9 @@ bakom fysiken, utan istället på fysiken framför matematiken.
 
 \subsection{Lämpliga områden för domänspecifika språk}\label{sec:lampligt}
 
-Under genomförandet av projektet utfördes flera experiment för att bedöma olika
-områdens lämplighet för att modelleras med ett domänspecifikt språk. Det visade
-sig snabbt att vissa områden lämpade sig bättre än andra. Områden
-som vektorer och matematisk analys lämpade sig väldigt väl, och ingår även i
-läromaterialet (se avsnitt~\ref{sec:res_laromaterial}). Detta var inte särskilt
-förvånande eftersom båda områdena är varsin egen gren inom matematiken
-och lämpar sig därmed väl för implementering i Haskell som är ett språk med nära
-anknytning till matematik. En annan sak som dessa områden hade
-gemensamt var en tydlig syntax och en fix struktur som bestod av ``data och
-operationer''. Tabell~\ref{tab:data_och_ops} visar några exempel på områden med
-sina data och operationer.
+Under genomförandet av projektet utfördes flera experiment för att bedöma olika områdens lämplighet för att modelleras med ett domänspecifikt språk. Det visade sig snabbt att vissa områden lämpade sig bättre än andra. Områden som vektorer och matematisk analys lämpade sig väldigt väl, och ingår även i läromaterialet (se avsnitt~\ref{sec:res_laromaterial}). Detta var inte särskilt förvånande eftersom båda områdena är varsin egen gren inom matematiken och lämpar sig därmed väl för implementering i Haskell som är ett språk med nära anknytning till matematik. En annan sak som dessa områden hade gemensamt var en tydlig syntax och en fix struktur som bestod av ``data och operationer''. Tabell~\ref{tab:data_och_ops} visar några exempel på områden med sina data och operationer.
 
-\captionsetup[figure]{name=Tabell}
-
-\begin{figure}[tph]
+\begin{table}[tph]
 \centering
 \caption{Exempel på data och operationer i några domänspecifika språk}\label{tab:data_och_ops}
 \begin{tabular}{l|l}
@@ -205,15 +193,9 @@ Dimensioner & Multiplikation, division \\
 Vektorer & Addition, skalärprodukt \\
 Analys, funktioner & Derivera, multiplicera \\ \bottomrule
 \end{tabular}
-\end{figure}
+\end{table}
 
-\captionsetup[figure]{name=Figur}
-
-Att notera ur tabell~\ref{tab:data_och_ops} är att operationerna inom ett område
-görs på en och samma slags data, och sedan resulterar i samma slags data igen.
-Det här exemplifieras i matematisk analys, där derivering är en operation som
-görs på en funktion och resulterar i en annan funktion. Detta illustreras
-i figur~\ref{fig:analys_op_exempel}.
+Att notera ur tabell~\ref{tab:data_och_ops} är att operationerna inom ett område görs på en och samma slags data, och sedan resulterar i samma slags data igen. Det här exemplifieras i matematisk analys, där derivering är en operation som görs på en funktion och resulterar i en annan funktion. Detta illustreras i figur~\ref{fig:analys_op_exempel}.
 
 \begin{figure}[tph]
 \begin{mdframed}
@@ -227,94 +209,36 @@ i figur~\ref{fig:analys_op_exempel}.
   &f_2(x) = (D(f_1))(x) = 2x
 \end{align*}
 \end{mdframed}
-\caption{Ett exempel på hur derivering, en operation i matematisk analys, tar
-data av ett slag till data av samma slag igen. I exemplet är $f_1$ och $f_2$
-data av slaget funktioner, medan $D$ är operationen derivering. Som synes har
-denna operation samma slags data både in och ut.}\label{fig:analys_op_exempel}
+\caption{Ett exempel på hur derivering, en operation i matematisk analys, tar data av ett slag till data av samma slag igen. I exemplet är $f_1$ och $f_2$ data av slaget funktioner, medan $D$ är operationen derivering. Som synes har denna operation samma slags data både in och ut.}\label{fig:analys_op_exempel}
 \end{figure}
 
-Den fixa strukturen kombinerat med data och operationer\todo{?} gör det enkelt att
-modellera dessa områden med datatyper i Haskell. Datatyper har nämligen också en
-fix form. Dessutom blir relationen mellan data och operationer i fysik och
-datatyper och funktioner i Haskell tydligare, vilket illustreras i
-figur~\ref{fig:haskell_fysik_likhet}, som jämför fysikaliska dimensioner med
-motsvarande implementation i Haskell. Denna strukturella likhet gör
-modellerandet och manipulerandet av data enkel att genomföra rent tekniskt. Men
-den innebär också en pedagogisk vinst. Genom att ha strukturerat upp fysik
-tydligt i Haskell blir det förhoppningsvis enklare för läsaren att förstå hur
-datan (de matematiska strukturerna) hänger ihop rent fysikaliskt. Och även hur relationerna mellan olika
-datatyper och funktioner som dyker upp i läromaterialet direkt kan översättas
-till motsvarande relationer inom fysik.
+Den fixa strukturen kombinerat med data och operationer\todo{?} gör det enkelt att modellera dessa områden med datatyper i Haskell. Datatyper har nämligen också en fix form. Dessutom blir relationen mellan data och operationer i fysik och datatyper och funktioner i Haskell tydligare, vilket illustreras i figur~\ref{fig:haskell_fysik_likhet}, som jämför fysikaliska dimensioner med motsvarande implementation i Haskell. Denna strukturella likhet gör modellerandet och manipulerandet av data enkel att genomföra rent tekniskt. Men den innebär också en pedagogisk vinst. Genom att ha strukturerat upp fysik tydligt i Haskell blir det förhoppningsvis enklare för läsaren att förstå hur datan (de matematiska strukturerna) hänger ihop rent fysikaliskt. Och även hur relationerna mellan olika datatyper och funktioner som dyker upp i läromaterialet direkt kan översättas till motsvarande relationer inom fysik.
 
 \begin{figure}[tph]
   \centering
   \frame{\includegraphics[width=0.6\linewidth]{figure/haskell_fysik_likhet.pdf}}
-  \caption{Jämförelse mellan fysikaliska dimensioner (övre raden) och
-  motsvarande implementation i Haskell (undre raden). Implementationen kommer
-från det resulterande läromaterialet. Mer om implementationen finns att läsa i
-avsnitt~\ref{sec:grund_impl}}\label{fig:haskell_fysik_likhet}
+  \caption{Jämförelse mellan fysikaliska dimensioner (övre raden) och motsvarande implementation i Haskell (undre raden). Implementationen kommer från det resulterande läromaterialet. Mer om implementationen finns att läsa i avsnitt~\ref{sec:grund_impl}}\label{fig:haskell_fysik_likhet}
 \end{figure}\todo{Figur ligger fel enligt Exam}
 
-Anledningen till att vi tycker att dessa drag gör ett område mer eller
-mindre lämpat för ett domänspecifikt språk kommer från det val vi gjorde tidigt
-i projektet, nämligen valet att använda Haskell. I avsnitt~\ref{sec:syntax}
-beskriver vi begreppen syntax, semantik och syntaxträd och dess koppling till
-både domänspecifika språk och Haskell. Dock finns det ingenting som säger att
-det måste läggas ett sådant stort fokus som vi har gjort på till exempel syntaxträd. Hade
-vi istället valt bort Haskell till fördel för ett objektorienterat språk hade vår definition av vad som gör ett område lämpat för
-implementation kanske sett helt annorlunda ut.
+Anledningen till att vi tycker att dessa drag gör ett område mer eller mindre lämpat för ett domänspecifikt språk kommer från det val vi gjorde tidigt i projektet, nämligen valet att använda Haskell. I avsnitt~\ref{sec:syntax} beskriver vi begreppen syntax, semantik och syntaxträd och dess koppling till både domänspecifika språk och Haskell. Dock finns det ingenting som säger att det måste läggas ett sådant stort fokus som vi har gjort på till exempel syntaxträd. Hade vi istället valt bort Haskell till fördel för ett objektorienterat språk hade vår definition av vad som gör ett område lämpat för implementation kanske sett helt annorlunda ut.
 
-I kontrast till dessa lämpliga områden står mindre lämpliga områden (eller
-åtminstone områden som vi inte lyckades göra något bra av). Lutande plan är ett exempel på ett mindre lämpligt område. Områden av detta slag har drag som gör det mindre lämpligt än exempelvis vektorer.
+I kontrast till dessa lämpliga områden står mindre lämpliga områden (eller åtminstone områden som vi inte lyckades göra något bra av). Lutande plan är ett exempel på ett mindre lämpligt område. Områden av detta slag har drag som gör det mindre lämpligt än exempelvis vektorer.
 
-När ett domänspecifikt språk skapas till ett område görs det genom att
-identifiera syntaxen som används, datan som modelleras,
-vilka operationer som används på denna data och vad det finns för lagar och samband
-som gäller för dessa. Detta sätt att arbeta fungerar bra för områden som är
-generella och som går att modellera på ett sätt som tillåter vidareutveckling, såsom
-vektorer i flera dimensioner eller vektorer vars komponenter kan vara av vilken
-typ som helst.
+När ett domänspecifikt språk skapas till ett område görs det genom att identifiera syntaxen som används, datan som modelleras, vilka operationer som används på denna data och vad det finns för lagar och samband som gäller för dessa. Detta sätt att arbeta fungerar bra för områden som är generella och som går att modellera på ett sätt som tillåter vidareutveckling, såsom vektorer i flera dimensioner eller vektorer vars komponenter kan vara av vilken typ som helst.
 
-Ett exempel på ett område som inte har några tydliga data och operationer är
-lutande plan. Ett sådant område har istället teoretiska samband som relaterar
-olika egenskaper i systemet till varandra. Ett sådant samband är till exempel $a
-= g \cdot \sin(v)$ för det lutande planet i figur~\ref{fig:lutande_plan}.
+Ett exempel på ett område som inte har några tydliga data och operationer är lutande plan. Ett sådant område har istället teoretiska samband som relaterar olika egenskaper i systemet till varandra. Ett sådant samband är till exempel $a = g \cdot \sin(v)$ för det lutande planet i figur~\ref{fig:lutande_plan}.
 
 \begin{figure}[tph]
   \centering
   \frame{\includegraphics[width=0.5\linewidth]{figure/Lutande_plan.pdf}}
-  \caption{Den variant av lutande plan som refereras till i exemplet i texten. $a$
-  är en lådas acceleration längs med planet, $g$ är tyngdacceleration och $v$ är
-  vinkeln. Friktionen antas vara försumbar.}~\label{fig:lutande_plan}
+  \caption{Den variant av lutande plan som refereras till i exemplet i texten. $a$ är en lådas acceleration längs med planet, $g$ är tyngdacceleration och $v$ är   vinkeln. Friktionen antas vara försumbar.}~\label{fig:lutande_plan}
 \end{figure}
 
-Samband och ekvationer av detta slag kan visserligen modelleras som ett domänspecifikt
-språk, men vi menar att nyttan inte blir stor med det eftersom allt vi då gör är
-att skriva de formler som redan finns att tillgå i diverse kursböcker i fysik
-utan att tillföra någon ny kunskap och utan att modellera dem på ett generellts
-eller unikt sätt. Det som då kan göras är att programmera en ekvationslösare men
-den hade varit både mekanisk och komplex. Den skulle alltså skilja sig
-drastiskt från hur studenter löser problem för hand och skulle vara svår att förstå.
-Alldeles för mycket fokus skulle hamna på algoritmer istället för fysik. Vi
-anser även att en ekvationslösare inte hjälper till att lära ut fysik, tvärtom
-döljer den matematiken som ligger bakom svaret.
+Samband och ekvationer av detta slag kan visserligen modelleras som ett domänspecifikt språk, men vi menar att nyttan inte blir stor med det eftersom allt vi då gör är att skriva de formler som redan finns att tillgå i diverse kursböcker i fysik utan att tillföra någon ny kunskap och utan att modellera dem på ett generellts eller unikt sätt. Det som då kan göras är att programmera en ekvationslösare men den hade varit både mekanisk och komplex. Den skulle alltså skilja sig drastiskt från hur studenter löser problem för hand och skulle vara svår att förstå. Alldeles för mycket fokus skulle hamna på algoritmer istället för fysik. Vi anser även att en ekvationslösare inte hjälper till att lära ut fysik, tvärtom döljer den matematiken som ligger bakom svaret.
 
-När det kommer till lutande plan och liknande områden är nyckeln att visserligen
-känna till vilka samband som gäller, men det är framförallt viktigt att veta när de ska
-användas och hur de ska tillämpas på olika typer av uppgifter. Vi behandlar
-därför områden som lutande plan genom att lösa exempeluppgifter modellerade i de
-tidigare domänspecifika språken. De tidigare språken tillhandahåller de matematiska
-verktyg som behövs för att koda upp lösningar av problem. Därav innehåller det
-resulterande läromaterialet, som beskrivs i avsnitt~\ref{sec:res_laromaterial},
-inga domänspecifika språk för fysikaliska problem.
+När det kommer till lutande plan och liknande områden är nyckeln att visserligen känna till vilka samband som gäller, men det är framförallt viktigt att veta när de ska användas och hur de ska tillämpas på olika typer av uppgifter. Vi behandlar därför områden som lutande plan genom att lösa exempeluppgifter modellerade i de tidigare domänspecifika språken. De tidigare språken tillhandahåller de matematiska verktyg som behövs för att koda upp lösningar av problem. Därav innehåller det resulterande läromaterialet, som beskrivs i avsnitt~\ref{sec:res_laromaterial}, inga domänspecifika språk för fysikaliska problem.
 
-Att vissa områden var mindre lämpliga var ett oväntat resultat i projektets
-genomförande. Vid start trodde vi att det skulle gå att göra domänspecifika
-språk för alla områden, såväl matematiska som fysikaliska, men som vi
-diskuterat här gick inte det. Istället gjordes uppdelningen mellan grundläggande och
-komposita områden, som beskrevs i avsnitt~\ref{sec:valet}, så att fysikaliska
-områden (som blev komposita) kunde behandlas som tillämpningar av
-grundläggande områden.
+Att vissa områden var mindre lämpliga var ett oväntat resultat i projektets genomförande. Vid start trodde vi att det skulle gå att göra domänspecifika språk för alla områden, såväl matematiska som fysikaliska, men som vi diskuterat här gick inte det. Istället gjordes uppdelningen mellan grundläggande och komposita områden, som beskrevs i avsnitt~\ref{sec:valet}, så att fysikaliska områden (som blev komposita) kunde behandlas som tillämpningar av grundläggande områden.
 
 \subsection{Domänspecifika språk, fysik och pedagogiska aspekter}\label{sec:bara_fysik}
 

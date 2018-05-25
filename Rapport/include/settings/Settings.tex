@@ -1,6 +1,12 @@
 
 \usepackage{url}
 \usepackage{xcolor}  % Setting text color
+\usepackage{csquotes}
+
+\newenvironment{inline}
+{\begin{lstlisting}[frame=none,belowskip=-0.5\baselineskip]}
+{\end{lstlisting}}
+
 
 \newenvironment{binge} {
     \color{red}
@@ -56,6 +62,9 @@
 \lstset{basicstyle=\ttfamily}
 \lstset{commentstyle=\ttfamily}
 \lstset{escapeinside=`'}
+\lstset{deletekeywords={length}}
+\lstset{frame=none}
+\lstset{belowskip=-0.5\baselineskip}
 \usepackage{chemfig}								% Chemical structures
 \usepackage[margin=1in]{geometry}			% Page margin lengths
 \usepackage{eso-pic}								% Create cover page background

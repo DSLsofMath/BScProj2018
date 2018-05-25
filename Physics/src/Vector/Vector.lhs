@@ -1,17 +1,13 @@
-\begin{code}
-module Vector.Vector where
-
-import Test.QuickCheck hiding (scale)
-\end{code}
+> module Vector.Vector where
+> import Test.QuickCheck hiding (scale)
 
 Vectors in two dimensions.
 -----------------------------------------------------------
 
 A physical quantity that has only a magnitude is called a scalar.
 In Haskell we'll represent this using a Double.
-\begin{code}
-type Scalar = Double
-\end{code}
+
+> type Scalar = Double
 
 A vector is a quantity that has both a magnitude and a direction. For instance
 the \textit{velocity} of a moving body involves its speed (magnitude) and the
@@ -21,19 +17,15 @@ We cen represent the direction of a vector in two dimensions using its $x$ and
 $y$ coordinates, which are both scalars. The direction is then given by the
 angle between these coordinates and the origin (0,0).
 
-In order to maintain generalizability and useability in the next chapters 
+In order to maintain generalizability and useability in the next chapters
 we'll use a typesynonym in the data declaration but throughout this whole
 chapter we'll use Scalars as we've defined them here.
 
-\begin{code}
-data Vector2 num = V2 num num
-\end{code}
+> data Vector2 num = V2 num num
 
 We can even introduce a type that makes that specific relationship clearer:
 
-\begin{code}
-type VectorTwo = Vector2 Scalar
-\end{code}
+> type VectorTwo = Vector2 Scalar
 
 The magnitude of the vector is it's length. We can calculate this using
 Pythagorean theorem:
@@ -43,10 +35,8 @@ Pythagorean theorem:
 
 In haskell this would be:
 
-\begin{spec}
-magnitude :: VectorTwo -> Scalar
-magnitude (V2 x y) = sqrt (x^2 + y^2)
-\end{spec}
+< magnitude :: VectorTwo -> Scalar
+< magnitude (V2 x y) = sqrt (x^2 + y^2)
 
 And now we can calulate the magnitude of a vector in two dimensions:
 ```
@@ -61,13 +51,11 @@ add the components of the forces acting in the $x$ direction and the components
 in the $y$ direction. So our functions for adding and subtracting vectors in two
 dimensions are:
 
-\begin{spec}
-add :: VectorTwo -> VectorTwo -> VectorTwo
-add (V2 x1 y1) (V2 x2 y2) = V2 (x1 + x2) (y1 + y2)
-
-sub :: VectorTwo -> VectorTwo -> VectorTwo
-sub (V2 x1 y1) (V2 x2 y2) = V2 (x1 - x2) (y1 - y2)
-\end{spec}
+< add :: VectorTwo -> VectorTwo -> VectorTwo
+< add (V2 x1 y1) (V2 x2 y2) = V2 (x1 + x2) (y1 + y2)
+<
+< sub :: VectorTwo -> VectorTwo -> VectorTwo
+< sub (V2 x1 y1) (V2 x2 y2) = V2 (x1 - x2) (y1 - y2)
 
 But this only works for two vectors. In reality we might be working with several
 hundreds of vectors so it would be useful to add, for instance a list of
@@ -75,15 +63,11 @@ vectors together and get one final vector as a result. We can use \textit{foldr}
 using the zero vector as a starting value.
 to acomplish this.
 
-\begin{spec}
-zeroVector :: VectorTwo
-zeroVector = V2 0 0
-\end{spec}
+< zeroVector :: VectorTwo
+< zeroVector = V2 0 0
 
-\begin{code}
-addListOfVectors :: [VectorTwo] -> VectorTwo
-addListOfVectors = foldr add zeroVector
-\end{code}
+> addListOfVectors :: [VectorTwo] -> VectorTwo
+> addListOfVectors = foldr add zeroVector
 
 Let's try it out!
 
@@ -102,10 +86,8 @@ datatype for vectors as a string. The easy solution would be to just derive our
 instance for Show, but to really solidify the fact that we are working with
 coordinates let's make our own instance for Show.
 
-\begin{code}
-instance Show num => Show (Vector2 num) where
-  show (V2 x y) = "(" ++ show x ++ ", " ++ show y ++ ")"
-\end{code}
+> instance Show num => Show (Vector2 num) where
+>   show (V2 x y) = "(" ++ show x ++ ", " ++ show y ++ ")"
 
 And let's try our example again:
 ```
@@ -130,20 +112,16 @@ We can also multiply a vector by a scalar. This is also done componentwise.
 We'll call this scaling a vector. So we could double a vector by
 multiplying it with $2.0$ and halving it by multiplying it with $0.5$.
 
-\begin{spec}
-scale :: Scalar -> VectorTwo -> VectorTwo
-scale factor (V2 x y) = V2 (factor * x) (factor * y)
-\end{spec}
+< scale :: Scalar -> VectorTwo -> VectorTwo
+< scale factor (V2 x y) = V2 (factor * x) (factor * y)
 
 Combining this with the unit vectors:
 
-\begin{code}
-unitX :: VectorTwo
-unitX = V2 1 0
-
-unitY :: VectorTwo
-unitY = V2 0 1
-\end{code}
+> unitX :: VectorTwo
+> unitX = V2 1 0
+>
+> unitY :: VectorTwo
+> unitY = V2 0 1
 
 We get a new way of making vectors, namely by scaling the unit vectors and
 adding them together. Let's create the vector (5 x, 3 y) using this approach.
@@ -157,10 +135,8 @@ In order to check that this vector is actually equal to the vector created using
 the contructor \textit{V2} we need to make our vector an instance of
 \textit{Eq}.
 
-\begin{spec}
-instance Eq num => Eq (Vector2 num) where
-  (V2 x1 y1) == (V2 x2 y2) = (x1 == x2) && (y1 == y2)
-\end{spec}
+< instance Eq num => Eq (Vector2 num) where
+<   (V2 x1 y1) == (V2 x2 y2) = (x1 == x2) && (y1 == y2)
 
 Let's try it out:
 
@@ -179,10 +155,8 @@ dimensions, the dot product. The formula is quite simple:
 
 And our function simply becomes:
 
-\begin{spec}
-dotProd :: VectorTwo -> VectorTwo -> Scalar
-dotProd (V2 ax ay) (V2 bx by) = ax * bx + ay * by
-\end{spec}
+< dotProd :: VectorTwo -> VectorTwo -> Scalar
+< dotProd (V2 ax ay) (V2 bx by) = ax * bx + ay * by
 
 But this doesn't give us any intuition about what it means to take the dot
 product between vectors. The common interpretation is "geometric projection",
@@ -193,17 +167,13 @@ direction, usually straight forward. So the vector associated with the dash
 panel can be represented with a unit vector multiplied with some factor of
 boost, say 10.
 
-\begin{code}
-dashPanel :: VectorTwo
-dashPanel = scale 10 unitY
-\end{code}
+> dashPanel :: VectorTwo
+> dashPanel = scale 10 unitY
 
 Now let's say that your cart has this arbitrarily chosen velocity vector:
 
-\begin{code}
-cart :: VectorTwo
-cart = V2 3 5
-\end{code}
+> cart :: VectorTwo
+> cart = V2 3 5
 
 Depending on which angle you hit the dash panel you'll receive different
 amounts of boost. Since the $x$-component of the dashPanel is 0 any component
@@ -214,10 +184,8 @@ magnitude of speed but which would recieve a worse boost.
 
 ![](boost.png "A mysterious man in a rad hat on a boost pad"){.float-img-right}
 
-\begin{code}
-worseCart :: VectorTwo
-worseCart = V2 5 3
-\end{code}
+> worseCart :: VectorTwo
+> worseCart = V2 5 3
 
 Let's see this in action.
 ```
@@ -233,25 +201,22 @@ We talked a lot about angles between vectors but we havn't used it in our code,
 so lets make a function which calculates the angle of a vector. The formula is
 as follows:
 
-![](atan.png "Beautiful vector calculus"){.float-img-center} 
+![](atan.png "Beautiful vector calculus"){.float-img-center}
 
 We'll use Doubles to represent the angle.
-\begin{code}
-type Angle  = Double
 
-angle :: VectorTwo -> Scalar
-angle (V2 x y) = atan y/x
-\end{code}
+> type Angle  = Double
+>
+> angle :: VectorTwo -> Scalar
+> angle (V2 x y) = atan y/x
 
 Using angles and magnitudes we can even write a new function for making vectors:
 
-\begin{code}
-mkVector :: Scalar -> Angle -> VectorTwo
-mkVector mag angle = V2 x y
-  where
-    x = mag * cos angle
-    y = mag * sin angle
-\end{code}
+> mkVector :: Scalar -> Angle -> VectorTwo
+> mkVector mag angle = V2 x y
+>   where
+>     x = mag * cos angle
+>     y = mag * sin angle
 
 Vectors in three dimensions.
 --------------------------------------
@@ -260,32 +225,27 @@ The datatype for a vector in three dimensions is basically the same as vector
 in two dimensions, we'll just add a $z$-component.
 
 Again we will generalize this over a type synonym
-\begin{code}
-data Vector3 num = V3 num num num
-\end{code}
+
+> data Vector3 num = V3 num num num
 
 And a type synonym that we can use throughout the rest of this chapter.
-\begin{code}
-type VectorThree = Vector3 Scalar
-\end{code}
+
+> type VectorThree = Vector3 Scalar
 
 Similarily the functions for adding three dimensional vectors:
-\begin{spec}
-add :: VectorThree -> VectorThree -> VectorThree
-add (V3 x1 y1 z1) (V3 x2 y2 z2) = V3 (x1 + x2) (y1 + y2) (z1 + z2)
-\end{spec}
+
+< add :: VectorThree -> VectorThree -> VectorThree
+< add (V3 x1 y1 z1) (V3 x2 y2 z2) = V3 (x1 + x2) (y1 + y2) (z1 + z2)
 
 Multiplying with a scalar:
-\begin{spec}
-scale3 :: Scalar -> VectorThree -> VectorThree
-scale3 fac (V3 x y z) = V3 (fac * x) (fac * y) (fac * z)
-\end{spec}
+
+< scale3 :: Scalar -> VectorThree -> VectorThree
+< scale3 fac (V3 x y z) = V3 (fac * x) (fac * y) (fac * z)
 
 And for calculating the magnitude:
-\begin{spec}
-mag3 :: VectorThree -> Scalar
-mag3 (V3 x y z) = sqrt (x**2 + y**2 + z**2)
-\end{spec}
+
+< mag3 :: VectorThree -> Scalar
+< mag3 (V3 x y z) = sqrt (x**2 + y**2 + z**2)
 
 Looks earily similar to our functions for vectors in two dimensions. This
 suggest that there might be a better way to handle this, in order to avoid
@@ -315,59 +275,50 @@ hopefully understand where I'm going when reading the examples.
 Using this information we can now create a new class for vectors which
 implement this functionality:
 
-\begin{code}
-class Vector vector where
-  vmap      :: (num -> num)         -> vector num -> vector num
-  vzipWith  :: (num -> num  -> num) -> vector num -> vector num -> vector num
-  vfold     :: (num -> num  -> num) -> vector num -> num
-\end{code}
+> class Vector vec where
+>   vmap      :: (num -> num)         -> vec num -> vec num
+>   vzipWith  :: (num -> num  -> num) -> vec num -> vec num -> vec num
+>   vfold     :: (num -> num  -> num) -> vec num -> num
 
  Now we have a blueprint for what vector is, so let's implement it for our own
- vector datatypes.  
-\begin{code}
-instance Vector Vector2 where
-  vmap     f (V2 x y)            = V2 (f x)    (f y)
-  vzipWith f (V2 x y) (V2 x' y') = V2 (f x x') (f y y')
-  vfold    f (V2 x y)            = f x y
+ vector datatypes.
 
-instance Vector Vector3 where
-  vmap     f (V3 x y z)               = V3 (f x)    (f y)    (f z)
-  vzipWith f (V3 x y z) (V3 x' y' z') = V3 (f x x') (f y y') (f z z')
-  vfold    f (V3 x y z)               = f z $ f x y
-\end{code}
- 
+> instance Vector Vector2 where
+>   vmap     f (V2 x y)            = V2 (f x)    (f y)
+>   vzipWith f (V2 x y) (V2 x' y') = V2 (f x x') (f y y')
+>   vfold    f (V2 x y)            = f x y
+>
+> instance Vector Vector3 where
+>   vmap     f (V3 x y z)               = V3 (f x)    (f y)    (f z)
+>   vzipWith f (V3 x y z) (V3 x' y' z') = V3 (f x x') (f y y') (f z z')
+>   vfold    f (V3 x y z)               = f z $ f x y
+
 Now we're finally leveraging the power of the Haskell typesystem!
 
 We can now implement more generalized functions for addition and subtraction
 between vectors.
 
-\begin{code}
-add :: (Num num, Vector vec) => vec num -> vec num -> vec num
-add = vzipWith (+)
-
-sub :: (Num num, Vector vec) => vec num -> vec num -> vec num
-sub = vzipWith (-)
-\end{code}
+> add :: (Num num, Vector vec) => vec num -> vec num -> vec num
+> add = vzipWith (+)
+>
+> sub :: (Num num, Vector vec) => vec num -> vec num -> vec num
+> sub = vzipWith (-)
 
 For multiplying with a scalar:
 
-\begin{code}
-scale :: (Num num, Vector vec) => num -> vec num -> vec num
-scale factor = vmap (* factor)
-\end{code}
+> scale :: (Num num, Vector vec) => num -> vec num -> vec num
+> scale factor = vmap (* factor)
 
 And for calculating the magnitude of a vector:
-\begin{code}
-magnitude :: (Floating num, Vector vec) => vec num -> num
-magnitude = sqrt . vfold (+) . vmap (**2)
-\end{code}
+
+> magnitude :: (Floating num, Vector vec) => vec num -> num
+> magnitude = sqrt . vfold (+) . vmap (**2)
 
 We can even use it to make a generalized function for calculating the dot product.
-\begin{code}
-dotProd :: (Num num, Vector vec) => vec num -> vec num -> num
-dotProd v1 v2 = vfold (+) $ vzipWith (*) v1 v2
-\end{code}
- 
+
+> dotProd :: (Num num, Vector vec) => vec num -> vec num -> num
+> dotProd v1 v2 = vfold (+) $ vzipWith (*) v1 v2
+
 Cross Product
 ---------------------------------
 
@@ -391,12 +342,10 @@ TODO: Generate normal vector as well. Codify right hand rule
 
 Working cross product using matrix rules.
 
-\begin{code}
-crossProd :: Num num => Vector3 num -> Vector3 num -> Vector3 num
-crossProd (V3 x y z) (V3 x' y' z') = V3 (y*z' - z*y') -- X
-                                        (z*x' - x*z') -- Y
-                                        (x*y' - y*x') -- Z
-\end{code}
+> crossProd :: Num num => Vector3 num -> Vector3 num -> Vector3 num
+> crossProd (V3 x y z) (V3 x' y' z') = V3 (y*z' - z*y') -- X
+>                                         (z*x' - x*z') -- Y
+>                                         (x*y' - y*x') -- Z
 
 Quickcheck!
 --------------------------------
@@ -416,13 +365,12 @@ make our vectors an instance of \textit{Arbitrary}.
 
 We do this by generating arbitrary scalars and then constructing vectors with
 them.
-\begin{code}
-instance Arbitrary num => Arbitrary (Vector2 num) where
-  arbitrary = arbitrary >>= (\(s1, s2) -> return $ V2 s1 s2)
 
-instance Arbitrary num => Arbitrary (Vector3 num) where
-  arbitrary = arbitrary >>= (\(s1, s2, s3) -> return $ V3 s1 s2 s3)
-\end{code}
+> instance Arbitrary num => Arbitrary (Vector2 num) where
+>   arbitrary = arbitrary >>= (\(s1, s2) -> return $ V2 s1 s2)
+>
+> instance Arbitrary num => Arbitrary (Vector3 num) where
+>   arbitrary = arbitrary >>= (\(s1, s2, s3) -> return $ V3 s1 s2 s3)
 
 Let's try it out!
 ```
@@ -439,10 +387,9 @@ addition:
 \end{equation}
 
 Which translates to:
-\begin{code}
-prop_CommutativityAddition :: VectorThree -> VectorThree -> Bool
-prop_CommutativityAddition v1 v2 = v1 + v2 == v2 + v1
-\end{code}
+
+> prop_CommutativityAddition :: VectorThree -> VectorThree -> Bool
+> prop_CommutativityAddition v1 v2 = v1 + v2 == v2 + v1
 
 And we test this in the \textit{repl}.
 ```
@@ -455,10 +402,8 @@ And associativity of addition:
   \vec{a} + (\vec{b} + \vec{c}) = (\vec{a} + \vec{b}) + \vec{c}
 \end{equation}
 
-\begin{code}
-prop_AssociativityAddition :: VectorThree -> VectorThree -> VectorThree -> Bool
-prop_AssociativityAddition a b c = a + (b + c) == (a + b) + c
-\end{code}
+> prop_AssociativityAddition :: VectorThree -> VectorThree -> VectorThree -> Bool
+> prop_AssociativityAddition a b c = a + (b + c) == (a + b) + c
 
 ```
 ghci> quickCheck prop_AssociativityAddition
@@ -476,16 +421,14 @@ approximately equal.
 
 % TODO: Equation
 
-\begin{code}
-eps :: Floating num => num
-eps = 1 * (10 ** (-5))
-
-instance (Floating num, Eq num, Ord num) => Eq (Vector2 num) where
-  (V2 x1 y1) == (V2 x2 y2) = xCheck && yCheck
-    where
-      xCheck = abs (x1 - x2) <= eps
-      yCheck = abs (y1 - y2) <= eps
-\end{code}
+> eps :: Floating num => num
+> eps = 1 * (10 ** (-5))
+>
+> instance (Floating num, Eq num, Ord num) => Eq (Vector2 num) where
+>   (V2 x1 y1) == (V2 x2 y2) = xCheck && yCheck
+>     where
+>       xCheck = abs (x1 - x2) <= eps
+>       yCheck = abs (y1 - y2) <= eps
 
 Let's try again.
 ```
@@ -498,19 +441,16 @@ More laws
 
 Dot product is commutative:
 
-\begin{code}
-prop_dotProdCommutative :: VectorThree -> VectorThree -> Bool
-prop_dotProdCommutative a b = dotProd a b == dotProd b a
-\end{code}
+> prop_dotProdCommutative :: VectorThree -> VectorThree -> Bool
+> prop_dotProdCommutative a b = dotProd a b == dotProd b a
 
 In order to check some laws which depends on checking the equality of scalars
 we'll introduce a function which checks that two scalars are approximately
 equal.
-\begin{code}
--- Approx equal
-(~=) :: Scalar -> Scalar -> Bool
-rhs ~= lhs = abs (rhs - lhs) <= eps
-\end{code}
+
+> -- Approx equal
+> (~=) :: Scalar -> Scalar -> Bool
+> rhs ~= lhs = abs (rhs - lhs) <= eps
 
 Dot product is distributive over addition:
 ![Dot product distributive, (C)](https://upload.wikimedia.org/wikipedia/commons/a/aa/Dot_product_distributive_law.svg)
@@ -520,40 +460,33 @@ Dot product is distributive over addition:
 \vec{c})
 \end{equation}
 
-\begin{code}
-prop_dotProdDistrubitiveAddition ::  VectorThree -> VectorThree -> VectorThree -> Bool
-prop_dotProdDistrubitiveAddition a b c = dotProd a (b + c) ~= (dotProd a b + dotProd a c)
-\end{code}
+> prop_dotProdDistrubitiveAddition ::  VectorThree -> VectorThree -> VectorThree -> Bool
+> prop_dotProdDistrubitiveAddition a b c = dotProd a (b + c) ~= (dotProd a b + dotProd a c)
 
 The dot product is homogeneous under scaling in each variable:
 \begin{equation}
 (x * \vec{a}) \cdot b = x * (\vec{a} \cdot \vec{b}) = \vec{a} \cdot (x * \vec{b})
 \end{equation}
 
-\begin{code}
-prop_dotProdHomogeneousScaling :: Scalar -> VectorThree -> VectorThree -> Bool
-prop_dotProdHomogeneousScaling x a b = e1 == e2 && e2 == e3
-  where
-    e1 = dotProd (scale 0 a) b
-    e2 = 0 * dotProd a b
-    e3 = dotProd a (scale 0 b)
-\end{code}
+> prop_dotProdHomogeneousScaling :: Scalar -> VectorThree -> VectorThree -> Bool
+> prop_dotProdHomogeneousScaling x a b = e1 == e2 && e2 == e3
+>   where
+>     e1 = dotProd (scale 0 a) b
+>     e2 = 0 * dotProd a b
+>     e3 = dotProd a (scale 0 b)
 
 The cross product of a vector with itself is the zero vector.
-\begin{code}
-prop_crossProd_with_self :: VectorThree -> Bool
-prop_crossProd_with_self v = crossProd v v == 0
-\end{code}
+
+> prop_crossProd_with_self :: VectorThree -> Bool
+> prop_crossProd_with_self v = crossProd v v == 0
 
 The crossproduct is anticommutative:
 \begin{equation}
 \vec{a} \times \vec{b} = - (\vec{b} \times \vec{a})
 \end{equation}
 
-\begin{code}
-prop_crossProdAntiCommutative :: VectorThree -> VectorThree -> Bool
-prop_crossProdAntiCommutative v1 v2 = v1 * v2 == - (v2 * v1)
-\end{code}
+> prop_crossProdAntiCommutative :: VectorThree -> VectorThree -> Bool
+> prop_crossProdAntiCommutative v1 v2 = v1 * v2 == - (v2 * v1)
 
 The cross product is distributive over addition:
 \begin{equation}
@@ -561,10 +494,8 @@ The cross product is distributive over addition:
 \vec{c})
 \end{equation}
 
-\begin{code}
-prop_crossProdDistrubitiveAddition :: VectorThree -> VectorThree -> VectorThree -> Bool
-prop_crossProdDistrubitiveAddition a b c = a * (b + c) == (a * b) + (a * c)
-\end{code}
+> prop_crossProdDistrubitiveAddition :: VectorThree -> VectorThree -> VectorThree -> Bool
+> prop_crossProdDistrubitiveAddition a b c = a * (b + c) == (a * b) + (a * c)
 
 Vector triple product (Lagrange's formula).
 
@@ -573,11 +504,9 @@ Vector triple product (Lagrange's formula).
                                 \vec{c}(\vec{a} \cdot \vec{b})
 \end{equation}
 
-\begin{code}
-prop_lagrange :: VectorThree -> VectorThree -> VectorThree -> Bool
-prop_lagrange a b c = a * (b * c) == (scale (dotProd a c) b -
-                                      scale (dotProd a b) c)
-\end{code}
+> prop_lagrange :: VectorThree -> VectorThree -> VectorThree -> Bool
+> prop_lagrange a b c = a * (b * c) == (scale (dotProd a c) b -
+>                                       scale (dotProd a b) c)
 
 The Jacobi identity:
 \begin{equation}
@@ -586,89 +515,84 @@ The Jacobi identity:
 \vec{v} \times (\vec{a} \times \vec{b})
 \end{equation}
 
-\begin{code}
-prop_JacobiIdentity :: VectorThree -> VectorThree -> VectorThree -> Bool
-prop_JacobiIdentity a b c = a * (b * c) +
-                            b * (c * a) +
-                            c * (a * b) == 0
-\end{code}
+> prop_JacobiIdentity :: VectorThree -> VectorThree -> VectorThree -> Bool
+> prop_JacobiIdentity a b c = a * (b * c) +
+>                             b * (c * a) +
+>                             c * (a * b) == 0
 
 Fun instances
 ------------------------------------
-\begin{code}
-instance Num num => Monoid (Vector2 num) where
-  mempty  = zeroVector
-  mappend = (+)
-  mconcat = foldr mappend mempty
 
-instance Num num => Monoid (Vector3 num) where
-  mempty  = zeroVector
-  mappend = (+)
-  mconcat = foldr mappend mempty
+> instance Num num => Monoid (Vector2 num) where
+>   mempty  = zeroVector
+>   mappend = (+)
+>   mconcat = foldr mappend mempty
+>
+> instance Num num => Monoid (Vector3 num) where
+>   mempty  = zeroVector
+>   mappend = (+)
+>   mconcat = foldr mappend mempty
+>
+>
+> instance Num num => Num (Vector2 num) where
+>   (+)           = vzipWith (+)
+>   (*)           = undefined -- Crossproduct not defined for Vector2
+>   abs           = vmap abs
+>   negate        = vmap (*(-1))
+>   -- | Signum can be though of as the direction of a vector
+>   signum        = vmap signum
+>   fromInteger i = V2 (fromInteger i) 0
+>
+> instance Num num => Num (Vector3 num) where
+>   (+)           = vzipWith (+)
+>   (*)           = crossProd
+>   abs           = vmap abs
+>   negate        = vmap (*(-1))
+>   -- | Signum can be though of as the direction of a vector
+>   signum        = vmap signum
+>   fromInteger i = V3 (fromInteger i) 0 0
+>
+> -- TODO: Explain why this works
+>
+> zeroVector :: (Vector vec, Num (vec num)) => vec num
+> zeroVector = 0
+>
+> instance Show num => Show (Vector3 num) where
+>   show (V3 x y z) = "(" ++ show x ++ " x, "
+>                         ++ show y ++ " y, "
+>                         ++ show z ++ " z)"
+> instance (Floating num, Ord num) => Ord (Vector2 num) where
+>   compare v1 v2 = compare (magnitude v1) (magnitude v2)
+>
+> instance (Floating num, Ord num) => Ord (Vector3 num) where
+>   compare v1 v2 = compare (magnitude v1) (magnitude v2)
+>
+> instance (Ord num, Floating num, Eq num) => Eq (Vector3 num) where
+>   (V3 x y z) == (V3 x' y' z') = xCheck && yCheck && zCheck
+>     where
+>     xCheck = abs (x - x') <= eps
+>     yCheck = abs (y - y') <= eps
+>     zCheck = abs (z - z') <= eps
 
-
-instance Num num => Num (Vector2 num) where
-  (+)           = vzipWith (+)
-  (*)           = undefined -- Crossproduct not defined for Vector2
-  abs           = vmap abs
-  negate        = vmap (*(-1))
-  -- | Signum can be though of as the direction of a vector
-  signum        = vmap signum
-  fromInteger i = V2 (fromInteger i) 0
-
-instance Num num => Num (Vector3 num) where
-  (+)           = vzipWith (+)
-  (*)           = crossProd
-  abs           = vmap abs
-  negate        = vmap (*(-1))
-  -- | Signum can be though of as the direction of a vector
-  signum        = vmap signum
-  fromInteger i = V3 (fromInteger i) 0 0
-
--- TODO: Explain why this works
-
-zeroVector :: (Vector vec, Num (vec num)) => vec num 
-zeroVector = 0
-
-instance Show num => Show (Vector3 num) where
-  show (V3 x y z) = "(" ++ show x ++ " x, "
-                        ++ show y ++ " y, "
-                        ++ show z ++ " z)"
-instance (Floating num, Ord num) => Ord (Vector2 num) where
-  compare v1 v2 = compare (magnitude v1) (magnitude v2)
-
-instance (Floating num, Ord num) => Ord (Vector3 num) where
-  compare v1 v2 = compare (magnitude v1) (magnitude v2)
-
-instance (Ord num, Floating num, Eq num) => Eq (Vector3 num) where
-  (V3 x y z) == (V3 x' y' z') = xCheck && yCheck && zCheck
-    where
-    xCheck = abs (x - x') <= eps
-    yCheck = abs (y - y') <= eps
-    zCheck = abs (z - z') <= eps
-\end{code}
-
-\begin{code}
-runTests :: IO ()
-runTests = do
-  putStrLn "Commutativity of vector addition:"
-  quickCheck prop_CommutativityAddition
-  putStrLn "Associativity of vector addition:"
-  quickCheck prop_AssociativityAddition
-  putStrLn "Dot product distributive over addition:"
-  quickCheck prop_dotProdDistrubitiveAddition
-  putStrLn "Homogeneous scaling:"
-  quickCheck prop_dotProdHomogeneousScaling
-  putStrLn "Commutative dot product:"
-  quickCheck prop_dotProdCommutative
-  putStrLn "Crossproduct of a vector with itself:"
-  quickCheck prop_crossProd_with_self
-  putStrLn "Cross product is anticommutative"
-  quickCheck prop_crossProdAntiCommutative
-  putStrLn "Cross product distributive over addition"
-  quickCheck prop_crossProdDistrubitiveAddition
-  putStrLn "Lagrange formula"
-  quickCheck prop_lagrange
-  putStrLn "Jacobi identity"
-  quickCheck prop_JacobiIdentity
-\end{code}
+> runTests :: IO ()
+> runTests = do
+>   putStrLn "Commutativity of vector addition:"
+>   quickCheck prop_CommutativityAddition
+>   putStrLn "Associativity of vector addition:"
+>   quickCheck prop_AssociativityAddition
+>   putStrLn "Dot product distributive over addition:"
+>   quickCheck prop_dotProdDistrubitiveAddition
+>   putStrLn "Homogeneous scaling:"
+>   quickCheck prop_dotProdHomogeneousScaling
+>   putStrLn "Commutative dot product:"
+>   quickCheck prop_dotProdCommutative
+>   putStrLn "Crossproduct of a vector with itself:"
+>   quickCheck prop_crossProd_with_self
+>   putStrLn "Cross product is anticommutative"
+>   quickCheck prop_crossProdAntiCommutative
+>   putStrLn "Cross product distributive over addition"
+>   quickCheck prop_crossProdDistrubitiveAddition
+>   putStrLn "Lagrange formula"
+>   quickCheck prop_lagrange
+>   putStrLn "Jacobi identity"
+>   quickCheck prop_JacobiIdentity

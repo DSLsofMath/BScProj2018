@@ -137,7 +137,15 @@ I resterande del av detta kapitel i läromaterialet visas hur multiplikation och
 \subsection{Vektorer}
 
 \subsection{Exempelproblem}
+\begin{binge}
+Dessa problem är implementationer eller lösningar på fysikuppgifter som har förekommit på tentamen i fysikkursen. De använder de andra modulerna i läromaterialet för att göra beräkningarna (exempelvis dimensionsanalys eller vektoroperationer). Av exempelproblemen finns en gungbräda och en låda på ett lutande plan. Då källkoden för dessa problem endast är menade att lösa den specifika uppgiften, och inte alla varianter på gungbrädor eller lådor på lutande plan, så kan de inte kallas för domänspecifika språk, utan är istället implementationer som använder våra domänspecifika språk.
 
+Exemplet med gungbrädan har två massor på gungbräda som befinner sig i jämvikt. Uppgiften är att finna en okänd sträcka mellan en av vikterna och balanspunkten. Exemplet använder dimensionsanalys för att representera hävarmseffekten av de olika massorna. Genom att ställa upp förhållanden och lösa ut den okända sträckan, så går det att beräkna den okända sträckan. Sist görs en säkerhetskontroll där den okända sträckan används för att räkna ut hävarmsmomenten, vilket är den sista kontrolleringen att man inte har gjort några logiska fel.
+
+
+Exemplet med en låda på ett lutande plan undersöker krafterna på en låda på ett lutande plan, såsom gravitationen, normalkraften från det lutande planet, och resultantkraften, vilka representeras som vektorer från vektormodulen. Detta exemplet tar både hänsyn till statisk friktion (då lådan befinner sig stillastående) och kinetisk friktion (då lådan befinner sig i rörelse).
+
+\end{binge}
 \subsection{Partikelmekanik}
 
 Implementationen av komposita områden var en vidareutveckling av de redan

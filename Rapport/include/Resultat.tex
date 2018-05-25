@@ -7,14 +7,14 @@ redovisas.
 
 \section{Läromaterialet}\label{sec:res_laromaterial}
 
-Detta avsnitt innehåller en översikt av läromaterialet samt ett utdrag av
-vardera kapitel. Utdragen exemplifier delar av läromaterialet och
-implementationerna av domänspecifika språk. De fullständiga implementationerna
+Detta avsnitt innehåller en översikt av läromaterialet samt ett axplock av innehållet ur
+vardera kapitel. Axplocken exemplifier delar av läromaterialet och
+implementationerna av de domänspecifika språken. De fullständiga implementationerna
 är inte inkluderade (och förklarade) eftersom det är precis det läromaterialet
 innehåller. Rapporten skulle då bli en kopia av läromaterialet. Istället
-hänvisas till ett längre utdrag i bilaga~\ref{cha:utdrag} samt hemsidan där
-läromaterialet~\cite{LYAP} finns tillgängligt. De utdrag som finns är inga
-exakta kopior ord-för-ord av läromaterialet utan de har anpassats till
+finns ett längre utdrag i bilaga~\ref{cha:utdrag} samt hemsidan där
+läromaterialet~\cite{LYAP} finns tillgängligt. De avsnitt i rapporten beskriver läromaterialets innehåll är inga
+exakta kopior ord-för-ord utan de har anpassats till
 rapporten.
 
 \subsection{Översikt}
@@ -30,26 +30,32 @@ implementera en liten del av det domänspecifika språket. Det finns också
 övningar i slutet av kapitlet som ofta innebär större vidareutvecklingar av de
 domänspecifika språken.
 
-\begin{figure}[tph]
-  \centering
-  \includegraphics[width=\linewidth]{figure/smakprov_laromaterial.png}
-  \caption{Ett smakprov av det resulterande läromaterialet. Lärotexten ligger mot den ljusgrå bakgrunden medan det domänspecifika språket ligger mot den mörkgrå. Notera att detta exemplets källkod (i Litterate Haskell) har visats tidigare i avsnitt \ref{sec:lhs}.}~\label{fig:smakprov_laromaterial}
-\end{figure}
-
-\begin{figure}[tph]
+\begin{figure}[h]
     \centering
-    \includegraphics[width=0.4\linewidth]{figure/smakprov_ovning.png}
-    \caption{Exempel på en övning. Övningen ligger som en del av den löpande texten.}
-    \label{fig:smakprov_ovning}
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{figure/smakprov_laromaterial.png}
+        \caption{Lärotexten är mot den ljusgrå bakgrunden medan Haskell-kod är mot den mörkgrå.}~\label{fig:smakprov_laromaterial}
+    \end{subfigure}%
+    ~~~
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{figure/smakprov_ovning.png}
+        \caption{Exempel på en övning. Övningen ligger som en del av den
+                 löpande texten.}~\label{fig:smakprov_ovning}
+    \end{subfigure}
+    \caption{Ett smakprov av det resulterande läromaterialet.} 
 \end{figure}
 
 Språket i lärotexten är enligt projektgruppen lättsamt\footnote{Diskuteras
 utförligare i avsnitt \ref{sec:res_disk}.} och i detta syfte finns det även
 bilder tillagda. Figur~\ref{fig:smakprov_bild_laromaterial} är ett exempel på en
 bild ur läromaterialet. Notera speciellt den medvetet oseriösa ritningstekniken
-som är tänkt att vara rolig och muntra upp läsaren.
+som är tänkt att vara rolig och muntra upp läsaren.\newline
 
-\begin{figure}[tph]
+% newline ska kanske bort. Är för formatering
+
+\begin{figure}[h]
         \centering
         \includegraphics[width=0.4\linewidth]{figure/smakprov_bild_laromaterial.png}
         \caption{Exempel på en bild. Bilden visar hur en hund springer och hoppar upp på en stillastående vagn.}
@@ -74,8 +80,7 @@ Haskells typsystem och hur dimensioner hanteras inom fysiken.
 Typnivåprogrammering\footnote{Vanligtvis manipuleras \textit{värden} när
 programmerering sker i Haskell och andra språk. Typnivåprogrammering är precis som
 vanlig programmering med skillnaden att den sker på typnivån, det vill säga, att
-typer modifieras. Läsaren hänvisas till läromaterialet~\cite{LYAP} för en utförligare
-förklaring.} används för att göra likheterna så tydliga som möjligt.
+typer modifieras. För en utförligare förklaring av typnivåprogrammering, se läromaterialet~\cite{LYAP}.} används för att göra likheterna så tydliga som möjligt.
 
 I \textit{matematisk analys} behandlas differentialkalkyl och
 integralkalkyl för en variabel. Först bestäms den semantiska domänen
@@ -116,6 +121,7 @@ läromaterialet är skriven på engelska.
 
 \subsection{Dimensioner}
 \label{sec:grund_impl}
+\label{sec:res_dim}
 
 I detta avsnitt visas delar av hur implementationen av dimensioner ser ut i
 läromaterialet. Den fullständiga implementationen innehåller tre delar:
@@ -138,7 +144,7 @@ massa, tid, elektrisk ström, temperatur, substansmängd och ljusstyrka.}, med e
 indiviudell exponent till varje basdimension. Datatypen, på värdenivå, som
 används ser därför ut som följande
 
-\begin{lstlisting}[frame=none,belowskip=-0.5\baselineskip]
+\begin{lstlisting}
 data Dim = Dim Integer -- Length
                Integer -- Mass
                Integer -- Time
@@ -153,7 +159,7 @@ Varje fält i datatypen representerar exponenten för motsvarande basdimension. 
 exponenten är $0$ betyder det att den basdimension inte är inkluderad i
 dimensionen. Några exempel ges för att förtydliga.
 
-\begin{lstlisting}[frame=none,belowskip=-0.5\baselineskip]
+\begin{lstlisting}
 length      = Dim 1 0 0 0 0 0 0
 mass        = Dim 0 1 0 0 0 0 0
 time        = Dim 0 0 1 0 0 0 0
@@ -180,13 +186,24 @@ Vektorer implementerades på två olika sätt. Det första följde definitionen 
 kurboken och implementerade vektorer i två dimensioner med en typ vars
 konstruktor tog två argument.
 
+<<<<<<< HEAD
 \begin{lstlisting}
   test :: Int
   test = 1
 \end{lstlisting}
 
+=======
+>>>>>>> 893785db33baa688e623fff51e3fe8a60fe7e728
 \subsection{Exempelproblem}
+\begin{binge}
+Dessa problem är implementationer eller lösningar på fysikuppgifter som har förekommit på tentamen i fysikkursen. De använder de andra modulerna i läromaterialet för att göra beräkningarna (exempelvis dimensionsanalys eller vektoroperationer). Av exempelproblemen finns en gungbräda och en låda på ett lutande plan. Då källkoden för dessa problem endast är menade att lösa den specifika uppgiften, och inte alla varianter på gungbrädor eller lådor på lutande plan, så kan de inte kallas för domänspecifika språk, utan är istället implementationer som använder våra domänspecifika språk.
 
+Exemplet med gungbrädan har två massor på gungbräda som befinner sig i jämvikt. Uppgiften är att finna en okänd sträcka mellan en av vikterna och balanspunkten. Exemplet använder dimensionsanalys för att representera hävarmseffekten av de olika massorna. Genom att ställa upp förhållanden och lösa ut den okända sträckan, så går det att beräkna den okända sträckan. Sist görs en säkerhetskontroll där den okända sträckan används för att räkna ut hävarmsmomenten, vilket är den sista kontrolleringen att man inte har gjort några logiska fel.
+
+
+Exemplet med en låda på ett lutande plan undersöker krafterna på en låda på ett lutande plan, såsom gravitationen, normalkraften från det lutande planet, och resultantkraften, vilka representeras genom vektorer från vektormodulen. Detta exemplet tar både hänsyn till statisk friktion (då lådan befinner sig stillastående) och kinetisk friktion (då lådan befinner sig i rörelse).
+
+\end{binge}
 \subsection{Partikelmekanik}
 
 Implementationen av komposita områden var en vidareutveckling av de redan
@@ -248,8 +265,7 @@ hjälp av domänspecifika språk. En annan sak var den rigorösitet som
 domänspecifika språk leder till, eftersom de domänspecifika språken måste vara
 väldefinierade betyder det att alla fysikaliska koncept måste göras entydiga så
 att även de blir väldefinierade och följden blir att operationerna på dem
-enbart kan göras på det definierade sättet. Inget fusk\todo{Utveckla om fusk} kan göras i
-beräkningarna - alla steg måste vara fullständiga och följa de regler som finns.
+enbart kan göras på det definierade sättet. Dessutom måste dimensionerna stämma, vilket nämndes i avsnitt \ref{sec:res_dim}.
 Fäldt menade att det var en bra egenskap hos läromaterialet, att detta rigorösa
 tankesätt och metodik som förmedlas hade varit till nytta för problemlösning i
 fysikkursen.

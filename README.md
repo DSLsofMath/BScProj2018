@@ -29,13 +29,21 @@ Medlemmar: Oskar, Erik, ~~Daniel~~, Björn, Johan
 - Relaterade arbeten i diskussion
 - ~Skriva om förklaring av generellt programmeringsspråk~
 - Referenssystem
-- Kod i figurer
+- ~Kod i figurer~
 - Kolla över användning av syntaxträd
 - Kommentarer i teorikapitel
-- Röd tråd lärandeteorier och sista stycket
+- Röd tråd lärandeteorier ~och sista stycket~
 - Framåtpekare i genomförande
 - Skapnde hemsida, kanske ta bort
 - Hade testgruppen klarat kursen?
-- Utveckla att inte kan fuska
+- ~Utveckla att inte kan fuska~
 - Figur som hamnat fel
 - Utveckla hur gick för DSL2016
+
+## Att prata om
+
+- Utvärdering i met+res+disk (som nu), bara disk eller inte alls?
+- Hur vi ska korta ner genomförande
+- Hur vi ska korta ner diskussion
+- Ha kvar hemsida i metod?
+- Hela läromaterialet i bilagan?

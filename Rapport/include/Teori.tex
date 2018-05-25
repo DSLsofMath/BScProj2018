@@ -68,17 +68,13 @@ strukturer kallas \textit{syntaxträd}, och har haft stor betydelse i detta proj
 För att illustrera begreppet visas här ett domänspecifikt språk som består av en
 datatyp vars element är
 syntaxträd som modellerar aritmetiska uttryck, implementerat i Haskell.
-Datatypen för syntaxträden visas i figur~\ref{fig:syntax_exempel}.
+Datatypen för syntaxträden visas nedan.
 
-\begin{figure}[tph]
-  \begin{lstlisting}
+\begin{lstlisting}
 data Expr = Expr :+: Expr
-          | Expr :*: Expr
-          | Const Double
-  \end{lstlisting}
-  \caption{En datatyp för aritmetiska uttryck i Haskell. Detta är ett exempel på
-           ett litet domänspecifikt språk.}\label{fig:syntax_exempel}
-\end{figure}
+        | Expr :*: Expr
+        | Const Double
+\end{lstlisting}
 
 Typen innehåller \textit{datakonstruktorer} för att representera
 \textit{löv} (ändpunkter) och \textit{förgreningar}. I detta exempel är
@@ -88,19 +84,15 @@ representeras av
 \texttt{Const}, vilket är en konstant som ej kan byggas vidare på\todo{Const 10 :*: Const 2??}.
 
 Med datakonstruktorerna kan uttryck representerade av syntaxträd konstrueras. Ett exempeluttryck
-från den tidigare datatypen visas i figur~\ref{fig:syntax_exempel_varde}, där det aritmetiska uttrycket $7 * (3
+från den tidigare datatypen är
+\begin{lstlisting}
+expr = Const 7 :*: (Const 3 :+: Const 10)
+\end{lstlisting}
+där det aritmetiska uttrycket $7 * (3
 + 10)$ modelleras. Konstruktorn \texttt{:*:} får som sina två argument uttrycken
 \texttt{Const 7} och \texttt{Const 3 :+: Const 10}. Det är alltså en produkt av
 två deluttryck. Syntaxträd brukar illusteras med träddiagram. Detta
 exempeluttryck illustreras i figur \ref{fig:syntax_exempel_bild}.
-
-\begin{figure}[tph]
-  \begin{lstlisting}
-expr = Const 7 :*: (Const 3 :+: Const 10)
-  \end{lstlisting}
-  \caption{Ett exempeluttryck ur det tidigare syntaxträdet. Detta modellerar det
-           matematiska uttrycket $7 * (3 + 10)$}\label{fig:syntax_exempel_varde}
-\end{figure}
 
 \begin{figure}[tph]
   \centering
@@ -113,26 +105,20 @@ Precis som semantik har en roll i samband med syntax, har semantik även en roll
 i samband med syntaxträd. I detta exempel är semantiken det värde som
 syntaxträdet har. Detta värde kan beräknas utifrån syntaxträdet genom
 en \textit{evaluator}, också kallad \textit{beräkningsfunktion}. För \texttt{Expr}
-kan beräkningsfunktionen se ut som i figur \ref{fig:eval_tree}
-
-\begin{figure}[tph]
-  \begin{lstlisting}
+kan beräkningsfunktionen se ut som
+\begin{lstlisting}
 evaluate :: Expr -> Double
 evaluate (e1 :+: e2) = evaluate e1 + evaluate e2
 evaluate (e1 :*: e2) = evaluate e1 * evaluate e2
 evaluate (Const v)   = v
-  \end{lstlisting}
-  \caption{En beräkningsfunktion för syntaxträdet.}\label{fig:eval_tree}
-\end{figure}
-
-Det finns tre speciella saker att observera i
-figur~\ref{fig:eval_tree}. Den första är att eftersom syntaxen innehåller tre olika
+\end{lstlisting}
+Det finns tre speciella saker att observera. Den första är att eftersom syntaxen innehåller tre olika
 slag av element, här motsvarat av de tre datakonstruktorerna, krävs tre fall i
 funktionen \texttt{evaluate} som beräknar vardera av dem. Den har
 därför ett fall för \texttt{:+:}, ett för \texttt{:*:} och ett för
 \texttt{Const}.
 
-Den andra saken att notera i figuren är hur ett fall
+Den andra saken att notera är hur ett fall
 beräknas. Hur beräkningen ska se ut fås genom att ta hänsyn till
 semantiken hos det syntaktiska uttrycket. Här är \texttt{e1 :+: e2} syntax för
 addition av de två uttrycken \texttt{e1} och \texttt{e2}. Därför blir
@@ -163,7 +149,7 @@ dokumentationen är sammanvävda på ett jämnbördigt sätt, där den ena inte 
 viktigare än den andra.
 
 \begin{figure}[tph]
-  \begin{lstlisting}[language={}]
+  \begin{lstlisting}[language={}, frame=single]
 How does all this tie together? First the type is decided, for instance
 
 > type ExampleType = Quantity T.Length Double
@@ -174,6 +160,7 @@ then a value of that type is created
 > exampleValue = Quantity V.length 5.3
 
 Note that the Quantity data type has both value-level and type-level dimensions. As previosuly mentioned, value-level in order to pretty print and type-level to only permit legal operations.
+
 \end{lstlisting}
   \caption{Ett exempel på hur en källfil till litterat programmering kan se ut, tagen direkt från källkoden till läromaterialet.
            I exemplet är koden skriven i Literate Haskell. Rader som börjar med \texttt{>}
@@ -206,7 +193,7 @@ att exportera till bland annat HTML (som i läromaterialet) och PDF (som i den h
 \section{Lärandeteorier}\label{sec:arcs}
 
 Motivation är en persons vilja att göra något och i undervisningssammanhang vill
-läraren eller författaren att studenten ska lära sig materialet, studenten behöver alltså bli
+läraren eller författaren att studenten ska lära sig materialet, studenten behöver alltså vara
 motiverad till att lära sig. Motivation kan ha flera källor, till exempel
 att studenten tycker materialet är intressant eller att det finns belöningar i
 form av tillfredsställelsen från ett högt betyg.
@@ -248,6 +235,7 @@ om olika struktur och ordning på undervisningen, till exempel att inte alltid
 utforma en lektion som föreläsning, demonstration och sedan övning, utan variera
 det med andra inslag, exempelvis ett filmklipp.
 \todo{Röd tråd}
+
 Enligt det sociokulturella perspektivet som Vygotskij utvecklade~\cite{LSB_und}
 lär sig elever av varandra. Eleverna befinner sig vid sin närmsta
 utvecklingszon\footnote{Den zon där målet för lärandet ligger på en nivå som är
@@ -273,4 +261,4 @@ behavioristiska element (former av respons) i form av rätt eller fel
 svar~\cite{LSB_und}. Evolutionärt sett har snabba belöningar varit
 fördelaktigt framför långsiktiga som kräver långsiktigt engagemang
 (exempelvis öva inför en tenta) vilket beskrivs i boken \textit{Dansa
-på deadline: Uppskjutandets psykologi}~\cite{DPD}.\todo{Oavslutat stycke}
+på deadline: Uppskjutandets psykologi}~\cite{DPD}. Dessa två aspekter återkoms till i kapitel \ref{cha:disk}

@@ -162,9 +162,7 @@ med en uttömmande förklaring om hur det fungerade och utan krav på tidigare
 kunskap hos läsaren.
 
 Efter att ett domänspecifikt språk implementerats skrevs tester till det. Det
-som var intressant att testa var olika lagar som skulle gälla, och  eftersom de
-domänspecifika språken i läromaterialet modellerade matematik var det matematiska lagar
-som skulle gälla. Ett exempel var att vektoraddition skulle vara kommutativ.
+som var intressant att testa var huruvida domänens lagar gällde i det domänspecifika språket som modellerade domänen. Till exempel var det för det domänspecifika språket om vektorer aktuellt att testa om vektoraddition var kommutativ, och så vidare.
 Testerna gjordes med hjälp av \textit{QuickCheck}~\cite{QC} vilket är ett
 testningsverktyg i Haskell som genererar många och slumpmässiga testfall. Att
 lagarna gällde för de domänspecifika språken verifierades med andra ord genom

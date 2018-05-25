@@ -53,13 +53,16 @@ områden valdes utifrån hur det implementationsmässigt hängde ihop, till exem
 att matematisk analys är grunden till flera tillämpningar. Istället hade områden
 kunnat väljas utifrån de fysikaliska problem studenter ska lösa i Fysik för
 ingenjörer, till exempel lutande plan, block och talja eller momentjämvikt, och
-utifrån det utforma domänspecifika språk. De olika sätten att tänka vid val av
-områden skiljer sig åt och mest fokus under projektet har lagts på
-implementationsperspektivet. Visserligen gjordes enstaka försök att tänka på det
-andra sättet också, men vi tyckte det var svårt att skapa några domänspecifika
-språk på det sättet (se avsnitt~\ref{sec:lampligt}). Vi hade dock kunnat utforska
-detta tankesätt grundligare än vad vi gjort, istället för att avfärda det som
-ett svårare sätt att gå till väga.
+utifrån det utforma domänspecifika språk.
+% De olika sätten att tänka vid val av
+% områden skiljer sig åt och mest fokus under projektet har lagts på
+% implementationsperspektivet. Visserligen gjordes enstaka försök att tänka på det
+% andra sättet också, men vi tyckte det var svårt att skapa några domänspecifika
+% språk på det sättet (se avsnitt~\ref{sec:lampligt}). Vi hade dock kunnat utforska
+% detta tankesätt grundligare än vad vi gjort, istället för att avfärda det som
+% ett svårare sätt att gå till väga.
+
+\textbf{Kortfatta}
 
 Till sist kan vi kritisera den allmänna metoden som valdes för utformningen av
 läromaterialet, nämligen att skriva varje kapitel som en lång, sammanhängande,
@@ -80,8 +83,11 @@ dimensioner, och sedan låta studenten själv skapa implementationen. En fingerv
 \section{Resultatdiskussion}\label{sec:res_disk}
 
 Detta avsnitt inleds med en övergripande diskussion om det resulterande
-läromaterialet, för att sedan övergå till en mer generell diskussion kring
-kombinationen av domänspecifika språk och fysik.
+läromaterialet och för vem läromaterialet kan vara relevant, för att sedan
+övergå till en mer generell diskussion kring kombinationen av domänspecifika
+språk och fysik.
+
+\textbf{Skriv om}
 
 I projektets mål och avgränsningar stod det att vi skulle börja med klassisk
 mekanik, för att i mån av tid även behandla termodynamik och vågrörelselära. I avsnitt~\ref{sec:res_laromaterial} nämns att de tre grundläggande
@@ -131,6 +137,8 @@ Målet med läromaterialet var att lära ut fysik på ett roligt och lättförst
 sätt. Dock syns det i resultatet, avsnitt~\ref{sec:res_laromaterial}, att det
 stora fokuset lagts på att förklara och lära ut matematik och Haskell. Vi menar att det finns flera anledningar till att ett stort fokus lagts på matematik och Haskell.
 
+\textbf{Korta ner}
+
 Problemet med att prata om en egen implementation av fysik är att fysik inte är
 ett helt eget område. Det är snarare så att fysik kan ses som tillämpad
 matematik, att fysik använder matematiken för att beskriva det fysikaliska
@@ -150,17 +158,19 @@ så att en kedja av områden kan betraktas som tillämpningar av
 varandra.}\label{fig:xkcd}
 \end{figure}
 
-Självklart ingår det också en stor del problemlösning inom fysik, den faktiska
-tillämpningen av de beskrivningar och lagar som matematiken ger oss. Men
-problemlösning är något som vi tycker är svårt och problematiskt att modellera
-som ett domänspecifikt språk, något som diskuteras djupare i
-avsnitt~\ref{sec:lampligt}.
+% Självklart ingår det också en stor del problemlösning inom fysik, den faktiska
+% tillämpningen av de beskrivningar och lagar som matematiken ger oss. Men
+% problemlösning är något som vi tycker är svårt och problematiskt att modellera
+% som ett domänspecifikt språk, något som diskuteras djupare i
+% avsnitt~\ref{sec:lampligt}.
 
 Anledningen till att ett stort fokus läggs på Haskell är att de koncept som används är viktiga för läsaren att förstå. Koncepten är ibland inte kända för en läsare med endast en grundläggande förståelse för Haskell och då måste de förklaras tillräckligt ordentligt för att det ska gå att hänga med. Och
 eftersom ett syfte med läromaterialet var att väcka intresse hos läsaren med
 bakgrund inom Haskell så ville vi lägga fokus på att tydligt visa
 parallellerna mellan funktionell programmering, matematik och implementationen
 av fysik.
+
+\textbf{Skriv om och ihop de två nedanstående}
 
 Vi hävdar alltså att fokuset lagts på mer än bara fysik av två skäl: att fysik är tillämpad matematik och att det är viktigt att förklara de Haskell-koncept som används. Det måste däremot inte vara så. Det kan mycket väl vara så att detta fokusskifte har skett på grund
 av hur vi valde att genomföra projektet. I ett tidigt skede valde vi att söka efter
@@ -475,13 +485,13 @@ i stort ska gå över till denna modell.
 Valet att skriva på engelska har också att göra med tillgängligheten. Fler kan
 engelska än svenska. På detta sätt kan läromaterialet komma fler till gagn.
 
-Angående ambitionerna att upplevelsen av materialet är ämnad att
-vara rolig, så är det mer tillgängligt för elever som kanske inte hade orkat
-läsa en akademisk lärobok. Även om kvalitén i en akademisk lärobok kan vara hög,
-är det inte alltid kvalitén kommer till nytta om eleven lägger boken åt sidan på
-grund av en impuls att göra något som kan vara mer stimulerande.  Genom att
-använda ett enkelt språk, roliga formuleringar och bilder, minskar chansen för
-flyktförsök. Detta kan tänkas vara extra viktigt för yngre elever vars kontroll
-av uppmärksamhet inte är lika utvecklad som hos äldre, men som ändå är
-intresserade av fysik på en mer avancerad nivå än de studerar i sin ordinarie
-undervisning.
+% Angående ambitionerna att upplevelsen av materialet är ämnad att
+% vara rolig, så är det mer tillgängligt för elever som kanske inte hade orkat
+% läsa en akademisk lärobok. Även om kvalitén i en akademisk lärobok kan vara hög,
+% är det inte alltid kvalitén kommer till nytta om eleven lägger boken åt sidan på
+% grund av en impuls att göra något som kan vara mer stimulerande.  Genom att
+% använda ett enkelt språk, roliga formuleringar och bilder, minskar chansen för
+% flyktförsök. Detta kan tänkas vara extra viktigt för yngre elever vars kontroll
+% av uppmärksamhet inte är lika utvecklad som hos äldre, men som ändå är
+% intresserade av fysik på en mer avancerad nivå än de studerar i sin ordinarie
+% undervisning.

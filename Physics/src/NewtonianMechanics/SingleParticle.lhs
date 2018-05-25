@@ -1,7 +1,5 @@
 > module NewtonianMechanics.SingleParticle where
 
-%< import           Calculus.SyntaxTree
-
 > import           Test.QuickCheck
 
 Laws:
@@ -20,8 +18,8 @@ mathmatical functions in previous chapters we won't spend any time on them here
 and instead just import those two modules.
 
 > import           Calculus.FunExpr
-> import           Calculus.DifferentialCalc -- Maybe remove
-> import           Calculus.IntegralCalc     -- Maybe remove
+> import           Calculus.DifferentialCalc
+> import           Calculus.IntegralCalc
 > import           Vector.Vector as V
 
  The mass of a particle is just a scalar value so we'll model it using
@@ -35,11 +33,13 @@ type `VectorE` to signify that it's a vector of expressions.
 
 > type VectorE = Vector3 FunExpr
 
-Now we are ready to define what the data type for a particle is. As we
-previously stated a point particle has a mass, and a position given as a vector
-of function expressions. So our data type is simply:
+> type Position = Vector3 FunExpr
 
-> data Particle  = P { pos  :: VectorE -- Position as a function of time, unit m
+Now we are ready to define what the data type for a particle is. As we
+previously stated a point particle has a position given as a vector
+of function expressions, and a mass. So our data type is simply:
+
+> data Particle  = P { pos  :: Position -- Position as a function of time, unit m
 >                    , mass :: Mass    -- Mass, unit kg
 >                    } deriving Show
 
@@ -282,17 +282,14 @@ equal to the change in kinetic energy $E_k$ of the particle:
 
 Let's codify this theorem:
 
-PS: This used to work just fine, but it no longer does since the switch to
-FunExpr. Problem probably lies somewhere in SyntaxTree
-
-< prop_WorkEnergyTheorem :: Mass -> VectorE -> VectorE -> IO Bool
-< prop_WorkEnergyTheorem m v1 v2 = prettyEqual deltaEnergy (kineticEnergy displacedParticle)
-<   where
-<     particle1 = P v1 m -- | Two particles with the same mass
-<     particle2 = P v2 m -- | But different position vector
-<     -- |          E_k,2                     - E_k,1
-<     deltaEnergy = kineticEnergy particle2 - kineticEnergy particle1
-<     displacedParticle = P (v2 - v1) m
+> prop_WorkEnergyTheorem :: Mass -> Position -> Position -> Bool
+> prop_WorkEnergyTheorem m p1 p2 = deltaEnergy == kineticEnergy displacedParticle
+>   where
+>     particle1 = P p1 m -- | Two particles with the same mass
+>     particle2 = P p2 m -- | But different position vector
+>     -- |          E_k,2                   - E_k,1
+>     deltaEnergy = kineticEnergy particle2 - kineticEnergy particle1
+>     displacedParticle = P (p2 - p1) m
 
 < -- Test values
 < v1 = V3 (3 :* Id) (2 :* Id) (1 :* Id)

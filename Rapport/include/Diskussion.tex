@@ -161,7 +161,7 @@ Anledningen till att stor fokus ibland läggs på Haskell är att de
 koncept som används är viktiga för läsaren att förstå, men vi vill
 förutsätta så lite förkunskaper som möjligt så att även oerfarna
 Haskell-programmerare ska kunna följa med i boken. Ett syfte med
-läromaterialet är ju också att väcka intresse hos läsaren, och vi tror
+läromaterialet är också att väcka intresse hos läsaren, och vi tror
 att detta kan uppnås genom att visa paralleller mellan funktionell
 programmering, matematik, och implementationen av fysik.
 
@@ -214,7 +214,7 @@ I Haskell kan en datatyp för vektorer defineras som
 och vektoraddition som
 \begin{lstlisting}
     va :: V -> V -> V
-    (V u1 u2) `va` (V w1 w2) = V (u1+u2) (w1+w2)
+    (V u1 u2) `va` (V w1 w2) = V (u1+w1) (u2+w2)
 \end{lstlisting}
 Det finns enligt oss en tydlig likhet mellan matematik och Haskell i detta fall, och även i för andra lämpliga områden, vilket gör att vi tycker det blir enkelt att modellera och förstå områden som vektorer.
 
@@ -286,30 +286,12 @@ läromaterialet\footnote{Eftersom utvärderingen med
 testgruppen var väldigt kort är det dock svårt att dra några säkra slutsatser.},
 se avsnitt~\ref{sec:res_test}
 
-% Domänspecifika språk kan ses som ett sätt göra fysik intressantare. Tycker en student
-% att domänspecifika språk är roligt men inte fysik kan en överbryggning av dem
-% leda till att studenten tycker att fysik blir roligare. Detta genom att hen ser
-% parallellerna mellan domänspecifika språk och fysik. Ett exempel är typsystemet i
-% Haskell och dimensioner i fysik. I bägge världarna får inte olika typer
-% respektive dimensioner adderas, och vid operationer behandlas de på liknande
-% sätt. Denna likhet påvisades i läromaterialet genom att implementera fysikaliska
-% dimensioner i Haskells typsystem, se avsnitt~\ref{sec:res_laromaterial}. Denna
-% tanke stöds även av att testgruppen tyckte läromaterialet var ett intressant sätt
-% att presentera fysik på och att vi var inne på rätt spår i vår utformning av
-% läromaterialet, se avsnitt~\ref{sec:res_test}. Eftersom utvärderingen med
-% testgruppen var väldigt kort är det dock svårt att dra några säkra slutsatser
-% från den. Nyttan med ett större intresse för fysik är att studenten
-% då förhoppningsvis är mer motiverad att klara fysikkurserna.
-
-Avslutningsvis när det kommer till de domänspecifika språkens varande eller
-icke-varande
-ihop med fysikundervisning anser vi att en antingen-eller syn inte är konstruktiv,
-istället kan de kombineras på ett balanserat sätt. Det kan handla om att ha
-vissa inslag av domänspecifika språk i en annars traditionell fysikundervisning,
-och på så sätt fånga upp de delar domänspecifika språk gör bra i fysik:
-strukturera, uppmuntra rigorös problemlösning och väcka intresse. Men samtidigt
-förlita sig på traditionella metoder till stor del i bland annat problemlösning
-och inte låta fokuset glida för långt från fysik till domänspecifika språk.
+På detta sätt tror vi att vårt läromaterial med fördel kan integreras i
+traditionell fysikundervisning och på så sätt fånga upp de delar domänspecifika
+språk gör bra i fysik: strukturera, uppmuntra rigorös problemlösning och väcka
+intresse. Men samtidigt förlita sig på traditionella metoder till stor del i
+bland annat problemlösning och inte låta fokuset glida för långt från fysik till
+domänspecifika språk.
 
 \section{Vidareutvecklingsmöjligheter och behov av ytterligare kunskap}
 

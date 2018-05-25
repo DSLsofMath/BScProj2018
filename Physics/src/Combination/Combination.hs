@@ -1,20 +1,25 @@
 
 {-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE FlexibleInstances #-}
 
 module Combination.Combination
     (
     ) where
 
-import Vector.Vector
-import Calculus.FunExpr
-import Calculus.DifferentialCalc
-import Calculus.IntegralCalc
+import Vector.Vector2
+--import Calculus.FunExpr
+--import Calculus.DifferentialCalc
+--import Calculus.IntegralCalc
 import Dimensions.Quantity2
 import Dimensions.TypeLevel
+import qualified Dimensions.ValueLevel as V
 import Prelude hiding (length)
 
 -- Calculus i Dimensions
 ------------------------
+
+{-
 
 instance Fractional FunExpr where
   fromRational = Const . fromRational
@@ -81,63 +86,103 @@ differentiateWRTtime qc = fmap simplify $ fmap derive qc /# time
 integrateWRTtime :: QC d -> QC (d `Mul` Time)
 integrateWRTtime qc = fmap simplify $ fmap integrate qc *# time
 
+-}
+
+
+--------------------
 -- Calc i Vec i Quan
 --------------------
 
-type QVC d = Quantity d (Vector2 FunExpr)
+-----------------------
+-- Instansiering
 
-anyVal :: Vector2 FunExpr
-anyVal = V2 (Const 1) (Const 1)
+-- En vektor kan adderas
 
-lengthQVC      = length' anyVal
-massQVC        = mass' anyVal
-timeQVC        = time' anyVal
-temperatureQVC = temperature' anyVal
-currentQVC     = current' anyVal
-substanceQVC   = substance' anyVal
-luminosityQVC  = luminosity' anyVal
-oneQVC         = one' anyVal
+-- (Kan alla göras samtidigt?)
 
-s1 :: QVC Length
-s1 = V2 (5 :+ Id) (2 :* Id) ## lengthQVC
+instance (Addable v v v) => Addable (Vector2 v) (Vector2 v) (Vector2 v) where
+  doAdd = vzipWith (doAdd)
+instance (Addable v v v) => Addable (Vector3 v) (Vector3 v) (Vector3 v) where
+  doAdd = vzipWith (doAdd)
 
-s2 :: QVC Time
-s2 = V2 (Id :* Id) (8) ## timeQVC
+-- En vektor kan multipliceras på flera sätt
 
--- Socker
-(###) :: (FunExpr, FunExpr) -> QVC d -> QVC d
-(x, y) ### qvc = V2 x y ## qvc
+-- Skalning (från vänster)
+instance (Num v) => Multiplicable v (Vector2 v) (Vector2 v) where
+  doMult = scale
+instance (Num v) => Multiplicable v (Vector3 v) (Vector3 v) where
+  doMult = scale
 
-s3 :: QVC Time
-s3 = (Id, Sin) ### timeQVC
+-- Kryssprdoukt
+instance (Num v) => Multiplicable (Vector3 v) (Vector3 v) (Vector3 v) where
+  doMult = crossProd
 
-addQVC :: QVC d -> QVC d -> QVC d
-addQVC = quantityAdd' (vzipWith (+))
+-- Skalärprodukt
+instance (Num v) => Multiplicable (Vector2 v) (Vector2 v) v where
+  doMult = dotProd
+instance (Num v) => Multiplicable (Vector3 v) (Vector3 v) v where
+  doMult = dotProd
 
-simplifyQVC :: QVC d -> QVC d
-simplifyQVC = fmap (vmap simplify)
+-- En vektor kan "skapas"
 
-scaleQVC :: Quantity d1 FunExpr -> QVC d2 -> QVC (d1 `Mul` d2)
-scaleQVC s qvc = simplifyQVC $ quantityMul' (\fe vec -> scale fe vec) s qvc
+instance (Creatable v) => Creatable (Vector2 v) where
+  anyVal = V2 anyVal anyVal
+instance (Creatable v) => Creatable (Vector3 v) where
+  anyVal = V3 anyVal anyVal anyVal
 
-divQVC :: Quantity d1 FunExpr -> QVC d2 -> QVC (d1 `Div` d2)
-divQVC s qvc = simplifyQVC $ quantityDiv' (\fe vec -> scale (1 :/ fe) vec) s qvc
+------------------------------------
+-- Användning
 
-diffQVC :: QVC d -> QVC (d `Div` Time)
-diffQVC qvc = simplifyQVC differentiated
+-- Ej dimensionssäkra
+v1 :: Vector3 Double
+v1 = V3 3 2 3
+v2 :: Vector3 Double
+v2 = V3 1 2 5
+v3 :: Vector3 Double
+v3 = V3 7 8 2
+
+-- Dimensionsäkra
+v1d :: Quantity Length (Vector3 Double)
+v1d = v1 ## length
+v2d :: Quantity Mass (Vector3 Double)
+v2d = v2 ## mass
+v3d :: Quantity Time (Vector3 Double)
+v3d = v3 ## time
+
+-- t1 kräver typsignatur, antagligen för den här MultiParam...
+-- så att ska veta vilken instans
+
+-- Addition
+t1 :: Quantity Length (Vector3 Double)
+t1 = v1d +# v1d
+
+-- Kryssprodukt
+t2 :: Quantity (Length `Mul` Mass) (Vector3 Double)
+t2 = v1d *# v2d
+
+-- Skalning
+t3 :: Quantity (Length `Mul` Mass) (Vector3 Double)
+t3 = s *# v2d
   where
-    differentiated = quantityDiv' f (fmap (vmap derive) qvc) timeQVC
-    f = vzipWith (/)
+    s :: Quantity Length Double
+    s = 3.0 ## length
 
--- Ett flygplans position av tiden bestäms av nedan
+-- Skalärprodukt
+t4 :: Quantity (Time `Mul` Length) Double
+t4 = v3d *# v1d
 
-pos :: QVC Length
-pos = (Sin :+ Const 8, Id :* Const 3) ### lengthQVC
 
--- Vad är hastigheten hos ett flygplan som flyger dubbelt så snabbt, som en funktion av tiden?
 
-velDoub :: QVC (Length `Div` Time)
-velDoub = scaleQVC (Const 2 # one) (diffQVC pos)
+
+
+
+
+
+
+
+
+
+
 
 
 

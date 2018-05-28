@@ -222,18 +222,9 @@ Egenskaper och samband är enligt oss svårare att modellera meningsfullt. Visse
 
 \subsection{Domänspecifika språk, fysik och pedagogiska aspekter}\label{sec:bara_fysik}
 
-En del av projektets mål är att diskutera huruvida det finns en pedagogisk nytta
-i att kombinera fysik och domänspecifika språk. Denna fråga diskuteras nedan.
+En del av projektets mål är att diskutera huruvida det finns en pedagogisk nytta i att kombinera fysik och domänspecifika språk. Denna fråga diskuteras nedan.
 
-Domänspecifika språk kan betraktas som ``tools for thinking''\footnote{Uttryckt
-i Patrik Janssons egna ord, föreläsare i kursen DSLsofMath.}. Med det
-menas att domänspecifika språk kan användas till att strukturera ett område så
-att det blir enklare att få en överblick och
-förstå det. Dimensioner i läromaterialet är ett exempel på
-detta, se även avsnitt~\ref{sec:grund_impl}. Där konstateras att en godtycklig
-dimension kan skrivas som de sju grunddimensionerna med tillhörande exponenter.
-Det strukturerade sättet som dimensionerna sen beskrivs på ger förhoppningsvis
-ett enklare sätt att se på dem, vilket vi själva tycker är meningsfullt.
+I samband med fysik finns några fördelar med att integrera domänspecifika språk. Domänspecifika språk kan betraktas som ``tools for thinking''\footnote{Uttryckt i Patrik Janssons egna ord, föreläsare i kursen DSLsofMath.} och ger ett nytt perspektiv på fysik och ger den \textit{struktur}. Dimensioner är ett exempel på detta, se avsnitt~\ref{sec:res_dim}. Där konstateras att en godtycklig dimension kan skrivas som de sju basdimensionerna med tillhörande exponenter, vilket kanske inte är så man brukar se på dimensioner, men som ger dem en väldefinierad struktur. Domänspecifika språk bidrar även med \textit{rigorösitet} till fysik. Enbart de definierade operationerna går att använda, vilket leder till att genvägar i fysikaliska beräkningar inte går att göra på det sätt som är möjligt vid räkning med papper och penna. Detta tyckte även Åke Fäldt var en bra aspekt, se avsnitt~\ref{sec:res_ake}. Med hjälp av domänspecifika språk är det dessutom möjlighet att väcka \textit{intresse} för fysik. En student som inte är intresserad av fysik kanske skulle bli det om fysik presenteras i samband med Haskell och domänspecifika språk, där paralleller mellan dem visas. Denna tanke stöds även av testgruppen\footnote{Eftersom utvärderingen med testgruppen var väldigt kort är det dock svårt att dra några säkra slutsatser.}, se avsnitt~\ref{sec:res_test}
 
 År 2016 genomfördes ett kandidatarbete på Chalmers liknande
 detta~\cite{kandidat2016}. Det kandidatarbetet resulterade också i ett
@@ -251,47 +242,80 @@ tydligt definierade delar kanske anses som uppenbar, men frågan om vilket
 verktyg som ska användas för detta är inte lika uppenbar. Vi hävdar att
 domänspecifika språk är ett sådant verktyg.
 
-En annan aspekt är att när de domänspecifika språken används till fysikalisk
-problemlösning måste det ske enligt de regler som ställdes upp när de
-domänspecifika språken definierades. Det går med andra ord inte att fuska och ta
-genvägar i beräkningarna. Detta tankesätt tycker Fäldt, se
-avsnitt~\ref{sec:res_ake}, är en mycket bra aspekt som förmedlas med att
-presentera fysik på detta sätt. Studenten skolas in i att tänka i rigorösa och
-kompletta banor.
+Det finns dock problem med att använda domänspecifika språk till att lära ut fysik. Ett problem är att den kreativa problemlösning som ingår är fysik är svår att fånga upp i domänspecifika språk\footnote{Enligt oss, och vi vet inte hur det skulle kunna göras.}. Ett annat problem är att det finns risk att fokus glider från fysik till domänspecifika språk. Ett läromaterialet om renodlad fysik med ett lättsamt språk och noggrann förklaring av koncepten hade säkert varit mycket uppskattat, det sätt som Khan Academy~\cite{khan} beskriver fysik är ett sådant exempel. En större målgrupp hade också kunnat nås då.
 
-Ett probem med användingen av våra domänspecifika språk är att problemlösining
-inte alltid är helt strukturerad och rigorös. Den kreativa problemlösning som en
-student kan utföra med papper och penna, utan att tänka på dimensioner och typer
-kan ej fångas upp med vår implementation, där misstag direkt straffas med
-kompileringsfel. Dock kan vår implementation vara behjälplig när en student väl
-ska testa sin lösning och vill ta reda på vilka misstag som gjorts.
+Avslutningsvis tror vi att domänspecifika språk med fördel kan integreras i traditionell fysikundervisning och på så sätt fånga upp de delar domänspecifika språk gör bra i fysik: strukturera, uppmuntra rigorös problemlösning och väcka intresse. Men samtidigt förlita sig på traditionella metoder till stor del i bland annat problemlösning och inte låta fokuset glida för långt från fysik till domänspecifika språk.
 
-Hittills har domänspecifika språk framförts som ett sätt att strukturera fysik.
-Men läromaterialet har även haft två andra drag förutom domänspecifika språk,
-nämligen ett lättillgängligt språk och en noggrann genomgång av koncept.
+%En del av projektets mål är att diskutera huruvida det finns en pedagogisk nytta
+%i att kombinera fysik och domänspecifika språk. Denna fråga diskuteras nedan.
 
-Genom att enbart ha fokus på fysik är det möjligt att fysiken i sig förklarats
-bättre än vad den gör nu. Ett läromaterial om renodlad fysik med ett lättsamt
-språk och noggrann förklaring av koncepten hade säkert varit uppskattat, det
-sätt som Khan Academy behandlar fysik är ett sådant exempel~\cite{khan} som är
-mycket uppskattat. En annan fördel hade varit att en större målgrupp kan nås.
-Men då förlorar vi de saker domänspecifika språk bidrar med, nämligen det som
-diskuterats ovan: att ge struktur och att lära ut ett rigoröst tankesätt.
-Även relevansen och den \textit{intresseväckande}
-potentialen kan förloras för datastudenter om programmeringsaspekterna
-försvinner från läromaterialet. Denna
-tanke stöds även av att testgruppen tyckte läromaterialet var ett intressant sätt
-att presentera fysik på och att vi var inne på rätt spår i vår utformning av
-läromaterialet\footnote{Eftersom utvärderingen med
-testgruppen var väldigt kort är det dock svårt att dra några säkra slutsatser.},
-se avsnitt~\ref{sec:res_test}
+%Domänspecifika språk kan betraktas som ``tools for thinking''\footnote{Uttryckt
+%i Patrik Janssons egna ord, föreläsare i kursen DSLsofMath.}. Med det
+%menas att domänspecifika språk kan användas till att strukturera ett område så
+%att det blir enklare att få en överblick och
+%förstå det. Dimensioner i läromaterialet är ett exempel på
+%detta, se även avsnitt~\ref{sec:grund_impl}. Där konstateras att en godtycklig
+%dimension kan skrivas som de sju grunddimensionerna med tillhörande exponenter.
+%Det strukturerade sättet som dimensionerna sen beskrivs på ger förhoppningsvis
+%ett enklare sätt att se på dem, vilket vi själva tycker är meningsfullt.
 
-På detta sätt tror vi att vårt läromaterial med fördel kan integreras i
-traditionell fysikundervisning och på så sätt fånga upp de delar domänspecifika
-språk gör bra i fysik: strukturera, uppmuntra rigorös problemlösning och väcka
-intresse. Men samtidigt förlita sig på traditionella metoder till stor del i
-bland annat problemlösning och inte låta fokuset glida för långt från fysik till
-domänspecifika språk.
+%År 2016 genomfördes ett kandidatarbete på Chalmers liknande
+%detta~\cite{kandidat2016}. Det kandidatarbetet resulterade också i ett
+%läromaterial, skillnaden är att det arbetet behandlade signallära. Grundidén är
+%dock densamma: att använda domänspecifika språk för att ge struktur till ett
+%annat område.
+
+%\textbf{TODO: Hur fick det för den gruppen?}
+
+%Detta tycker vi visar på att det finns ett
+%akademiskt intresse för att använda domänspecifika språk i syfte att lära ut,
+%och att idén som vi presenterar i denna rapport även går att applicera på
+%andra områden. Nyttan att strukturera upp områden i väl avgränsade och
+%tydligt definierade delar kanske anses som uppenbar, men frågan om vilket
+%verktyg som ska användas för detta är inte lika uppenbar. Vi hävdar att
+%domänspecifika språk är ett sådant verktyg.
+
+%En annan aspekt är att när de domänspecifika språken används till fysikalisk
+%problemlösning måste det ske enligt de regler som ställdes upp när de
+%domänspecifika språken definierades. Det går med andra ord inte att fuska och ta
+%genvägar i beräkningarna. Detta tankesätt tycker Fäldt, se
+%avsnitt~\ref{sec:res_ake}, är en mycket bra aspekt som förmedlas med att
+%presentera fysik på detta sätt. Studenten skolas in i att tänka i rigorösa och
+%kompletta banor.
+
+%Ett probem med användingen av våra domänspecifika språk är att problemlösining
+%inte alltid är helt strukturerad och rigorös. Den kreativa problemlösning som en
+%student kan utföra med papper och penna, utan att tänka på dimensioner och typer
+%kan ej fångas upp med vår implementation, där misstag direkt straffas med
+%kompileringsfel. Dock kan vår implementation vara behjälplig när en student väl
+%ska testa sin lösning och vill ta reda på vilka misstag som gjorts.
+
+%Hittills har domänspecifika språk framförts som ett sätt att strukturera fysik.
+%Men läromaterialet har även haft två andra drag förutom domänspecifika språk,
+%nämligen ett lättillgängligt språk och en noggrann genomgång av koncept.
+
+%Genom att enbart ha fokus på fysik är det möjligt att fysiken i sig förklarats
+%bättre än vad den gör nu. Ett läromaterial om renodlad fysik med ett lättsamt
+%språk och noggrann förklaring av koncepten hade säkert varit uppskattat, det
+%sätt som Khan Academy behandlar fysik är ett sådant exempel~\cite{khan} som är
+%mycket uppskattat. En annan fördel hade varit att en större målgrupp kan nås.
+%Men då förlorar vi de saker domänspecifika språk bidrar med, nämligen det som
+%diskuterats ovan: att ge struktur och att lära ut ett rigoröst tankesätt.
+%Även relevansen och den \textit{intresseväckande}
+%potentialen kan förloras för datastudenter om programmeringsaspekterna
+%försvinner från läromaterialet. Denna
+%tanke stöds även av att testgruppen tyckte läromaterialet var ett intressant sätt
+%att presentera fysik på och att vi var inne på rätt spår i vår utformning av
+%läromaterialet\footnote{Eftersom utvärderingen med
+%testgruppen var väldigt kort är det dock svårt att dra några säkra slutsatser.},
+%se avsnitt~\ref{sec:res_test}
+
+%På detta sätt tror vi att vårt läromaterial med fördel kan integreras i
+%traditionell fysikundervisning och på så sätt fånga upp de delar domänspecifika
+%språk gör bra i fysik: strukturera, uppmuntra rigorös problemlösning och väcka
+%intresse. Men samtidigt förlita sig på traditionella metoder till stor del i
+%bland annat problemlösning och inte låta fokuset glida för långt från fysik till
+%domänspecifika språk.
 
 \section{Vidareutvecklingsmöjligheter och behov av ytterligare kunskap}
 

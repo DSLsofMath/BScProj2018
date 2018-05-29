@@ -13,14 +13,14 @@ implementationerna av de domänspecifika språken. De fullständiga implementati
 är inte inkluderade (och förklarade) eftersom det är precis det läromaterialet
 innehåller. Rapporten skulle då bli en kopia av läromaterialet. Istället
 finns ett längre utdrag i bilaga~\ref{cha:utdrag} samt hemsidan där
-läromaterialet~\cite{LYAP} finns tillgängligt. De avsnitt i rapporten beskriver läromaterialets innehåll är inga
+läromaterialet~\cite{LYAP} finns tillgängligt. De avsnitt i rapporten som beskriver läromaterialets innehåll är inga
 exakta kopior ord-för-ord utan de har anpassats till
 rapporten.
 
 \subsection{Översikt}
 
 Läromaterialet är en löpande text där Haskell-kod och lärotext sammanvävts. Det
-ser ut som i figur~\ref{fig:smakprov_laromaterial}. I texten följer läsaren med
+ser ut som i figur~\ref{fig:smakprov_laromaterial}. Lärotexten förklarar både fysik, Haskell och hur de relaterar till varandra. I texten följer läsaren med
 i implementationen av ett domänspecifikt språk och det visas hur det används.
 Tanken är att läsaren parallellt programmerar det som texten förklarar, för att
 på så sätt även få praktisk färdighet i det som presenterats. För detta syfte
@@ -62,7 +62,7 @@ som är tänkt att vara rolig och muntra upp läsaren.\newline
         \label{fig:smakprov_bild_laromaterial}
 \end{figure}
 
-Läromaterialet innehåller 5 kapitel som vardera behandlar ett område inom fysik
+Läromaterialet innehåller fem kapitel som vardera behandlar ett område inom fysik
 och matematik. Fokuset är på klassisk mekanik samt den matematik som tillhör
 området. De behandlade områdena är:
 
@@ -175,10 +175,45 @@ $m^1*s^{-1}$ vilket förklarar varför värdena ovan ser ut som de gör.
 I resterande del av detta kapitel i läromaterialet visas hur multiplikation och
 division samt hur en \textit{utskriftsfunktion}, som skriver ut ett värde
 snyggt, kan implementeras. Därefter följer ett antal delkapitel som innehåller
-testning, typnivådimensioner och storheter. Som tidigare nämnt inkluderas de
-inte här eftersom då skulle rapporten och läromaterialet bli precis samma text.
+testning, typnivådimensioner och storheter.
 
 \subsection{Matematisk analys}
+
+I kapitlet om matematisk analys skapas en syntax för funktionsuttryck och symboliskt derivering och integrering implementeras. Dessutom analyseras syntax och semantik hos uttryck som dyker upp inom matematisk analys, till exempel $\Delta$-operatorn.
+
+Syntaxen för funktionsuttryck inleds med
+
+\begin{lstlisting}
+data FunExpr = Exp | Log | Sin | Cos | Asin | Acos
+\end{lstlisting}
+
+vilket är ett antal elementära funktioner. Näst följer aritmetiska operationer. För att kunna definera dem på \textit{funktioner} och inte algebraiska \textit{uttryck} görs nedanstående tolkning
+\begin{align*}
+  f \text{ $OP_{r \to r}$ } g = x \mapsto (f(x) \text{ $OP_r$ } g(x))
+\end{align*}
+vilket utökar \texttt{FunExpr} med fler konstruktorer.
+
+\begin{lstlisting}
+    | FunExpr :+ FunExpr
+    | FunExpr :- FunExpr
+    | FunExpr :* FunExpr
+    | FunExpr :/ FunExpr
+    | FunExpr :^ FunExpr
+\end{lstlisting}
+
+Även konstruktorer för den oberoende variablen, konstanter, funktionskomposition, $\Delta$, derivering och integrering behövs.
+
+\begin{lstlisting}
+    | Id
+    | Const RealNum
+    | FunExpr :. FunExpr
+    | Delta RealNum FunExpr
+    | D FunExpr
+    | I FunExpr
+\end{lstlisting}
+
+En utförligare förklaring av syntaxträdet finns i läromaterialet. 
+
 
 \subsection{Vektorer}
 
@@ -187,15 +222,13 @@ kurboken och implementerade vektorer i två dimensioner med en typ vars
 konstruktor tog två argument.
 
 \subsection{Exempelproblem}
-\begin{binge}
-Dessa problem är implementationer eller lösningar på fysikuppgifter som har förekommit på tentamen i fysikkursen. De använder de andra modulerna i läromaterialet för att göra beräkningarna (exempelvis dimensionsanalys eller vektoroperationer). Av exempelproblemen finns en gungbräda och en låda på ett lutande plan. Då källkoden för dessa problem endast är menade att lösa den specifika uppgiften, och inte alla varianter på gungbrädor eller lådor på lutande plan, så kan de inte kallas för domänspecifika språk, utan är istället implementationer som använder våra domänspecifika språk.
+
+Dessa problem är implementationer eller lösningar på fysikuppgifter som har förekommit på tentamen i Fysik för ingenjörer. De använder de andra modulerna i läromaterialet för att göra beräkningarna (exempelvis dimensionsanalys eller vektoroperationer). Av exempelproblemen finns en gungbräda och en låda på ett lutande plan. Då källkoden för dessa problem endast är menade att lösa den specifika uppgiften, och inte alla varianter på gungbrädor eller lådor på lutande plan, så kan de inte kallas för domänspecifika språk, utan är istället implementationer som använder tidigare domänspecifika språk.
 
 Exemplet med gungbrädan har två massor på gungbräda som befinner sig i jämvikt. Uppgiften är att finna en okänd sträcka mellan en av vikterna och balanspunkten. Exemplet använder dimensionsanalys för att representera hävarmseffekten av de olika massorna. Genom att ställa upp förhållanden och lösa ut den okända sträckan, så går det att beräkna den okända sträckan. Sist görs en säkerhetskontroll där den okända sträckan används för att räkna ut hävarmsmomenten, vilket är den sista kontrolleringen att man inte har gjort några logiska fel.
 
-
 Exemplet med en låda på ett lutande plan undersöker krafterna på en låda på ett lutande plan, såsom gravitationen, normalkraften från det lutande planet, och resultantkraften, vilka representeras genom vektorer från vektormodulen. Detta exemplet tar både hänsyn till statisk friktion (då lådan befinner sig stillastående) och kinetisk friktion (då lådan befinner sig i rörelse).
 
-\end{binge}
 \subsection{Partikelmekanik}
 
 Implementationen av komposita områden var en vidareutveckling av de redan
@@ -263,7 +296,7 @@ tankesätt och metodik som förmedlas hade varit till nytta för problemlösning
 fysikkursen.
 
 Förutom ovanstående framgick även vilka områden i Fysik för ingenjörer som var
-svåra för studenter. Detta finns redovisat i avsnitt~\ref{sec:kontakt_faldt}.
+svåra för studenter, vilket användes vid sökandet efter områden, se avsnitt \ref{sec:valet}.
 
 \section{Möte med programansvarig och datas nämnd för studier}
 

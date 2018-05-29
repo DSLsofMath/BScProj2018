@@ -179,6 +179,42 @@ testning, typnivådimensioner och storheter.
 
 \subsection{Matematisk analys}
 
+I kapitlet om matematisk analys skapas en syntax för funktionsuttryck och symboliskt derivering och integrering implementeras. Dessutom analyseras syntax och semantik hos uttryck som dyker upp inom matematisk analys, till exempel $\Delta$-operatorn.
+
+Syntaxen för funktionsuttryck inleds med
+
+\begin{lstlisting}
+data FunExpr = Exp | Log | Sin | Cos | Asin | Acos
+\end{lstlisting}
+
+vilket är ett antal elementära funktioner. Näst följer aritmetiska operationer. För att kunna definera dem på \textit{funktioner} och inte algebraiska \textit{uttryck} görs nedanstående tolkning
+\begin{align*}
+  f \text{ $OP_{r \to r}$ } g = x \mapsto (f(x) \text{ $OP_r$ } g(x))
+\end{align*}
+vilket utökar \texttt{FunExpr} med fler konstruktorer.
+
+\begin{lstlisting}
+    | FunExpr :+ FunExpr
+    | FunExpr :- FunExpr
+    | FunExpr :* FunExpr
+    | FunExpr :/ FunExpr
+    | FunExpr :^ FunExpr
+\end{lstlisting}
+
+Även konstruktorer för den oberoende variablen, konstanter, funktionskomposition, $\Delta$, derivering och integrering behövs.
+
+\begin{lstlisting}
+    | Id
+    | Const RealNum
+    | FunExpr :. FunExpr
+    | Delta RealNum FunExpr
+    | D FunExpr
+    | I FunExpr
+\end{lstlisting}
+
+En utförligare förklaring av syntaxträdet finns i läromaterialet. 
+
+
 \subsection{Vektorer}
 
 Vektorer implementerades på två olika sätt. Det första följde definitionen i

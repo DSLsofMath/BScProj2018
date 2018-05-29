@@ -53,6 +53,8 @@ mass :: Quantity Mass Double
 mass = ValQuantity V.mass 1.0
 time :: Quantity Time Double
 time = ValQuantity V.time 1.0
+one :: Quantity One Double
+one = ValQuantity V.one 1.0
 
 -- Med `##` kan en Quantity med vilken värdetyp som helst skapas
 -- med valfri dimension av ovanstående.

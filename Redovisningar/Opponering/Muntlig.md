@@ -5,7 +5,7 @@
 
 Tips till oss: prata långsamt så att det är tydligt...
 
-Oskar göra första halvan och Björn andra halvan.
+Oskar gör första halvan och Björn andra halvan.
 
 ## Inledning
 
@@ -48,7 +48,7 @@ opposed to other modeling techniques is the fact that it shows emergent behavior
     - Both 1D and 2D
     - Result is that the root mean square for all agents is root of time.
   - *Questions*
-    - We found it interssting that not 0 after a while. Why do you think that's the case?
+    - Do you think the behaviour would be different with more step angles, like diagonally?
     - What do you think about proving the property mathematically?
       - Advantages and disadvantages compared to a simulation?
 
@@ -82,6 +82,36 @@ opposed to other modeling techniques is the fact that it shows emergent behavior
       - What does it mean?
       - So that the model stops sometime?
     - Would it be possible to make it look like something else, e.g. a pine-tree or an oak? What rules do you think are needed, i.e., why did it become exactly a savannah tree?
+- **Football**
+  - *Background*
+    - Image!
+    - Soccer
+    - Agents are the players
+    - Rule for moving to the ball
+    - Rule for kicking the ball
+    - Result is that looks kindergarten football
+    - Fastest player outruns => all equal leads to fair game
+  - *Questions*
+    - Can you think of other rules to make the kindergarten more realistic, so that not the fastest gets the ball, even if one is the fastest?
+    - Would it be possible, would it be good, to implement rules such as (om de inte kommer på något)
+      - The one kicking must run slower
+      - Sometimes kicks out of the pitch
+      - Sometimes drops the ball
+      - Interaction (pulling)
+      - goalkeeper that kicks far and random
+    - What is the parameter "strength"?
+- **School of Fish**
+  - *Background*
+    - Image!
+    - Fish = agents swimming around
+    - 3 rules
+      - Separation: avoid collision
+      - Alignemnt: steer same dir
+      - Cohesion: steer towards average position
+  - *Questions*
+    - Clarify how the rule "steer towards same dir" works
+    - What do you think the difference would be if you implemented the last rule, "cohesion"?
+
 
 Två andra modeller: school of fish och Kolam.
 

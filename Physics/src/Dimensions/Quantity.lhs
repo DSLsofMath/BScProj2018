@@ -20,9 +20,10 @@ Quantities
 >     , meter, kilogram, second, ampere, kelvin, mole, candela, unitless
 >     , (~=)
 >     , isZero
->     , (#)
+>     , (#), (##)
 >     , (+#), (-#), (*#), (/#)
 >     , sinq, cosq, asinq, acosq, atanq, expq, logq
+>     , qfold
 >     ) where
 
 
@@ -340,26 +341,26 @@ The other functions can be written as similar power series and we'll see on thos
 
 We quickly realize a pattern, so let's generalize a bit.
 
-> qmap :: (a -> b) -> Quantity One a -> Quantity One b
-> qmap f (ValQuantity d1 v) = ValQuantity d1 (f v)
+> qmap :: (a -> b) -> Quantity dim a -> Quantity dim b
+> qmap f (ValQuantity d v) = ValQuantity d (f v)
 
-> qmap' :: (a -> b) -> Quantity dim a -> Quantity dim b
-> qmap' f (ValQuantity d v) = ValQuantity d (f v)
+> instance Functor (Quantity d) where
+>   fmap = qmap
 
 > qfold :: (a -> a -> b) -> Quantity dim a -> Quantity dim a -> Quantity dim b
 > qfold f (ValQuantity d v1) (ValQuantity _ v2) = ValQuantity d (f v1 v2)
 
 > sinq, cosq, asinq, acosq, atanq, expq, logq :: (Floating v) =>
 >   Quantity One v -> Quantity One v
-> sinq  = qmap sin
-> cosq  = qmap cos
-> asinq = qmap asin
-> acosq = qmap acos
-> atanq = qmap atan
-> expq  = qmap exp
-> logq  = qmap log
+> sinq  = fmap sin
+> cosq  = fmap cos
+> asinq = fmap asin
+> acosq = fmap acos
+> atanq = fmap atan
+> expq  = fmap exp
+> logq  = fmap log
 
-Why not make `Quantity` an instance of `Num`, `Fractional`, `Floating` och `Functor`? The reason is that the functions of those type classes have the following type
+Why not make `Quantity` an instance of `Num`, `Fractional` and `Floating`? The reason is that the functions of those type classes have the following type
 
 < (*) :: (Num a) => a -> a -> a
 
@@ -372,7 +373,7 @@ The input here may actually be of *different* types, and the output has a type d
 
 However, operations with only scalars (type `One`) has types compatible with `Num`.
 
-**Exercise** `Quantity One` has compatible types. Make it an instance of `Num`, `Fractional`, `Floating` and `Functor`.
+**Exercise** `Quantity One` has compatible types. Make it an instance of `Num`, `Fractional` and `Floating`.
 
 <details>
 <summary>**Solution**</summary>
@@ -382,8 +383,8 @@ However, operations with only scalars (type `One`) has types compatible with `Nu
 >   (+) = (+#)
 >   (-) = (-#)
 >   (*) = (*#)
->   abs = qmap abs
->   signum = qmap signum
+>   abs = fmap abs
+>   signum = fmap signum
 >   fromInteger n = ValQuantity V.one (fromInteger n)
 
 > instance (Fractional v) => Fractional (Quantity One v) where
@@ -399,14 +400,11 @@ However, operations with only scalars (type `One`) has types compatible with `Nu
 >   asin  = asinq
 >   acos  = acosq
 >   atan  = atanq
->   sinh  = qmap sinh
->   cosh  = qmap cosh
->   asinh = qmap asinh
->   acosh = qmap acosh
->   atanh = qmap atanh
-
-> instance Functor (Quantity One) where
->   fmap = qmap
+>   sinh  = fmap sinh
+>   cosh  = fmap cosh
+>   asinh = fmap asinh
+>   acosh = fmap acosh
+>   atanh = fmap atanh
 
  </div>
  </details>
@@ -463,8 +461,17 @@ To solve these two problems we'll introduce some syntactic sugar. First some pre
 
 And now the sugar.
 
+> infixl 3 #
 > (#) :: (Num v) => v -> Quantity d v -> Quantity d v
 > v # (ValQuantity d bv) = ValQuantity d (v*bv)
+
+\ignore{
+
+> infixl 3 ##
+> (##) :: v -> Quantity d v -> Quantity d v
+> v ## (ValQuantity d _) = ValQuantity d v
+
+}
 
 The intended usage of the function is the following
 

@@ -179,6 +179,8 @@ testning, typnivådimensioner och storheter.
 
 \subsection{Matematisk analys}
 
+\begin{binge}
+
 I kapitlet om matematisk analys skapas en syntax för funktionsuttryck och symboliskt derivering och integrering implementeras. Dessutom analyseras syntax och semantik hos uttryck som dyker upp inom matematisk analys, till exempel $\Delta$-operatorn.
 
 Syntaxen för funktionsuttryck inleds med
@@ -212,8 +214,17 @@ vilket utökar \texttt{FunExpr} med fler konstruktorer.
     | I FunExpr
 \end{lstlisting}
 
-En utförligare förklaring av syntaxträdet finns i läromaterialet. 
+En utförligare förklaring av syntaxen \texttt{FunExpr} finns i läromaterialet.
 
+I läromaterialet analyseras derivering utförligt med gränsvärden, kvoter och approximativa metoder. Dessutom motiveras och implementeras symbolisk derivering. Den görs med en funktion \texttt{derive} som har ett fall för vardera av konstruktorerna i \texttt{FunExpr}. Några av fallen är
+
+\begin{lstlisting}
+  derive (f :* g) = derive f :* g :+ f :* derive g
+  derive (f :+ g) = derive f :+ derive g
+  derive Exp = Exp
+\end{lstlisting}
+
+\end{binge}
 
 \subsection{Vektorer}
 

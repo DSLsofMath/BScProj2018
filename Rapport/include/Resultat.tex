@@ -179,8 +179,6 @@ testning, typnivådimensioner och storheter.
 
 \subsection{Matematisk analys}
 
-\begin{binge}
-
 I kapitlet om matematisk analys skapas en syntax för funktionsuttryck och symboliskt derivering och integrering implementeras. Dessutom analyseras syntax och semantik hos uttryck som dyker upp inom matematisk analys, till exempel $\Delta$-operatorn.
 
 Syntaxen för funktionsuttryck inleds med
@@ -224,13 +222,58 @@ I läromaterialet analyseras derivering utförligt med gränsvärden, kvoter och
   derive Exp = Exp
 \end{lstlisting}
 
-\end{binge}
-
 \subsection{Vektorer}
 
-Vektorer implementerades på två olika sätt. Det första följde definitionen i
-kurboken och implementerade vektorer i två dimensioner med en typ vars
-konstruktor tog två argument.
+Kapitlet om vektorer inleds med en genomgång av vektorer och operationer på dem parallellt med att en första implementation till dem skrivs. Implementation ser ut som följer
+
+\begin{lstlisting}
+  data Vector2 n = V2 n n
+  type Scalar = Double
+  type VectorTwo = Vector2 Scalar
+  
+  magnitude :: VectorTwo -> Scalar
+  magnitude (V2 x y) = sqrt (x^2 + y^2)
+  
+  add :: VectorTwo -> VectorTwo -> VectorTwo
+  add (V2 x1 y1) (V2 x2 y2) = V2 (x1 + x2) (y1 + y2)
+
+  dotProd :: VectorTwo -> VectorTwo -> Scalar
+  dotProd (V2 ax ay) (V2 bx by) = ax * bx + ay * by
+\end{lstlisting}
+
+Eftersom vektorer i tre dimensioner ser snarlik ut leder det till väldigt mycket duplicerad kod. En andra implementation görs därför som är mer generell. Grunden är den nedanstående typklassen
+
+\begin{lstlisting}
+class Vector vector where
+  vmap     :: (n -> n) -> vector n -> vector n
+  vzipWith :: (n -> n -> n) -> vector n -> vector n 
+                                        -> vector n
+  vfold    :: (n -> n -> n) -> vector n -> n
+\end{lstlisting}
+
+som innehåller de tre funktioner som behövs för att genomföra vektoroperationerna \texttt{magnitude}, \texttt{add} och \texttt{dotProd}. De kan nämligen skrivas om enbart med hjälp av de funktioner som finns i typklassen \texttt{Vector} på följande sätt
+
+\begin{lstlisting}
+  magnitude :: (Floating n, Vector vec) => vec n -> n
+  magnitude = sqrt . vfold (+) . vmap (**2)
+
+  add :: (Num n, Vector vec) => vec n -> vec n -> vec n
+  add = vzipWith (+)
+
+  dotProd :: (Num n, Vector vec) => vec n -> vec n -> n
+  dotProd v1 v2 = vfold (+) $ vzipWith (*) v1 v2
+\end{lstlisting}
+
+Allt som behöver göras för vardera datatyp för vektorer av olika längd är därmed att göra den en \texttt{Vector}-instans. Så här ser det ut för \texttt{Vector2}
+
+\begin{lstlisting}
+instance Vector Vector2 where
+  vmap     f (V2 x y)            = V2 (f x)    (f y)
+  vzipWith f (V2 x y) (V2 x' y') = V2 (f x x') (f y y')
+  vfold    f (V2 x y)            = f x y
+\end{lstlisting}
+
+Resterande del av vektor-kapitlet behandlar kryssprodukt, vektorlagar och tester av dem.
 
 \subsection{Exempelproblem}
 
@@ -242,35 +285,51 @@ Exemplet med en låda på ett lutande plan undersöker krafterna på en låda p�
 
 \subsection{Partikelmekanik}
 
-Implementationen av komposita områden var en vidareutveckling av de redan
-implementerade grundläggande områdena. Detta utfördes genom att kombinera
-element från två eller fler områden för att på så sätt tillsammans skapa ett
-nytt område. Denna kombination växte fram organiskt genom att studera de områden
-som skulle implementeras och se vilka av de grundläggande områdena som
-låg till grund för det. Efter en sådan genomgång växte den faktiska
-implementationen fram genom experimentering och diskussion inom gruppen.
+Implementationen av partikelmekanik är en kombination av de domänspecifika språken för vektorer och matematisk analys. Anledningen till detta är att partiklars position, hastighet och acceleration modelleras med vektorer, dessutom är de krafter som påverkar partiklar även de modellerade som vektorer. Sedan används matematisk analys för att göra beräkningar på dem. Därför är det naturligt att modellera partikelmekanik med hjälp av vektorer vars komponenter är uttryck som implementeras av matematisk analys.
 
-Ett exempel på ett komposit område är implementationen av partikelmekanik
-där de grundläggande områdena vektorer och matematisk analys
-kombinerades. Anledningen till detta var att partiklars position, hastighet och
-acceleration modelleras med vektorer, dessutom är de krafter som påverkar
-partiklar även de modellerade som vektorer. Sedan används matematisk analys för
-att göra beräkningar på dem. Därför var det naturligt att modellera
-partikelmekanik med hjälp av vektorer vars komponenter var uttryck som
-implementerades av matematisk analys.
+Datatypen för en partikel är
 
-Exempel från läromaterialet:
-\begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
+\begin{lstlisting}
 type Mass    = FunExpr
-type VectorE = Vector3 FunExpr -- Vector of functional
-                               -- expressions
+type VectorE = Vector3 FunExpr
 
 data Particle  = P { pos  :: VectorE -- Position as a
-                                     -- function of time
-                                     -- , unit m
-                   , mass :: Mass    -- Mass, unit kg
+                                     -- function of time.
+                                     -- Unit m
+                   , mass :: Mass    -- Mass. Unit kg
                    }
 \end{lstlisting}
+
+Ett exempelvärde är
+
+\begin{lstlisting}
+particle :: Particle
+particle = P (V3 (3 * Id * Id) (2 * Id) 1) 3
+\end{lstlisting}
+
+Eftersom komponenterna i vektorerna är funktionsuttryck är det enkelt att beräkna en partikels hastighet och acceleration.
+
+\begin{lstlisting}
+velocity :: Particle -> VectorE
+velocity = vmap D . pos
+
+acceleration :: Particle -> VectorE
+acceleration = vmap D . velocity
+\end{lstlisting}
+
+Det går även att beräkna nettokraften på en partikel med hjälp av Newtons andra lag.
+
+\begin{lstlisting}
+type Force = VectorE
+
+force :: Particle -> Force
+force p = vmap (* m) a
+  where
+    m = mass p
+    a = acceleration p
+\end{lstlisting}
+
+I läromaterialet behandlas även rörelseenergi, lägesenergi, arbete och gravitation.
 
 \section{Utvärderingen med testgruppen}\label{sec:res_test}
 

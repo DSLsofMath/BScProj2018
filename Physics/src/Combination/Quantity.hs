@@ -8,7 +8,7 @@
 
 {-# LANGUAGE MultiParamTypeClasses #-}
 
-module Dimensions.QuantityExtended where
+module Combination.Quantity where
 
 import qualified Dimensions.ValueLevel as V
 import           Dimensions.TypeLevel  as T
@@ -53,6 +53,8 @@ mass :: Quantity Mass Double
 mass = ValQuantity V.mass 1.0
 time :: Quantity Time Double
 time = ValQuantity V.time 1.0
+one :: Quantity One Double
+one = ValQuantity V.one 1.0
 
 -- Med `##` kan en Quantity med vilken värdetyp som helst skapas
 -- med valfri dimension av ovanstående.
@@ -120,7 +122,7 @@ class Divisionable a b c where
 (ValQuantity d1 a) /# (ValQuantity d2 b) = ValQuantity (d1 `V.div` d2) $ doDiv a b
 
 --instance (Fractional v) => Divisionable v v v where
---  doMul = (*)
+--  doDiv = (/)
 
 ----------------------------------------
 -- Derivering och integrering
@@ -129,12 +131,36 @@ class Divisionable a b c where
 -- Är själva grejen som finns i en Quantity deriverbar och
 -- integrerbar ska Quantityn med den i också vara det.
 
-class Differentiable a b where
-  doDif :: a -> b
+class Calculable v where
+  doDif :: v -> v
+  doInteg :: v -> v
 
-diff :: (Differentiable a b) => Quantity d a -> Quantity (d `Div` time) b
-diff = fmap doDif
+diff :: (Calculable v) => Quantity d v -> Quantity (d `Div` Time) v
+diff (ValQuantity d v) = ValQuantity (d `V.div` V.time) $ doDif v
 
+-- Inte det snyggaste...
+
+integ :: (Calculable v) => Quantity d v -> Quantity (d `Mul` Time) v
+integ (ValQuantity d v) = ValQuantity (d `V.mul` V.time) $ doInteg v
+
+----------------------------------------
+-- Hack
+----------------------------------------
+
+-- Eftersom det blir problem med Num som instans av många
+-- görs här manuellt för vissa datatyper
+
+instance Addable Double Double Double where
+  doAdd = (+)
+
+instance Subable Double Double Double where
+  doSub = (-)
+
+instance Multiplicable Double Double Double where
+  doMul = (*)
+
+instance Divisionable Double Double Double where
+  doDiv = (/)
 
 
 

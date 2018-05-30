@@ -285,35 +285,51 @@ Exemplet med en låda på ett lutande plan undersöker krafterna på en låda p�
 
 \subsection{Partikelmekanik}
 
-Implementationen av komposita områden var en vidareutveckling av de redan
-implementerade grundläggande områdena. Detta utfördes genom att kombinera
-element från två eller fler områden för att på så sätt tillsammans skapa ett
-nytt område. Denna kombination växte fram organiskt genom att studera de områden
-som skulle implementeras och se vilka av de grundläggande områdena som
-låg till grund för det. Efter en sådan genomgång växte den faktiska
-implementationen fram genom experimentering och diskussion inom gruppen.
+Implementationen av partikelmekanik är en kombination av de domänspecifika språken för vektorer och matematisk analys. Anledningen till detta är att partiklars position, hastighet och acceleration modelleras med vektorer, dessutom är de krafter som påverkar partiklar även de modellerade som vektorer. Sedan används matematisk analys för att göra beräkningar på dem. Därför är det naturligt att modellera partikelmekanik med hjälp av vektorer vars komponenter är uttryck som implementeras av matematisk analys.
 
-Ett exempel på ett komposit område är implementationen av partikelmekanik
-där de grundläggande områdena vektorer och matematisk analys
-kombinerades. Anledningen till detta var att partiklars position, hastighet och
-acceleration modelleras med vektorer, dessutom är de krafter som påverkar
-partiklar även de modellerade som vektorer. Sedan används matematisk analys för
-att göra beräkningar på dem. Därför var det naturligt att modellera
-partikelmekanik med hjälp av vektorer vars komponenter var uttryck som
-implementerades av matematisk analys.
+Datatypen för en partikel är
 
-Exempel från läromaterialet:
-\begin{lstlisting}[frame=none, belowskip=-0.5\baselineskip, xleftmargin=0.5in]
+\begin{lstlisting}
 type Mass    = FunExpr
-type VectorE = Vector3 FunExpr -- Vector of functional
-                               -- expressions
+type VectorE = Vector3 FunExpr
 
 data Particle  = P { pos  :: VectorE -- Position as a
-                                     -- function of time
-                                     -- , unit m
-                   , mass :: Mass    -- Mass, unit kg
+                                     -- function of time.
+                                     -- Unit m
+                   , mass :: Mass    -- Mass. Unit kg
                    }
 \end{lstlisting}
+
+Ett exempelvärde är
+
+\begin{lstlisting}
+particle :: Particle
+particle = P (V3 (3 * Id * Id) (2 * Id) 1) 3
+\end{lstlisting}
+
+Eftersom komponenterna i vektorerna är funktionsuttryck är det enkelt att beräkna en partikels hastighet och acceleration.
+
+\begin{lstlisting}
+velocity :: Particle -> VectorE
+velocity = vmap D . pos
+
+acceleration :: Particle -> VectorE
+acceleration = vmap D . velocity
+\end{lstlisting}
+
+Det går även att beräkna nettokraften på en partikel med hjälp av Newtons andra lag.
+
+\begin{lstlisting}
+type Force = VectorE
+
+force :: Particle -> Force
+force p = vmap (* m) a
+  where
+    m = mass p
+    a = acceleration p
+\end{lstlisting}
+
+I läromaterialet behandlas även rörelseenergi, lägesenergi, arbete och gravitation.
 
 \section{Utvärderingen med testgruppen}\label{sec:res_test}
 

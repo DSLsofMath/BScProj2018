@@ -19,16 +19,16 @@ rörelseenergi, $E_k = \frac{mv^2}{2}$, kan skrivas som \texttt{ek m v = m * v *
 v / 2} i Haskell. Detta experimenterande ledde till att
 vi såg en slags strategi för hur de kan kombineras, vilket blev den
 metodik som beskrivs i avsnitt~\ref{sec:konstruktion}. Det vi vill poängtera är
-med andra ord att det har varit svårt och oklart hur projektet skulle föras
+med andra ord att det har varit oklart hur projektet skulle kunna föras
 framåt eftersom det inte funnits någon tydlig väg att följa.
 
 \section{Genomförandediskussion}
 
-Under projektets genomförande har det gjorts flera val av teorier och metoder att använda. Självklart behöver inte dessa val vi gjorde vara de bästa. Därför kommer vi här att kritisera dem och föreslå andra möjligheter. Närmare bestämt kommer utvärderingen, urvalet och Literate Haskell att diskuteras.
+Under projektets genomförande har det gjorts flera val av teorier och metoder att använda. Självklart behöver inte dessa val vi gjorde vara de bästa. Därför kommer vi här att kritisera dem och föreslå andra möjligheter. Närmare bestämt kommer mötet med testgruppen, urvalet och Literate Haskell att diskuteras.
 
-Utvärderingen som gjordes under projektet kan kritiseras på flera sätt. För det första bestod testgruppen av enbart tre personer. För det andra hölls utvärderingen under en ytterst kort tid, ungefär en timme. Utvärderingen hade behövt vara längre för att låta testgruppen i lugn och ro arbeta igenom ett par kapitel, inklusive att följa med i programmeringen som gjordes i läromaterialet. För det tredje var vi inte tydliga med målet med utvärderingen, nämligen om de tyckte det var meningsfullt att lära ut fysik med hjälp av domänspecifika språk. Det gjorde att de heller inte kunda tänka på dessa frågor. Med tanke på dessa tre brister i utvärderingen är alla slutsatser dragna med utvärderingen som stöd ytterst osäkra.
+Det sätt återkopplingen gjordes under projektet kan kritiseras på flera sätt. För det första bestod testgruppen av enbart tre personer. För det andra hölls mötet under en ytterst kort tid, ungefär en timme. Mötet hade behövt vara längre för att låta testgruppen i lugn och ro arbeta igenom ett par kapitel, inklusive att följa med i programmeringen som gjordes i läromaterialet. För det tredje var vi inte tydliga med målet med återkopplingen, nämligen om de tyckte det var meningsfullt att lära ut fysik med hjälp av domänspecifika språk. Det gjorde att de heller inte kunda tänka på dessa frågor. Med tanke på dessa tre brister i återkopplingens genomförande är alla slutsatser dragna med den som stöd ytterst osäkra.
 
-Det går även att kritisera hur urvalet av områden gick till under projektet. Dels kan det ha lett till att enbart två domänspecifika språk för fysik implementerades (dimensioner och partikelmekanik). Dels skedde urvalet ur implementatörens perspektiv (det vill säga, vårt) och inte ur användarens perspektiv (studenten som ska nyttja läromaterialet). Med det menar vi att områden valdes utifrån hur det implementationsmässigt hängde ihop, till exempel att matematisk analys är grunden till flera tillämpningar. Istället hade områden kunnat väljas utifrån de fysikaliska problem studenter ska lösa i Fysik för ingenjörer, till exempel block och talja eller momentjämvikt, och utifrån det utforma domänspecifika språk.
+Det går även att kritisera hur urvalet av områden gick till under projektet. Dels kan det ha lett till att enbart två domänspecifika språk för fysik implementerades (dimensioner och partikelmekanik). Dels skedde urvalet ur implementatörens perspektiv (det vill säga  vårt) och inte ur användarens perspektiv (studenten som ska nyttja läromaterialet). Med det menar vi att områden valdes utifrån hur det implementationsmässigt hängde ihop, till exempel att matematisk analys är grunden till flera tillämpningar. Istället hade områden kunnat väljas utifrån de fysikaliska problem studenter ska lösa i Fysik för ingenjörer, till exempel block och talja eller momentjämvikt, och utifrån det utforma domänspecifika språk.
 
 % De olika sätten att tänka vid val av
 % områden skiljer sig åt och mest fokus under projektet har lagts på
@@ -169,12 +169,12 @@ och vektoraddition som
 \end{align*}
 I Haskell kan en datatyp för vektorer defineras som
 \begin{lstlisting}
-    data V = V Double Double
+data V = V Double Double
 \end{lstlisting}
 och vektoraddition som
 \begin{lstlisting}
-    va :: V -> V -> V
-    (V u1 u2) `va` (V w1 w2) = V (u1+w1) (u2+w2)
+va :: V -> V -> V
+(V u1 u2) `va` (V w1 w2) = V (u1+w1) (u2+w2)
 \end{lstlisting}
 Det finns enligt oss en tydlig likhet mellan matematik och Haskell i detta fall, och även i för andra lämpliga områden, vilket gör att vi tycker det blir enkelt att modellera och förstå områden som vektorer.
 
@@ -184,7 +184,7 @@ Egenskaper och samband är enligt oss svårare att modellera meningsfullt. Visse
 
 En del av projektets mål är att diskutera huruvida det finns en pedagogisk nytta i att kombinera fysik och domänspecifika språk. Denna fråga diskuteras nedan.
 
-I samband med fysik finns några fördelar med att integrera domänspecifika språk. Domänspecifika språk kan betraktas som ``tools for thinking''\footnote{Uttryckt i Patrik Janssons egna ord, föreläsare i kursen DSLsofMath.} och ger ett nytt perspektiv på fysik och ger den \textit{struktur}. Dimensioner är ett exempel på detta, se avsnitt~\ref{sec:res_dim}. Där konstateras att en godtycklig dimension kan skrivas som de sju basdimensionerna med tillhörande exponenter, vilket kanske inte är så man brukar se på dimensioner, men som ger dem en väldefinierad struktur. Domänspecifika språk bidrar även med \textit{rigorösitet} till fysik. Enbart de definierade operationerna går att använda, vilket leder till att genvägar i fysikaliska beräkningar inte går att göra på det sätt som är möjligt vid räkning med papper och penna. Detta tyckte även Åke Fäldt var en bra aspekt, se avsnitt~\ref{sec:res_ake}. Med hjälp av domänspecifika språk är det dessutom möjlighet att väcka \textit{intresse} för fysik. En student som inte är intresserad av fysik kanske skulle bli det om fysik presenteras i samband med Haskell och domänspecifika språk, där paralleller mellan dem visas. Denna tanke stöds även av testgruppen\footnote{Eftersom utvärderingen med testgruppen var väldigt kort är det dock svårt att dra några säkra slutsatser.}, se avsnitt~\ref{sec:res_test}
+I samband med fysik finns några fördelar med att integrera domänspecifika språk. Domänspecifika språk kan betraktas som ``tools for thinking''\footnote{Uttryckt i Patrik Janssons egna ord, föreläsare i kursen DSLsofMath.} och ger ett nytt perspektiv på fysik och ger den \textit{struktur}. Dimensioner är ett exempel på detta, se avsnitt~\ref{sec:res_dim}. Där konstateras att en godtycklig dimension kan skrivas som de sju basdimensionerna med tillhörande exponenter, vilket kanske inte är så man brukar se på dimensioner, men som ger dem en väldefinierad struktur. Domänspecifika språk bidrar även med \textit{rigorösitet} till fysik. Enbart de definierade operationerna går att använda, vilket leder till att genvägar i fysikaliska beräkningar inte går att göra på det sätt som är möjligt vid räkning med papper och penna. Detta tyckte även Åke Fäldt var en bra aspekt, se avsnitt~\ref{sec:res_test}. Med hjälp av domänspecifika språk är det dessutom möjlighet att väcka \textit{intresse} för fysik. En student som inte är intresserad av fysik kanske skulle bli det om fysik presenteras i samband med Haskell och domänspecifika språk, där paralleller mellan dem visas. Denna tanke stöds även av testgruppen\footnote{Eftersom utvärderingen med testgruppen var väldigt kort är det dock svårt att dra några säkra slutsatser.}, se avsnitt~\ref{sec:res_test}
 
 År 2016 genomfördes ett kandidatarbete på Chalmers liknande
 detta~\cite{kandidat2016}. Det kandidatarbetet resulterade också i ett

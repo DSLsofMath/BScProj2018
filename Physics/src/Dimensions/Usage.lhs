@@ -9,9 +9,8 @@ Usage
 }
 
 > module Dimensions.Usage
-> (
-> )
-> where
+>     (
+>     ) where
 
 In this module we'll show how to use value-level dimensions, type-level dimensions and `Quantity` in an "actual" progam. Let's first use this fancy GHC-extension
 

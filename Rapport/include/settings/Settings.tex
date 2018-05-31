@@ -61,10 +61,10 @@
 \lstset{breaklines=true}
 \lstset{basicstyle=\ttfamily}
 \lstset{commentstyle=\ttfamily}
-\lstset{escapeinside=`'}
 \lstset{deletekeywords={length}}
 \lstset{frame=none}
 \lstset{belowskip=-0.5\baselineskip}
+\lstset{xleftmargin=.25in}
 \usepackage{chemfig}								% Chemical structures
 \usepackage[margin=1in]{geometry}			% Page margin lengths
 \usepackage{eso-pic}								% Create cover page background
@@ -138,3 +138,6 @@
 
 % Supress warning from Texmaker about headheight
 \setlength{\headheight}{15pt}
+
+%% Completely prevent breaking of footnotes
+\interfootnotelinepenalty=10000 

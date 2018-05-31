@@ -2,7 +2,7 @@
 \chapter{Teori}
 
 I detta kapitel beskrivs fyra koncept av central betydelse för projektet. Dessa
-koncept är domänspecifika språk, begreppen syntax, syntaxträd och semantik,
+koncept är domänspecifika språk, begreppen syntax och semantik,
 litterat programmering samt lärandeteorier.
 
 \section{Domänspecifika språk}
@@ -49,87 +49,46 @@ upp datatyperna i det domänspecifika språket enkelt kan brytas isär och manip
 
 För vidare läsning om domänspecifika språk rekommenderas \textit{DSL for the Uninitiated}~\cite{DSLU}.
 
-\section{Syntax, syntaxträd och semantik}\label{sec:syntax}
+\section{Syntax och semantik}\label{sec:syntax}
 
-I samband med domänspecifika språk dyker begreppen \textit{syntax} och
-\textit{semantik} upp. Syntax är reglerna för hur enheter i språket, till exempel ord och skiljetecken, sammanslås till komplexa strukturer som meningar och
-satser. Semantiken är betydelsen av sådana komplexa strukturer i ett språk.
-Inom aritmetik\footnote{Aritmetik är
-  den gren inom matematiken som behandlar räkning av tal.} är tal och
-operationer syntax medan värdet av uttrycket är semantiken.  Till
-exempel har det syntaktiska uttrycket $((3 + 2) * 10)^4$ det semantiska värdet $6.250.000$,
-eftersom det är det som det syntaktiska uttrycket \textit{betyder}.
-Domänspecifika språk har med syntax att göra eftersom många
-domänspecifika språk används för att modellera just syntax.
+I samband med domänspecifika språk dyker begreppen \textit{syntax} och \textit{semantik} upp. Syntax är reglerna för hur enheter i språket, till exempel ord och skiljetecken, sammanslås till komplexa strukturer som meningar och satser. Semantiken är betydelsen av sådana komplexa strukturer i ett språk. Inom aritmetik\footnote{Aritmetik är den gren inom matematiken som behandlar räkning av tal.} är tal och operationer syntax medan värdet av uttrycket är semantiken. Till exempel har det syntaktiska uttrycket $7 * (3 + 10)$ det semantiska värdet $91$, eftersom det är det som det syntaktiska uttrycket \textit{betyder}. Domänspecifika språk har med syntax att göra eftersom många domänspecifika språk används för att modellera just syntax.
 
-I domänspecifika språk som modellerar syntax, så kallade \textit{deep
-embeddings}, kan syntaxen representeras av trädstrukturer. Dessa
-strukturer kallas \textit{syntaxträd}, och har haft stor betydelse i detta projekt.
-För att illustrera begreppet visas här ett domänspecifikt språk som består av en
-datatyp vars element är
-syntaxträd som modellerar aritmetiska uttryck, implementerat i Haskell.
-Datatypen för syntaxträden visas nedan.
-
+För att illustrera visas här ett domänspecifikt språk i Haskell som modellerar en del av syntaxen för aritmetiska uttryck.
 \begin{lstlisting}
 data Expr = Expr :+: Expr
-        | Expr :*: Expr
-        | Const Double
+          | Expr :*: Expr
+          | Const Double
 \end{lstlisting}
+Typen innehåller \textit{datakonstruktorer} för att representera \textit{ändpunkter} och \textit{förgreningar}. I detta exempel är \texttt{:+:} och \texttt{:*:} förgreningar. Med hjälp av dem kan summan respektive produkten av två andra uttryck representeras. Ändpunkterna representeras av \texttt{Const}.
 
-Typen innehåller \textit{datakonstruktorer} för att representera
-\textit{löv} (ändpunkter) och \textit{förgreningar}. I detta exempel är
-\texttt{:+:} och \texttt{:*:} förgreningar. Med hjälp av dem kan summan respektive produkten av två andra uttryck uttryckas. Löven
-% Löfven
-representeras av
-\texttt{Const}, vilket är en konstant som ej kan byggas vidare på\todo{Const 10 :*: Const 2??}.
-
-Med datakonstruktorerna kan uttryck representerade av syntaxträd konstrueras. Ett exempeluttryck
-från den tidigare datatypen är
+Med hjälp av datakonstruktorerna ovan kan aritmetiska uttryck konstrueras. Till exempel kan $7 * (3 + 10)$ modelleras som
 \begin{lstlisting}
 expr = Const 7 :*: (Const 3 :+: Const 10)
 \end{lstlisting}
-där det aritmetiska uttrycket $7 * (3
-+ 10)$ modelleras. Konstruktorn \texttt{:*:} får som sina två argument uttrycken
-\texttt{Const 7} och \texttt{Const 3 :+: Const 10}. Det är alltså en produkt av
-två deluttryck. Syntaxträd brukar illusteras med träddiagram. Detta
-exempeluttryck illustreras i figur \ref{fig:syntax_exempel_bild}.
+Konstruktorn \texttt{:*:} får som sina två argument uttrycken
+\texttt{Const 7} och \texttt{Const 3 :+: Const 10}. Det är alltså en produkt av två deluttryck. 
+
+Ett syntaktiskt uttryck kan visualiseras med ett träddiagram, ibland kallat \textit{syntaxträd}. Exempeluttrycket ovan illustreras i figur \ref{fig:syntax_exempel_bild}.
 
 \begin{figure}[tph]
   \centering
   \includegraphics[width=0.4\linewidth]{figure/syntax_exempel_bild.png}
-  \caption{Ett exempeluttryck från syntaxträdet illustrerat i ett
-           träddiagram.}\label{fig:syntax_exempel_bild}
+  \caption{Ett exempeluttryck från synatxen \texttt{Expr} visualiserat i ett träddiagram.}\label{fig:syntax_exempel_bild}
 \end{figure}
 
-Precis som semantik har en roll i samband med syntax, har semantik även en roll
-i samband med syntaxträd. I detta exempel är semantiken det värde som
-syntaxträdet har. Detta värde kan beräknas utifrån syntaxträdet genom
-en \textit{evaluator}, också kallad \textit{beräkningsfunktion}. För \texttt{Expr}
-kan beräkningsfunktionen se ut som
+För att beräkna semantiken hos ett syntaktiskt uttryck representerat i Haskell används en \textit{beräkningsfunktion}. I fallet med aritmetiska uttryck är semantiken ett numeriskt värde. För \texttt{Expr} kan beräkningsfunktionen se ut som
 \begin{lstlisting}
 evaluate :: Expr -> Double
 evaluate (e1 :+: e2) = evaluate e1 + evaluate e2
 evaluate (e1 :*: e2) = evaluate e1 * evaluate e2
 evaluate (Const v)   = v
 \end{lstlisting}
-Det finns tre speciella saker att observera. Den första är att eftersom syntaxen innehåller tre olika
-slag av element, här motsvarat av de tre datakonstruktorerna, krävs tre fall i
-funktionen \texttt{evaluate} som beräknar vardera av dem. Den har
-därför ett fall för \texttt{:+:}, ett för \texttt{:*:} och ett för
+Det finns tre speciella saker att observera. Den första är att eftersom syntaxen innehåller tre olika sorters element, här motsvarat av de tre datakonstruktorerna, används tre fall i funktionen \texttt{evaluate} som beräknar vardera av dem. Den har därför ett fall för \texttt{:+:}, ett för \texttt{:*:} och ett för
 \texttt{Const}.
 
-Den andra saken att notera är hur ett fall
-beräknas. Hur beräkningen ska se ut fås genom att ta hänsyn till
-semantiken hos det syntaktiska uttrycket. Här är \texttt{e1 :+: e2} syntax för
-addition av de två uttrycken \texttt{e1} och \texttt{e2}. Därför blir
-semantiken, värdet, av \texttt{e1 :+: e2} lika med värdet hos \texttt{e1} och
-\texttt{e2} adderade. Ett liknande resonemang ger svaret på hur beräkningen av
-de två resterande fallen ska se ut.
+Den andra saken att notera är hur ett fall implementeras. Här är \texttt{e1 :+: e2} syntax för addition av de två uttrycken \texttt{e1} och \texttt{e2}. Semantiken av detta är inom aritmetik definerad som summan av värdena hos de två deluttrycken. Implementationen av detta fall ska därför vara \texttt{evaluate e1 + evaluate e2}. Ett liknande resonemang ger svaret på hur beräkningen av de två resterande fallen ska se ut.
 
-Den tredje saken värd att poängtera är beräkningsfunktionens
-typsignatur, \texttt{Expr -> Double}. Den gör nämligen att
-\texttt{evaluate}, och beräkningsfunktioner i allmänhet, kan tolkas som en översättning
-från syntax (här \texttt{Expr}) till semantik (här \texttt{Double}).
+Den tredje saken värd att poängtera är beräkningsfunktionens typsignatur, \texttt{Expr -> Double}. Den gör nämligen att \texttt{evaluate}, och beräkningsfunktioner i allmänhet, kan tolkas som en översättning från syntax (här \texttt{Expr}) till semantik (här \texttt{Double}).
 
 \section{Litterat programmering och Literate Haskell}\label{sec:lhs}
 
@@ -192,9 +151,11 @@ att exportera till bland annat HTML (som i läromaterialet) och PDF (som i den h
 
 \section{Lärandeteorier}\label{sec:arcs}
 
+I detta projekt är lärandeteorier om motivation, lärande i grupp,  interaktion och snabba belöningar relevanta.
+
 Motivation är en persons vilja att göra något och i undervisningssammanhang vill
 läraren eller författaren att studenten ska lära sig materialet, studenten behöver alltså vara
-motiverad till att lära sig. Motivation kan ha flera källor, till exempel
+motiverad för att lära sig. Motivation kan ha flera källor, till exempel
 att studenten tycker materialet är intressant eller att det finns belöningar i
 form av tillfredsställelsen från ett högt betyg.
 
@@ -234,11 +195,10 @@ i miljön och att ställa frågor. Det tredje sättet är variation. Då handlar
 om olika struktur och ordning på undervisningen, till exempel att inte alltid
 utforma en lektion som föreläsning, demonstration och sedan övning, utan variera
 det med andra inslag, exempelvis ett filmklipp.
-\todo{Röd tråd}
 
-Enligt det sociokulturella perspektivet som Vygotskij utvecklade~\cite{LSB_und}
-lär sig elever av varandra. Eleverna befinner sig vid sin närmsta
-utvecklingszon\footnote{Den zon där målet för lärandet ligger på en nivå som är
+Lärandeteorier om hur elever lär sig i grupp är också relevanta. Utifrån det sociokulturella perspektivet som Vygotskij utvecklade~\cite{LSB_und}
+lär sig elever av varandra. Eleverna befinner sig i sin \textit{närmsta
+utvecklingszon}\footnote{Den zon där målet för lärandet ligger på en nivå som är
 för hög för en elev att klara på egen hand, men som eleven klarar om den får
 vägledning och stöd.}, där eleverna kan hjälpa varandra att förstå innebörden av
 definitioner och uttryck genom att sätta ord på det de vill kommunicera. Denna
@@ -261,4 +221,4 @@ behavioristiska element (former av respons) i form av rätt eller fel
 svar~\cite{LSB_und}. Evolutionärt sett har snabba belöningar varit
 fördelaktigt framför långsiktiga som kräver långsiktigt engagemang
 (exempelvis öva inför en tenta) vilket beskrivs i boken \textit{Dansa
-på deadline: Uppskjutandets psykologi}~\cite{DPD}. Dessa två aspekter återkoms till i kapitel \ref{cha:disk}
+på deadline: Uppskjutandets psykologi}~\cite{DPD}. Dessa två aspekter återkommer i kapitel \ref{cha:disk}

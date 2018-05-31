@@ -2,7 +2,7 @@
 
 I detta kapitel redovisas det resulterande läromaterialet, vilket består av fem
 kapitel. Det är publicerat på en hemsida och dess källkod är fritt tillgänglig.
-Även resultaten från återkopplingen med testgruppen och mötena med Åke Fäldt
+Även resultaten från mötena med testgruppen och Åke Fäldt
 redovisas.
 
 \section{Läromaterialet}\label{sec:res_laromaterial}
@@ -11,7 +11,7 @@ Detta avsnitt innehåller en översikt av läromaterialet samt ett axplock av in
 vardera kapitel. Axplocken exemplifier delar av läromaterialet och
 implementationerna av de domänspecifika språken. De fullständiga implementationerna
 är inte inkluderade (och förklarade) eftersom det är precis det läromaterialet
-innehåller. Rapporten skulle då bli en kopia av läromaterialet. Istället finns hela läromaterialet i bilaga~\ref{cha:utdrag} samt hemsidan~\cite{LYAP} där det blev publicerat. De avsnitt i rapporten som beskriver läromaterialets innehåll är inga
+innehåller. Rapporten skulle då bli en kopia av läromaterialet. Istället finns hela läromaterialet i bilaga~\ref{cha:utdrag} samt på hemsidan~\cite{LYAP} där det blev publicerat. De avsnitt i rapporten som beskriver läromaterialets innehåll är inga
 exakta kopior ord-för-ord utan de har anpassats till
 rapporten.
 
@@ -82,12 +82,12 @@ typer modifieras. För en utförligare förklaring av typnivåprogrammering, se 
 
 I \textit{matematisk analys} behandlas differentialkalkyl och
 integralkalkyl för en variabel. Först bestäms den semantiska domänen
-för analys i en variabel: reella funktioner av ett argument; och ett syntaxträd
+för analys i en variabel: reella funktioner av ett argument; och en datatyp för syntax
 för uttryck av funktioner inom denna domän konstrueras. Därefter
 analyseras syntax och semantik för differenser, derivator, och
 integraler; och funktioner implementeras för att utföra dessa
 operationer både approximativt numeriskt, och symboliskt med ett
-syntaxträd. Slutligen appliceras de implementerade funktionerna för
+datatypen för syntaxen. Slutligen appliceras de implementerade funktionerna för
 att visualisera grafer av operationerna.
 
 \textit{Vektorer} behandlar vektorer och vektoroperationer. Vektorer modelleras
@@ -177,7 +177,7 @@ testning, typnivådimensioner och storheter.
 
 \subsection{Matematisk analys}
 
-I kapitlet om matematisk analys skapas en syntax för funktionsuttryck och symboliskt derivering och integrering implementeras. Dessutom analyseras syntax och semantik hos uttryck som dyker upp inom matematisk analys, till exempel $\Delta$-operatorn.
+I kapitlet om matematisk analys skapas en syntax för funktionsuttryck och symbolisk derivering och integrering implementeras. Dessutom analyseras syntax och semantik hos uttryck som dyker upp inom matematisk analys, till exempel $\Delta$-operatorn.
 
 Syntaxen för funktionsuttryck inleds med
 
@@ -185,7 +185,7 @@ Syntaxen för funktionsuttryck inleds med
 data FunExpr = Exp | Log | Sin | Cos | Asin | Acos
 \end{lstlisting}
 
-vilket är ett antal elementära funktioner. Näst följer aritmetiska operationer. För att kunna definera dem på \textit{funktioner} och inte algebraiska \textit{uttryck} görs nedanstående tolkning
+vilket är några av de elementära funktionerna. Näst följer aritmetiska operationer. För att kunna definera dem på \textit{funktioner} och inte algebraiska \textit{uttryck} görs nedanstående tolkning
 \begin{align*}
   f \text{ $OP_{r \to r}$ } g = x \mapsto (f(x) \text{ $OP_r$ } g(x))
 \end{align*}
@@ -332,10 +332,10 @@ I läromaterialet behandlas även rörelseenergi, lägesenergi, arbete och gravi
 \section{Möten och återkoppling}\label{sec:res_test}
 
 Återkopplingen med testgruppen (som hade klarat fysikkursen och 
-introduktionskursen till haskell) var till övervägande del positivt.
+introduktionskursen till Haskell) var till övervägande del positivt.
 Testgruppen tyckte läromaterialet var ett intressant och roligt sätt att
 presentera fysik på. De tyckte att bilderna tjänade sitt syfte i att muntra upp
-läsaren. Testningen var dock för kort för att det skulle framgå huruvida läsaren lärde
+läsaren. Mötet var dock för kort för att det skulle framgå huruvida läsaren lärde
 sig mest fysik eller mest Haskell. Det framgick heller inte om läromaterialet
 uppmuntrade testgruppen att vilja lära sig mer fysik.
 
@@ -348,7 +348,7 @@ perspektiv på fysiken, en annan var den rigorösitet som
 domänspecifika språk innefattar. Eftersom de domänspecifika språken måste vara
 väldefinierade betyder det att alla fysikaliska koncept måste göras entydiga och väldefinierade. 
 Följden blir att operationerna enbart kan göras på det definierade sättet. 
-Dessutom måste dimensionerna stämma, vilket nämndes i avsnitt \ref{sec:res_dim}.
+Dessutom måste dimensionerna stämma.
 Fäldt menade att detta var bra egenskaper med läromaterialet och att det rigorösa
 tankesätt samt den metodik som förmedlas hade varit till nytta för problemlösning i
 fysikkursen. Fäldt nämnde även områden i Fysik för ingenjörer som var

@@ -17,6 +17,7 @@ Known values:
 > d = 0.75 # length
 > beam_L = 5.0 # length
 > two = 2.0 # one
+> g = 9.0 # acceleration
 
 ![Teeter](teeter.png){.float-img-left}
 
@@ -31,22 +32,24 @@ A torque (sv. vridmoment) is defined as:
 
 $$ \tau = distance\ from\ turning\ point \cdot force $$
 
-Since all force values will be composited of a mass and the gravitation, we can ignore the gravitation.
+(soon not to be) Since all force values will be composited of a mass and the gravitation, we can ignore the gravitation.
 
-$$ \tau = distance\ from\ turning\ point \cdot mass $$
+$$ \tau = distance\ from\ turning\ point \cdot mass \cdot gravitation $$
 
 
-> m1_torq = m1 *# beam_left_L 
+> m1_torq = m1 *# (g *# beam_left_L)
 
 To get the beams torque on one side, we need to divide by 2 because the beam's torque is spread out linearly (the density of the beam is equal everywhere), which means the left parts mass centrum is \emph{half the distance} of the left parts total length.
 
-$$ beamL_{\tau} = beamL_{M} \cdot \frac{distance}{2} $$
+$$ beamL_{\tau} = beamL_{M} \cdot gravity \cdot \frac{distance}{2} $$
 
-$$ beamL_{\tau} = \frac{beam\ left\ length}{beam\ length} \cdot beam_M \cdot \frac{beam\ left\ length}{2} $$
+where
 
-> beamL_torq = ((beam_left_L /# beam_L) *# beam_M) *# (beam_left_L /# two)
+$$ beamL_{M} = \frac{beam\ left\ length}{beam\ length} \cdot beam_M $$
 
-> beamR_torq = ((beam_right_L /# beam_L) *# beam_M) *# (beam_right_L /# two)
+> beamL_torq = ((beam_left_L /# beam_L) *# (beam_M *# g)) *# (beam_left_L /# two)
+
+> beamR_torq = ((beam_right_L /# beam_L) *# (beam_M *# g)) *# (beam_right_L /# two)
 
 We make an expression for $m2_{\tau}$, which involves our unknown distance x.
 

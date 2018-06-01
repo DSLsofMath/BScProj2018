@@ -1,10 +1,5 @@
 
 \chapter{Diskussion}\label{cha:disk}
-\textbf{Nånstans}
-Implementationen kan kompileras och testas och ska då visa på att
-implementationerna av de grundläggande områdena är både rigorösa och korrekta.
-Det visar dessutom att det går att använda materialet som presenteras tidigare
-till att implementera och lösa mer komplexa problem.
 
 I detta kapitel diskuteras projektets genomförande, resultat,
 vidareutvecklingsmöjligheter och etiska aspekter.
@@ -26,7 +21,7 @@ framåt eftersom det inte funnits någon tydlig väg att följa.
 
 Under projektets genomförande har det gjorts flera val av teorier och metoder att använda. Självklart behöver inte dessa val vi gjorde vara de bästa. Därför kommer vi här att kritisera dem och föreslå andra möjligheter. Närmare bestämt kommer mötet med testgruppen, urvalet och Literate Haskell att diskuteras.
 
-Det sätt återkopplingen gjordes under projektet kan kritiseras på flera sätt. För det första bestod testgruppen av enbart tre personer. För det andra hölls mötet under en ytterst kort tid, ungefär en timme. Mötet hade behövt vara längre för att låta testgruppen i lugn och ro arbeta igenom ett par kapitel, inklusive att följa med i programmeringen som gjordes i läromaterialet. För det tredje var vi inte tydliga med målet med återkopplingen, nämligen om de tyckte det var meningsfullt att lära ut fysik med hjälp av domänspecifika språk. Det gjorde att de heller inte kunda tänka på dessa frågor. Med tanke på dessa tre brister i återkopplingens genomförande är alla slutsatser dragna med den som stöd ytterst osäkra.
+Det sätt återkopplingen gjordes under projektet kan kritiseras på flera sätt. För det första bestod testgruppen av enbart tre personer. För det andra hölls mötet under en ytterst kort tid, ungefär en timme. Mötet hade behövt vara längre för att låta testgruppen i lugn och ro arbeta igenom ett par kapitel, inklusive att följa med i programmeringen som gjordes i läromaterialet. För det tredje var vi inte tydliga med målet med återkopplingen, nämligen om de tyckte det var meningsfullt att lära ut fysik med hjälp av domänspecifika språk. Det gjorde att de heller inte kunde tänka på dessa frågor. Med tanke på dessa tre brister i återkopplingens genomförande är alla slutsatser dragna med den som stöd ytterst osäkra.
 
 Det går även att kritisera hur urvalet av områden gick till under projektet. Dels kan det ha lett till att enbart två domänspecifika språk för fysik implementerades (dimensioner och partikelmekanik). Dels skedde urvalet ur implementatörens perspektiv (det vill säga  vårt) och inte ur användarens perspektiv (studenten som ska nyttja läromaterialet). Med det menar vi att områden valdes utifrån hur det implementationsmässigt hängde ihop, till exempel att matematisk analys är grunden till flera tillämpningar. Istället hade områden kunnat väljas utifrån de fysikaliska problem studenter ska lösa i Fysik för ingenjörer, till exempel block och talja eller momentjämvikt, och utifrån det utforma domänspecifika språk.
 
@@ -46,8 +41,6 @@ Detta avsnitt inleds med en övergripande diskussion om det resulterande
 läromaterialet och för vem läromaterialet kan vara relevant, för att sedan
 övergå till en mer generell diskussion kring kombinationen av domänspecifika
 språk och fysik.
-
-\textbf{Skriv om}
 
 I projektets mål och avgränsningar stod det att vi skulle börja med klassisk
 mekanik, för att i mån av tid även behandla termodynamik och vågrörelselära. I avsnitt~\ref{sec:res_laromaterial} nämns att de tre grundläggande
@@ -143,7 +136,7 @@ fokus hade hamnat på fysiken framför matematiken.
 
 \subsection{Lämpliga områden för domänspecifika språk}\label{sec:lampligt}
 
-När domänspecifika språk implementerades visade det sig att vissa områden lämpade sig bättre än andra. Exempel på ett lämpligt och et mindre lämpligt område är vektorer respektive lutande plan\footnote{Läromaterialet behandlar fortfarande lutande plan, men inte som ett \textit{eget} domänspecifikt språk. Istället \textit{tillämpas} det domänspecifika språket för vektorer.}. Vad som skiljer dem åt är enligt oss att lämpliga områden består av tydliga \textit{data och operationer} medan mindre lämpliga områden består av \textit{egenskaper och samband}.
+När domänspecifika språk implementerades visade det sig att vissa områden lämpade sig bättre än andra. Exempel på ett lämpligt och ett mindre lämpligt område är vektorer respektive lutande plan\footnote{Läromaterialet behandlar fortfarande lutande plan, men inte som ett \textit{eget} domänspecifikt språk. Istället \textit{tillämpas} det domänspecifika språket för vektorer.}. Vad som skiljer dem åt är enligt oss att lämpliga områden består av tydliga \textit{data och operationer} medan mindre lämpliga områden består av \textit{egenskaper och samband}.
 
 Inom området vektorer är vektorer data och till exempel vektoraddition en operation. I matematik defineras (en tvådimensionell) vektor som
 \begin{align*}
@@ -184,7 +177,7 @@ Egenskaper och samband är enligt oss svårare att modellera meningsfullt. Visse
 
 En del av projektets mål är att diskutera huruvida det finns en pedagogisk nytta i att kombinera fysik och domänspecifika språk. Denna fråga diskuteras nedan.
 
-I samband med fysik finns några fördelar med att integrera domänspecifika språk. Domänspecifika språk kan betraktas som ``tools for thinking''\footnote{Uttryckt i Patrik Janssons egna ord, föreläsare i kursen DSLsofMath.} och ger ett nytt perspektiv på fysik och ger den \textit{struktur}. Dimensioner är ett exempel på detta, se avsnitt~\ref{sec:res_dim}. Där konstateras att en godtycklig dimension kan skrivas som de sju basdimensionerna med tillhörande exponenter, vilket kanske inte är så man brukar se på dimensioner, men som ger dem en väldefinierad struktur. Domänspecifika språk bidrar även med \textit{rigorösitet} till fysik. Enbart de definierade operationerna går att använda, vilket leder till att genvägar i fysikaliska beräkningar inte går att göra på det sätt som är möjligt vid räkning med papper och penna. Detta tyckte även Åke Fäldt var en bra aspekt, se avsnitt~\ref{sec:res_test}. Med hjälp av domänspecifika språk är det dessutom möjlighet att väcka \textit{intresse} för fysik. En student som inte är intresserad av fysik kanske skulle bli det om fysik presenteras i samband med Haskell och domänspecifika språk, där paralleller mellan dem visas. Denna tanke stöds även av testgruppen\footnote{Eftersom mötet med testgruppen var väldigt kort är det dock svårt att dra några säkra slutsatser.}, se avsnitt~\ref{sec:res_test}
+I samband med fysik finns det några fördelar med att integrera domänspecifika språk. Domänspecifika språk kan betraktas som ``tools for thinking''\footnote{Uttryckt i Patrik Janssons egna ord, föreläsare i kursen DSLsofMath.} och ger ett nytt perspektiv på fysik och ger den \textit{struktur}. Dimensioner är ett exempel på detta, se avsnitt~\ref{sec:res_dim}. Där konstateras att en godtycklig dimension kan skrivas som de sju basdimensionerna med tillhörande exponenter, vilket kanske inte är så man brukar se på dimensioner, men som ger dem en väldefinierad struktur. Domänspecifika språk bidrar även med \textit{rigorösitet} till fysik. Enbart de definierade operationerna går att använda, vilket leder till att genvägar i fysikaliska beräkningar inte går att göra på det sätt som är möjligt vid räkning med papper och penna. Detta tyckte även Åke Fäldt var en bra aspekt, se avsnitt~\ref{sec:res_test}. Med hjälp av domänspecifika språk är det dessutom möjlighet att väcka \textit{intresse} för fysik. En student som inte är intresserad av fysik kanske skulle bli det om fysik presenteras i samband med Haskell och domänspecifika språk, där paralleller mellan dem visas. Denna tanke stöds även av testgruppen\footnote{Eftersom mötet med testgruppen var väldigt kort är det dock svårt att dra några säkra slutsatser.}, se avsnitt~\ref{sec:res_test}
 
 År 2016 genomfördes ett kandidatarbete på Chalmers liknande
 detta~\cite{kandidat2016}. Det kandidatarbetet resulterade också i ett

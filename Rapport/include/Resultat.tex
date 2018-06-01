@@ -215,9 +215,9 @@ En utförligare förklaring av syntaxen \texttt{FunExpr} finns i läromaterialet
 I läromaterialet analyseras derivering utförligt med gränsvärden, kvoter och approximativa metoder. Dessutom motiveras och implementeras symbolisk derivering. Den görs med en funktion \texttt{derive} som har ett fall för vardera av konstruktorerna i \texttt{FunExpr}. Några av fallen är
 
 \begin{lstlisting}
-  derive (f :* g) = derive f :* g :+ f :* derive g
-  derive (f :+ g) = derive f :+ derive g
-  derive Exp = Exp
+derive (f :* g) = derive f :* g :+ f :* derive g
+derive (f :+ g) = derive f :+ derive g
+derive Exp = Exp
 \end{lstlisting}
 
 \subsection{Vektorer}
@@ -225,18 +225,18 @@ I läromaterialet analyseras derivering utförligt med gränsvärden, kvoter och
 Kapitlet om vektorer inleds med en genomgång av vektorer och operationer på dem parallellt med att en första implementation till dem skrivs. Implementation ser ut som följer
 
 \begin{lstlisting}
-  data Vector2 n = V2 n n
-  type Scalar = Double
-  type VectorTwo = Vector2 Scalar
-  
-  magnitude :: VectorTwo -> Scalar
-  magnitude (V2 x y) = sqrt (x^2 + y^2)
-  
-  add :: VectorTwo -> VectorTwo -> VectorTwo
-  add (V2 x1 y1) (V2 x2 y2) = V2 (x1 + x2) (y1 + y2)
+data Vector2 n = V2 n n
+type Scalar = Double
+type VectorTwo = Vector2 Scalar
 
-  dotProd :: VectorTwo -> VectorTwo -> Scalar
-  dotProd (V2 ax ay) (V2 bx by) = ax * bx + ay * by
+magnitude :: VectorTwo -> Scalar
+magnitude (V2 x y) = sqrt (x^2 + y^2)
+
+add :: VectorTwo -> VectorTwo -> VectorTwo
+add (V2 x1 y1) (V2 x2 y2) = V2 (x1 + x2) (y1 + y2)
+
+dotProd :: VectorTwo -> VectorTwo -> Scalar
+dotProd (V2 ax ay) (V2 bx by) = ax * bx + ay * by
 \end{lstlisting}
 
 Eftersom vektorer i tre dimensioner ser snarlik ut leder det till väldigt mycket duplicerad kod. En andra implementation görs därför som är mer generell. Grunden är den nedanstående typklassen
@@ -252,14 +252,14 @@ class Vector vector where
 som innehåller de tre funktioner som behövs för att genomföra vektoroperationerna \texttt{magnitude}, \texttt{add} och \texttt{dotProd}. De kan nämligen skrivas om enbart med hjälp av de funktioner som finns i typklassen \texttt{Vector} på följande sätt
 
 \begin{lstlisting}
-  magnitude :: (Floating n, Vector vec) => vec n -> n
-  magnitude = sqrt . vfold (+) . vmap (**2)
+magnitude :: (Floating n, Vector vec) => vec n -> n
+magnitude = sqrt . vfold (+) . vmap (**2)
 
-  add :: (Num n, Vector vec) => vec n -> vec n -> vec n
-  add = vzipWith (+)
+add :: (Num n, Vector vec) => vec n -> vec n -> vec n
+add = vzipWith (+)
 
-  dotProd :: (Num n, Vector vec) => vec n -> vec n -> n
-  dotProd v1 v2 = vfold (+) $ vzipWith (*) v1 v2
+dotProd :: (Num n, Vector vec) => vec n -> vec n -> n
+dotProd v1 v2 = vfold (+) $ vzipWith (*) v1 v2
 \end{lstlisting}
 
 Allt som behöver göras för vardera datatyp för vektorer av olika längd är därmed att göra den en \texttt{Vector}-instans. Så här ser det ut för \texttt{Vector2}

@@ -1,202 +1,166 @@
-
 Box on an incline
 =================
 
 > import Vector.Vector
+> import Text.Printf
 
-All vectors are in newton.
+A box with the mass 2kg is resting on an incline. The task is to determinate the resulting force given an angle of the incline. 
 
-![Incline](incline.png){.float-img-left}
+When calculating with forces in this example we will use force vectors. This way we can add and subtract different forces together. We can also scale a force with a scalar.
 
-Notation:
-fg = gravitational accelleration
-m = mass of box
+![](incline.png){.float-img-left}
 
-> fg = V2 0 (-10)
+$$ \dot g = gravitational\ acceleration $$
+
+$$ m = mass\ of\ box $$
+
+> g :: Vector2 Double
+> g = V2 0 (-10)
+
+> m :: Double
 > m = 2
 
-> unit_normal :: Double -> Vector2 Double
-> unit_normal a = V2 (cos a) (sin a)
+We scale the gravitational acceleration vector with the mass of the box to get a vector representing the gravitational force.
 
-Force against the incline from the box:
+$$ \dot F_{g} = m \cdot \dot g $$
+
+> fg :: Vector2 Double
+> fg = scale m g 
+
+> alpha :: Angle
+> alpha = pi/4
+
+A unit vector that we get from a radian $a$.
+
+> angle_to_unit_vec :: Angle -> Vector2 Double
+> angle_to_unit_vec angle = V2 (cos angle) (sin angle)
+
+Force against the incline from the box we denote as $\dot F_{\perp}$. Since the force is perpendicular against the incline of the surface, we need to create the unit vector for $\dot F_{\perp}$ by adding $-(pi/2)$ radians.
+
+This vector we then scale up, with the magnitude of the gravitational force multiplied by $cos(angle)$, which gives how much the gravitational force that affects $\dot F_{\perp}$.
+
+There are two edge cases. If the incline is flat, it means the incline has the angle 0, and $cos(0) = 1$, which means $\dot F_{g} = \dot F_{\perp}$. If the incline is fully tilted however $\frac{\pi}{2}$, it means that $cos(\frac{\pi}{2}) = 0$ and the gravitational force on the box does not result in any force against the incline.
 
 > f_l_ :: Vector2 Double -> Angle -> Vector2 Double
-> f_l_ fa a = scale ((magnitude fa) * (cos a)) (unit_normal (a-(pi/2)))
+> f_l_ fa angle = scale ((magnitude fa) * (cos angle)) (angle_to_unit_vec (angle-(pi/2)))
 
-The normal against the incline:
+The normal force $\dot F_{n} = - \dot F_{\perp}$ supporting the box from the incline:
 
 > fn :: Vector2 Double -> Angle -> Vector2 Double
-> fn fa a = negate (f_l_ fa a)
+> fn fa angle = negate (f_l_ fa angle)
 
-Frictionfree incline:
-
-Force resultant:
+The $resulting\ force\ \dot F_{r}$ is then the normal force from the incline plus the gravitational force.
+$$ \dot F_{r} = \dot F_{n} + \dot F_{g} $$
 
 > fr :: Vector2 Double -> Angle -> Vector2 Double
-> fr fa a = (fn fa a) + fa
+> fr fa angle = (fn fa angle) + fa
 
+We have now determined a way to get the resulting force from a given angle. Below we show how we can use it.
 
-** Tests:**
-------------
+< *Main> fr fg (pi/4)
+< (-10.000000000000002, -10.0)
 
-*Main> fr (V2 0 10) 0
+With the use of a rounding printer (defined last in this example) we can round the output.
 
-(0.0 x, 0.0 y)                                  
+< *Main> print_vec_2dec $ fr fg (pi/4)
+< (-10.00,-10.00) 
 
-Good:  No inclination - stands still.
+Here we can see, that $\dot F_{r}$ on the box is pointing down-left in the sense of a coordinate system. To know it's magnitude, we can do:
 
+< magnitude $ fr fg (pi/4)
+< 14.142135623730953
 
-*Main> fr (V2 0 (-10)) 0
+Or with rounding:
 
-(0.0 x, -20.0 y)                                
+< print_2dec $ magnitude $ fr fg (pi/4)
+< 14.14
 
-Odd:    Motsatt gravitation ger något underligt? Vi säger fortfarande att normalen är magnituden
+Now we try to tackle the problem with friction:
+-----------------------------------------------
 
+$$  F_{friction} = \mu * F_{normal} \iff \mu = \frac{F_{friction}}{F_{normal}} $$
 
-*Main> fr (V2 0 10) (pi/2)
+There are two different kinds of friction. One where the object is standing still on the surface, and the other where the object is sliding on the surface. In the case where the object is standing still, it remains still until the force applied on the object is greater than the maximum possible friction between the object and the surface. Once that level is surpassed, the object starts to slide.
 
-(-6.123233995736766e-16 x, 10.0 y)              
+When the object is sliding the maximum friction between the surface and the object is slightly less, as illustrated in the figure below.
 
-Good:   90* lutning - faller med G.
+![](friction.png){.float-img-left}
 
-*Main> fr (V2 0 10) (pi/3)
+$$ F_{static\ friction} = \mu_{static} \cdot F_{normal} $$
+$$ F_{kinetic\ friction} = \mu_{kinetic} \cdot F_{normal} $$
 
-(-4.330127018922194 x, 7.499999999999999 y)     
+Given that we know if the box is already moving or not, we can chose the corresponding friction constant and calculate the friction force between the box and the incline. The direction of the friction force will then be in the opposite direction of the resulting force without friction, which we determined in the previous section.
 
-*Main> fr (V2 0 10) (pi/4)
-
-(-5.0 x, 4.999999999999999 y)                   
-
-*Main> fr (V2 0 10) (pi/6)
-
-(-4.330127018922193 x, 2.499999999999999 y)
-
-
-**Frictionconstant - in motion:**
-
-\begin{align}
-  F_{friction} = \mu * F_{normal} \iff \mu = \frac{F_{friction}}{F_{normal}}
-\end{align}
-
-> us = 0.5
-> uk = 0.4
-
-Add image how friction depends if there is movement.
+We will use a type definition to clarify parameters.
 
 > type FricConst = Double
 
-Friction: 
+We will also need to use the unit vector of the resulting force from the previous section. 
 
- friks = Fn * us,    us = friction static
-
- frikk = Fn * uk,    uk = friction kinetic
-
-
-We have the normal force and only needs the constants.
-
-The current speed does not affect the friction. However F*M = Nm = work = J -> racer cars burn tires.
-
-> motscalar :: FricConst -> Vector2 Double -> Scalar
-> motscalar u f = u * (magnitude f)
-
-Från en rörelse eller vekt, fixa komplementet
-
-
-> enh_vekt :: Vector2 Double -> Vector2 Double
-> enh_vekt v  | magnitude v == 0 = (V2 0 0)
+> unit_vec :: Vector2 Double -> Vector2 Double
+> unit_vec v  | magnitude v == 0 = (V2 0 0)
 >             | otherwise = scale (1 / (magnitude v)) v
-> 
-> 
-> motkrafts :: FricConst -> Scalar -> Vector2 Double -> Vector2 Double
-> motkrafts u s v = scale (u * s) (negate (enh_vekt v))
-> 
-> motkraftv :: FricConst -> Vector2 Double -> Vector2 Double -> Vector2 Double
-> motkraftv u n v = scale (u * (magnitude n)) (negate (enh_vekt v))
 
-Now we just need to sum the force vectors:
+For a box initally at rest:
+---------------------------
+
+We let this function compute the friction. If the magnitude of the friction is greater than the magnitude of the resulting force without friction, it means the
+box will stand still or that the magnitudes can be treated as equally big.
+
+> ff :: Vector2 Double -> Scalar -> Scalar -> FricConst -> Vector2 Double
+> ff fr magn_l_ magn_fr u = scale magn_fric (negate (unit_vec fr))
+>       where
+>           magn_fric   | magn_l_ * u > magn_fr = magn_fr
+>                       | otherwise = magn_l_ * u
+
+Now we just need to add the friction vector to our old $\dot F_{r}$. We call this function fru, from the constant $\mu$:
 
 > fru :: Vector2 Double -> Angle -> FricConst -> Vector2 Double
-> fru fa a u = (fr fa a) + (motkraftv u (fn fa a) (fr fa a))
-> 
-> fru' :: Vector2 Double -> Angle -> FricConst -> Vector2 Double
-> fru' fa a u = (motkraftv u (fn fa a) (fr fa a))
+> fru fa a u = (fr fa a) + (ff (fr fa a) magn_l_ magn_fr u)  
+>       where
+>           magn_l_ = magnitude (f_l_ fa a)             
+>           magn_fr = magnitude (fr fa a)
 
+Testing for $u = 0$. In this case both "fr" and "fru" should give the same resulting vector:
 
+< *Main> print_vec_2dec $ fr fg (pi/3)
+< (-8.66,-15.00)
 
+< *Main> print_vec_2dec $ fru fg (pi/3) 0
+< (-8.66,-15.00)
 
-Hmm om jag försöker skala riktningsvektorer till sin enhetsvektor så blir det blub med nollvektorn.
+They should also give the same if the incline is flat.
 
-enh_vekt v = scale (1 / (magnitude v)) v 
-$ enh_vekt (V2 0 0)
-(NaN x, NaN y)
+< *Main> print_vec_2dec $ fr fg (0)
+< (-0.00,0.00)
 
-Jag skulle anta att enh_vekt bara gäller då (magnitude v) =/= 0.
+< *Main> print_vec_2dec $ fru fg (0) 1
+< (-0.00,0.00)
 
+Lastly one should see the edge case where the angle is $\frac{\pi}{4}$. The magnitude of the normal and the resulting force from the previous section becomes the same (try and control it!). This also means that if $\mu_{static} = 1$ the magnitude of the friction force becomes $equal$ to the magnitude of the resulting force without friction. The consequence of this will be that the friction force is just enough to prevent the box from sliding. If we increase the angle just a little, the box starts sliding.
 
-Fixed nollvektorn.
+< *Main> print_vec_2dec $ fru fg (pi/4) 1
+< (-0.00,0.00)
 
+< *Main> print_vec_2dec $ fru fg (0.01 + pi/4) 1
+< (-0.20,-0.20)
 
-*Main> fru fg (pi/4) 0
-(-5.0 x, 4.999999999999999 y)
-*Main> fru fg (pi/4) 1
-(1.7763568394002505e-15 x, -1.7763568394002505e-15 y)
-*Main> fru fg (pi/4) 0.5
-(-2.499999999999999 x, 2.4999999999999987 y)
-Ugh? Den är linjär? 1 i friktionskoeff = full stop. alltid?
+In this case it may be beneficial to see more decimals, given that it should slide more downwards (down on the y-axis) than to the left (left on the x-axis).
 
-När är isf motkraften = fallkraften? 
-*Main> fru fg 0 5
-(0.0 x, 0.0 y)
-*Main> fru fg 0 1
-(0.0 x, 0.0 y)
-*Main> fru fg (pi/2) 10
-(-6.123233995736762e-16 x, 9.999999999999995 y)
+< fru fg (0.01 + pi/4) 1
+< (-0.197986733599107, -0.201986600267551)
 
-Hmm?
+Friction for a box in motion:
+-----------------------------
+This one is for you to solve. A box in motion is always affected by the friction (except for one particular edge case).
 
-*Main> fru fg (pi/6) 1
-(3.169872981077808 x, -1.8301270189221936 y)
-*Main> fru fg (pi/6) 0
-(-4.330127018922193 x, 2.499999999999999 y)
-*Main> fru fg (pi/6) 100000
-(749995.6698729811 x, -433010.2018922193 y)
+Pretty printing:
+----------------
 
-Den statiska friktionen är konstig. Den borde stå still vid låg vinkel o hög friktion.
+> print_2dec :: Double -> IO ()
+> print_2dec a = putStrLn $ printf "%.2f" a
 
-Jag summerar ju visserligen krafterna, så det är nog något lurt med friktionshanteringen.
-
-Tests:
-
-fr
-*Main> fr fg (pi/3)
-(-4.330127018922194 x, 7.499999999999999 y)
-*Main> fr fg (pi/6)
-(-4.330127018922193 x, 2.499999999999999 y)
-
-
-fru
-*Main> fru fg (pi/3) 1
-(-1.8301270189221928 x, 3.1698729810778055 y)
-*Main> fru fg (pi/6) 1
-(3.169872981077808 x, -1.8301270189221936 y)
-
-
-
-fru'
-*Main> fru' fg (pi/3) 1
-(2.500000000000001 x, -4.330127018922194 y)
-*Main> fru' fg (pi/6) 1
-(7.500000000000001 x, -4.330127018922193 y
-
-
-
-wtf händer? Hur kan fr ha samma x-vektor för två olika vinklar inom samma kvadrant?
-
-fn
-
-*Main> fn fg (pi/3)
-(-4.330127018922194 x, -2.500000000000001 y)
-*Main> fn fg (pi/6)
-(-4.330127018922193 x, -7.500000000000001 y)
+> print_vec_2dec :: Vector2 Double -> IO ()
+> print_vec_2dec (V2 a b) = putStrLn $ "(" ++ (printf "%.2f" a) ++ "," ++ (printf "%.2f" b) ++ ")"
 
 

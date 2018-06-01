@@ -5,7 +5,7 @@
 
 Tips till oss: prata långsamt så att det är tydligt...
 
-Oskar göra första halvan och Björn andra halvan.
+Oskar gör första halvan och Björn andra halvan.
 
 ## Inledning
 
@@ -14,45 +14,104 @@ Oskar göra första halvan och Björn andra halvan.
 
 ## Huvuddel (fem cyklerna)
 
+Är indelat i "presentation" av frågan och dess bakgrund, och sedan frågorna själva. När det gäller modeller står det en presentation av dem. Det är allt där i som publiken behöver veta för att förstå. Om de när de presenterar skulle missa något enstaka del vi behöver, så har vi dem här.
+
 - **Other modelling teqniques**
-  - What others are there?
-  - How do they work?
-  - Advantages and disadvanatges compared to multi-agent?
+  - *Background*
+    - In background of report
+    - "The benefit of agent based modeling as
+opposed to other modeling techniques is the fact that it shows emergent behavior"
+  - *Questions*
+    - What others are there?
+    - How do they work?
+    - Advantages and disadvanatges compared to multi-agent?
 - **Limitations of emergence**
-  - What do you mean by saying that emergence has provisonal status?
-  - Why are study of emergent properties futile?
-  - Are there other limitations?
+  - *Background*
+     - In the theory about emergence
+  - *Questions*
+    - What do you mean by saying that emergence has provisonal status?
+    - Why are study of emergent properties futile?
+    - Are there other limitations?
 - **quantity over quality**
-  - Could you elaborate why you did this choice? (Vet redan svaret, men vi är listiga och låter publiken få veta)
-  - When you found a very interesting model, s.a. tree growth, why not develop it further?
+  - *Background*
+    - In the methods
+  - *Questions*
+    - Could you elaborate why you did this choice? (Vet redan svaret, men vi är listiga och låter publiken få veta)
+    - When you found a very interesting model, s.a. tree growth, what do you think of developing only a few very much? How would the results differ?
 
 **Preliminär gräns, tidigaste**
   
 - **Drunkards walk**
-  - We found it interssting that not 0 avergae. Why do you think that's the case?
-  - Once again, what do you think about proving the property mathematically?
+  - *Background*
+    - Agent is a person
+    - Rule: each tick takes a step in a random direction
+    - Both 1D and 2D
+    - Result is that the root mean square for all agents is root of time.
+  - *Questions*
+    - Do you think the behaviour would be different with more step angles, like diagonally?
+    - What do you think about proving the property mathematically?
+      - Advantages and disadvantages compared to a simulation?
 
 **Preliminär gräns, senaste**
 
 - **Airplane boarding**
-  - If they haven't presented it, we have to do it
-  - 500 lines o' code. Risk for making an error?
-    - How are they noticted?
-    - How are the results affected?
-  - Is it possible to mathematically find the best strategy? Pros and cons compared to what you did?
-  - Is any strategy used in reality? Why, why not?
+  - *Background*
+    - Image!
+    - Passangers boarding airplane, each is an agent
+    - What strategy to minimize total boarding time?
+    - Result is that "wilma ordered" is the best, twice as fast as random
+  - *Questions*
+    - 500 lines of code. Risk for making an error?
+      - How are they noticted?
+      - How are the results affected?
+    - Is it possible to mathematically find the best strategy? Pros and cons compared to what you did?
+    - Is any strategy used in reality? Why, why not?
 - **Tree growth**
-  - Introduce it
-    - if not done in pres, short recap
-    - Make sure it is explained thouruglhy. Let them show a picture we have prepared.
-  - Very intersting that even with simple rules, looks very similar to reality. We would like to dive deeper into this model.
-  - How is sunlight set for each patch?
-  - How is the nutrition set for each patch?
-  - Would it be possible to add rules for stability? How would they look?
-  - "Best direction worth growing in".
-    - What does it mean?
-    - So that the model stops sometime?
-  - Would it be possible to make it look like something else, e.g. a pine-tree or an oak? What rules do you think are needed, i.e., why did it become exactly a savannah tree?
+  - *Background*
+    - Image!
+    - A tree that is growing
+    - The agents are groups o' cells
+    - Each patch has sun and nutrition
+    - Grows in the most profitable direction
+  - *Questions*
+    - Very intersting that even with simple rules, looks very similar to reality. We would like to dive deeper into this model.
+    - How is sunlight set for each patch?
+    - How is the nutrition set for each patch?
+    - Would it be possible to add rules for stability? How would they look?
+    - "Best direction worth growing in".
+      - What does it mean?
+      - So that the model stops sometime?
+    - Would it be possible to make it look like something else, e.g. a pine-tree or an oak? What rules do you think are needed, i.e., why did it become exactly a savannah tree?
+- **Football**
+  - *Background*
+    - Image!
+    - Soccer
+    - Agents are the players
+    - Rule for moving to the ball
+    - Rule for kicking the ball
+    - Result is that looks kindergarten football
+    - Fastest player outruns => all equal leads to fair game
+  - *Questions*
+    - Can you think of other rules to make the kindergarten more realistic, so that not the fastest gets the ball, even if one is the fastest?
+    - Would it be possible, would it be good, to implement rules such as (om de inte kommer på något)
+      - The one kicking must run slower
+      - Sometimes kicks out of the pitch
+      - Sometimes drops the ball
+      - Interaction (pulling)
+      - goalkeeper that kicks far and random
+    - What is the parameter "strength"?
+- **School of Fish**
+  - *Background*
+    - Image!
+    - Fish = agents swimming around
+    - 3 rules
+      - Separation: avoid collision
+      - Alignemnt: steer same dir
+      - Cohesion: steer towards average position
+  - *Questions*
+    - Clarify how the rule "steer towards same dir" works
+    - What do you think the difference would be if you implemented the last rule, "cohesion"?
+
 
 Två andra modeller: school of fish och Kolam.
 

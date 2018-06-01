@@ -16,9 +16,8 @@ Testing of Quantity
 }
 
 > module Dimensions.Quantity.Test
-> ( runTests
-> )
-> where
+>     ( runTests
+>     ) where
 
 
 < {-# LANGUAGE DataKinds #-}

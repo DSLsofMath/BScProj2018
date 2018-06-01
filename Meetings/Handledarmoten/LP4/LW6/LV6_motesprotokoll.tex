@@ -1,0 +1,85 @@
+%LaTeX-inställningar%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Kompliera med pdflatex
+\documentclass[a4paper, 10pt]{article}
+
+\usepackage[utf8x]{inputenc}
+\usepackage[swedish]{babel}
+\usepackage{graphicx}
+
+\usepackage{enumitem}
+
+\usepackage{geometry} 
+\geometry{a4paper} 
+\geometry{margin=1in}
+\setcounter{section}{1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Fyll i:
+\newcommand{\tid}{13:15}
+\newcommand{\plats}{3511}
+\newcommand{\lasvecka}{6}
+\newcommand{\datum}{2018-05-02}
+\newcommand{\present}{
+Björn\\
+Erik\\
+Oskar\\
+Handledare Patrik\\
+}
+\newcommand{\justerare}{Ingen}
+\newcommand{\sekreterare}{Björn}
+%Snabbkommandon
+\newcommand{\sect}[1][]{\section*{\S \thesection. #1} \stepcounter{section}}
+\newcommand{\para}{\paragraph \noindent}
+\newcommand{\ssect}[1][]{\subsection*{#1}}
+
+\begin{document}
+
+
+%Rubrik etc
+\section*{\center Mötesprotokoll LP4 LV\lasvecka} 
+\vspace{1em}
+\textbf{Tid:} \tid , \datum \\
+\textbf{Plats:} \plats \\
+
+%Protokoll:
+%Observera att detta är ett exempel som speglar exemplet på kallelse. Protokollet skall utformas på så sätt att det varje vecka speglar den aktuella kallelsen. Paragrafer kan komma att läggas till eller justeras.
+\sect[Mötets öppnande]
+\ssect[Närvarande]
+\present %Fyll i listan som startar på rad 20
+
+\sect[Godkännande av dagordning]
+
+\sect[Godkännande av föregående mötesprotokoll]
+
+\sect[Informationspunkter]
+
+\sect[Statusrapport]
+%Alla rapporterar individuellt status
+
+\sect[Uppföljning och eventuella förändringar]
+%Mötet diskuterar om milstolparna för denna veckan har nåtts. Om inte, hur ska de nås under kommande vecka?
+
+\sect[Kommande uppgifter]
+
+\sect[Övrigt]
+Snackas om montervisningen.\\
+\\
+Vi har en plansch. \\
+\\
+Instruktioner finns nu tillgängliga och vi har fått en sal.\\
+\\
+Patriks kommentarer på rapporten.\\
+    \\
+Patriks kommentarer på läromaterialet.\\
+\\
+Rapporten tar upp en del mekanik som det är tveksamt om vi går igenom i läromaterialet.
+
+
+\sect[Nästa möte sker...]
+
+Onsdag 9de. 15:00
+
+
+\sect[Mötets avslutande]
+
+\end{document}

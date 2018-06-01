@@ -1,0 +1,83 @@
+%LaTeX-inställningar%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Kompliera med pdflatex
+\documentclass[a4paper, 10pt]{article}
+
+\usepackage[utf8x]{inputenc}
+\usepackage[swedish]{babel}
+\usepackage{graphicx}
+
+\usepackage{enumitem}
+
+\usepackage{geometry} 
+\geometry{a4paper} 
+\geometry{margin=1in}
+\setcounter{section}{1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Fyll i:
+\newcommand{\tid}{11:00}
+\newcommand{\plats}{3511}
+\newcommand{\lasvecka}{4}
+\newcommand{\datum}{2018-04-17}
+\newcommand{\present}{
+Björn\\
+Erik\\
+Oskar\\
+Handledare Patrik\\
+}
+\newcommand{\justerare}{Ingen}
+\newcommand{\sekreterare}{Björn}
+%Snabbkommandon
+\newcommand{\sect}[1][]{\section*{\S \thesection. #1} \stepcounter{section}}
+\newcommand{\para}{\paragraph \noindent}
+\newcommand{\ssect}[1][]{\subsection*{#1}}
+
+\begin{document}
+
+
+%Rubrik etc
+\section*{\center Mötesprotokoll LP4 LV\lasvecka} 
+\vspace{1em}
+\textbf{Tid:} \tid , \datum \\
+\textbf{Plats:} \plats \\
+
+%Protokoll:
+%Observera att detta är ett exempel som speglar exemplet på kallelse. Protokollet skall utformas på så sätt att det varje vecka speglar den aktuella kallelsen. Paragrafer kan komma att läggas till eller justeras.
+\sect[Mötets öppnande]
+\ssect[Närvarande]
+\present %Fyll i listan som startar på rad 20
+
+\sect[Godkännande av dagordning]
+
+\sect[Godkännande av föregående mötesprotokoll]
+
+\sect[Informationspunkter]
+Vi träffade DNS på torsdagen.
+
+    De tyckte projektet och läromaterialet var kul.\\
+\\
+Vi hade möte med funktionellprogrammering och fysik-Jeff under fredagen.
+   
+    Jeff var mer intresserad av tillämpningar av DSL (spec dimensionsanalys) i industrin.
+
+\sect[Statusrapport]
+%Alla rapporterar individuellt status
+
+\sect[Uppföljning och eventuella förändringar]
+%Mötet diskuterar om milstolparna för denna veckan har nåtts. Om inte, hur ska de nås under kommande vecka?
+
+\sect[Kommande uppgifter]
+
+\sect[Övrigt]
+
+Går igenom delar av rapporten med Patrik.\\
+\\
+Vi skulle kunna försöka fixa fler testpersoner. Ex.v under lunchen i basen. Haskellcafe också möjligt.
+
+\sect[Nästa möte sker...]
+
+Onsdagen 25:e april 13\\
+
+\sect[Mötets avslutande]
+
+\end{document}

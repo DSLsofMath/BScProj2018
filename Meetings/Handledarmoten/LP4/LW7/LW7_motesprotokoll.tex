@@ -1,0 +1,91 @@
+%LaTeX-inställningar%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Kompliera med pdflatex
+\documentclass[a4paper, 10pt]{article}
+
+\usepackage[utf8x]{inputenc}
+\usepackage[swedish]{babel}
+\usepackage{graphicx}
+
+\usepackage{enumitem}
+
+\usepackage{geometry} 
+\geometry{a4paper} 
+\geometry{margin=1in}
+\setcounter{section}{1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Fyll i:
+\newcommand{\tid}{11:30}
+\newcommand{\plats}{3209}
+\newcommand{\lasvecka}{7}
+\newcommand{\datum}{2018-05-09}
+\newcommand{\present}{
+Björn\\
+Erik\\
+Johan\\
+Oskar\\
+Handledare Patrik\\
+}
+\newcommand{\justerare}{Ingen}
+\newcommand{\sekreterare}{Björn}
+%Snabbkommandon
+\newcommand{\sect}[1][]{\section*{\S \thesection. #1} \stepcounter{section}}
+\newcommand{\para}{\paragraph \noindent}
+\newcommand{\ssect}[1][]{\subsection*{#1}}
+
+\begin{document}
+
+
+%Rubrik etc
+\section*{\center Mötesprotokoll LV\lasvecka} 
+\vspace{1em}
+\textbf{Tid:} \tid , \datum \\
+\textbf{Plats:} \plats \\
+
+%Protokoll:
+%Observera att detta är ett exempel som speglar exemplet på kallelse. Protokollet skall utformas på så sätt att det varje vecka speglar den aktuella kallelsen. Paragrafer kan komma att läggas till eller justeras.
+\sect[Mötets öppnande]
+\ssect[Närvarande]
+\present %Fyll i listan som startar på rad 20
+
+\sect[Godkännande av dagordning]
+
+\sect[Godkännande av föregående mötesprotokoll]
+
+\sect[Informationspunkter]
+
+\sect[Statusrapport]
+%Alla rapporterar individuellt status
+
+
+\sect[Uppföljning och eventuella förändringar]
+%Mötet diskuterar om milstolparna för denna veckan har nåtts. Om inte, hur ska de nås under kommande vecka?
+
+\sect[Kommande uppgifter]
+
+
+\sect[Övrigt]
+
+Vi har haft möte med programansvariga Roger.\\
+\\
+Emils grupp kände inte att de hade tid. Vi letar upp nya återkopplingsgrupper.\\
+\\
+Gjorde en engelsk titel.\\
+\\
+Vi tar bort kandidatboisen från sidan.\\
+\\
+15de har vi utställning.\\
+\\
+Kl 10 blir det dryrun i EB av slutredovisningen (+ handledarmöte).\\
+\\
+17de har vi fackspråk - frågor ang opposition och slutredovisning.\\
+\\
+Vi frågar våran oppositionsgrupp om de vill lämna sin rapport tidigare.
+
+\sect[Nästa möte sker...]
+
+Handledarmöte 10-11 17/5.
+
+\sect[Mötets avslutande]
+
+\end{document}

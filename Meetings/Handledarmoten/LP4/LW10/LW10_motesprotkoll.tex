@@ -6,25 +6,26 @@
 \usepackage[swedish]{babel}
 \usepackage{graphicx}
 
+\usepackage{enumitem}
+
 \usepackage{geometry} 
 \geometry{a4paper} 
 \geometry{margin=1in}
 \setcounter{section}{1}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%Fyll i vid varje möte:
-\newcommand{\tid}{11:30}
-\newcommand{\plats}{3209}
-\newcommand{\datum}{2018-02-20}
-
-\newcommand{\sammankallande}{\textit{
+%Fyll i:
+\newcommand{\tid}{15:00}
+\newcommand{\plats}{3511}
+\newcommand{\lasvecka}{10}
+\newcommand{\datum}{2018-05-29}
+\newcommand{\present}{
 Björn\\
-Erik\\
 Oskar\\
-Johan\\
 Handledare Patrik\\
-}}
-
+}
+\newcommand{\justerare}{Ingen}
+\newcommand{\sekreterare}{Björn}
 %Snabbkommandon
 \newcommand{\sect}[1][]{\section*{\S \thesection. #1} \stepcounter{section}}
 \newcommand{\para}{\paragraph \noindent}
@@ -34,19 +35,16 @@ Handledare Patrik\\
 
 
 %Rubrik etc
-\section*{\center Dagordning - Grupp DSLsofMath LV1} 
+\section*{\center Mötesprotokoll LV\lasvecka} 
 \vspace{1em}
-\textbf{Kl:} \tid , \datum \\
+\textbf{Tid:} \tid , \datum \\
 \textbf{Plats:} \plats \\
 
-%Dagordning:
-%Detta är en mall. Lägg till paragrafer och underparagrafer om det behövs.
-
+%Protokoll:
+%Observera att detta är ett exempel som speglar exemplet på kallelse. Protokollet skall utformas på så sätt att det varje vecka speglar den aktuella kallelsen. Paragrafer kan komma att läggas till eller justeras.
 \sect[Mötets öppnande]
-
 \ssect[Närvarande]
-
-\sect[Val av sekreterare och justerare]
+\present %Fyll i listan som startar på rad 20
 
 \sect[Godkännande av dagordning]
 
@@ -55,18 +53,26 @@ Handledare Patrik\\
 \sect[Informationspunkter]
 
 \sect[Statusrapport]
+%Alla rapporterar individuellt status
+
 
 \sect[Uppföljning och eventuella förändringar]
+%Mötet diskuterar om milstolparna för denna veckan har nåtts. Om inte, hur ska de nås under kommande vecka?
 
 \sect[Kommande uppgifter]
 
-\sect[Övriga frågor]
+
+\sect[Övrigt]
+
+Vi snackade om projektet i sin helhet.\\
+\\
+Patrik nämde tidsskrifter och mässor för FP.\\
+\\
+Det sista bör skrivas in i gruppdagboken.
 
 \sect[Nästa möte sker...]
+Sista mötet.
 
 \sect[Mötets avslutande]
 
-
 \end{document}
-
-

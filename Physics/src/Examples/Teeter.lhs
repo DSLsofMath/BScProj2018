@@ -32,10 +32,7 @@ A torque (sv. vridmoment) is defined as:
 
 $$ \tau = distance\ from\ turning\ point \cdot force $$
 
-(soon not to be) Since all force values will be composited of a mass and the gravitation, we can ignore the gravitation.
-
 $$ \tau = distance\ from\ turning\ point \cdot mass \cdot gravitation $$
-
 
 > m1_torq = m1 *# (g *# beam_left_L)
 
@@ -53,7 +50,7 @@ $$ beamL_{M} = \frac{beam\ left\ length}{beam\ length} \cdot beam_M $$
 
 We make an expression for $m2_{\tau}$, which involves our unknown distance x.
 
-$$ m2_{\tau} = m2 \cdot x $$
+$$ m2_{\tau} = m2 \cdot gravitation \cdot x $$
 
 For the teeter to be in balance, both sides torques should be equal.
 

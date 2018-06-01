@@ -7,7 +7,7 @@ Exam excercise 3, 2017-01-13
 > import Prelude hiding (length)
 
 
-Two boxes, m1 and m2, rests on a beam in balance.
+Two boxes, $m_{1}$ and $m_{2}$, rests on a beam in balance.
 
 Known values:
 
@@ -19,7 +19,7 @@ Known values:
 > two = 2.0 # one
 > g = 9.0 # acceleration
 
-![Teeter](teeter.png){.float-img-left}
+![](teeter.png){.float-img-left}
 
 Direct implication:
 
@@ -39,9 +39,9 @@ $$ \tau = distance\ from\ turning\ point \cdot mass \cdot gravitation $$
 
 > m1_torq = m1 *# (g *# beam_left_L)
 
-To get the beams torque on one side, we need to divide by 2 because the beam's torque is spread out linearly (the density of the beam is equal everywhere), which means the left parts mass centrum is \emph{half the distance} of the left parts total length.
+To get the beams torque on one side, we need to divide by 2 because the beam's torque is spread out linearly (the density of the beam is equal everywhere), which means the left parts mass centre is $half\ the\ distance$ of the left parts total length.
 
-$$ beamL_{\tau} = beamL_{M} \cdot gravity \cdot \frac{distance}{2} $$
+$$ beamL_{\tau} = beamL_{M} \cdot gravity \cdot \frac{beam\ left\ length}{2} $$
 
 where
 
@@ -65,16 +65,17 @@ $$ m1_{\tau} + beamL_{\tau} = m2_{\tau} + beamR_{\tau} $$
 
 $$ m1_{\tau} + beamL_{\tau} - beamR_{\tau} = m2_{\tau} $$
 
-$$ \frac{m1_{\tau} + beamL_{\tau} - beamR_{\tau}}{m2}  = x $$
+$$ the\ distance\ x = \frac{m2_{\tau}}{m2 \cdot gravitation} $$
 
 Our solution:
 
-> x = (m1_torq +# beamL_torq -# beamR_torq) /# m2
+> x = (m1_torq +# beamL_torq -# beamR_torq) /# (m2 *# g)
 
 Security check:
 
-> m2_torq = m2 *# x
+> m2_torq = (m2 *# g) *# x
 
 > left_side_torque = m1_torq +# beamL_torq
 > right_side_torque = m2_torq +# beamR_torq
 
+We can control that both sides total torque are equal, and that the dimensions of $x$ is a length.

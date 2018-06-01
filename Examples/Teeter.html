@@ -42,7 +42,6 @@
 <p>We want to be able to represenet the torques.</p>
 <p>A torque (sv. vridmoment) is defined as:</p>
 <p><span class="math display">\[ \tau = distance\ from\ turning\ point \cdot force \]</span></p>
-<p>(soon not to be) Since all force values will be composited of a mass and the gravitation, we can ignore the gravitation.</p>
 <p><span class="math display">\[ \tau = distance\ from\ turning\ point \cdot mass \cdot gravitation \]</span></p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb5-1" data-line-number="1">m1_torq <span class="fu">=</span> m1 <span class="fu">*#</span> (g <span class="fu">*#</span> beam_left_L)</a></code></pre></div>
 <p>To get the beams torque on one side, we need to divide by 2 because the beam’s torque is spread out linearly (the density of the beam is equal everywhere), which means the left parts mass centre is <span class="math inline">\(half\ the\ distance\)</span> of the left parts total length.</p>
@@ -52,7 +51,7 @@
 <div class="sourceCode" id="cb6"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb6-1" data-line-number="1">beamL_torq <span class="fu">=</span> ((beam_left_L <span class="fu">/#</span> beam_L) <span class="fu">*#</span> (beam_M <span class="fu">*#</span> g)) <span class="fu">*#</span> (beam_left_L <span class="fu">/#</span> two)</a></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb7-1" data-line-number="1">beamR_torq <span class="fu">=</span> ((beam_right_L <span class="fu">/#</span> beam_L) <span class="fu">*#</span> (beam_M <span class="fu">*#</span> g)) <span class="fu">*#</span> (beam_right_L <span class="fu">/#</span> two)</a></code></pre></div>
 <p>We make an expression for <span class="math inline">\(m2_{\tau}\)</span>, which involves our unknown distance x.</p>
-<p><span class="math display">\[ m2_{\tau} = m2 \cdot x \]</span></p>
+<p><span class="math display">\[ m2_{\tau} = m2 \cdot gravitation \cdot x \]</span></p>
 <p>For the teeter to be in balance, both sides torques should be equal.</p>
 <p><span class="math display">\[ Left\ side\ torque = Right\ side\ angular\ torque \]</span></p>
 <p>We try to break out <span class="math inline">\(m2_{\tau}\)</span> and then x.</p>

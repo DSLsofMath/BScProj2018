@@ -26,31 +26,31 @@
 <div class="sourceCode" id="cb2"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">import</span> <span class="dt">Dimensions.TypeLevel</span></a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">import</span> <span class="dt">Dimensions.Quantity</span></a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">import</span> <span class="dt">Prelude</span> <span class="kw">hiding</span> (length)</a></code></pre></div>
-<p>Two boxes, m1 and m2, rests on a beam in balance.</p>
+<p>Two boxes, <span class="math inline">\(m_{1}\)</span> and <span class="math inline">\(m_{2}\)</span>, rests on a beam in balance.</p>
 <p>Known values:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" data-line-number="1">beam_M <span class="fu">=</span> <span class="fl">1.0</span> <span class="fu">#</span> mass</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">m1 <span class="fu">=</span> <span class="fl">2.0</span> <span class="fu">#</span> mass</a>
 <a class="sourceLine" id="cb3-3" data-line-number="3">m2 <span class="fu">=</span> <span class="fl">5.0</span> <span class="fu">#</span> mass</a>
 <a class="sourceLine" id="cb3-4" data-line-number="4">d <span class="fu">=</span> <span class="fl">0.75</span> <span class="fu">#</span> length</a>
 <a class="sourceLine" id="cb3-5" data-line-number="5">beam_L <span class="fu">=</span> <span class="fl">5.0</span> <span class="fu">#</span> length</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">two <span class="fu">=</span> <span class="fl">2.0</span> <span class="fu">#</span> one</a></code></pre></div>
-<figure>
-<img src="teeter.png" alt="Teeter" class="float-img-left" /><figcaption>Teeter</figcaption>
-</figure>
+<a class="sourceLine" id="cb3-6" data-line-number="6">two <span class="fu">=</span> <span class="fl">2.0</span> <span class="fu">#</span> one</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">g <span class="fu">=</span> <span class="fl">9.0</span> <span class="fu">#</span> acceleration</a></code></pre></div>
+<p><img src="teeter.png" class="float-img-left" /></p>
 <p>Direct implication:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb4-1" data-line-number="1">beam_left_L <span class="fu">=</span> (beam_L <span class="fu">/#</span> two) <span class="fu">+#</span> d</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2">beam_right_L <span class="fu">=</span> beam_L <span class="fu">-#</span> beam_left_L</a></code></pre></div>
 <p>We want to be able to represenet the torques.</p>
 <p>A torque (sv. vridmoment) is defined as:</p>
 <p><span class="math display">\[ \tau = distance\ from\ turning\ point \cdot force \]</span></p>
-<p>Since all force values will be composited of a mass and the gravitation, we can ignore the gravitation.</p>
-<p><span class="math display">\[ \tau = distance\ from\ turning\ point \cdot mass \]</span></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb5-1" data-line-number="1">m1_torq <span class="fu">=</span> m1 <span class="fu">*#</span> beam_left_L </a></code></pre></div>
-<p>To get the beams torque on one side, we need to divide by 2 because the beam’s torque is spread out linearly (the density of the beam is equal everywhere), which means the left parts mass centrum is  of the left parts total length.</p>
-<p><span class="math display">\[ beamL_{\tau} = beamL_{M} \cdot \frac{distance}{2} \]</span></p>
-<p><span class="math display">\[ beamL_{\tau} = \frac{beam\ left\ length}{beam\ length} \cdot beam_M \cdot \frac{beam\ left\ length}{2} \]</span></p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb6-1" data-line-number="1">beamL_torq <span class="fu">=</span> ((beam_left_L <span class="fu">/#</span> beam_L) <span class="fu">*#</span> beam_M) <span class="fu">*#</span> (beam_left_L <span class="fu">/#</span> two)</a></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb7-1" data-line-number="1">beamR_torq <span class="fu">=</span> ((beam_right_L <span class="fu">/#</span> beam_L) <span class="fu">*#</span> beam_M) <span class="fu">*#</span> (beam_right_L <span class="fu">/#</span> two)</a></code></pre></div>
+<p>(soon not to be) Since all force values will be composited of a mass and the gravitation, we can ignore the gravitation.</p>
+<p><span class="math display">\[ \tau = distance\ from\ turning\ point \cdot mass \cdot gravitation \]</span></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb5-1" data-line-number="1">m1_torq <span class="fu">=</span> m1 <span class="fu">*#</span> (g <span class="fu">*#</span> beam_left_L)</a></code></pre></div>
+<p>To get the beams torque on one side, we need to divide by 2 because the beam’s torque is spread out linearly (the density of the beam is equal everywhere), which means the left parts mass centre is <span class="math inline">\(half\ the\ distance\)</span> of the left parts total length.</p>
+<p><span class="math display">\[ beamL_{\tau} = beamL_{M} \cdot gravity \cdot \frac{beam\ left\ length}{2} \]</span></p>
+<p>where</p>
+<p><span class="math display">\[ beamL_{M} = \frac{beam\ left\ length}{beam\ length} \cdot beam_M \]</span></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb6-1" data-line-number="1">beamL_torq <span class="fu">=</span> ((beam_left_L <span class="fu">/#</span> beam_L) <span class="fu">*#</span> (beam_M <span class="fu">*#</span> g)) <span class="fu">*#</span> (beam_left_L <span class="fu">/#</span> two)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb7-1" data-line-number="1">beamR_torq <span class="fu">=</span> ((beam_right_L <span class="fu">/#</span> beam_L) <span class="fu">*#</span> (beam_M <span class="fu">*#</span> g)) <span class="fu">*#</span> (beam_right_L <span class="fu">/#</span> two)</a></code></pre></div>
 <p>We make an expression for <span class="math inline">\(m2_{\tau}\)</span>, which involves our unknown distance x.</p>
 <p><span class="math display">\[ m2_{\tau} = m2 \cdot x \]</span></p>
 <p>For the teeter to be in balance, both sides torques should be equal.</p>
@@ -58,13 +58,14 @@
 <p>We try to break out <span class="math inline">\(m2_{\tau}\)</span> and then x.</p>
 <p><span class="math display">\[ m1_{\tau} + beamL_{\tau} = m2_{\tau} + beamR_{\tau} \]</span></p>
 <p><span class="math display">\[ m1_{\tau} + beamL_{\tau} - beamR_{\tau} = m2_{\tau} \]</span></p>
-<p><span class="math display">\[ \frac{m1_{\tau} + beamL_{\tau} - beamR_{\tau}}{m2}  = x \]</span></p>
+<p><span class="math display">\[ the\ distance\ x = \frac{m2_{\tau}}{m2 \cdot gravitation} \]</span></p>
 <p>Our solution:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb8-1" data-line-number="1">x <span class="fu">=</span> (m1_torq <span class="fu">+#</span> beamL_torq <span class="fu">-#</span> beamR_torq) <span class="fu">/#</span> m2</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb8-1" data-line-number="1">x <span class="fu">=</span> (m1_torq <span class="fu">+#</span> beamL_torq <span class="fu">-#</span> beamR_torq) <span class="fu">/#</span> (m2 <span class="fu">*#</span> g)</a></code></pre></div>
 <p>Security check:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb9-1" data-line-number="1">m2_torq <span class="fu">=</span> m2 <span class="fu">*#</span> x</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb9-1" data-line-number="1">m2_torq <span class="fu">=</span> (m2 <span class="fu">*#</span> g) <span class="fu">*#</span> x</a></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb10-1" data-line-number="1">left_side_torque <span class="fu">=</span> m1_torq <span class="fu">+#</span> beamL_torq</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2">right_side_torque <span class="fu">=</span> m2_torq <span class="fu">+#</span> beamR_torq</a></code></pre></div>
+<p>We can control that both sides total torque are equal, and that the dimensions of <span class="math inline">\(x\)</span> is a length.</p>
 
     </main>
 

@@ -22,91 +22,100 @@
 
     <main>
       <h1 id="box-on-an-incline">Box on an incline</h1>
-<div class="sourceCode" id="cb1"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">import</span> <span class="dt">Vector.Vector</span></a></code></pre></div>
-<p>All vectors are in newton.</p>
-<figure>
-<img src="incline.png" alt="Incline" class="float-img-left" /><figcaption>Incline</figcaption>
-</figure>
-<p>Notation: fg = gravitational accelleration m = mass of box</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1">fg <span class="fu">=</span> <span class="dt">V2</span> <span class="dv">0</span> (<span class="fu">-</span><span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">m <span class="fu">=</span> <span class="dv">2</span></a></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="ot">unit_normal ::</span> <span class="dt">Double</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span> <span class="dt">Double</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">unit_normal a <span class="fu">=</span> <span class="dt">V2</span> (cos a) (sin a)</a></code></pre></div>
-<p>Force against the incline from the box:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="ot">f_l_ ::</span> <span class="dt">Vector2</span> <span class="dt">Double</span> <span class="ot">-&gt;</span> <span class="dt">Angle</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span> <span class="dt">Double</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">f_l_ fa a <span class="fu">=</span> scale ((magnitude fa) <span class="fu">*</span> (cos a)) (unit_normal (a<span class="fu">-</span>(pi<span class="fu">/</span><span class="dv">2</span>)))</a></code></pre></div>
-<p>The normal against the incline:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="ot">fn ::</span> <span class="dt">Vector2</span> <span class="dt">Double</span> <span class="ot">-&gt;</span> <span class="dt">Angle</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span> <span class="dt">Double</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">fn fa a <span class="fu">=</span> negate (f_l_ fa a)</a></code></pre></div>
-<p>Frictionfree incline:</p>
-<p>Force resultant:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="ot">fr ::</span> <span class="dt">Vector2</span> <span class="dt">Double</span> <span class="ot">-&gt;</span> <span class="dt">Angle</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span> <span class="dt">Double</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">fr fa a <span class="fu">=</span> (fn fa a) <span class="fu">+</span> fa</a></code></pre></div>
-<p>** Tests:** ————</p>
-<p>*Main&gt; fr (V2 0 10) 0</p>
-<p>(0.0 x, 0.0 y)</p>
-<p>Good: No inclination - stands still.</p>
-<p>*Main&gt; fr (V2 0 (-10)) 0</p>
-<p>(0.0 x, -20.0 y)</p>
-<p>Odd: Motsatt gravitation ger något underligt? Vi säger fortfarande att normalen är magnituden</p>
-<p>*Main&gt; fr (V2 0 10) (pi/2)</p>
-<p>(-6.123233995736766e-16 x, 10.0 y)</p>
-<p>Good: 90* lutning - faller med G.</p>
-<p>*Main&gt; fr (V2 0 10) (pi/3)</p>
-<p>(-4.330127018922194 x, 7.499999999999999 y)</p>
-<p>*Main&gt; fr (V2 0 10) (pi/4)</p>
-<p>(-5.0 x, 4.999999999999999 y)</p>
-<p>*Main&gt; fr (V2 0 10) (pi/6)</p>
-<p>(-4.330127018922193 x, 2.499999999999999 y)</p>
-<p><strong>Frictionconstant - in motion:</strong></p>
-<span class="math display">\[\begin{align}
-  F_{friction} = \mu * F_{normal} \iff \mu = \frac{F_{friction}}{F_{normal}}
-\end{align}\]</span>
-<div class="sourceCode" id="cb7"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb7-1" data-line-number="1">us <span class="fu">=</span> <span class="fl">0.5</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">uk <span class="fu">=</span> <span class="fl">0.4</span></a></code></pre></div>
-<p>Add image how friction depends if there is movement.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">type</span> <span class="dt">FricConst</span> <span class="fu">=</span> <span class="dt">Double</span></a></code></pre></div>
-<p>Friction:</p>
-<p>friks = Fn * us, us = friction static</p>
-<p>frikk = Fn * uk, uk = friction kinetic</p>
-<p>We have the normal force and only needs the constants.</p>
-<p>The current speed does not affect the friction. However F*M = Nm = work = J -&gt; racer cars burn tires.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="ot">motscalar ::</span> <span class="dt">FricConst</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span> <span class="dt">Double</span> <span class="ot">-&gt;</span> <span class="dt">Scalar</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2">motscalar u f <span class="fu">=</span> u <span class="fu">*</span> (magnitude f)</a></code></pre></div>
-<p>Från en rörelse eller vekt, fixa komplementet</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="ot">enh_vekt ::</span> <span class="dt">Vector2</span> <span class="dt">Double</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span> <span class="dt">Double</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2">enh_vekt v  <span class="fu">|</span> magnitude v <span class="fu">==</span> <span class="dv">0</span> <span class="fu">=</span> (<span class="dt">V2</span> <span class="dv">0</span> <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb10-3" data-line-number="3">            <span class="fu">|</span> otherwise <span class="fu">=</span> scale (<span class="dv">1</span> <span class="fu">/</span> (magnitude v)) v</a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb10-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="ot">motkrafts ::</span> <span class="dt">FricConst</span> <span class="ot">-&gt;</span> <span class="dt">Scalar</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span> <span class="dt">Double</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span> <span class="dt">Double</span></a>
-<a class="sourceLine" id="cb10-7" data-line-number="7">motkrafts u s v <span class="fu">=</span> scale (u <span class="fu">*</span> s) (negate (enh_vekt v))</a>
-<a class="sourceLine" id="cb10-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="ot">motkraftv ::</span> <span class="dt">FricConst</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span> <span class="dt">Double</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span> <span class="dt">Double</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span> <span class="dt">Double</span></a>
-<a class="sourceLine" id="cb10-10" data-line-number="10">motkraftv u n v <span class="fu">=</span> scale (u <span class="fu">*</span> (magnitude n)) (negate (enh_vekt v))</a></code></pre></div>
-<p>Now we just need to sum the force vectors:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="ot">fru ::</span> <span class="dt">Vector2</span> <span class="dt">Double</span> <span class="ot">-&gt;</span> <span class="dt">Angle</span> <span class="ot">-&gt;</span> <span class="dt">FricConst</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span> <span class="dt">Double</span></a>
-<a class="sourceLine" id="cb11-2" data-line-number="2">fru fa a u <span class="fu">=</span> (fr fa a) <span class="fu">+</span> (motkraftv u (fn fa a) (fr fa a))</a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="ot">fru&#39; ::</span> <span class="dt">Vector2</span> <span class="dt">Double</span> <span class="ot">-&gt;</span> <span class="dt">Angle</span> <span class="ot">-&gt;</span> <span class="dt">FricConst</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span> <span class="dt">Double</span></a>
-<a class="sourceLine" id="cb11-5" data-line-number="5">fru&#39; fa a u <span class="fu">=</span> (motkraftv u (fn fa a) (fr fa a))</a></code></pre></div>
-<p>Hmm om jag försöker skala riktningsvektorer till sin enhetsvektor så blir det blub med nollvektorn.</p>
-<p>enh_vekt v = scale (1 / (magnitude v)) v $ enh_vekt (V2 0 0) (NaN x, NaN y)</p>
-<p>Jag skulle anta att enh_vekt bara gäller då (magnitude v) =/= 0.</p>
-<p>Fixed nollvektorn.</p>
-<p><em>Main&gt; fru fg (pi/4) 0 (-5.0 x, 4.999999999999999 y) </em>Main&gt; fru fg (pi/4) 1 (1.7763568394002505e-15 x, -1.7763568394002505e-15 y) *Main&gt; fru fg (pi/4) 0.5 (-2.499999999999999 x, 2.4999999999999987 y) Ugh? Den är linjär? 1 i friktionskoeff = full stop. alltid?</p>
-<p>När är isf motkraften = fallkraften? <em>Main&gt; fru fg 0 5 (0.0 x, 0.0 y) </em>Main&gt; fru fg 0 1 (0.0 x, 0.0 y) *Main&gt; fru fg (pi/2) 10 (-6.123233995736762e-16 x, 9.999999999999995 y)</p>
-<p>Hmm?</p>
-<p><em>Main&gt; fru fg (pi/6) 1 (3.169872981077808 x, -1.8301270189221936 y) </em>Main&gt; fru fg (pi/6) 0 (-4.330127018922193 x, 2.499999999999999 y) *Main&gt; fru fg (pi/6) 100000 (749995.6698729811 x, -433010.2018922193 y)</p>
-<p>Den statiska friktionen är konstig. Den borde stå still vid låg vinkel o hög friktion.</p>
-<p>Jag summerar ju visserligen krafterna, så det är nog något lurt med friktionshanteringen.</p>
-<p>Tests:</p>
-<p>fr <em>Main&gt; fr fg (pi/3) (-4.330127018922194 x, 7.499999999999999 y) </em>Main&gt; fr fg (pi/6) (-4.330127018922193 x, 2.499999999999999 y)</p>
-<p>fru <em>Main&gt; fru fg (pi/3) 1 (-1.8301270189221928 x, 3.1698729810778055 y) </em>Main&gt; fru fg (pi/6) 1 (3.169872981077808 x, -1.8301270189221936 y)</p>
-<p>fru’ <em>Main&gt; fru’ fg (pi/3) 1 (2.500000000000001 x, -4.330127018922194 y) </em>Main&gt; fru’ fg (pi/6) 1 (7.500000000000001 x, -4.330127018922193 y</p>
-<p>wtf händer? Hur kan fr ha samma x-vektor för två olika vinklar inom samma kvadrant?</p>
-<p>fn</p>
-<p><em>Main&gt; fn fg (pi/3) (-4.330127018922194 x, -2.500000000000001 y) </em>Main&gt; fn fg (pi/6) (-4.330127018922193 x, -7.500000000000001 y)</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">import</span> <span class="dt">Vector.Vector</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">import</span> <span class="dt">Text.Printf</span></a></code></pre></div>
+<p>A box with the mass 2kg is resting on an incline. The task is to determinate the resulting force given an angle of the incline.</p>
+<p>When calculating with forces in this example we will use force vectors. This way we can add and subtract different forces together. We can also scale a force with a scalar.</p>
+<p><img src="incline.png" class="float-img-left" /></p>
+<p><span class="math display">\[ \dot g = gravitational\ acceleration \]</span></p>
+<p><span class="math display">\[ m = mass\ of\ box \]</span></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="ot">g ::</span> <span class="dt">Vector2</span> <span class="dt">Double</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">g <span class="fu">=</span> <span class="dt">V2</span> <span class="dv">0</span> (<span class="fu">-</span><span class="dv">10</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="ot">m ::</span> <span class="dt">Double</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">m <span class="fu">=</span> <span class="dv">2</span></a></code></pre></div>
+<p>We scale the gravitational acceleration vector with the mass of the box to get a vector representing the gravitational force.</p>
+<p><span class="math display">\[ \dot F_{g} = m \cdot \dot g \]</span></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="ot">fg ::</span> <span class="dt">Vector2</span> <span class="dt">Double</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">fg <span class="fu">=</span> scale m g </a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="ot">alpha ::</span> <span class="dt">Angle</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">alpha <span class="fu">=</span> pi<span class="fu">/</span><span class="dv">4</span></a></code></pre></div>
+<p>A unit vector that we get from a radian <span class="math inline">\(a\)</span>.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="ot">angle_to_unit_vec ::</span> <span class="dt">Angle</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span> <span class="dt">Double</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">angle_to_unit_vec angle <span class="fu">=</span> <span class="dt">V2</span> (cos angle) (sin angle)</a></code></pre></div>
+<p>Force against the incline from the box we denote as <span class="math inline">\(\dot F_{\perp}\)</span>. Since the force is perpendicular against the incline of the surface, we need to create the unit vector for <span class="math inline">\(\dot F_{\perp}\)</span> by adding <span class="math inline">\(-(pi/2)\)</span> radians.</p>
+<p>This vector we then scale up, with the magnitude of the gravitational force multiplied by <span class="math inline">\(cos(angle)\)</span>, which gives how much the gravitational force that affects <span class="math inline">\(\dot F_{\perp}\)</span>.</p>
+<p>There are two edge cases. If the incline is flat, it means the incline has the angle 0, and <span class="math inline">\(cos(0) = 1\)</span>, which means <span class="math inline">\(\dot F_{g} = \dot F_{\perp}\)</span>. If the incline is fully tilted however <span class="math inline">\(\frac{\pi}{2}\)</span>, it means that <span class="math inline">\(cos(\frac{\pi}{2}) = 0\)</span> and the gravitational force on the box does not result in any force against the incline.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="ot">f_l_ ::</span> <span class="dt">Vector2</span> <span class="dt">Double</span> <span class="ot">-&gt;</span> <span class="dt">Angle</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span> <span class="dt">Double</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">f_l_ fa angle <span class="fu">=</span> scale ((magnitude fa) <span class="fu">*</span> (cos angle)) (angle_to_unit_vec (angle<span class="fu">-</span>(pi<span class="fu">/</span><span class="dv">2</span>)))</a></code></pre></div>
+<p>The normal force <span class="math inline">\(\dot F_{n} = - \dot F_{\perp}\)</span> supporting the box from the incline:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="ot">fn ::</span> <span class="dt">Vector2</span> <span class="dt">Double</span> <span class="ot">-&gt;</span> <span class="dt">Angle</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span> <span class="dt">Double</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">fn fa angle <span class="fu">=</span> negate (f_l_ fa angle)</a></code></pre></div>
+<p>The <span class="math inline">\(resulting\ force\ \dot F_{r}\)</span> is then the normal force from the incline plus the gravitational force. <span class="math display">\[ \dot F_{r} = \dot F_{n} + \dot F_{g} \]</span></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="ot">fr ::</span> <span class="dt">Vector2</span> <span class="dt">Double</span> <span class="ot">-&gt;</span> <span class="dt">Angle</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span> <span class="dt">Double</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">fr fa angle <span class="fu">=</span> (fn fa angle) <span class="fu">+</span> fa</a></code></pre></div>
+<p>We have now determined a way to get the resulting force from a given angle. Below we show how we can use it.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="fu">*</span><span class="dt">Main</span><span class="fu">&gt;</span> fr fg (pi<span class="fu">/</span><span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">(<span class="fu">-</span><span class="fl">10.000000000000002</span>, <span class="fu">-</span><span class="fl">10.0</span>)</a></code></pre></div>
+<p>With the use of a rounding printer (defined last in this example) we can round the output.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="fu">*</span><span class="dt">Main</span><span class="fu">&gt;</span> print_vec_2dec <span class="fu">$</span> fr fg (pi<span class="fu">/</span><span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">(<span class="fu">-</span><span class="fl">10.00</span>,<span class="fu">-</span><span class="fl">10.00</span>) </a></code></pre></div>
+<p>Here we can see, that <span class="math inline">\(\dot F_{r}\)</span> on the box is pointing down-left in the sense of a coordinate system. To know it’s magnitude, we can do:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb12-1" data-line-number="1">magnitude <span class="fu">$</span> fr fg (pi<span class="fu">/</span><span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="fl">14.142135623730953</span></a></code></pre></div>
+<p>Or with rounding:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb13-1" data-line-number="1">print_2dec <span class="fu">$</span> magnitude <span class="fu">$</span> fr fg (pi<span class="fu">/</span><span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="fl">14.14</span></a></code></pre></div>
+<h2 id="now-we-try-to-tackle-the-problem-with-friction">Now we try to tackle the problem with friction:</h2>
+<p><span class="math display">\[  F_{friction} = \mu * F_{normal} \iff \mu = \frac{F_{friction}}{F_{normal}} \]</span></p>
+<p>There are two different kinds of friction. One where the object is standing still on the surface, and the other where the object is sliding on the surface. In the case where the object is standing still, it remains still until the force applied on the object is greater than the maximum possible friction between the object and the surface. Once that level is surpassed, the object starts to slide.</p>
+<p>When the object is sliding the maximum friction between the surface and the object is slightly less, as illustrated in the figure below.</p>
+<p><img src="friction.png" class="float-img-left" /></p>
+<p><span class="math display">\[ F_{static\ friction} = \mu_{static} \cdot F_{normal} \]</span> <span class="math display">\[ F_{kinetic\ friction} = \mu_{kinetic} \cdot F_{normal} \]</span></p>
+<p>Given that we know if the box is already moving or not, we can chose the corresponding friction constant and calculate the friction force between the box and the incline. The direction of the friction force will then be in the opposite direction of the resulting force without friction, which we determined in the previous section.</p>
+<p>We will use a type definition to clarify parameters.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">type</span> <span class="dt">FricConst</span> <span class="fu">=</span> <span class="dt">Double</span></a></code></pre></div>
+<p>We will also need to use the unit vector of the resulting force from the previous section.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="ot">unit_vec ::</span> <span class="dt">Vector2</span> <span class="dt">Double</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span> <span class="dt">Double</span></a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">unit_vec v  <span class="fu">|</span> magnitude v <span class="fu">==</span> <span class="dv">0</span> <span class="fu">=</span> (<span class="dt">V2</span> <span class="dv">0</span> <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb15-3" data-line-number="3">            <span class="fu">|</span> otherwise <span class="fu">=</span> scale (<span class="dv">1</span> <span class="fu">/</span> (magnitude v)) v</a></code></pre></div>
+<h2 id="for-a-box-initally-at-rest">For a box initally at rest:</h2>
+<p>We let this function compute the friction. If the magnitude of the friction is greater than the magnitude of the resulting force without friction, it means the box will stand still or that the magnitudes can be treated as equally big.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="ot">ff ::</span> <span class="dt">Vector2</span> <span class="dt">Double</span> <span class="ot">-&gt;</span> <span class="dt">Scalar</span> <span class="ot">-&gt;</span> <span class="dt">Scalar</span> <span class="ot">-&gt;</span> <span class="dt">FricConst</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span> <span class="dt">Double</span></a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">ff fr magn_l_ magn_fr u <span class="fu">=</span> scale magn_fric (negate (unit_vec fr))</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3">      <span class="kw">where</span></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4">          magn_fric   <span class="fu">|</span> magn_l_ <span class="fu">*</span> u <span class="fu">&gt;</span> magn_fr <span class="fu">=</span> magn_fr</a>
+<a class="sourceLine" id="cb16-5" data-line-number="5">                      <span class="fu">|</span> otherwise <span class="fu">=</span> magn_l_ <span class="fu">*</span> u</a></code></pre></div>
+<p>Now we just need to add the friction vector to our old <span class="math inline">\(\dot F_{r}\)</span>. We call this function fru, from the constant <span class="math inline">\(\mu\)</span>:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="ot">fru ::</span> <span class="dt">Vector2</span> <span class="dt">Double</span> <span class="ot">-&gt;</span> <span class="dt">Angle</span> <span class="ot">-&gt;</span> <span class="dt">FricConst</span> <span class="ot">-&gt;</span> <span class="dt">Vector2</span> <span class="dt">Double</span></a>
+<a class="sourceLine" id="cb17-2" data-line-number="2">fru fa a u <span class="fu">=</span> (fr fa a) <span class="fu">+</span> (ff (fr fa a) magn_l_ magn_fr u)  </a>
+<a class="sourceLine" id="cb17-3" data-line-number="3">      <span class="kw">where</span></a>
+<a class="sourceLine" id="cb17-4" data-line-number="4">          magn_l_ <span class="fu">=</span> magnitude (f_l_ fa a)             </a>
+<a class="sourceLine" id="cb17-5" data-line-number="5">          magn_fr <span class="fu">=</span> magnitude (fr fa a)</a></code></pre></div>
+<p>Testing for <span class="math inline">\(u = 0\)</span>. In this case both “fr” and “fru” should give the same resulting vector:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="fu">*</span><span class="dt">Main</span><span class="fu">&gt;</span> print_vec_2dec <span class="fu">$</span> fr fg (pi<span class="fu">/</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb18-2" data-line-number="2">(<span class="fu">-</span><span class="fl">8.66</span>,<span class="fu">-</span><span class="fl">15.00</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="fu">*</span><span class="dt">Main</span><span class="fu">&gt;</span> print_vec_2dec <span class="fu">$</span> fru fg (pi<span class="fu">/</span><span class="dv">3</span>) <span class="dv">0</span></a>
+<a class="sourceLine" id="cb19-2" data-line-number="2">(<span class="fu">-</span><span class="fl">8.66</span>,<span class="fu">-</span><span class="fl">15.00</span>)</a></code></pre></div>
+<p>They should also give the same if the incline is flat.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="fu">*</span><span class="dt">Main</span><span class="fu">&gt;</span> print_vec_2dec <span class="fu">$</span> fr fg (<span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb20-2" data-line-number="2">(<span class="fu">-</span><span class="fl">0.00</span>,<span class="fl">0.00</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="fu">*</span><span class="dt">Main</span><span class="fu">&gt;</span> print_vec_2dec <span class="fu">$</span> fru fg (<span class="dv">0</span>) <span class="dv">1</span></a>
+<a class="sourceLine" id="cb21-2" data-line-number="2">(<span class="fu">-</span><span class="fl">0.00</span>,<span class="fl">0.00</span>)</a></code></pre></div>
+<p>Lastly one should see the edge case where the angle is <span class="math inline">\(\frac{\pi}{4}\)</span>. The magnitude of the normal and the resulting force from the previous section becomes the same (try and control it!). This also means that if <span class="math inline">\(\mu_{static} = 1\)</span> the magnitude of the friction force becomes <span class="math inline">\(equal\)</span> to the magnitude of the resulting force without friction. The consequence of this will be that the friction force is just enough to prevent the box from sliding. If we increase the angle just a little, the box starts sliding.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="fu">*</span><span class="dt">Main</span><span class="fu">&gt;</span> print_vec_2dec <span class="fu">$</span> fru fg (pi<span class="fu">/</span><span class="dv">4</span>) <span class="dv">1</span></a>
+<a class="sourceLine" id="cb22-2" data-line-number="2">(<span class="fu">-</span><span class="fl">0.00</span>,<span class="fl">0.00</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="fu">*</span><span class="dt">Main</span><span class="fu">&gt;</span> print_vec_2dec <span class="fu">$</span> fru fg (<span class="fl">0.01</span> <span class="fu">+</span> pi<span class="fu">/</span><span class="dv">4</span>) <span class="dv">1</span></a>
+<a class="sourceLine" id="cb23-2" data-line-number="2">(<span class="fu">-</span><span class="fl">0.20</span>,<span class="fu">-</span><span class="fl">0.20</span>)</a></code></pre></div>
+<p>In this case it may be beneficial to see more decimals, given that it should slide more downwards (down on the y-axis) than to the left (left on the x-axis).</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb24-1" data-line-number="1">fru fg (<span class="fl">0.01</span> <span class="fu">+</span> pi<span class="fu">/</span><span class="dv">4</span>) <span class="dv">1</span></a>
+<a class="sourceLine" id="cb24-2" data-line-number="2">(<span class="fu">-</span><span class="fl">0.197986733599107</span>, <span class="fu">-</span><span class="fl">0.201986600267551</span>)</a></code></pre></div>
+<h2 id="friction-for-a-box-in-motion">Friction for a box in motion:</h2>
+<p>This one is for you to solve. A box in motion is always affected by the friction (except for one particular edge case).</p>
+<h2 id="pretty-printing">Pretty printing:</h2>
+<div class="sourceCode" id="cb25"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="ot">print_2dec ::</span> <span class="dt">Double</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> ()</a>
+<a class="sourceLine" id="cb25-2" data-line-number="2">print_2dec a <span class="fu">=</span> putStrLn <span class="fu">$</span> printf <span class="st">&quot;%.2f&quot;</span> a</a></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="ot">print_vec_2dec ::</span> <span class="dt">Vector2</span> <span class="dt">Double</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> ()</a>
+<a class="sourceLine" id="cb26-2" data-line-number="2">print_vec_2dec (<span class="dt">V2</span> a b) <span class="fu">=</span> putStrLn <span class="fu">$</span> <span class="st">&quot;(&quot;</span> <span class="fu">++</span> (printf <span class="st">&quot;%.2f&quot;</span> a) <span class="fu">++</span> <span class="st">&quot;,&quot;</span> <span class="fu">++</span> (printf <span class="st">&quot;%.2f&quot;</span> b) <span class="fu">++</span> <span class="st">&quot;)&quot;</span></a></code></pre></div>
 
     </main>
 

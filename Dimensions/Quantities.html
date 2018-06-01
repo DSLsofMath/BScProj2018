@@ -30,10 +30,11 @@
 <a class="sourceLine" id="cb1-5" data-line-number="5">    , meter, kilogram, second, ampere, kelvin, mole, candela, unitless</a>
 <a class="sourceLine" id="cb1-6" data-line-number="6">    , (<span class="fu">~=</span>)</a>
 <a class="sourceLine" id="cb1-7" data-line-number="7">    , isZero</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8">    , (<span class="fu">#</span>)</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">    , (<span class="fu">#</span>), (<span class="fu">##</span>)</a>
 <a class="sourceLine" id="cb1-9" data-line-number="9">    , (<span class="fu">+#</span>), (<span class="fu">-#</span>), (<span class="fu">*#</span>), (<span class="fu">/#</span>)</a>
 <a class="sourceLine" id="cb1-10" data-line-number="10">    , sinq, cosq, asinq, acosq, atanq, expq, logq</a>
-<a class="sourceLine" id="cb1-11" data-line-number="11">    ) <span class="kw">where</span></a></code></pre></div>
+<a class="sourceLine" id="cb1-11" data-line-number="11">    , qfold</a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">    ) <span class="kw">where</span></a></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">import</span> <span class="kw">qualified</span> <span class="dt">Dimensions.ValueLevel</span> <span class="kw">as</span> <span class="dt">V</span></a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">import</span>           <span class="dt">Dimensions.TypeLevel</span>  <span class="kw">as</span> <span class="dt">T</span></a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">import</span>           <span class="dt">Prelude</span>               <span class="kw">as</span> <span class="dt">P</span> <span class="kw">hiding</span> (length)</a></code></pre></div>
@@ -234,29 +235,29 @@
 <a class="sourceLine" id="cb42-4" data-line-number="4"><span class="ot">cosq ::</span> (<span class="dt">Floating</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">One</span> v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> <span class="dt">One</span> v</a>
 <a class="sourceLine" id="cb42-5" data-line-number="5">cosq (<span class="dt">ValQuantity</span> dl v) <span class="fu">=</span> <span class="dt">ValQuantity</span> d1 (cos v)</a></code></pre></div>
 <p>We quickly realize a pattern, so let’s generalize a bit.</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="ot">qmap ::</span> (a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> <span class="dt">Quantity</span> <span class="dt">One</span> a <span class="ot">-&gt;</span> <span class="dt">Quantity</span> <span class="dt">One</span> b</a>
-<a class="sourceLine" id="cb43-2" data-line-number="2">qmap f (<span class="dt">ValQuantity</span> d1 v) <span class="fu">=</span> <span class="dt">ValQuantity</span> d1 (f v)</a></code></pre></div>
-<div class="sourceCode" id="cb44"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="ot">qmap&#39; ::</span> (a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> <span class="dt">Quantity</span> dim a <span class="ot">-&gt;</span> <span class="dt">Quantity</span> dim b</a>
-<a class="sourceLine" id="cb44-2" data-line-number="2">qmap&#39; f (<span class="dt">ValQuantity</span> d v) <span class="fu">=</span> <span class="dt">ValQuantity</span> d (f v)</a></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="ot">qmap ::</span> (a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> <span class="dt">Quantity</span> dim a <span class="ot">-&gt;</span> <span class="dt">Quantity</span> dim b</a>
+<a class="sourceLine" id="cb43-2" data-line-number="2">qmap f (<span class="dt">ValQuantity</span> d v) <span class="fu">=</span> <span class="dt">ValQuantity</span> d (f v)</a></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="kw">instance</span> <span class="dt">Functor</span> (<span class="dt">Quantity</span> d) <span class="kw">where</span></a>
+<a class="sourceLine" id="cb44-2" data-line-number="2">  fmap <span class="fu">=</span> qmap</a></code></pre></div>
 <div class="sourceCode" id="cb45"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb45-1" data-line-number="1"><span class="ot">qfold ::</span> (a <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> <span class="dt">Quantity</span> dim a <span class="ot">-&gt;</span> <span class="dt">Quantity</span> dim a <span class="ot">-&gt;</span> <span class="dt">Quantity</span> dim b</a>
 <a class="sourceLine" id="cb45-2" data-line-number="2">qfold f (<span class="dt">ValQuantity</span> d v1) (<span class="dt">ValQuantity</span> _ v2) <span class="fu">=</span> <span class="dt">ValQuantity</span> d (f v1 v2)</a></code></pre></div>
 <div class="sourceCode" id="cb46"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb46-1" data-line-number="1">sinq, cosq, asinq, acosq, atanq, expq,<span class="ot"> logq ::</span> (<span class="dt">Floating</span> v) <span class="ot">=&gt;</span></a>
 <a class="sourceLine" id="cb46-2" data-line-number="2">  <span class="dt">Quantity</span> <span class="dt">One</span> v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> <span class="dt">One</span> v</a>
-<a class="sourceLine" id="cb46-3" data-line-number="3">sinq  <span class="fu">=</span> qmap sin</a>
-<a class="sourceLine" id="cb46-4" data-line-number="4">cosq  <span class="fu">=</span> qmap cos</a>
-<a class="sourceLine" id="cb46-5" data-line-number="5">asinq <span class="fu">=</span> qmap asin</a>
-<a class="sourceLine" id="cb46-6" data-line-number="6">acosq <span class="fu">=</span> qmap acos</a>
-<a class="sourceLine" id="cb46-7" data-line-number="7">atanq <span class="fu">=</span> qmap atan</a>
-<a class="sourceLine" id="cb46-8" data-line-number="8">expq  <span class="fu">=</span> qmap exp</a>
-<a class="sourceLine" id="cb46-9" data-line-number="9">logq  <span class="fu">=</span> qmap log</a></code></pre></div>
-<p>Why not make <code>Quantity</code> an instance of <code>Num</code>, <code>Fractional</code>, <code>Floating</code> och <code>Functor</code>? The reason is that the functions of those type classes have the following type</p>
+<a class="sourceLine" id="cb46-3" data-line-number="3">sinq  <span class="fu">=</span> fmap sin</a>
+<a class="sourceLine" id="cb46-4" data-line-number="4">cosq  <span class="fu">=</span> fmap cos</a>
+<a class="sourceLine" id="cb46-5" data-line-number="5">asinq <span class="fu">=</span> fmap asin</a>
+<a class="sourceLine" id="cb46-6" data-line-number="6">acosq <span class="fu">=</span> fmap acos</a>
+<a class="sourceLine" id="cb46-7" data-line-number="7">atanq <span class="fu">=</span> fmap atan</a>
+<a class="sourceLine" id="cb46-8" data-line-number="8">expq  <span class="fu">=</span> fmap exp</a>
+<a class="sourceLine" id="cb46-9" data-line-number="9">logq  <span class="fu">=</span> fmap log</a></code></pre></div>
+<p>Why not make <code>Quantity</code> an instance of <code>Num</code>, <code>Fractional</code> and <code>Floating</code>? The reason is that the functions of those type classes have the following type</p>
 <div class="sourceCode" id="cb47"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="ot">(*) ::</span> (<span class="dt">Num</span> a) <span class="ot">=&gt;</span> a <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> a</a></code></pre></div>
 <p>which isn’t compatible with <code>Quantity</code> since multiplication with <code>Quantity</code> has the following type</p>
 <div class="sourceCode" id="cb48"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb48-1" data-line-number="1"><span class="ot">(*#) ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> d1 v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> d2 v <span class="ot">-&gt;</span></a>
 <a class="sourceLine" id="cb48-2" data-line-number="2">                   <span class="dt">Quantity</span> (d1 <span class="ot">`Mul`</span> d2) v</a></code></pre></div>
 <p>The input here may actually be of <em>different</em> types, and the output has a type depending on the types of the input. However, the <em>kind</em> of the inputs and output are the same, namely <code>Quantity</code>. We’ll just have to live with not being able to make <code>Quantity</code> a <code>Num</code>-instance.</p>
 <p>However, operations with only scalars (type <code>One</code>) has types compatible with <code>Num</code>.</p>
-<p><strong>Exercise</strong> <code>Quantity One</code> has compatible types. Make it an instance of <code>Num</code>, <code>Fractional</code>, <code>Floating</code> and <code>Functor</code>.</p>
+<p><strong>Exercise</strong> <code>Quantity One</code> has compatible types. Make it an instance of <code>Num</code>, <code>Fractional</code> and <code>Floating</code>.</p>
 <details>
 <summary><strong>Solution</strong></summary>
 <div>
@@ -264,8 +265,8 @@
 <a class="sourceLine" id="cb49-2" data-line-number="2">  (<span class="fu">+</span>) <span class="fu">=</span> (<span class="fu">+#</span>)</a>
 <a class="sourceLine" id="cb49-3" data-line-number="3">  (<span class="fu">-</span>) <span class="fu">=</span> (<span class="fu">-#</span>)</a>
 <a class="sourceLine" id="cb49-4" data-line-number="4">  (<span class="fu">*</span>) <span class="fu">=</span> (<span class="fu">*#</span>)</a>
-<a class="sourceLine" id="cb49-5" data-line-number="5">  abs <span class="fu">=</span> qmap abs</a>
-<a class="sourceLine" id="cb49-6" data-line-number="6">  signum <span class="fu">=</span> qmap signum</a>
+<a class="sourceLine" id="cb49-5" data-line-number="5">  abs <span class="fu">=</span> fmap abs</a>
+<a class="sourceLine" id="cb49-6" data-line-number="6">  signum <span class="fu">=</span> fmap signum</a>
 <a class="sourceLine" id="cb49-7" data-line-number="7">  fromInteger n <span class="fu">=</span> <span class="dt">ValQuantity</span> V.one (fromInteger n)</a></code></pre></div>
 <div class="sourceCode" id="cb50"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb50-1" data-line-number="1"><span class="kw">instance</span> (<span class="dt">Fractional</span> v) <span class="ot">=&gt;</span> <span class="dt">Fractional</span> (<span class="dt">Quantity</span> <span class="dt">One</span> v) <span class="kw">where</span></a>
 <a class="sourceLine" id="cb50-2" data-line-number="2">  (<span class="fu">/</span>) <span class="fu">=</span> (<span class="fu">/#</span>)</a>
@@ -279,55 +280,55 @@
 <a class="sourceLine" id="cb51-7" data-line-number="7">  asin  <span class="fu">=</span> asinq</a>
 <a class="sourceLine" id="cb51-8" data-line-number="8">  acos  <span class="fu">=</span> acosq</a>
 <a class="sourceLine" id="cb51-9" data-line-number="9">  atan  <span class="fu">=</span> atanq</a>
-<a class="sourceLine" id="cb51-10" data-line-number="10">  sinh  <span class="fu">=</span> qmap sinh</a>
-<a class="sourceLine" id="cb51-11" data-line-number="11">  cosh  <span class="fu">=</span> qmap cosh</a>
-<a class="sourceLine" id="cb51-12" data-line-number="12">  asinh <span class="fu">=</span> qmap asinh</a>
-<a class="sourceLine" id="cb51-13" data-line-number="13">  acosh <span class="fu">=</span> qmap acosh</a>
-<a class="sourceLine" id="cb51-14" data-line-number="14">  atanh <span class="fu">=</span> qmap atanh</a></code></pre></div>
-<div class="sourceCode" id="cb52"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb52-1" data-line-number="1"><span class="kw">instance</span> <span class="dt">Functor</span> (<span class="dt">Quantity</span> <span class="dt">One</span>) <span class="kw">where</span></a>
-<a class="sourceLine" id="cb52-2" data-line-number="2">  fmap <span class="fu">=</span> qmap</a></code></pre></div>
+<a class="sourceLine" id="cb51-10" data-line-number="10">  sinh  <span class="fu">=</span> fmap sinh</a>
+<a class="sourceLine" id="cb51-11" data-line-number="11">  cosh  <span class="fu">=</span> fmap cosh</a>
+<a class="sourceLine" id="cb51-12" data-line-number="12">  asinh <span class="fu">=</span> fmap asinh</a>
+<a class="sourceLine" id="cb51-13" data-line-number="13">  acosh <span class="fu">=</span> fmap acosh</a>
+<a class="sourceLine" id="cb51-14" data-line-number="14">  atanh <span class="fu">=</span> fmap atanh</a></code></pre></div>
 </div>
 </details>
 <h2 id="syntactic-sugar">Syntactic sugar</h2>
 <p>In order to create a value representing a certain distance (5 metres, for example) one does the following</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb53-1" data-line-number="1"><span class="ot">distance ::</span> <span class="dt">Quantity</span> <span class="dt">T.Length</span> <span class="dt">Double</span></a>
-<a class="sourceLine" id="cb53-2" data-line-number="2">distance <span class="fu">=</span> <span class="dt">ValQuantity</span> V.length <span class="fl">5.0</span></a></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb52-1" data-line-number="1"><span class="ot">distance ::</span> <span class="dt">Quantity</span> <span class="dt">T.Length</span> <span class="dt">Double</span></a>
+<a class="sourceLine" id="cb52-2" data-line-number="2">distance <span class="fu">=</span> <span class="dt">ValQuantity</span> V.length <span class="fl">5.0</span></a></code></pre></div>
 <p>Writing that way each time is very clumsy. You can also do “dumb” things such as</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb54-1" data-line-number="1"><span class="ot">distance ::</span> <span class="dt">Quantity</span> <span class="dt">T.Length</span> <span class="dt">Double</span></a>
-<a class="sourceLine" id="cb54-2" data-line-number="2">distance <span class="fu">=</span> <span class="dt">ValQuantity</span> V.time <span class="fl">5.0</span></a></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb53-1" data-line-number="1"><span class="ot">distance ::</span> <span class="dt">Quantity</span> <span class="dt">T.Length</span> <span class="dt">Double</span></a>
+<a class="sourceLine" id="cb53-2" data-line-number="2">distance <span class="fu">=</span> <span class="dt">ValQuantity</span> V.time <span class="fl">5.0</span></a></code></pre></div>
 <p>with different dimensions on value-level and type-level.</p>
 <p>To solve these two problems we’ll introduce some syntactic sugar. First some pre-made values for the 7 base dimensions and the scalar.</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb55-1" data-line-number="1">length<span class="ot"> ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Length</span> v</a>
-<a class="sourceLine" id="cb55-2" data-line-number="2">length <span class="fu">=</span> <span class="dt">ValQuantity</span> V.length <span class="dv">1</span></a></code></pre></div>
-<div class="sourceCode" id="cb56"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb56-1" data-line-number="1"><span class="ot">mass ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Mass</span> v</a>
-<a class="sourceLine" id="cb56-2" data-line-number="2">mass <span class="fu">=</span> <span class="dt">ValQuantity</span> V.mass <span class="dv">1</span></a></code></pre></div>
-<div class="sourceCode" id="cb57"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb57-1" data-line-number="1"><span class="ot">time ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Time</span> v</a>
-<a class="sourceLine" id="cb57-2" data-line-number="2">time <span class="fu">=</span> <span class="dt">ValQuantity</span> V.time <span class="dv">1</span></a></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb54-1" data-line-number="1">length<span class="ot"> ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Length</span> v</a>
+<a class="sourceLine" id="cb54-2" data-line-number="2">length <span class="fu">=</span> <span class="dt">ValQuantity</span> V.length <span class="dv">1</span></a></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb55-1" data-line-number="1"><span class="ot">mass ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Mass</span> v</a>
+<a class="sourceLine" id="cb55-2" data-line-number="2">mass <span class="fu">=</span> <span class="dt">ValQuantity</span> V.mass <span class="dv">1</span></a></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb56-1" data-line-number="1"><span class="ot">time ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Time</span> v</a>
+<a class="sourceLine" id="cb56-2" data-line-number="2">time <span class="fu">=</span> <span class="dt">ValQuantity</span> V.time <span class="dv">1</span></a></code></pre></div>
 <p><strong>Exercise</strong> Do the rest.</p>
 <details>
 <summary><strong>Solution</strong></summary>
 <div>
-<div class="sourceCode" id="cb58"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="ot">current ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Current</span> v</a>
-<a class="sourceLine" id="cb58-2" data-line-number="2">current <span class="fu">=</span> <span class="dt">ValQuantity</span> V.current <span class="dv">1</span></a></code></pre></div>
-<div class="sourceCode" id="cb59"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb59-1" data-line-number="1"><span class="ot">temperature ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Temperature</span> v</a>
-<a class="sourceLine" id="cb59-2" data-line-number="2">temperature <span class="fu">=</span> <span class="dt">ValQuantity</span> V.temperature <span class="dv">1</span></a></code></pre></div>
-<div class="sourceCode" id="cb60"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb60-1" data-line-number="1"><span class="ot">substance ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Substance</span> v</a>
-<a class="sourceLine" id="cb60-2" data-line-number="2">substance <span class="fu">=</span> <span class="dt">ValQuantity</span> V.substance <span class="dv">1</span></a></code></pre></div>
-<div class="sourceCode" id="cb61"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb61-1" data-line-number="1"><span class="ot">luminosity ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Luminosity</span> v</a>
-<a class="sourceLine" id="cb61-2" data-line-number="2">luminosity <span class="fu">=</span> <span class="dt">ValQuantity</span> V.luminosity <span class="dv">1</span></a></code></pre></div>
-<div class="sourceCode" id="cb62"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb62-1" data-line-number="1"><span class="ot">one ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">One</span> v</a>
-<a class="sourceLine" id="cb62-2" data-line-number="2">one <span class="fu">=</span> <span class="dt">ValQuantity</span> V.one <span class="dv">1</span></a></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb57-1" data-line-number="1"><span class="ot">current ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Current</span> v</a>
+<a class="sourceLine" id="cb57-2" data-line-number="2">current <span class="fu">=</span> <span class="dt">ValQuantity</span> V.current <span class="dv">1</span></a></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="ot">temperature ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Temperature</span> v</a>
+<a class="sourceLine" id="cb58-2" data-line-number="2">temperature <span class="fu">=</span> <span class="dt">ValQuantity</span> V.temperature <span class="dv">1</span></a></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb59-1" data-line-number="1"><span class="ot">substance ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Substance</span> v</a>
+<a class="sourceLine" id="cb59-2" data-line-number="2">substance <span class="fu">=</span> <span class="dt">ValQuantity</span> V.substance <span class="dv">1</span></a></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb60-1" data-line-number="1"><span class="ot">luminosity ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Luminosity</span> v</a>
+<a class="sourceLine" id="cb60-2" data-line-number="2">luminosity <span class="fu">=</span> <span class="dt">ValQuantity</span> V.luminosity <span class="dv">1</span></a></code></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb61-1" data-line-number="1"><span class="ot">one ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">One</span> v</a>
+<a class="sourceLine" id="cb61-2" data-line-number="2">one <span class="fu">=</span> <span class="dt">ValQuantity</span> V.one <span class="dv">1</span></a></code></pre></div>
 </div>
 </details>
 <p>And now the sugar.</p>
-<div class="sourceCode" id="cb63"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb63-1" data-line-number="1"><span class="ot">(#) ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> d v</a>
-<a class="sourceLine" id="cb63-2" data-line-number="2">v <span class="fu">#</span> (<span class="dt">ValQuantity</span> d bv) <span class="fu">=</span> <span class="dt">ValQuantity</span> d (v<span class="fu">*</span>bv)</a></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb62-1" data-line-number="1"><span class="kw">infixl</span> <span class="dv">3</span> <span class="fu">#</span></a>
+<a class="sourceLine" id="cb62-2" data-line-number="2"><span class="ot">(#) ::</span> (<span class="dt">Num</span> v) <span class="ot">=&gt;</span> v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> d v <span class="ot">-&gt;</span> <span class="dt">Quantity</span> d v</a>
+<a class="sourceLine" id="cb62-3" data-line-number="3">v <span class="fu">#</span> (<span class="dt">ValQuantity</span> d bv) <span class="fu">=</span> <span class="dt">ValQuantity</span> d (v<span class="fu">*</span>bv)</a></code></pre></div>
+
 <p>The intended usage of the function is the following</p>
-<div class="sourceCode" id="cb64"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb64-1" data-line-number="1">ghci<span class="fu">&gt;</span> <span class="kw">let</span> myDistance <span class="fu">=</span> <span class="dv">5</span> <span class="fu">#</span> length</a>
-<a class="sourceLine" id="cb64-2" data-line-number="2">ghci<span class="fu">&gt;</span> <span class="fu">:</span>t myDistance</a>
-<a class="sourceLine" id="cb64-3" data-line-number="3"><span class="ot">t ::</span> <span class="dt">Num</span> v <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Length</span> v</a>
-<a class="sourceLine" id="cb64-4" data-line-number="4">ghci<span class="fu">&gt;</span> myDistance</a>
-<a class="sourceLine" id="cb64-5" data-line-number="5"><span class="dv">5</span> m</a></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb63-1" data-line-number="1">ghci<span class="fu">&gt;</span> <span class="kw">let</span> myDistance <span class="fu">=</span> <span class="dv">5</span> <span class="fu">#</span> length</a>
+<a class="sourceLine" id="cb63-2" data-line-number="2">ghci<span class="fu">&gt;</span> <span class="fu">:</span>t myDistance</a>
+<a class="sourceLine" id="cb63-3" data-line-number="3"><span class="ot">t ::</span> <span class="dt">Num</span> v <span class="ot">=&gt;</span> <span class="dt">Quantity</span> <span class="dt">Length</span> v</a>
+<a class="sourceLine" id="cb63-4" data-line-number="4">ghci<span class="fu">&gt;</span> myDistance</a>
+<a class="sourceLine" id="cb63-5" data-line-number="5"><span class="dv">5</span> m</a></code></pre></div>
 <p>To create a <code>Quantity</code> with a certain value (here <code>5</code>) and a certain dimension (here <code>length</code>), you write as above and get the correct dimension on both value-level and type-level.</p>
 <p>This way of writing in Haskell is similiar to what you do in traditional physics.</p>
 <p><img src="Sugarmorphism.png" title="The correspondence between Haskell-physics and physics when it comes to sugar." class="img-center" /></p>
@@ -338,15 +339,15 @@
 <details>
 <summary><strong>Solution</strong></summary>
 <div>
-<div class="sourceCode" id="cb65"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb65-1" data-line-number="1">meter    <span class="fu">=</span> length</a>
-<a class="sourceLine" id="cb65-2" data-line-number="2">kilogram <span class="fu">=</span> mass</a>
-<a class="sourceLine" id="cb65-3" data-line-number="3">second   <span class="fu">=</span> time</a>
-<a class="sourceLine" id="cb65-4" data-line-number="4">ampere   <span class="fu">=</span> current</a>
-<a class="sourceLine" id="cb65-5" data-line-number="5">kelvin   <span class="fu">=</span> temperature</a>
-<a class="sourceLine" id="cb65-6" data-line-number="6">mole     <span class="fu">=</span> substance</a>
-<a class="sourceLine" id="cb65-7" data-line-number="7">candela  <span class="fu">=</span> luminosity</a>
-<a class="sourceLine" id="cb65-8" data-line-number="8">unitless <span class="fu">=</span> one</a></code></pre></div>
-<div class="sourceCode" id="cb66"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb66-1" data-line-number="1">fourSeconds <span class="fu">=</span> <span class="dv">4</span> <span class="fu">#</span> second</a></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb64-1" data-line-number="1">meter    <span class="fu">=</span> length</a>
+<a class="sourceLine" id="cb64-2" data-line-number="2">kilogram <span class="fu">=</span> mass</a>
+<a class="sourceLine" id="cb64-3" data-line-number="3">second   <span class="fu">=</span> time</a>
+<a class="sourceLine" id="cb64-4" data-line-number="4">ampere   <span class="fu">=</span> current</a>
+<a class="sourceLine" id="cb64-5" data-line-number="5">kelvin   <span class="fu">=</span> temperature</a>
+<a class="sourceLine" id="cb64-6" data-line-number="6">mole     <span class="fu">=</span> substance</a>
+<a class="sourceLine" id="cb64-7" data-line-number="7">candela  <span class="fu">=</span> luminosity</a>
+<a class="sourceLine" id="cb64-8" data-line-number="8">unitless <span class="fu">=</span> one</a></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb65-1" data-line-number="1">fourSeconds <span class="fu">=</span> <span class="dv">4</span> <span class="fu">#</span> second</a></code></pre></div>
 </div>
 </details>
 <p>That’s nice and all, but we can actually take this way of thinking even further. The sugar-function <code>#</code> multiplies with the <em>base</em> value of a unit. Thanks to this, we can actually support more units than just the SI-units! (At least for input.)</p>
@@ -361,33 +362,33 @@
 <summary><strong>Solution</strong></summary>
 <div>
 <p>We just need to create pre-made values for the units we want to support.</p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb67-1" data-line-number="1">inch <span class="fu">=</span> <span class="fl">0.0254</span> <span class="fu">#</span> meter</a>
-<a class="sourceLine" id="cb67-2" data-line-number="2">foot <span class="fu">=</span> <span class="fl">0.3048</span> <span class="fu">#</span> meter</a>
-<a class="sourceLine" id="cb67-3" data-line-number="3">pound <span class="fu">=</span> <span class="fl">0.45359237</span> <span class="fu">#</span> kilogram</a></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb66-1" data-line-number="1">inch <span class="fu">=</span> <span class="fl">0.0254</span> <span class="fu">#</span> meter</a>
+<a class="sourceLine" id="cb66-2" data-line-number="2">foot <span class="fu">=</span> <span class="fl">0.3048</span> <span class="fu">#</span> meter</a>
+<a class="sourceLine" id="cb66-3" data-line-number="3">pound <span class="fu">=</span> <span class="fl">0.45359237</span> <span class="fu">#</span> kilogram</a></code></pre></div>
 </div>
 </details>
 <p>All right, so now we have tackled the problem of writing quantities easier than before. What about the second problem?</p>
 <p>We want to maintain the invariant that the dimension on value-level and type-level always match. The pre-made values from above maintain it, and so do the arithmetic operations we previously created. Therefore, we only export those from this module! The user will have no choice but to use these constructs and hence the invariant will be maintained.</p>
 <p>If the user needs other dimensions than the base dimensions (which it probably will), the follwing example shows how it’s done.</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb68-1" data-line-number="1">ghci<span class="fu">&gt;</span> <span class="kw">let</span> myLength <span class="fu">=</span> <span class="dv">5</span> <span class="fu">#</span> length</a>
-<a class="sourceLine" id="cb68-2" data-line-number="2">ghci<span class="fu">&gt;</span> <span class="kw">let</span> myTime <span class="fu">=</span> <span class="dv">2</span> <span class="fu">#</span> time</a>
-<a class="sourceLine" id="cb68-3" data-line-number="3">ghci<span class="fu">&gt;</span> <span class="kw">let</span> myVelocity <span class="fu">=</span> myLength <span class="fu">/#</span> myTime</a>
-<a class="sourceLine" id="cb68-4" data-line-number="4">ghci<span class="fu">&gt;</span> myVelocity</a>
-<a class="sourceLine" id="cb68-5" data-line-number="5"><span class="fl">2.5</span> m<span class="fu">/</span>s</a></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb67-1" data-line-number="1">ghci<span class="fu">&gt;</span> <span class="kw">let</span> myLength <span class="fu">=</span> <span class="dv">5</span> <span class="fu">#</span> length</a>
+<a class="sourceLine" id="cb67-2" data-line-number="2">ghci<span class="fu">&gt;</span> <span class="kw">let</span> myTime <span class="fu">=</span> <span class="dv">2</span> <span class="fu">#</span> time</a>
+<a class="sourceLine" id="cb67-3" data-line-number="3">ghci<span class="fu">&gt;</span> <span class="kw">let</span> myVelocity <span class="fu">=</span> myLength <span class="fu">/#</span> myTime</a>
+<a class="sourceLine" id="cb67-4" data-line-number="4">ghci<span class="fu">&gt;</span> myVelocity</a>
+<a class="sourceLine" id="cb67-5" data-line-number="5"><span class="fl">2.5</span> m<span class="fu">/</span>s</a></code></pre></div>
 <p>New dimensions are created “on demand”. Furthermore</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb69-1" data-line-number="1">ghci<span class="fu">&gt;</span> <span class="kw">let</span> velocity <span class="fu">=</span> length <span class="fu">/#</span> time</a>
-<a class="sourceLine" id="cb69-2" data-line-number="2">ghci<span class="fu">&gt;</span> <span class="kw">let</span> otherVelocity <span class="fu">=</span> <span class="dv">188</span> <span class="fu">#</span> velocity</a></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb68-1" data-line-number="1">ghci<span class="fu">&gt;</span> <span class="kw">let</span> velocity <span class="fu">=</span> length <span class="fu">/#</span> time</a>
+<a class="sourceLine" id="cb68-2" data-line-number="2">ghci<span class="fu">&gt;</span> <span class="kw">let</span> otherVelocity <span class="fu">=</span> <span class="dv">188</span> <span class="fu">#</span> velocity</a></code></pre></div>
 <p>it’s possible to use the sugar from before on user-defined dimensions.</p>
 <p>Just for convenience sake we’ll define a bunch of common composite dimensions. Erm, <em>you’ll</em> define.</p>
 <p><strong>Exericse</strong> Define pre-made values for velocity, acceleration, force, momentum and energy.</p>
 <details>
 <summary><strong>Solution</strong></summary>
 <div>
-<div class="sourceCode" id="cb70"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb70-1" data-line-number="1">velocity     <span class="fu">=</span> length   <span class="fu">/#</span> time</a>
-<a class="sourceLine" id="cb70-2" data-line-number="2">acceleration <span class="fu">=</span> velocity <span class="fu">/#</span> time</a>
-<a class="sourceLine" id="cb70-3" data-line-number="3">force        <span class="fu">=</span> mass     <span class="fu">*#</span> acceleration</a>
-<a class="sourceLine" id="cb70-4" data-line-number="4">momentum     <span class="fu">=</span> force    <span class="fu">*#</span> time</a>
-<a class="sourceLine" id="cb70-5" data-line-number="5">energy       <span class="fu">=</span> force    <span class="fu">*#</span> length</a></code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb69-1" data-line-number="1">velocity     <span class="fu">=</span> length   <span class="fu">/#</span> time</a>
+<a class="sourceLine" id="cb69-2" data-line-number="2">acceleration <span class="fu">=</span> velocity <span class="fu">/#</span> time</a>
+<a class="sourceLine" id="cb69-3" data-line-number="3">force        <span class="fu">=</span> mass     <span class="fu">*#</span> acceleration</a>
+<a class="sourceLine" id="cb69-4" data-line-number="4">momentum     <span class="fu">=</span> force    <span class="fu">*#</span> time</a>
+<a class="sourceLine" id="cb69-5" data-line-number="5">energy       <span class="fu">=</span> force    <span class="fu">*#</span> length</a></code></pre></div>
 </div>
 </details>
 <h2 id="a-physics-example">A physics example</h2>
@@ -399,33 +400,33 @@
 <ol type="a">
 <li>Calculate the (shared) final velocity of the dog and the carriage.</li>
 </ol>
-<div class="sourceCode" id="cb71"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb71-1" data-line-number="1">mDog      <span class="fu">=</span> <span class="dv">40</span> <span class="fu">#</span> mass    <span class="co">-- 40 kg</span></a>
-<a class="sourceLine" id="cb71-2" data-line-number="2">viDog     <span class="fu">=</span> <span class="dv">8</span> <span class="fu">#</span> velocity <span class="co">-- 8 m/s</span></a>
-<a class="sourceLine" id="cb71-3" data-line-number="3">mCarriage <span class="fu">=</span> <span class="dv">190</span> <span class="fu">#</span> mass   <span class="co">-- 190 kg</span></a>
-<a class="sourceLine" id="cb71-4" data-line-number="4">u         <span class="fu">=</span> <span class="fl">0.7</span> <span class="fu">#</span> one    <span class="co">-- 0.7</span></a></code></pre></div>
+<div class="sourceCode" id="cb70"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb70-1" data-line-number="1">mDog      <span class="fu">=</span> <span class="dv">40</span> <span class="fu">#</span> mass    <span class="co">-- 40 kg</span></a>
+<a class="sourceLine" id="cb70-2" data-line-number="2">viDog     <span class="fu">=</span> <span class="dv">8</span> <span class="fu">#</span> velocity <span class="co">-- 8 m/s</span></a>
+<a class="sourceLine" id="cb70-3" data-line-number="3">mCarriage <span class="fu">=</span> <span class="dv">190</span> <span class="fu">#</span> mass   <span class="co">-- 190 kg</span></a>
+<a class="sourceLine" id="cb70-4" data-line-number="4">u         <span class="fu">=</span> <span class="fl">0.7</span> <span class="fu">#</span> one    <span class="co">-- 0.7</span></a></code></pre></div>
 <p>No external forces are acting on the dog and the carriage. Hence the momentum of the system is preserved.</p>
-<div class="sourceCode" id="cb72"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb72-1" data-line-number="1">piSystem <span class="fu">=</span> mDog <span class="fu">*#</span> viDog <span class="co">-- 320 kg*m/s</span></a>
-<a class="sourceLine" id="cb72-2" data-line-number="2">pfSystem <span class="fu">=</span> piSystem      <span class="co">-- 320 kg*m/s</span></a></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb71-1" data-line-number="1">piSystem <span class="fu">=</span> mDog <span class="fu">*#</span> viDog <span class="co">-- 320 kg*m/s</span></a>
+<a class="sourceLine" id="cb71-2" data-line-number="2">pfSystem <span class="fu">=</span> piSystem      <span class="co">-- 320 kg*m/s</span></a></code></pre></div>
 <p>In the end the whole system has a shared velocity of its shared mass.</p>
-<div class="sourceCode" id="cb73"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb73-1" data-line-number="1">mSystem  <span class="fu">=</span> mDog <span class="fu">+#</span> mCarriage   <span class="co">-- 230 kg</span></a>
-<a class="sourceLine" id="cb73-2" data-line-number="2">vfSystem <span class="fu">=</span> pfSystem <span class="fu">/#</span> mSystem <span class="co">-- 1.39 m/s</span></a></code></pre></div>
+<div class="sourceCode" id="cb72"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb72-1" data-line-number="1">mSystem  <span class="fu">=</span> mDog <span class="fu">+#</span> mCarriage   <span class="co">-- 230 kg</span></a>
+<a class="sourceLine" id="cb72-2" data-line-number="2">vfSystem <span class="fu">=</span> pfSystem <span class="fu">/#</span> mSystem <span class="co">-- 1.39 m/s</span></a></code></pre></div>
 <ol start="2" type="a">
 <li>Calculate the force of friction acting on the dog.</li>
 </ol>
-<div class="sourceCode" id="cb74"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb74-1" data-line-number="1">fFriction <span class="fu">=</span> u <span class="fu">*#</span> fNormal        <span class="co">-- 275 kg*m/s^2</span></a>
-<a class="sourceLine" id="cb74-2" data-line-number="2">fNormal   <span class="fu">=</span> mDog <span class="fu">*#</span> g           <span class="co">-- 393 kg*m/s^2</span></a>
-<a class="sourceLine" id="cb74-3" data-line-number="3">g         <span class="fu">=</span> <span class="fl">9.82</span> <span class="fu">#</span> acceleration <span class="co">-- 9.82 m/s^2</span></a></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb73-1" data-line-number="1">fFriction <span class="fu">=</span> u <span class="fu">*#</span> fNormal        <span class="co">-- 275 kg*m/s^2</span></a>
+<a class="sourceLine" id="cb73-2" data-line-number="2">fNormal   <span class="fu">=</span> mDog <span class="fu">*#</span> g           <span class="co">-- 393 kg*m/s^2</span></a>
+<a class="sourceLine" id="cb73-3" data-line-number="3">g         <span class="fu">=</span> <span class="fl">9.82</span> <span class="fu">#</span> acceleration <span class="co">-- 9.82 m/s^2</span></a></code></pre></div>
 <ol start="3" type="a">
 <li>For how long time does the dog slide on the carriage?</li>
 </ol>
-<div class="sourceCode" id="cb75"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb75-1" data-line-number="1">aDog <span class="fu">=</span> fFriction <span class="fu">/#</span> mDog <span class="co">-- 6.87 m/s^2</span></a></code></pre></div>
-<div class="sourceCode" id="cb76"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb76-1" data-line-number="1">vDelta <span class="fu">=</span> mDog <span class="fu">-#</span> vfSystem</a></code></pre></div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb74-1" data-line-number="1">aDog <span class="fu">=</span> fFriction <span class="fu">/#</span> mDog <span class="co">-- 6.87 m/s^2</span></a></code></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb75-1" data-line-number="1">vDelta <span class="fu">=</span> mDog <span class="fu">-#</span> vfSystem</a></code></pre></div>
 <pre><code>* Couldn&#39;t match type &#39;Numeric.NumType.DK.Integers.Neg1
                  with &#39;Numeric.NumType.DK.Integers.Zero
 ...</code></pre>
 <p>Whoops! That’s not a good operation. Luckily the compiler caught it.</p>
-<div class="sourceCode" id="cb78"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb78-1" data-line-number="1">vDelta <span class="fu">=</span> viDog <span class="fu">-#</span> vfSystem <span class="co">-- 6.60 m/s</span></a>
-<a class="sourceLine" id="cb78-2" data-line-number="2">tSlide <span class="fu">=</span> vDelta <span class="fu">/#</span> aDog    <span class="co">-- 0.96 s</span></a></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode literate haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb77-1" data-line-number="1">vDelta <span class="fu">=</span> viDog <span class="fu">-#</span> vfSystem <span class="co">-- 6.60 m/s</span></a>
+<a class="sourceLine" id="cb77-2" data-line-number="2">tSlide <span class="fu">=</span> vDelta <span class="fu">/#</span> aDog    <span class="co">-- 0.96 s</span></a></code></pre></div>
 <h2 id="conclusion">Conclusion</h2>
 <p>Okay, so you’ve read a whole lot of text by now. But in order to really learn anything, you need to practise with some additional exercises. Some suggestions are</p>
 <ul>

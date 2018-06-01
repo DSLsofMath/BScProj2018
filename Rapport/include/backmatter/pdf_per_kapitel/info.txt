@@ -1,4 +1,0 @@
-
-De är numrerade i den ordning de förekommer i.
-
-Jag använd `pdftk 0.pdf 1.pdf ... 19.pdf output out.pdf` för att kombinera dem.

@@ -59,7 +59,7 @@ should upset you, this (in pseudo-Haskell)
 
 should upset the compiler!
 
-We can't cover all everything at once, but we guarantee you that by the end of this chaper, you'll know exactly how the above ideas are actually implemented.
+We can't cover all everything at once, but we guarantee you that by the end of this chapter, you'll know exactly how the above ideas are actually implemented.
 
 Let's get on to the actual data type declaration.
 
@@ -347,7 +347,7 @@ We quickly realize a pattern, so let's generalize a bit.
 > instance Functor (Quantity d) where
 >   fmap = qmap
 
-> qfold :: (a -> a -> b) -> Quantity dim a -> Quantity dim a -> Quantity dim b
+> qfold :: (a -> b -> c) -> Quantity dim a -> Quantity dim b -> Quantity dim c
 > qfold f (ValQuantity d v1) (ValQuantity _ v2) = ValQuantity d (f v1 v2)
 
 > sinq, cosq, asinq, acosq, atanq, expq, logq :: (Floating v) =>

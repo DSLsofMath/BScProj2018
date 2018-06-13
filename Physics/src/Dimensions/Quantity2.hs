@@ -1,17 +1,16 @@
-
-{-# LANGUAGE UndecidableInstances #-}
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE GADTs #-}
-{-# LANGUAGE DataKinds #-}
-{-# LANGUAGE TypeOperators #-}
-{-# LANGUAGE KindSignatures #-}
+{-# LANGUAGE DataKinds             #-}
+{-# LANGUAGE FlexibleInstances     #-}
+{-# LANGUAGE GADTs                 #-}
+{-# LANGUAGE KindSignatures        #-}
+{-# LANGUAGE TypeOperators         #-}
+{-# LANGUAGE UndecidableInstances  #-}
 
 {-# LANGUAGE MultiParamTypeClasses #-}
 
 module Dimensions.Quantity2 where
 
-import qualified Dimensions.ValueLevel as V
 import           Dimensions.TypeLevel  as T
+import qualified Dimensions.ValueLevel as V
 import           Prelude               as P hiding (length)
 
 data Quantity (d :: T.Dim) (v :: *) where
@@ -52,11 +51,11 @@ class Multiplicable a b c where
              ValQuantity (d1 `V.mul` d2) $ doMult a b
 
 
---instance (Num v) => Multiplicable v v v where
---  doMult = (*)
-
-instance (Num v) => Multiplicable Double Double Double where
+instance (Num v) => Multiplicable v v v where
   doMult = (*)
+
+-- instance (Num v) => Multiplicable Double Double Double where
+--   doMult = (*)
 
 
 
@@ -66,7 +65,7 @@ instance (Num v) => Multiplicable Double Double Double where
 
 class Creatable a where
   anyVal :: a
-  
+
 -- Vad går att "skapa"?
 
 instance Creatable Double where

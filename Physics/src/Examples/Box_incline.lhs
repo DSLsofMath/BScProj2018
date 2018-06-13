@@ -1,6 +1,8 @@
 Box on an incline
 =================
 
+> module Examples.Box_incline where
+
 > import Vector.Vector
 > import Text.Printf
 

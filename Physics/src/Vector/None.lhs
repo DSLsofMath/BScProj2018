@@ -1,4 +1,4 @@
-> module Vector.Vector2 where
+> module Vector.None where
 > import Test.QuickCheck hiding (scale)
 
 Vectors in two dimensions.
